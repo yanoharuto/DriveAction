@@ -1,7 +1,7 @@
 #pragma once
 #include "SceneBase.h"
 class PlayScene final:
-    private SceneBase
+    public SceneBase
 {
 public:
     PlayScene();

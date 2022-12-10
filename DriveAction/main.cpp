@@ -4,6 +4,7 @@
 #include "PlayScene.h"
 #include "ResultScene.h"
 #include "Utility.h"
+#include "UserInput.h"
 
 SceneBase* MakeScene(SceneType _NowSceneType);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -20,17 +21,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SceneType prevSceneType = SceneType::TITLE;
 	//今のシーン
 	SceneType nowSceneType = SceneType::TITLE;
-	
 	//シーンを生成
 	SceneBase* scene = new TitleScene;
+
+	UserInput* userInput = new UserInput;
 
 	//ゲームループ エスケープキーを押したら終了
 	while (ProcessMessage() == 0 && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
 		//更新
 		nowSceneType = scene->Update();
+		userInput->Update();
+
 #ifdef _DEBUG
 		clsDx(); // printfDx の結果をリセットするための関数.
+
 #endif	// ここでDEBUG用の処理を終了.
 
 		ClearDrawScreen();//画面を初期化する

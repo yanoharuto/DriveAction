@@ -1,19 +1,12 @@
 #pragma once
-#include "DxLib.h"
-class Player final
+#include "Actor.h"
+class Player final: public Actor
 {
 public:
     Player();
     ~Player();
-    void Update();
-    void Draw();
+    void Update() override;
+    void Draw() override;
     VECTOR GetPos();
-
-private:
-    int  modelHandle;
-    VECTOR Position;
-    VECTOR Velocity;
-    VECTOR Direction;
-
 };
 

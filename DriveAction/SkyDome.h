@@ -1,5 +1,5 @@
 #pragma once
-class BackGround
+class SkyDome
 {
 };
 

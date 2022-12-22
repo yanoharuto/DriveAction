@@ -1,33 +1,64 @@
 #include "PlayScene.h"
 #include "DxLib.h"
+#include "ActorManager.h"
+#include "Player.h"
+#include "Camera.h"
+#include "SkyDome.h"
+#include "CircuitTrack.h"
+
 PlayScene::PlayScene()
     :SceneBase(SceneType::PLAY)
 {
-    ActorMana = new ActorManager();
-    PlayerActor = new Player();
-    ActorMana->AddActor(*PlayerActor);
+    actorManager = new ActorManager();
+    playerActor = new Player();
+    camera = new PlaySceneCamera();
+    skyDome = new SkyDome();
+    circuit = new CircuitTrack();
+    time = GetNowCount();
+    deltaTime = deltaTimeCalculationLine;
 }
 
 PlayScene::~PlayScene()
 {
-    delete ActorMana;
-    delete PlayerActor;
+    delete actorManager;
+    delete playerActor;
+    delete camera;
+    delete skyDome;
+    delete circuit;
 }
 
 SceneType PlayScene::Update()
 {
-    ActorMana->UpdateActors();
-    if (CheckHitKey(KEY_INPUT_A))
+    /*printfDx("%f::", time);
+    printfDx("%d\n", GetNowCount());*/
+    deltaTime = GetNowCount() - time;
+    deltaTime /= 1000;
+    time = GetNowCount();
+    
+    if (deltaTime >= deltaTimeCalculationLine)
     {
-        NowScenType = SceneType::RESULT;
+        //プレイヤーの更新
+        playerActor->Update(deltaTime);
+        //カメラにプレイヤーの位置を教える
+        camera->Update(*playerActor);
+        if (CheckHitKey(KEY_INPUT_A))
+        {
+            nowScenType = SceneType::RESULT;
+        }
     }
-    return NowScenType;
+    else
+    {
+        printfDx("%f", deltaTime);
+    }
+
+    return nowScenType;
 }
 
 void PlayScene::Draw()
 {
 #ifdef _DEBUG
-    printfDx("PlayScene\nPress:A -> ResultScene\n");
 #endif // _DEBUG
-    ActorMana->DrawActors();
+    playerActor->Draw();
+    skyDome->Draw();
+    circuit->Draw();
 }

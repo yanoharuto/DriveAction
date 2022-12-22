@@ -9,7 +9,7 @@ ActorManager::~ActorManager()
     Actors.clear();
 }
 
-void ActorManager::AddActor(Actor& _Actor)
+void ActorManager::AddActor(const Actor& _Actor)
 {
     Actors.push_back(_Actor);
 }
@@ -25,7 +25,7 @@ void ActorManager::UpdateActors()
         //éÄÇÒÇ≈Ç»Ç©Ç¡ÇΩÇÁçXêV
         if (actor.GetAliveFlag())
         {
-            actor.Update();
+            //actor.Update();
         }
     }
 }

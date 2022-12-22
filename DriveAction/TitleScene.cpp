@@ -13,14 +13,13 @@ SceneType TitleScene::Update()
 {
     if (CheckHitKey(KEY_INPUT_Z))
     {
-        NowScenType = SceneType::PLAY;
+        nowScenType = SceneType::PLAY;
     }
-    return NowScenType;
+    return nowScenType;
 }
 
 void TitleScene::Draw()
 {
 #ifdef _DEBUG
-    printfDx("TitleScene\nPress:Z -> PlayScene\n");
 #endif // _DEBUG
 }

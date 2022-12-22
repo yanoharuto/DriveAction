@@ -9,10 +9,11 @@ public:
     /// </summary>
     /// <returns></returns>
     Actor()
-        :AliveFlag(true),
-        Position({}),
-        Velocity({}),
-        Direction({})
+        :aliveFlag(true),
+        modelHandle(-1),
+        position({}),
+        velocity({}),
+        direction({})
     {
     };
     /// <summary>
@@ -23,7 +24,7 @@ public:
     /// <summary>
     /// 更新
     /// </summary>
-    virtual void Update() {};
+    virtual void Update(const float deltaTime) {};
     /// <summary>
     /// 描画
     /// </summary>
@@ -34,18 +35,43 @@ public:
     /// <returns></returns>
     bool GetAliveFlag()
     {
-        return AliveFlag;
-    }
+        return aliveFlag;
+    };
+    /// <summary>
+    /// ポジション所得
+    /// </summary>
+    /// <returns></returns>
+    const VECTOR& GetPos()const
+    {
+        return position;
+    };
+    /// <summary>
+    /// 向き所得
+    /// </summary>
+    /// <returns></returns>
+    const VECTOR& GetDir() const
+    {
+        return direction;
+    };
+        /// <summary>
+    /// 速度所得
+    /// </summary>
+    /// <returns></returns>
+    const VECTOR& GetVelocity() const
+    {
+        return velocity;
+    };
+
 protected:
     //描画モデル
-    int ModelHandle;
+    int modelHandle;
     //場所
-    VECTOR Position;
+    VECTOR position;
     //速度
-    VECTOR Velocity;
+    VECTOR velocity;
     //方向
-    VECTOR Direction;
+    VECTOR direction;
     //生存フラグ
-    bool AliveFlag;
+    bool aliveFlag;
 };
 

@@ -1,7 +1,12 @@
 #pragma once
 #include "SceneBase.h"
-#include "ActorManager.h"
-#include "Player.h"
+
+class ActorManager;
+class SkyDome;
+class Player;
+class PlaySceneCamera;
+class CircuitTrack;
+
 class PlayScene final:
     public SceneBase
 {
@@ -12,7 +17,12 @@ public:
     SceneType Update() override;
     void Draw() override;
 private:
-    ActorManager* ActorMana;
-    Player* PlayerActor;
+    ActorManager* actorManager;
+    SkyDome* skyDome;
+    Player* playerActor;
+    PlaySceneCamera* camera;
+    CircuitTrack* circuit;
+    const float deltaTimeCalculationLine = 0.00001f;
+    float time;
+    float deltaTime;
 };
-

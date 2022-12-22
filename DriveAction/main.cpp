@@ -14,7 +14,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return -1;			// エラーが起きたら直ちに終了
 	}
 	// 画面モードのセット.
-	SetGraphMode(640, 480, 16);
+	SetGraphMode(1240, 780, 16);
 	ChangeWindowMode(TRUE);
 
 	//ひとつ前のシーン
@@ -29,15 +29,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//ゲームループ エスケープキーを押したら終了
 	while (ProcessMessage() == 0 && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
+#ifdef _DEBUG
+		clsDx(); // printfDx の結果をリセットするための関数.
+#endif	// ここでDEBUG用の処理を終了.
 		//更新
 		nowSceneType = scene->Update();
 		userInput->Update();
-
-#ifdef _DEBUG
-		clsDx(); // printfDx の結果をリセットするための関数.
-
-#endif	// ここでDEBUG用の処理を終了.
-
 		ClearDrawScreen();//画面を初期化する
 		scene->Draw();//描画
 		ScreenFlip();//裏画面の内容を表画面に反映させる

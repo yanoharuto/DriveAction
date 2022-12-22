@@ -52,12 +52,12 @@ private:
     /// </summary>
     /// <param name="_Input"></param>
     void StickUpdate(XINPUT_STATE _Input);
-    InputState AButtonState;
-    InputState BButtonState;
-    StickValueStruct StickValue;
+    InputState aButtonState;
+    InputState bButtonState;
+    StickValueStruct stickValue;
     //Aボタンの割り当て番号
-    const int AButtonNum = 12;
+    const int aButtonNum = 12;
     //Bボタンの割り当て番号
-    const int BButtonNum = 13;
+    const int bButtonNum = 13;
 };
 

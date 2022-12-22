@@ -1,9 +1,9 @@
 #include "UserInput.h"
 
 UserInput::UserInput()
-    :AButtonState(InputState::Detach),
-    BButtonState(InputState::Detach),
-    StickValue({})
+    :aButtonState(InputState::Detach),
+    bButtonState(InputState::Detach),
+    stickValue({})
     
 {
 }
@@ -13,24 +13,24 @@ void UserInput::Update()
 
     XINPUT_STATE input;
     GetJoypadXInputState(DX_INPUT_PAD1, &input);
-    ButtonUpdate(input, AButtonNum, AButtonState);
-    ButtonUpdate(input, BButtonNum, BButtonState);
+    ButtonUpdate(input, aButtonNum, aButtonState);
+    ButtonUpdate(input, bButtonNum, bButtonState);
     StickUpdate(input);
 }
 
 InputState UserInput::GetInputAState()
 {
-    return AButtonState;
+    return aButtonState;
 }
 
 InputState UserInput::GetInputBState()
 {
-    return BButtonState;
+    return bButtonState;
 }
 
 StickValueStruct UserInput::GetStickValue()
 {
-    return StickValue;
+    return stickValue;
 }
 
 
@@ -81,8 +81,8 @@ void UserInput::ButtonUpdate(XINPUT_STATE _Input, int _Num, InputState& _Button)
 void UserInput::StickUpdate(XINPUT_STATE _Input)
 {
 
-    StickValue.LStickValueX = _Input.ThumbLX;
-    StickValue.LStickValueY = _Input.ThumbLY;
-    StickValue.RStickValueX = _Input.ThumbRX;
-    StickValue.RStickValueY = _Input.ThumbRY;
+    stickValue.LStickValueX = _Input.ThumbLX;
+    stickValue.LStickValueY = _Input.ThumbLY;
+    stickValue.RStickValueX = _Input.ThumbRX;
+    stickValue.RStickValueY = _Input.ThumbRY;
 }

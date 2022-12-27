@@ -1,22 +1,24 @@
 #pragma once
-#include "DxLib.h"
-
+#include "Stage.h"
 /// <summary>
 /// スカイドーム
 /// </summary>
-class SkyDome final
+class SkyDome final :public Stage
 {
 public:
+    /// <summary>
+    /// modelのロードとタグ付け
+    /// </summary>
+    /// <returns></returns>
     SkyDome();
+    //modelのデリート
     ~SkyDome();
-    void Update();
+    /// <summary>
+    /// modelの描画
+    /// </summary>
     void Draw();
+
 private:
-    //描画モデル
     int modelHandle;
-    //場所
-    VECTOR position;
-    VECTOR scale;
-    float const scaleValue = 15.0f;
 };
 

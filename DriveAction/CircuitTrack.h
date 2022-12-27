@@ -1,17 +1,36 @@
 #pragma once
-#include "StaticObject.h"
+#include "Stage.h"
+class Player;
 /// <summary>
 /// コース
 /// </summary>
-class CircuitTrack :
-    public StaticObject
+class CircuitTrack final:
+    public Stage
 {
 public:
-    CircuitTrack();
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <returns></returns>
+    CircuitTrack(Player* player);
+    
+    ///modelをデリート
     ~CircuitTrack();
-    void Draw() override;
+    /// <summary>
+    /// ステージのどのmaterialの上にいるか調べる
+    /// </summary>
+    /// <param name="object"></param>
+    void ConflictProcess(Actor* actor)override;
+    /// <summary>
+    /// コースのモデルを描画
+    /// </summary>
+    void Draw();
 
 private:
     float const scaleValue = 0.15f;
+    int modelHandle;
+    int materialNum;
+    float sY = 0.5;
+    float eY = -1.2;
 };
 

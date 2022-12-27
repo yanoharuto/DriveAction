@@ -1,56 +1,50 @@
 #include "PlayScene.h"
-#include "DxLib.h"
-#include "ActorManager.h"
+#include "Timer.h"
+#include "ObjectManager.h"
 #include "Player.h"
-#include "Camera.h"
+#include "PlaySceneCamera.h"
 #include "SkyDome.h"
 #include "CircuitTrack.h"
+#include "Goal.h"
+#include "Utility.h"
+#include "ColiderChecker.h"
+#include <functional>
 
 PlayScene::PlayScene()
     :SceneBase(SceneType::PLAY)
 {
-    actorManager = new ActorManager();
-    playerActor = new Player();
+    player = new Player();
     camera = new PlaySceneCamera();
     skyDome = new SkyDome();
-    circuit = new CircuitTrack();
-    time = GetNowCount();
-    deltaTime = deltaTimeCalculationLine;
+    circuit = new CircuitTrack(player);
+    goal = new Goal(1);
+    timer = new Timer();
+    coliderChecker = new ColiderChecker();
 }
 
 PlayScene::~PlayScene()
 {
-    delete actorManager;
-    delete playerActor;
-    delete camera;
-    delete skyDome;
-    delete circuit;
+    SAFE_DELETE(player);
+    SAFE_DELETE(camera);
+    SAFE_DELETE(skyDome);
+    SAFE_DELETE(circuit);
+    SAFE_DELETE(goal);
+    SAFE_DELETE(timer);
+    SAFE_DELETE(coliderChecker);
 }
 
 SceneType PlayScene::Update()
 {
-    /*printfDx("%f::", time);
-    printfDx("%d\n", GetNowCount());*/
-    deltaTime = GetNowCount() - time;
-    deltaTime /= 1000;
-    time = GetNowCount();
-    
-    if (deltaTime >= deltaTimeCalculationLine)
-    {
-        //プレイヤーの更新
-        playerActor->Update(deltaTime);
-        //カメラにプレイヤーの位置を教える
-        camera->Update(*playerActor);
-        if (CheckHitKey(KEY_INPUT_A))
-        {
-            nowScenType = SceneType::RESULT;
-        }
-    }
-    else
-    {
-        printfDx("%f", deltaTime);
-    }
 
+    player->Update(timer->GetDeltaTime());
+    camera->Update(player);
+    coliderChecker->Check(player,goal);
+    circuit->ConflictProcess(player);
+    timer->Update();
+    if (!goal->GetAliveFlag())
+    {
+        return SceneType::RESULT;
+    }
     return nowScenType;
 }
 
@@ -58,7 +52,7 @@ void PlayScene::Draw()
 {
 #ifdef _DEBUG
 #endif // _DEBUG
-    playerActor->Draw();
-    skyDome->Draw();
+    player->Draw();
     circuit->Draw();
+    skyDome->Draw();
 }

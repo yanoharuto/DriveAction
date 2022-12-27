@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <math.h>
 // 静的定数.
-const float Player::ACCEL = 3.0f;			 // 通常の加速.
+const float Player::ACCEL = 1.8f;			 // 通常の加速.
 const float Player::MAX_SPEED = 180.0f;		 // 最高速度.	
 const float Player::DEFAULT_DECEL = -0.004f;	 // なにもしない時の減速.	
 const float Player::BREAK_DECEL = -0.075f;	 // ブレーキ時の減速.	
@@ -19,6 +19,7 @@ Player::Player()
 	wheeleModelHandle = MV1LoadModel("data/model/Player/Wheel.mv1");
 	position = firstPos;
 	direction = firstRota;
+	radius = radiusValue;
 	// ３Dモデルのポジション設定
 	MV1SetPosition(modelHandle, position);
 	// 向きに合わせて回転.
@@ -57,13 +58,13 @@ void Player::Update(const float deltaTime)
 	// 右を押していたら右方向に力をかける
 	if (wheelDriveRota > rotaCalculationLine)
 	{
-		theta = GetCircleRadius(firstRWheeleRota);
+		theta = GetRotationRadius(firstRWheeleRota);
 		theta = atan2f(VSize(velocity), theta);
 	}
 	// 左を押していたら左方向に力をかける
 	else if (wheelDriveRota < -rotaCalculationLine)
 	{
-		theta = GetCircleRadius(firstLWheeleRota);
+		theta = GetRotationRadius(firstLWheeleRota);
 		theta = atan2f(VSize(velocity), theta);
 		theta = -theta;
 	}
@@ -129,19 +130,13 @@ void Player::Update(const float deltaTime)
 	MV1SetRotationZYAxis(modelHandle, direction, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 	// モデルに向いてほしい方向に回転.
 	MATRIX tmpMat = MV1GetMatrix(modelHandle);
-	MATRIX rotYMat = MGetRotY(180.0f * (float)(DX_PI / 180.0f));
+	MATRIX rotYMat = MGetRotY(180.0f * rage);
 	tmpMat = MMult(tmpMat, rotYMat);
 	MV1SetRotationMatrix(modelHandle, tmpMat);
 
 	WheelUpdate(Key);
 
 #ifdef _DEBUG
-	//printfDx("%f,%f,%f:\n", tmpMat.m[0][0], tmpMat.m[0][1], tmpMat.m[0][2]) ;
-	//printfDx("%f,%f,%f:\n", tmpMat.m[1][0], tmpMat.m[1][1], tmpMat.m[1][2]) ;
-	//printfDx("%f,%f,%f:\n", tmpMat.m[2][0], tmpMat.m[2][1], tmpMat.m[2][2]) ;
-
-	printfDx("%f,%f,%f:\n", position.x, position.y, position.z);
-	printfDx("%f,%f,%f:\n", direction.x, direction.y, direction.z);
 	
 #endif // _DEBUG
 }
@@ -169,7 +164,7 @@ void Player::InitWheele(Wheel& wheel, int modelHandle, VECTOR pos, float rota)
 	wheel.betweenBody = pos;
 	VECTOR wheelPos = WheelGetPos(wheel);
 	MATRIX bodyMat = MV1GetMatrix(modelHandle);
-	wheel.matrix = MMult(MGetRotY(rota*DX_PI/180.0f), MMult(bodyMat,MGetTranslate(wheelPos)));
+	wheel.matrix = MMult(MGetRotY(rota*rage), MMult(bodyMat,MGetTranslate(wheelPos)));
 	MV1SetMatrix(wheel.modelHandle, wheel.matrix);
 }
 /// <summary>
@@ -179,8 +174,6 @@ void Player::InitWheele(Wheel& wheel, int modelHandle, VECTOR pos, float rota)
 void Player::WheelUpdate(const int key)
 {
 	MATRIX bodyMat = MV1GetMatrix(modelHandle);
-	MATRIX wheelRota;//タイヤの回転
-	MATRIX wheelPos;//タイヤのポジション
 	//左前タイヤ
 	SetWheelMatrix(lFWheel, wheelDriveSpeed, firstLWheeleRota + wheelDriveRota);
 	//左後ろタイヤ
@@ -252,20 +245,21 @@ void Player::SetWheelMatrix(Wheel& wheel,float rotaX,float rotaY)
 	//タイヤの位置を車の向きに合わせる
 	MATRIX wheelPos = MMult(MV1GetMatrix(modelHandle), MGetTranslate(WheelGetPos(wheel)));
 	
-	MATRIX wheelRota = MMult(MGetRotX(rotaX * DX_PI / 180.0f), MGetRotY(rotaY * DX_PI / 180.0f));
+	MATRIX wheelRota = MMult(MGetRotX(rotaX * rage), MGetRotY(rotaY * rage));
 	wheel.matrix = MMult(wheelRota,wheelPos);
 	MV1SetMatrix(wheel.modelHandle,wheel.matrix);
 }
 
-float Player::GetCircleRadius(float firstWheelRota)
+float Player::GetRotationRadius(const float firstWheelRota)
 {
 	if (fabsf(wheelDriveRota) > rotaCalculationLine)
 	{
-		float rota = tan(fabsf(wheelDriveRota) * DX_PI / 180);
+		//タイヤの角度をタンジェントに
+		float rota = tan(static_cast<float> (fabsf(wheelDriveRota)) * rage);
 		//回転半径を出す
 		float radius = (fWheelPos.x + bWheelPos.x) / rota;
 		//車の向きに後ろタイヤをY軸分回転させる
-		VECTOR bWDir = VTransform(direction, MGetRotY((firstWheelRota) * DX_PI / 180));
+		VECTOR bWDir = VTransform(direction, MGetRotY((firstWheelRota) * rage));
 		//後ろタイヤの横向きを出す
 		bWDir = VNorm(VCross(bWDir, VGet(0, 1, 0)));
 		//回転半径の中心座標を出す

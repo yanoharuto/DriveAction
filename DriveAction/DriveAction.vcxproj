@@ -151,10 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ActorManager.cpp" />
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ColiderChecker.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="PlaySceneCamera.cpp" />
     <ClCompile Include="CircuitTrack.cpp" />
     <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="main.cpp" />
@@ -166,18 +168,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
-    <ClInclude Include="ActorManager.h" />
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColiderChecker.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="PlaySceneCamera.h" />
     <ClInclude Include="CircuitTrack.h" />
     <ClInclude Include="Goal.h" />
-    <ClInclude Include="ObjectTag.h" />
+    <ClInclude Include="Stage.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="SkyDome.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="SceneBase.h" />
-    <ClInclude Include="StaticObject.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

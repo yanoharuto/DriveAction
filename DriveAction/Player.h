@@ -7,12 +7,6 @@ struct Wheel
 	VECTOR direction = {};
 	MATRIX matrix = {};
 };
-enum WheelDirection
-{
-	left,
-	right,
-	normal
-};
  /// <summary>
  /// プレイヤー(車)
  /// </summary>
@@ -34,6 +28,7 @@ public:
     /// 描画
     /// </summary>
     void Draw() override;
+
 private:
 	/// <summary>
 	/// タイヤの初期化
@@ -60,8 +55,12 @@ private:
 	/// <param name="_rotaX">タイヤの転がるときの回転</param>
 	/// <param name="_rotaY">タイヤの向きがずれるときの回転</param>
 	void SetWheelMatrix(Wheel& wheel,const float rotaX,const float rotaY);
-
-	float GetCircleRadius(float firstWheelRota);
+	/// <summary>
+	/// 回転するための半径を返す
+	/// </summary>
+	/// <param name="firstWheelRota"></param>
+	/// <returns></returns>
+	float GetRotationRadius(const float firstWheelRota);
 	// 静的定数.
 	static const float ACCEL;					// 通常の加速.
 	static const float MAX_SPEED;				// 最高速度.
@@ -77,7 +76,8 @@ private:
 	const float wheelCurvePower = 1.7f;
 	const float maxWheelRota = 45.5f;
 	const float rotaCalculationLine = 1.2f;
-	WheelDirection wheelDir;
+	const float rage = static_cast<float>(DX_PI / 180.0f);
+	const float radiusValue = 30.0f;
 	float accel = 0;
 	float wheelDriveSpeed = 0.0f;
 	float wheelDriveRota = 0.0f;
@@ -89,7 +89,7 @@ private:
 	Wheel rBWheel;
 	const VECTOR fWheelPos = {2.7f,-0.8f,1.6f};
 	const VECTOR bWheelPos = {2.4f,-0.8f,1.6f};
-	const VECTOR firstPos = { -300.0f,-4.8f,-83.0f };
+	const VECTOR firstPos = { -300.0f,-0.0f,-83.0f };
 	const VECTOR firstRota = { -0.9f,0,-0.02f };
 };
 

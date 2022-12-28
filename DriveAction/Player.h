@@ -23,7 +23,7 @@ public:
     /// <summary>
     /// 更新（移動処理）
     /// </summary>
-    void Update(const float deltaTime) override;
+    void Update(const float deltaTime,const bool outsideHitFlag);
     /// <summary>
     /// 描画
     /// </summary>
@@ -70,6 +70,7 @@ private:
 	static const float GRIP_POWER;				// グリップ力.
 	static const float MAX_GRIP_POWER;				// 最大グリップ力.
 	static const float COLIDE_DECEL_FAC;	    // 障害物にぶつかったときの減速率.
+	const float outsideHitDecel = -0.08f;
 	const float firstLWheeleRota = 0.0f;		//左側タイヤの初期角度
 	const float firstRWheeleRota = 180.0f;		//右側タイヤの初期角度
 	const float wheeleDriveRotaSpeed = 200.0f;

@@ -1,49 +1,60 @@
 #include "CircuitTrack.h"
 #include "Player.h"
-
+/// <summary>
+/// 初期化
+/// </summary>
+/// <param name="player">プレイヤーの幅を取る</param>
+/// <returns></returns>
 CircuitTrack::CircuitTrack(Player* player)
 {
-    modelHandle = MV1LoadModel("data/model/Circuit/Untitled.mv1");
-    position = VGet(0, 0, 0);
-    VECTOR scale = VGet(scaleValue, scaleValue, scaleValue);
-    MV1SetScale(modelHandle, scale);
+    courceModelHandle = MV1LoadModel("data/model/Circuit/CircuitCource.mv1");
+    outsideModelHandle = MV1LoadModel("data/model/Circuit/CircuitOutside.mv1");
+    //若干コースの外側を下げる
+    MV1SetPosition(outsideModelHandle, outsideModelPosition);
+
+    VECTOR scale = VGet(courceModeScaleValue, courceModeScaleValue, courceModeScaleValue);
+    MV1SetScale(courceModelHandle, scale);
+    scale = VGet(outsideModelScaleValue, outsideModelScaleValue, outsideModelScaleValue);
+    MV1SetScale(outsideModelHandle, scale);
+
     tag = ObjectTag::stage;
-    materialNum = 0;
     int playerRadius = static_cast<int>(player->GetRadius());
     playerRadius *= playerRadius;
-    MV1SetupCollInfo(modelHandle, -1,32, 8 ,32);
-}
-
-CircuitTrack::~CircuitTrack()
-{
-    MV1DeleteModel(modelHandle);
+    //コリジョンを作る
+    MV1SetupCollInfo(outsideModelHandle, -1,playerRadius, setupYDivNum ,playerRadius,-1);
 }
 /// <summary>
-/// ステージのどのmaterialの上にいるか調べる
+/// modelの解放　コリジョンも消える
 /// </summary>
-/// <param name="object"></param>
-void CircuitTrack::ConflictProcess(Actor* actor)
+/// <returns></returns>
+CircuitTrack::~CircuitTrack()
 {
-    
-    
-    printfDx("%f,%f\n", sY,eY);
-    VECTOR startPos = actor->GetPos();
-    VECTOR endPos = actor->GetPos();
-    endPos.y = sY;
-    startPos.y = eY;
-    DxLib::MV1_COLL_RESULT_POLY polyInfo = MV1CollCheck_Line(modelHandle, -1, startPos, endPos);
-    materialNum = polyInfo.MaterialIndex;
-    if (polyInfo.HitFlag)
-    {
-        printfDx("%d,%d,%d,%d\n",polyInfo.FrameIndex ,materialNum, polyInfo.PolygonIndex,polyInfo.MeshIndex);
-        printfDx("%f,%f,%f,%f\n",polyInfo.FrameIndex ,materialNum, polyInfo.PolygonIndex,polyInfo.MeshIndex);
-
-    }
+    MV1DeleteModel(courceModelHandle);
+    MV1DeleteModel(outsideModelHandle);
 }
+/// <summary>
+/// コースの外側に当たってるか調べる
+/// </summary>
+/// <param name="actor">外側にいるか調べたいもの</param>
+/// <returns>コースの外側にいるならTrue</returns>
+bool CircuitTrack::GetOutsideHitFlag(Actor* actor)
+{
+    //線分の始まりと終わりを作る
+    //ｘとｚ座標を取ってくる
+    VECTOR startPos = actor->GetPos();
+    startPos.y = sY;
+    VECTOR endPos = startPos;
+    endPos.y = eY;
+    //外側にいるか調べる
+    DxLib::MV1_COLL_RESULT_POLY polyInfo = MV1CollCheck_Line(outsideModelHandle, -1, startPos, endPos);
+    return polyInfo.HitFlag;
+}
+
 /// <summary>
 /// コースのモデルを描画
 /// </summary>
 void CircuitTrack::Draw()
 {
-    MV1DrawModel(modelHandle);
+    MV1DrawModel(courceModelHandle);
+    MV1DrawModel(outsideModelHandle);
 }

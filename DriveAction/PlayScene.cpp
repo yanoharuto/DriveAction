@@ -36,10 +36,10 @@ PlayScene::~PlayScene()
 SceneType PlayScene::Update()
 {
 
-    player->Update(timer->GetDeltaTime());
+    player->Update(timer->GetDeltaTime(), circuit->GetOutsideHitFlag(player));
     camera->Update(player);
     coliderChecker->Check(player,goal);
-    circuit->ConflictProcess(player);
+     
     timer->Update();
     if (!goal->GetAliveFlag())
     {

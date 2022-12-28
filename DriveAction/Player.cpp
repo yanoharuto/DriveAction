@@ -52,7 +52,7 @@ Player::~Player()
 /// <summary>
 /// 更新
 /// </summary>
-void Player::Update(const float deltaTime)
+void Player::Update(const float deltaTime,const bool outsideHitFlag)
 {
 	float theta = 0;
 	// 右を押していたら右方向に力をかける
@@ -103,6 +103,10 @@ void Player::Update(const float deltaTime)
 		{
 			accel += accel * DEFAULT_DECEL;
 			accelVec = VScale(direction, accel);
+		}
+		if (outsideHitFlag)
+		{
+			accel += accel * outsideHitDecel;
 		}
 	}
 

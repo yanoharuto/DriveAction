@@ -151,8 +151,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CPUCar.cpp" />
+    <ClCompile Include="DestinationLoader.cpp" />
+    <ClCompile Include="Wheels.cpp" />
     <ClCompile Include="ColiderChecker.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="PlaySceneCamera.cpp" />
     <ClCompile Include="CircuitTrack.cpp" />
     <ClCompile Include="Goal.cpp" />
@@ -168,9 +171,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Car.h" />
+    <ClInclude Include="CPUCar.h" />
+    <ClInclude Include="DestinationLoader.h" />
+    <ClInclude Include="Wheels.h" />
     <ClInclude Include="ColiderChecker.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="PlaySceneCamera.h" />
     <ClInclude Include="CircuitTrack.h" />
     <ClInclude Include="Goal.h" />

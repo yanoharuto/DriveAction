@@ -6,6 +6,6 @@ class ColiderChecker
 public:
     ColiderChecker();
     ~ColiderChecker();
-    void Check(Actor* const objA, Stage* const objB);
+    void CheckConflictStage(Actor* const objA, Stage* const objB);
 };
 

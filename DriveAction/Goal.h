@@ -8,13 +8,20 @@ class Goal :
     public Stage
 {
 public:
-    Goal(const int roundNum);
+    Goal();
+    /// <summary>
+    /// 何週したらゴールか教えてね
+    /// </summary>
+    /// <param name="roundNum"></param>
+    /// <returns></returns>
+    Goal(const int roundNum,const TCHAR* fileName);
     ~Goal();
     /// <summary>
     /// プレイヤーがぶつかったら次の行き先を設定する
     /// </summary>
     /// <param name="actor"></param>
     void ConflictProcess(Actor* actor)override;
+
 private:
     //車が次に行くべき行き先が書いてある
     std::vector<VECTOR> positionVec;
@@ -30,7 +37,5 @@ private:
     int vecSize = 0;
     //何週したらゴールなのか
     int goalRoundNum = 0;
-    //directionVecから貰ったデータを入れる
-    VECTOR direction;
 };
 

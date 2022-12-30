@@ -6,7 +6,6 @@ class Actor :
 public:
     Actor() 
         :modelHandle(-1),
-        direction({}),
         velocity({})
     {
     };
@@ -25,15 +24,8 @@ public:
     /// Õ“Ëˆ—
     /// </summary>
     /// <param name="tag">Õ“Ë‚µ‚½•¨‘Ì</param>
-    virtual void ConflictProcess() {};
-    /// <summary>
-    /// Œü‚«Š“¾
-    /// </summary>
-    /// <returns></returns>
-    const VECTOR& GetDir() const
-    {
-        return direction;
-    };
+    virtual void ConflictProcess(Object* object) {};
+
     /// <summary>
     /// ‘¬“xŠ“¾
     // </summary>
@@ -47,8 +39,7 @@ protected:
     int modelHandle;
     //‘¬“x
     VECTOR velocity;
-    //•ûŒü
-    VECTOR direction;
+
 
 };
 

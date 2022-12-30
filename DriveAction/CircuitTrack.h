@@ -23,6 +23,12 @@ public:
     /// <returns>コースの外側にいるならTrue</returns>
     bool GetOutsideHitFlag(Actor* actor);
     /// <summary>
+    /// コースの壁にぶつかってるか調べる
+    /// </summary>
+    /// <param name="Actor">ぶつかってるか調べたいもの</param>
+    /// <returns>ぶつかってたらTrue</returns>
+    bool GetGurdHitFlag(Actor* Actor);
+    /// <summary>
     /// コースのモデルを描画
     /// </summary>
     void Draw();

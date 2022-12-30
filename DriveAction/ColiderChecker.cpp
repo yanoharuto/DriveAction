@@ -11,7 +11,7 @@ ColiderChecker::~ColiderChecker()
 {
 }
 
-void ColiderChecker::Check(Actor* const objA, Stage* const objB)
+void ColiderChecker::CheckConflictStage(Actor* const objA, Stage* const objB)
 {
     VECTOR distance = VSub(objA->GetPos(), objB->GetPos());
     distance.y = 0;

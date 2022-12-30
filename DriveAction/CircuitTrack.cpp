@@ -50,6 +50,19 @@ bool CircuitTrack::GetOutsideHitFlag(Actor* actor)
     return polyInfo.HitFlag;
 }
 
+bool CircuitTrack::GetGurdHitFlag(Actor* actor)
+{
+    //線分の始まりと終わりを作る
+    //ｘとｚ座標を取ってくる
+    VECTOR startPos = actor->GetPos();
+    startPos.y = 0.0f;
+    VECTOR endPos = startPos;
+    endPos.y = 0.5f;
+    //外側にいるか調べる
+    DxLib::MV1_COLL_RESULT_POLY polyInfo = MV1CollCheck_Line(courceModelHandle, -1, startPos, endPos);
+    return polyInfo.HitFlag;
+}
+
 /// <summary>
 /// コースのモデルを描画
 /// </summary>

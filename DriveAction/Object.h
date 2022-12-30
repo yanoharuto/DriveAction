@@ -7,7 +7,8 @@ enum class ObjectTag
     enemy,
     enemyAttack,
     obstacle,
-    stage
+    stage,
+    goal
 };
 
 class Object
@@ -19,6 +20,7 @@ public:
     /// <returns></returns>
     Object()
         :aliveFlag(true),
+        direction({}),
         position({}),
         tag(ObjectTag::player),
         radius(0)
@@ -46,10 +48,22 @@ public:
     {
         return position;
     };
+    /// <summary>
+    /// object‚Ì”¼Œa
+    /// </summary>
+    /// <returns></returns>
     const float GetRadius()
     {
         return radius;
     }
+    /// <summary>
+/// Œü‚«Š“¾
+/// </summary>
+/// <returns></returns>
+    const VECTOR& GetDir() const
+    {
+        return direction;
+    };
     /// <summary>
     /// ©•ª‚Ìƒ^ƒO‚ğ•Ô‚·
     /// </summary>
@@ -67,5 +81,7 @@ protected:
     bool aliveFlag;
     //©•ª‚ª‰½‚È‚Ì‚©
     ObjectTag tag;
+    //•ûŒü
+    VECTOR direction;
 };
 

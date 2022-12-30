@@ -7,5 +7,5 @@ class Stage :
 public:
     Stage() {};
     ~Stage() {};
-    virtual void ConflictProcess(Actor* Actor) {};
+    virtual void ConflictProcess(Actor* actor) {};
 };

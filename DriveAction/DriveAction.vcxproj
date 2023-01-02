@@ -152,10 +152,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CircuitDataLoader.cpp" />
     <ClCompile Include="CPUCar.cpp" />
     <ClCompile Include="DestinationLoader.cpp" />
+    <ClCompile Include="ImgUI.cpp" />
+    <ClCompile Include="LacerManager.cpp" />
+    <ClCompile Include="PlaySceeneFlow.cpp" />
+    <ClCompile Include="StageManager.cpp" />
+    <ClCompile Include="StringUI.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Wheels.cpp" />
-    <ClCompile Include="ColiderChecker.cpp" />
+    <ClCompile Include="HitChecker.cpp" />
     <ClCompile Include="PlaySceneCamera.cpp" />
     <ClCompile Include="CircuitTrack.cpp" />
     <ClCompile Include="Goal.cpp" />
@@ -172,15 +179,24 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="CircuitDataLoader.h" />
     <ClInclude Include="CPUCar.h" />
     <ClInclude Include="DestinationLoader.h" />
+    <ClInclude Include="ImgUI.h" />
+    <ClInclude Include="LacerManager.h" />
+    <ClInclude Include="PlaySceeneFlow.h" />
+    <ClInclude Include="PlaySceeneFlowEnum.h" />
+    <ClInclude Include="StageManager.h" />
+    <ClInclude Include="StringUI.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="UIDataStruct.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="Wheels.h" />
-    <ClInclude Include="ColiderChecker.h" />
+    <ClInclude Include="HitChecker.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="PlaySceneCamera.h" />
     <ClInclude Include="CircuitTrack.h" />
     <ClInclude Include="Goal.h" />
-    <ClInclude Include="Stage.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="SkyDome.h" />

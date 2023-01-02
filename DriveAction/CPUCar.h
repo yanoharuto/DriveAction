@@ -10,12 +10,17 @@ public:
     CPUCar();
     ~CPUCar();
     void Update(const float deltaTime,const bool outsideHitFlag)override;
-    void ConflictProcess(Object* object) override;
+    
 private:
+    /// <summary>
+    /// コンピューター版加速処理
+    /// </summary>
+    /// <param name="dir">向かう方向</param>
+    /// <param name="outsideHitFlag">コース外にぶつかったか</param>
+    /// <returns></returns>
     VECTOR GetAccelVec(const float dir,const bool outsideHitFlag);
-    VECTOR destinationPos;
     VECTOR firstPos = { -300.0f,-0.0f,-83.0f };//レース開始位置
     VECTOR firstDir = { -0.9f,0,-0.02f };//初期向き
-    const float calculationLine = 0.2f;
+    const float turnProccesLine = 0.4f;//目的地に向かうときに曲がるか判断する
 };
 

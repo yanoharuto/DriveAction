@@ -11,7 +11,7 @@ PlaySceneCamera::~PlaySceneCamera()
 {
 }
 
-void PlaySceneCamera::Update(const Player* const player)
+void PlaySceneCamera::Update(const Object* const player)
 {
     VECTOR playerPos = player->GetPos();
     // lerp

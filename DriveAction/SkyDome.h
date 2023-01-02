@@ -1,9 +1,9 @@
 #pragma once
-#include "Stage.h"
+#include "Object.h"
 /// <summary>
 /// スカイドーム
 /// </summary>
-class SkyDome final :public Stage
+class SkyDome final :public Object
 {
 public:
     /// <summary>

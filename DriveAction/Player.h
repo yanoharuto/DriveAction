@@ -18,10 +18,7 @@ public:
     /// 更新（移動処理）
     /// </summary>
     void Update(const float deltaTime,const bool outsideHitFlag) override;
-    /// <summary>
-    /// 描画
-    /// </summary>
-    void Draw() override;
+
 private:
 	/// <summary>
 	/// 入力情報から進む向きと速さを所得

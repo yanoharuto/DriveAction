@@ -2,15 +2,23 @@
 #include "DxLib.h"
 enum class ObjectTag
 {
-    player,
-    CPUCar,
+    car,
     enemy,
     enemyAttack,
     obstacle,
     stage,
     goal
 };
-
+/// <summary>
+/// “–‚½‚è”»’è‚Åg‚¤ˆø”‚É‚µ‚Ä“n‚µ‚½‚¢î•ñ
+/// </summary>
+struct ArgumentConflictInfo
+{
+    bool hitFlag = false;
+    ObjectTag tag = ObjectTag::obstacle;
+    VECTOR pos = {};
+    float radius = 0;
+};
 class Object
 {
 public:
@@ -22,7 +30,7 @@ public:
         :aliveFlag(true),
         direction({}),
         position({}),
-        tag(ObjectTag::player),
+        tag(ObjectTag::car),
         radius(0)
     {
     };

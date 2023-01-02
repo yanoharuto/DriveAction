@@ -1,5 +1,9 @@
 #pragma once
 #include "Object.h"
+
+/// <summary>
+/// “®‚­‚à‚Ì‚Í‘å‘Ì‚±‚ê
+/// </summary>
 class Actor :
     public Object
 {
@@ -24,7 +28,7 @@ public:
     /// Õ“Ëˆ—
     /// </summary>
     /// <param name="tag">Õ“Ë‚µ‚½•¨‘Ì</param>
-    virtual void ConflictProcess(Object* object) {};
+    virtual void ConflictProcess(const ArgumentConflictInfo conflictInfo) {};
 
     /// <summary>
     /// ‘¬“xŠ“¾
@@ -39,7 +43,4 @@ protected:
     int modelHandle;
     //‘¬“x
     VECTOR velocity;
-
-
 };
-

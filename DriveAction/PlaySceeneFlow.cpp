@@ -1,45 +1,55 @@
 #include "PlaySceeneFlow.h"
+#include "StageManager.h"
+#include "UIManager.h"
 #include "Utility.h"
 PlaySceeneFlow::PlaySceeneFlow()
 {
+	nowProgress = PlaySceeneProgress::start;
+	lacerManager = new LacerManager(4);
+	camera = new PlaySceneCamera();
+	timer = new Timer();
+	uiManager = new UIManager();
+	stageManager = new StageManager(lacerManager->GetPlayer()->GetRadius());
 }
 
 PlaySceeneFlow::~PlaySceeneFlow()
 {
 	SAFE_DELETE(lacerManager);
 	SAFE_DELETE(camera);
-	SAFE_DELETE(skyDome);
-	SAFE_DELETE(circuit);
+	SAFE_DELETE(uiManager);
 	SAFE_DELETE(timer);
 }
 
-PlaySceeneFlowMode PlaySceeneFlow::Update()
+PlaySceeneProgress PlaySceeneFlow::Update()
 {
 	timer->Update();
-	switch (nowMode)
+	switch (nowProgress)
 	{
-	case PlaySceeneFlowMode::start:
-		nowMode = PlaySceeneFlowMode::countDown;
+	case PlaySceeneProgress::start:
+		nowProgress = PlaySceeneProgress::countDown;
 		break;
-	case PlaySceeneFlowMode::countDown:
-		nowMode = PlaySceeneFlowMode::race;
+	case PlaySceeneProgress::countDown:
+		nowProgress = PlaySceeneProgress::race;
 		break;
-	case PlaySceeneFlowMode::race:
-		lacerManager->Update(timer->GetDeltaTime(), circuit);
+	case PlaySceeneProgress::race:
+		lacerManager->Update(timer->GetDeltaTime(), stageManager->GetCircuit());
 		lacerManager->LacerConflictProcces();
 		camera->Update(lacerManager->GetPlayer());
 		break;
-	case PlaySceeneFlowMode::playerGoal:
+	case PlaySceeneProgress::playerGoal:
 		break;
-	case PlaySceeneFlowMode::end:
+	case PlaySceeneProgress::end:
 		break;
 	default:
-		nowMode = PlaySceeneFlowMode::end;
+		nowProgress = PlaySceeneProgress::end;
 		break;
 	}
-	return nowMode;
+	return nowProgress;
 }
 
 void PlaySceeneFlow::Draw()
 {
+	lacerManager->Draw();
+	stageManager->Draw();
+	uiManager->DrawUI();
 }

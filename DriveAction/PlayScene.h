@@ -1,10 +1,7 @@
 #pragma once
 #include "SceneBase.h"
-class SkyDome;
-class PlaySceneCamera;
-class CircuitTrack;
-class Timer;
-class LacerManager;
+class PlaySceeneFlow;
+
 class PlayScene final:
     public SceneBase
 {
@@ -15,10 +12,5 @@ public:
     SceneType Update() override;
     void Draw() override;
 private:
-
-    SkyDome* skyDome;
-    PlaySceneCamera* camera;
-    CircuitTrack* circuit;
-    Timer* timer;
-    LacerManager* lacerManager;
+    PlaySceeneFlow* playSceneFlow;
 };

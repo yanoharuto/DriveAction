@@ -7,6 +7,6 @@ class DestinationLoader
 public:
     DestinationLoader();
     ~DestinationLoader();
-    void LoadDestination(std::vector<VECTOR>* posVec, std::vector<VECTOR>* dirVec, std::string fileName);
+    void LoadCheckPoint(std::vector<VECTOR>* posVec, std::vector<VECTOR>* dirVec, std::string fileName);
 };
 

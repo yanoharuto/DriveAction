@@ -1,6 +1,6 @@
 #pragma once
 
-enum class PlaySceeneFlowMode
+enum class PlaySceeneProgress
 {
     start,
     countDown,

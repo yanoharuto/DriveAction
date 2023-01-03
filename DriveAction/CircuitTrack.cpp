@@ -54,7 +54,7 @@ bool CircuitTrack::GetOutsideHitFlag(Car* car)const
 /// </summary>
 /// <param name="Actor">‚Ô‚Â‚©‚Á‚Ä‚é‚©’²‚×‚½‚¢‚à‚Ì</param>
 /// <returns>‚Ô‚Â‚©‚Á‚Ä‚½‚çTrue</returns>
-ArgumentConflictInfo  CircuitTrack::GetGurdHitFlag(Car* car) const
+ArgumentConflictInfo  CircuitTrack::GetCourceConflictInfo(Car* car) const
 {
     //ü•ª‚Ìn‚Ü‚è‚ÆI‚í‚è‚ğì‚é
     //‚˜‚Æ‚šÀ•W‚ğæ‚Á‚Ä‚­‚é

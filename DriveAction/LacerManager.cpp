@@ -1,6 +1,6 @@
 #include "LacerManager.h"
 #include "CPUCar.h"
-#include "Goal.h"
+#include "CheckPoint.h"
 #include "Player.h"
 #include "Utility.h"
 #include "CircuitTrack.h"
@@ -10,20 +10,20 @@
 /// </summary>
 /// <param name="lacerNum">車乗りの数だけリストに追加するよ</param>
 /// <returns></returns>
-LacerManager::LacerManager(int lacerNum)
+LacerManager::LacerManager(int cpuNum)
 {
     Lacer lacer{};
-    lacer.rank = lacerNum;
-    lacer.goal = new Goal(1, "goalStatus.txt");
+    lacer.rank = cpuNum + 1;
+    lacer.checkPoint = new CheckPoint(1, "goalStatus.txt");
     lacer.car = new Player();
     lacerList.push_back(lacer);
-    for (int i = lacerNum; i > 0; i--)
+    for (int i = cpuNum; i > 0; i--)
     {
         lacer.car = new CPUCar();
-        lacer.goal = new Goal(lacerList.front().goal->GetCheckPoint());
-        lacer.rank = i - 1;
+        lacer.checkPoint = new CheckPoint(lacerList.front().checkPoint->GetCheckPoint());
+        lacer.rank = i;
         lacerList.push_back(lacer);
-        ArgumentConflictInfo conflictInfo = MakeArgumentInfo(lacer.goal);
+        ArgumentConflictInfo conflictInfo = MakeArgumentInfo(lacer.checkPoint);
         lacer.car->ConflictProcess(conflictInfo);
     }
 }
@@ -33,7 +33,7 @@ LacerManager::~LacerManager()
     for (int i = 0; i < static_cast<signed>(lacerList.max_size()); i++)
     {
         SAFE_DELETE(lacerList.front().car);
-        SAFE_DELETE(lacerList.front().goal);
+        SAFE_DELETE(lacerList.front().checkPoint);
     }
 }
 /// <summary>
@@ -49,15 +49,16 @@ void LacerManager::Update(const float deltaTime,CircuitTrack* circuit)
     for(lacerIte = lacerList.begin();lacerIte!=lacerList.end();lacerIte++)
     {
         lacer = *lacerIte;
+        //車の更新　コース外に出たかどうか第二引数で調べる
         lacer.car->Update(deltaTime, circuit->GetOutsideHitFlag(lacer.car));
-        conflictInfo = MakeArgumentInfo(lacer.car);
-        if (hitChecker.HitCheck(lacer.goal,lacer.car))
+        if (hitChecker.HitCheck(lacer.checkPoint,lacer.car))
         {
-            lacer.goal->Update(lacer.car);
-            conflictInfo = MakeArgumentInfo(lacer.goal);
+            lacer.checkPoint->Update(lacer.car);
+
+            conflictInfo = MakeArgumentInfo(lacer.checkPoint);
             lacer.car->ConflictProcess(conflictInfo);
         }
-        conflictInfo = circuit->GetGurdHitFlag(lacer.car);
+        conflictInfo = circuit->GetCourceConflictInfo(lacer.car);
         if (conflictInfo.hitFlag)
         {
             lacer.car->ConflictProcess(conflictInfo);

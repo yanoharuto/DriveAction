@@ -13,26 +13,26 @@ struct CircuitData
 /// <summary>
 /// プレイヤーが何回ゴールしたか数える
 /// </summary>
-class Goal final:
+class CheckPoint final:
     public Object
 {
 public:
-    Goal();
+    CheckPoint();
     /// <summary>
    /// コース情報得するよ
    /// </summary>
    /// <param name="roundNum">何週走るか</param>
    /// <param name="fileName">どのファイルから所得するか</param>
    /// <returns></returns>
-    Goal(const int roundNum,const TCHAR* fileName);
+    CheckPoint(const int roundNum,const TCHAR* fileName);
     /// <summary>
     /// コース情報複製用
     /// </summary>
     /// <param name="checkPointParam"></param>
     /// <returns></returns>
-    Goal(const CircuitData circuitData);
+    CheckPoint(const CircuitData circuitData);
     //デストラクタ
-    ~Goal();
+    ~CheckPoint();
     /// <summary>
     /// プレイヤーがぶつかったら次の行き先を設定する
     /// </summary>

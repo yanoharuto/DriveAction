@@ -2,7 +2,7 @@
 #include <List>
 #include "HitChecker.h"
 class Object;
-class Goal;
+class CheckPoint;
 class Car;
 class CircuitTrack;
 /// <summary>
@@ -24,7 +24,7 @@ public:
     /// </summary>
     /// <param name="lacerNum">車乗りの数だけリストに追加するよ</param>
     /// <returns></returns>
-    LacerManager(int lacerNum);
+    LacerManager(int cpuNum);
     //デストラクタ
     ~LacerManager();
     /// <summary>
@@ -60,7 +60,7 @@ private:
     struct Lacer
     {
         int rank;
-        Goal* goal;
+        CheckPoint* checkPoint;
         Car* car;
     };
 

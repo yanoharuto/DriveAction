@@ -30,7 +30,7 @@ public:
     /// </summary>
     /// <param name="Actor">ぶつかってるか調べたいもの</param>
     /// <returns>ぶつかってたらTrue</returns>
-    ArgumentConflictInfo GetGurdHitFlag(Car* car) const;
+    ArgumentConflictInfo GetCourceConflictInfo(Car* car) const;
     /// <summary>
     /// コースのモデルを描画
     /// </summary>

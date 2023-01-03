@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "Car.h"
 #include "Utility.h"
+
 UIManager::UIManager()
 {
 }
@@ -16,7 +17,7 @@ int UIManager::AddUI(UI* ui)
     return uiVec.size();
 }
 
-void UIManager::DrawStringUI(int uiNum)
+void UIManager::DrawUI()
 {
     for (int i = 0; i < uiVec.size(); i++)
     {

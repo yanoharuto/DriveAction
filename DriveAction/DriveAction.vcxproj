@@ -159,13 +159,14 @@
     <ClCompile Include="LacerManager.cpp" />
     <ClCompile Include="PlaySceeneFlow.cpp" />
     <ClCompile Include="StageManager.cpp" />
+    <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="StringUI.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Wheels.cpp" />
     <ClCompile Include="HitChecker.cpp" />
     <ClCompile Include="PlaySceneCamera.cpp" />
     <ClCompile Include="CircuitTrack.cpp" />
-    <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="CheckPoint.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="SkyDome.cpp" />
@@ -185,8 +186,9 @@
     <ClInclude Include="ImgUI.h" />
     <ClInclude Include="LacerManager.h" />
     <ClInclude Include="PlaySceeneFlow.h" />
-    <ClInclude Include="PlaySceeneFlowEnum.h" />
+    <ClInclude Include="PlaySceeneProgressEnum.h" />
     <ClInclude Include="StageManager.h" />
+    <ClInclude Include="StageSelect.h" />
     <ClInclude Include="StringUI.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UIDataStruct.h" />
@@ -196,7 +198,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="PlaySceneCamera.h" />
     <ClInclude Include="CircuitTrack.h" />
-    <ClInclude Include="Goal.h" />
+    <ClInclude Include="CheckPoint.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="SkyDome.h" />

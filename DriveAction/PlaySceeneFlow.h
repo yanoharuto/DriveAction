@@ -1,20 +1,23 @@
 #pragma once
-#include "PlaySceeneFlowEnum.h"
+#include "PlaySceeneProgressEnum.h"
 #include "UIManager.h"
 #include "LacerManager.h"
 #include "Timer.h"
 #include "PlaySceneCamera.h"
+#include "StageManager.h"
 class PlaySceeneFlow
 {
 public:
     PlaySceeneFlow();
     ~PlaySceeneFlow();
-    PlaySceeneFlowMode Update();
+    PlaySceeneProgress Update();
     void Draw();
 private:
     UIManager* uiManager;
     LacerManager* lacerManager;
-    PlaySceeneFlowMode nowMode;
+    StageManager* stageManager;
     Timer* timer;
     PlaySceneCamera* camera;
+
+    PlaySceeneProgress nowProgress;
 };

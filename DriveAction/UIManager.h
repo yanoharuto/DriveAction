@@ -8,10 +8,9 @@ public:
     UIManager();
     ~UIManager();
     int AddUI(UI* ui);
-    void DrawStringUI(int uiNum);
+    void DrawUI();
     void DeleteArgumentUI(int uiNum);
     void DeleteAllUI();
 private:
     std::vector<UI*> uiVec;
 };
-

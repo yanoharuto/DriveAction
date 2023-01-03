@@ -1,11 +1,11 @@
-#include "Goal.h"
+#include "CheckPoint.h"
 #include "DestinationLoader.h"
 
 /// <summary>
 /// デフォルトコンストラクタ
 /// </summary>
 /// <returns></returns>
-Goal::Goal()
+CheckPoint::CheckPoint()
 {
     direction = {};
     cPParam.goalRoundNum = 0;
@@ -17,10 +17,10 @@ Goal::Goal()
 /// <param name="roundNum">何週走るか</param>
 /// <param name="fileName">どのファイルから所得するか</param>
 /// <returns></returns>
-Goal::Goal(const int roundNum, const TCHAR* fileName)
+CheckPoint::CheckPoint(const int roundNum, const TCHAR* fileName)
 {
     DestinationLoader loader;
-    loader.LoadDestination(&cPParam.positionVec,&cPParam.directionVec, fileName);
+    loader.LoadCheckPoint(&cPParam.positionVec,&cPParam.directionVec, fileName);
     cPParam.goalRoundNum = roundNum;
     InitMember();
 }
@@ -29,13 +29,13 @@ Goal::Goal(const int roundNum, const TCHAR* fileName)
 /// </summary>
 /// <param name="checkPointParam"></param>
 /// <returns></returns>
-Goal::Goal(const CircuitData circuitData)
+CheckPoint::CheckPoint(const CircuitData circuitData)
 {
     cPParam = circuitData;
     InitMember();
 }
 
-Goal::~Goal()
+CheckPoint::~CheckPoint()
 {
 }
 
@@ -43,7 +43,7 @@ Goal::~Goal()
 /// プレイヤーがぶつかったら次の行き先を設定する
 /// </summary>
 /// <param name="car"></param>
-void Goal::Update(Car* car)
+void CheckPoint::Update(Car* car)
 {
     if (car->GetTag() == ObjectTag::car)
     {
@@ -71,14 +71,14 @@ void Goal::Update(Car* car)
 /// 他のCPUにもコピーさせるために渡す
 /// </summary>
 /// <returns></returns>
-CircuitData Goal::GetCheckPoint() const 
+CircuitData CheckPoint::GetCheckPoint() const 
 {
     return cPParam;
 };
 /// <summary>
 /// 初期化処理
 /// </summary>
-void Goal::InitMember()
+void CheckPoint::InitMember()
 {
     tag = ObjectTag::goal;
     position = cPParam.positionVec.front();

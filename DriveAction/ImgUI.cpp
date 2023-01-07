@@ -17,5 +17,5 @@ ImgUI::~ImgUI()
 
 void ImgUI::DrawUI()
 {
-    DrawRotaGraph(imgData.x, imgData.y, 0, 0, imgData.dataHandle, false, 0, 0);
+    DrawRotaGraph(imgData.x, imgData.y, 1, 0, imgData.dataHandle, false, 0, 0);
 }

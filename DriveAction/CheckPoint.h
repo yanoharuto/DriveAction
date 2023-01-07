@@ -1,15 +1,8 @@
 #pragma once
 #include "Car.h"
 #include <vector>
-struct CircuitData
-{
-    //車が次に行くべき行き先が書いてある
-    std::vector<VECTOR> positionVec;
-    //逆走してゴールしないように方向も乗せる
-    std::vector<VECTOR> directionVec;
-    //何週したらゴールなのか
-    int goalRoundNum = 0;
-};
+#include "ArgumentObjInfoStruct.h"
+#include "CircuitDataStruct.h"
 /// <summary>
 /// プレイヤーが何回ゴールしたか数える
 /// </summary>
@@ -24,7 +17,7 @@ public:
    /// <param name="roundNum">何週走るか</param>
    /// <param name="fileName">どのファイルから所得するか</param>
    /// <returns></returns>
-    CheckPoint(const int roundNum,const TCHAR* fileName);
+    CheckPoint(const TCHAR* fileName);
     /// <summary>
     /// コース情報複製用
     /// </summary>
@@ -36,27 +29,42 @@ public:
     /// <summary>
     /// プレイヤーがぶつかったら次の行き先を設定する
     /// </summary>
-    /// <param name="car"></param>
-    void Update(Car* car);
+    /// <param name="carInfo">ぶつかったか調べる車</param>
+    void Update(const ArgumentConflictInfo carInfo);
     /// <summary>
     /// 他のCPUにもコピーさせるために渡す
     /// </summary>
     /// <returns></returns>
     CircuitData GetCheckPoint() const;
+    /// <summary>
+    /// チェックポイント通過回数を返す
+    /// </summary>
+    /// <returns>チェックポイント通過回数</returns>
+    int GetTransitCheckPointCout();
+    /// <summary>
+    /// チェックポイントまでの差を出す
+    /// </summary>
+    /// <returns>チェックポイントまでの差</returns>
+    int GetCheckPointDistance();
 private:
+
     /// <summary>
     /// 初期化処理
     /// </summary>
     void InitMember();
+    //サーキットのデータ
     CircuitData cPParam;
     //positionからこれだけ近かったらゴール
     const float goalRadius = 80.0f;
     //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
     const float dirJugeLine = 0.8f;
-    //ゴールされた回数
-    int goalNum = 0;
+    //チェックポイントのベクターを調べる回数
+    const int vectorExamineCount = 5;
+    //通過した回数
+    int transitCheckPointCount = 0;
     //ベクター配列のサイズ
     int vecSize = 0;
-
+    //チェックポイントまでの差
+    int checkPointDistance;
 };
 

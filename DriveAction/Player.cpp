@@ -9,10 +9,13 @@
 /// <returns></returns>
 Player::Player()
 {
-	modelHandle = MV1LoadModel("data/model/Player/WhiteCar.mv1");
-	position = firstPos;
-	direction = firstDir;
-	tag = ObjectTag::car;
+	Init();
+}
+
+Player::Player(VECTOR firstPos, VECTOR firstDir)
+	:Car(firstPos,firstDir)
+{
+	Init();
 }
 
 /// <summary>
@@ -30,6 +33,7 @@ Player::~Player()
 /// </summary>
 void Player::Update(const float deltaTime, const bool outsideHitFlag)
 {
+
 	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
 
 	UpdateVelocity(deltaTime, GetAccelVec(inputKey, outsideHitFlag));
@@ -51,6 +55,10 @@ void Player::Update(const float deltaTime, const bool outsideHitFlag)
 	}
 	// ƒ^ƒCƒ„‚Ìˆ—
 	wheels->WheelUpdate(info);
+#ifdef _DEBUG
+	printfDx("%f,%f\n", position.x,position.z);
+	printfDx("%f,%f\n", direction.x,direction.z);
+#endif
 }
 /// <summary>
 /// “ü—Íî•ñ‚©‚çi‚ŞŒü‚«‚Æ‘¬‚³‚ğŠ“¾
@@ -93,4 +101,9 @@ VECTOR Player::GetAccelVec(const int inputKey,const bool outsideHitFlag)
 	}
 	accelVec = VScale(direction, accelPower);
 	return accelVec;
+}
+
+void Player::Init()
+{
+	modelHandle = MV1LoadModel("data/model/Player/WhiteCar.mv1");
 }

@@ -12,6 +12,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	Player();
+	Player(VECTOR firstPos,VECTOR firstDir);
 	///デストラクタ
     ~Player();
     /// <summary>
@@ -27,8 +28,6 @@ private:
 	/// <param name="outsideHitFlag">コースの外側にぶつかったかどうか</param>
 	/// <returns>次の更新までに進む向きと速さ</returns>
 	VECTOR GetAccelVec(const int inputKey,const bool outsideHitFlag);
-	//todo コンストラクタで引数で変更できるようにする
-	VECTOR firstPos = { -300.0f,-0.0f,-83.0f };//レース開始位置
-	VECTOR firstDir = { -0.9f,0,-0.02f };//初期向き
+	void Init();
 };
 

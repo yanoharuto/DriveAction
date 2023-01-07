@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include <string>
 class Car;
 /// <summary>
 /// ÉRÅ[ÉX
@@ -11,8 +12,10 @@ public:
     /// <summary>
     /// èâä˙âª
     /// </summary>
+    /// <param name="courceModelAdress"></param>
+    /// <param name="outsideModelAdress"></param>
     /// <returns></returns>
-    CircuitTrack(const float carRadius);
+    CircuitTrack(const TCHAR* courceModelAdress,const TCHAR* outsideModelAdress);
     CircuitTrack() {
         courceModelHandle = -1;
         outsideModelHandle = -1;

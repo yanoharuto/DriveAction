@@ -1,24 +1,6 @@
 #pragma once
 #include "DxLib.h"
-enum class ObjectTag
-{
-    car,
-    enemy,
-    enemyAttack,
-    obstacle,
-    stage,
-    goal
-};
-/// <summary>
-/// “–‚½‚è”»’è‚Åg‚¤ˆø”‚É‚µ‚Ä“n‚µ‚½‚¢î•ñ
-/// </summary>
-struct ArgumentConflictInfo
-{
-    bool hitFlag = false;
-    ObjectTag tag = ObjectTag::obstacle;
-    VECTOR pos = {};
-    float radius = 0;
-};
+#include "ObjectTagEnum.h"
 class Object
 {
 public:

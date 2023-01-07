@@ -4,26 +4,31 @@
 #include "Player.h"
 #include "Utility.h"
 #include "CircuitTrack.h"
-
+#include "StageSelect.h"
+#include "StageDataAddressStruct.h"
+#include "VECTOR3Loader.h"
 /// <summary>
 /// 初期化
 /// </summary>
 /// <param name="lacerNum">車乗りの数だけリストに追加するよ</param>
 /// <returns></returns>
-LacerManager::LacerManager(int cpuNum)
+LacerManager::LacerManager(int cpuNum,std::string chekPointAddress)
 {
+    //プレイヤーの初期化処理
     Lacer lacer{};
-    lacer.rank = cpuNum + 1;
-    lacer.checkPoint = new CheckPoint(1, "goalStatus.txt");
+    lacer.rank = 0;
+    lacer.checkPoint = new CheckPoint(chekPointAddress.c_str());
     lacer.car = new Player();
     lacerList.push_back(lacer);
+    //他の車の初期化処理
+    ArgumentConflictInfo conflictInfo;
     for (int i = cpuNum; i > 0; i--)
     {
-        lacer.car = new CPUCar();
         lacer.checkPoint = new CheckPoint(lacerList.front().checkPoint->GetCheckPoint());
-        lacer.rank = i;
+        lacer.car = new CPUCar( );
+        lacer.rank = 0;
         lacerList.push_back(lacer);
-        ArgumentConflictInfo conflictInfo = MakeArgumentInfo(lacer.checkPoint);
+        conflictInfo.SetObjInfo(false,lacer.checkPoint);
         lacer.car->ConflictProcess(conflictInfo);
     }
 }
@@ -43,27 +48,9 @@ LacerManager::~LacerManager()
 /// <param name="circuit">走るコース</param>
 void LacerManager::Update(const float deltaTime,CircuitTrack* circuit)
 {
-    std::list<Lacer>::iterator lacerIte;
-    Lacer lacer;
-    ArgumentConflictInfo conflictInfo;
-    for(lacerIte = lacerList.begin();lacerIte!=lacerList.end();lacerIte++)
-    {
-        lacer = *lacerIte;
-        //車の更新　コース外に出たかどうか第二引数で調べる
-        lacer.car->Update(deltaTime, circuit->GetOutsideHitFlag(lacer.car));
-        if (hitChecker.HitCheck(lacer.checkPoint,lacer.car))
-        {
-            lacer.checkPoint->Update(lacer.car);
-
-            conflictInfo = MakeArgumentInfo(lacer.checkPoint);
-            lacer.car->ConflictProcess(conflictInfo);
-        }
-        conflictInfo = circuit->GetCourceConflictInfo(lacer.car);
-        if (conflictInfo.hitFlag)
-        {
-            lacer.car->ConflictProcess(conflictInfo);
-        }
-    }
+    void(LacerManager::*function)(Lacer, float, CircuitTrack*);
+    function = &LacerManager::LacerUpdateProcces;
+    LacerLoop(function,deltaTime,circuit);
 }
 /// <summary>
 /// 引数の物体にぶつかったか調べる
@@ -71,7 +58,8 @@ void LacerManager::Update(const float deltaTime,CircuitTrack* circuit)
 /// <param name="obj">調べたい物体</param>
 void LacerManager::ArgumentConflictProcess(Object* obj)
 {
-    ArgumentConflictInfo conflictInfo = MakeArgumentInfo(obj);
+    ArgumentConflictInfo conflictInfo;
+    conflictInfo.SetObjInfo(false,obj);
     std::list<Lacer>::iterator lacerIte;
     Lacer lacer;
     for (lacerIte = lacerList.begin(); lacerIte != lacerList.end(); lacerIte++)
@@ -101,6 +89,45 @@ void LacerManager::LacerConflictProcces()
         ArgumentConflictProcess(lacer.car);
     }
 }
+
+void LacerManager::LacerUpdateProcces(Lacer lacer, float deltaTime,CircuitTrack* circuit)
+{
+    ArgumentConflictInfo conflictInfo;
+    //車の更新　コース外に出たかどうか第二引数で調べる
+    lacer.car->Update(deltaTime, circuit->GetOutsideHitFlag(lacer.car));
+    //チェックポイントの更新の更新
+    conflictInfo.SetObjInfo(true, lacer.car);
+    lacer.checkPoint->Update(conflictInfo);
+    //車に次のチェックポイントが何処か調べる
+    if (hitChecker.HitCheck(lacer.car, lacer.checkPoint))
+    {
+        conflictInfo.SetObjInfo(true, lacer.checkPoint);
+        lacer.car->ConflictProcess(conflictInfo);
+    }
+    //コースの塀とかにぶつかったか調べる
+    conflictInfo = circuit->GetCourceConflictInfo(lacer.car);
+    if (conflictInfo.hitFlag)
+    {
+        //ぶつかってたら衝突処理
+        lacer.car->ConflictProcess(conflictInfo);
+    }
+}
+
+void LacerManager::LacerLoop(void(LacerManager::* function)(Lacer))
+{
+    std::list<Lacer>::iterator lacerIte;
+    ArgumentConflictInfo conflictInfo;
+    for (lacerIte = lacerList.begin(); lacerIte != lacerList.end(); lacerIte++)
+    {
+       (this->(*function))(*lacerIte);
+    }
+}
+
+void LacerManager::LacerLoop(void(*function)(Lacer, float, CircuitTrack*), float deltaTime, CircuitTrack* circuit)
+{
+}
+
+
 /// <summary>
   /// 描画
   /// </summary>
@@ -123,13 +150,4 @@ Object* LacerManager::GetPlayer() const
 {
     return lacerList.front().car;
 }
-/// <summary>
-  /// 引数のオブジェクトの当たり判定情報所得
-  /// </summary>
-  /// <param name="obj">当たり判定を調べたいオブジェクト</param>
-  /// <returns>引数として渡したい情報</returns>
 
-ArgumentConflictInfo LacerManager::MakeArgumentInfo(Object* obj)
-{
-    return { true ,obj->GetTag(),obj->GetPos(),obj->GetRadius() };
-}

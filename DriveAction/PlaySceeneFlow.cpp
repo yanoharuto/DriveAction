@@ -5,11 +5,13 @@
 PlaySceeneFlow::PlaySceeneFlow()
 {
 	nowProgress = PlaySceeneProgress::start;
-	lacerManager = new LacerManager(4);
+	stageManager = new StageManager();
+	lacerManager = new LacerManager(4,stageManager->GetCheckPoint());
 	camera = new PlaySceneCamera();
 	timer = new Timer();
 	uiManager = new UIManager();
-	stageManager = new StageManager(lacerManager->GetPlayer()->GetRadius());
+
+
 }
 
 PlaySceeneFlow::~PlaySceeneFlow()
@@ -37,6 +39,7 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		camera->Update(lacerManager->GetPlayer());
 		break;
 	case PlaySceeneProgress::playerGoal:
+
 		break;
 	case PlaySceeneProgress::end:
 		break;

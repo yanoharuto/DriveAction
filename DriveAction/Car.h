@@ -11,16 +11,33 @@ class Car :public Actor
 {
 public:
 	Car();
+	Car(VECTOR firstPos,VECTOR firstDir);
     virtual ~Car();
 	/// <summary>
     /// 更新（移動処理）
     /// </summary>
 	virtual void Update(const float deltaTime, const bool outsideHitFlag) {};
+	/// <summary>
+	/// 衝突処理
+	/// </summary>
+	/// <param name="conflictInfo">ぶつかったかオブジェクトの情報</param>
 	void ConflictProcess(const ArgumentConflictInfo conflictInfo) override;
+	/// <summary>
+	/// 描画
+	/// </summary>
 	virtual void Draw();
 protected:
+	/// <summary>
+	/// 車がぶつかった時の関数
+	/// </summary>
+	/// <param name="conflictObjPos">ぶつかったオブジェクトの位置</param>
+	/// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
 	void ConflictReaction(const VECTOR conflictObjPos, const float conflictObjRad);
-
+	/// <summary>
+	/// 車が攻撃を受けたら関数
+	/// </summary>
+	/// <param name="conflictObjPos">ぶつかったオブジェクトの位置</param>
+	/// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
 	void DamageReaction(const VECTOR conflictObjPos, const float conflictObjRad);
 	/// <summary>
 	/// 進む方向と速さを更新する

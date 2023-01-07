@@ -5,23 +5,19 @@
 /// </summary>
 /// <param name="player">プレイヤーの幅を取る</param>
 /// <returns></returns>
-CircuitTrack::CircuitTrack(const float carRadius)
+
+CircuitTrack::CircuitTrack(const TCHAR* courceModelAdress, const TCHAR* outsideModelAdress)
 {
-    courceModelHandle = MV1LoadModel("data/model/Circuit/CircuitCource.mv1");
-    outsideModelHandle = MV1LoadModel("data/model/Circuit/CircuitOutside.mv1");
+    courceModelHandle = MV1LoadModel(courceModelAdress);
+    outsideModelHandle = MV1LoadModel(outsideModelAdress);
     //若干コースの外側を下げる
     MV1SetPosition(outsideModelHandle, outsideModelPosition);
-
     VECTOR scale = VGet(courceModelScaleValue, courceModelScaleValue, courceModelScaleValue);
     MV1SetScale(courceModelHandle, scale);
     scale = VGet(outsideModelScaleValue, outsideModelScaleValue, outsideModelScaleValue);
     MV1SetScale(outsideModelHandle, scale);
     radius = gurdRadius;
     tag = ObjectTag::stage;
-    int playerRadius = static_cast<int>(carRadius);
-    playerRadius *= playerRadius;
-    //コリジョンを作る
-    MV1SetupCollInfo(outsideModelHandle, -1,playerRadius, setupYDivNum ,playerRadius,-1);
 }
 /// <summary>
 /// modelの解放　コリジョンも消える

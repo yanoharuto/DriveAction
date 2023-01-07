@@ -8,11 +8,12 @@
 /// <returns></returns>
 CPUCar::CPUCar()
 {
-    modelHandle = MV1LoadModel("data/model/Player/RedCar.mv1");
-    tag = ObjectTag::car;
-    position = firstPos;
-    direction = firstDir;
-    destinationPos = {};
+    Init();
+}
+CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir)
+    :Car(firstPos,firstDir)
+{
+    Init();
 }
 /// <summary>
 /// modelとタイヤの後始末
@@ -30,16 +31,16 @@ CPUCar::~CPUCar()
 /// <param name="outsideHitFlag">コース外に出たか</param>
 void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
 {
-    
     //車の向いてる方向と目的地までの方向の外積を出して
     //右に曲がるか左に曲がるか調べる
-    float destinationDir = VCross(VNorm(direction),VNorm(VSub(destinationPos, position))).y;
+
+    float destinationDir = VCross(VNorm(direction), VNorm(VSub(destinationPos,position))).y;
     UpdateVelocity(deltaTime, GetAccelVec(destinationDir,outsideHitFlag));
     UpdateMV1Pos();
     ModelSetMatrix();
     //引数にして渡したい情報達
     ArgumentCarInfo info = { MV1GetMatrix(modelHandle),direction,VSize(velocity) };
-    if (fabsf(destinationDir)>turnProccesLine)
+    if (fabsf(destinationDir) > turnProccesLine)
     {
         info.handleDir = destinationDir > 0 ? HandleDirection::right : HandleDirection::left;
     }
@@ -49,8 +50,8 @@ void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
     }
     wheels->WheelUpdate(info);
 #ifdef _DEBUG
-    printfDx("%f,%f\n", position.x, position.z);
-    printfDx("%f,%f\n", destinationPos.x, destinationPos.z);
+
+    //printfDx("%f,%f\n", destinationPos.x, destinationPos.z);
 #endif
 }
 
@@ -82,4 +83,9 @@ VECTOR CPUCar::GetAccelVec(const float dir,const bool outsideHitFlag)
     }
     accelVec = VScale(direction, accelPower);
     return accelVec;
+}
+
+void CPUCar::Init()
+{
+    modelHandle = MV1LoadModel("data/model/Player/RedCar.mv1");
 }

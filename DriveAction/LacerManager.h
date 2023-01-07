@@ -1,5 +1,6 @@
 #pragma once
 #include <List>
+#include <string>
 #include "HitChecker.h"
 class Object;
 class CheckPoint;
@@ -10,7 +11,15 @@ class CircuitTrack;
 /// Actorに定義
 /// </summary>
 struct  ArgumentConflictInfo;
-
+/// <summary>
+/// 走ってる車の情報
+/// </summary>
+struct Lacer
+{
+    int rank;
+    CheckPoint* checkPoint;
+    Car* car;
+};
 /// <summary>
 /// 車乗りのマネージャー
 /// </summary>
@@ -24,7 +33,7 @@ public:
     /// </summary>
     /// <param name="lacerNum">車乗りの数だけリストに追加するよ</param>
     /// <returns></returns>
-    LacerManager(int cpuNum);
+    LacerManager(int cpuNum,std::string chcekPointAddress);
     //デストラクタ
     ~LacerManager();
     /// <summary>
@@ -53,24 +62,12 @@ public:
     /// 車乗りたち同士でぶつかってないか調べる
     /// </summary>
     void LacerConflictProcces();
-private:
-    /// <summary>
-    /// 走ってる車の情報
-    /// </summary>
-    struct Lacer
-    {
-        int rank;
-        CheckPoint* checkPoint;
-        Car* car;
-    };
 
- 
-    /// <summary>
-    /// 引数のオブジェクトの当たり判定情報所得
-    /// </summary>
-    /// <param name="obj">当たり判定を調べたいオブジェクト</param>
-    /// <returns>引数として渡したい情報</returns>
-    ArgumentConflictInfo MakeArgumentInfo(Object* obj);
+private:
+    void LacerUpdateProcces(Lacer ,float ,CircuitTrack* );
+    void LacerLoop(void(LacerManager::*function)(Lacer));
+    void LacerLoop(void(LacerManager::*function)(Lacer,float,CircuitTrack*), float deltaTime, CircuitTrack* circuit);
+
     //車乗り達のリスト
     std::list<Lacer> lacerList;
     //当たってるかどうか調べる

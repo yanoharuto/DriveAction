@@ -1,2 +1,0 @@
-data/model/Circuit/CircuitCource.mv1
-data/model/Circuit/CircuitOutside.mv1

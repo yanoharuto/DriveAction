@@ -1,18 +1,18 @@
-#include "CircuitDataLoader.h"
+#include "DataAddresLoader.h"
 #include <iostream>
 #include <fstream>
-CircuitDataLoader::CircuitDataLoader()
+DataAddressLoader::DataAddressLoader()
 {
 }
 
-CircuitDataLoader::~CircuitDataLoader()
+DataAddressLoader::~DataAddressLoader()
 {
 }
 
-void CircuitDataLoader::GetString(std::list<std::string>* stringList, std::string fileName)
+void DataAddressLoader::GetString(std::list<std::string>* stringList, std::string fileName)
 {
     std::ifstream ifs(fileName);
-        if (!ifs)
+    if (!ifs)
     {
         std::cerr << "“Ç‚Ýž‚Ý‚ÉŽ¸”s" << std::endl;
         std::exit(1);

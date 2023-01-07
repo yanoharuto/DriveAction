@@ -1,10 +1,12 @@
 #include "StageSelect.h"
-#include "CircuitDataLoader.h"
+#include "DataAddresLoader.h"
+static std::string fileAddres;
 StageSelect::StageSelect()
 {
-    class CircuitDataLoader dataLoader;
-    dataLoader.GetString(&stageFileNameList,"AllStageFileName.txt");
+    DataAddressLoader dataLoader;
+    dataLoader.GetString(&stageFileNameList,allStageAddresFile);
     fileNameIte = stageFileNameList.begin();
+    fileAddres = *fileNameIte;
 }
 
 StageSelect::~StageSelect()
@@ -13,10 +15,29 @@ StageSelect::~StageSelect()
 
 void StageSelect::ChangeStage(bool up)
 {
-    fileNameIte++;
+    if (up)
+    {
+        fileNameIte++;
+        if (fileNameIte == stageFileNameList.end())
+        {
+            fileNameIte = stageFileNameList.begin();
+        }
+    }
+    else
+    {
+        if (fileNameIte == stageFileNameList.begin())
+        {
+            fileNameIte = stageFileNameList.end();
+        }
+        fileNameIte--;
+    }
+    fileAddres = *fileNameIte;
 }
-
-void StageSelect::LoadeStage()
+/// <summary>
+/// どのステージを選んでいるか
+/// </summary>
+/// <returns>選ばれているステージのアドレスを返す</returns>
+std::string StageSelect::GetLoadeStageName()
 {
-
+    return fileAddres;
 }

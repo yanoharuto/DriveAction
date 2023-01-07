@@ -1,19 +1,25 @@
 #include "Car.h"
 #include "Wheels.h"
 #include "Utility.h"
+#include "ArgumentObjInfoStruct.h"
 Car::Car()
 {
 	tag = ObjectTag::car;
 	radius = radiusValue;
-	// ３Dモデルのポジション設定
-	MV1SetPosition(modelHandle, position);
-	// 向きに合わせて回転.
-	MV1SetRotationZYAxis(modelHandle, direction, VGet(0.0f, 1.0f, 0.0f), 0.0f);
-	// モデルに向いてほしい方向に回転.
-	MATRIX tmpMat = MV1GetMatrix(modelHandle);
-	MATRIX rotYMat = MGetRotY(180.0f * rage);
-	tmpMat = MMult(tmpMat, rotYMat);
-	MV1SetRotationMatrix(modelHandle, tmpMat);
+	UpdateMV1Pos();
+	ModelSetMatrix();
+	destinationPos = {};
+	wheels = new Wheels(ArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
+}
+
+Car::Car(VECTOR firstPos, VECTOR firstDir)
+{
+	position = firstPos;
+	direction = firstDir;
+	tag = ObjectTag::car;
+	radius = radiusValue;
+	UpdateMV1Pos();
+	ModelSetMatrix();
 	destinationPos = {};
 	wheels = new Wheels(ArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 }

@@ -2,11 +2,11 @@
 #include <vector>
 #include<string>
 #include "DxLib.h"
-class DestinationLoader
+class VECTOR3Loader
 {
 public:
-    DestinationLoader();
-    ~DestinationLoader();
+    VECTOR3Loader();
+    ~VECTOR3Loader();
     void LoadCheckPoint(std::vector<VECTOR>* posVec, std::vector<VECTOR>* dirVec, std::string fileName);
 };
 

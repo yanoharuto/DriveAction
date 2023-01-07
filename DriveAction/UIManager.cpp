@@ -9,12 +9,18 @@ UIManager::UIManager()
 
 UIManager::~UIManager()
 {
+    DeleteAllUI();
 }
 
 int UIManager::AddUI(UI* ui)
 {
     uiVec.push_back(ui);
-    return uiVec.size();
+    return uiVec.size()-1;
+}
+
+void UIManager::Update(int index, std::string updateString)
+{
+    uiVec[index]->Update(updateString);
 }
 
 void UIManager::DrawUI()

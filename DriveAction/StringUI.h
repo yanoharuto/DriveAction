@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "UIDataStruct.h"
 #include "UI.h"
 struct UIStringData;
@@ -8,9 +9,12 @@ public:
     StringUI();
     StringUI(unsigned int colorValue, UIData data);
     ~StringUI();
-    void Draw();
+    void DrawUI()override;
+    void Update(std::string updateString) override;
 private:
     UIData stringData;
     unsigned int color;
+    std::string string;
+
 };
 

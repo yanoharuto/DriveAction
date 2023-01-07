@@ -1,6 +1,6 @@
 #include "CheckPoint.h"
-#include "DestinationLoader.h"
-
+#include "VECTOR3Loader.h"
+#include "HitChecker.h"
 /// <summary>
 /// デフォルトコンストラクタ
 /// </summary>
@@ -8,7 +8,6 @@
 CheckPoint::CheckPoint()
 {
     direction = {};
-    cPParam.goalRoundNum = 0;
     vecSize = 0;
 }
 /// <summary>
@@ -17,11 +16,10 @@ CheckPoint::CheckPoint()
 /// <param name="roundNum">何週走るか</param>
 /// <param name="fileName">どのファイルから所得するか</param>
 /// <returns></returns>
-CheckPoint::CheckPoint(const int roundNum, const TCHAR* fileName)
+CheckPoint::CheckPoint(const TCHAR* fileName)
 {
-    DestinationLoader loader;
+    VECTOR3Loader loader;
     loader.LoadCheckPoint(&cPParam.positionVec,&cPParam.directionVec, fileName);
-    cPParam.goalRoundNum = roundNum;
     InitMember();
 }
 /// <summary>
@@ -42,29 +40,33 @@ CheckPoint::~CheckPoint()
 /// <summary>
 /// プレイヤーがぶつかったら次の行き先を設定する
 /// </summary>
-/// <param name="car"></param>
-void CheckPoint::Update(Car* car)
-{
-    if (car->GetTag() == ObjectTag::car)
+/// <param name="carInfo">ぶつかったか調べる車</param>
+void CheckPoint::Update(ArgumentConflictInfo carInfo)
+{  
+    HitChecker checker;
+    for (int i = 0; i < vectorExamineCount; i++)
     {
-        float theta = VDot(car->GetDir(), direction);
-        //ぶつかった相手が逆走してなかったら次のチェックポイントに行く
-        if (theta > dirJugeLine)
+        //車がベクターの地点を通過してないか調べる
+        if (checker.HitCheck(this, carInfo))
         {
-            goalNum++;
-            //チェックポイント通過が一週分ならお役御免
-            if (goalNum / vecSize == cPParam.goalRoundNum)
+            float theta = VDot(carInfo.dir, direction);
+            //ぶつかった相手が逆走してなかったら次のチェックポイントに行く
+            if (theta > dirJugeLine)
             {
-                aliveFlag = false;
+                transitCheckPointCount += i + 1;
+                //ゴールより先に行ったら最初のチェックポイントを取る
+                if (transitCheckPointCount < cPParam.positionVec.size())
+                {
+                    transitCheckPointCount = 0;
+                }
+                position = cPParam.positionVec[transitCheckPointCount];
+                direction = cPParam.directionVec[transitCheckPointCount];
             }
-            else
-            {
-                //それ以外なら位置更新
-                position = cPParam.positionVec[goalNum % vecSize];
-                direction = cPParam.directionVec[goalNum % vecSize];
-            }
+            break;
         }
     }
+    //最後に目標地点までどのぐらい離れてるか返す
+    checkPointDistance = VSize(VSub(position,carInfo.pos));
 }
 
 /// <summary>
@@ -74,7 +76,16 @@ void CheckPoint::Update(Car* car)
 CircuitData CheckPoint::GetCheckPoint() const 
 {
     return cPParam;
-};
+}
+int CheckPoint::GetTransitCheckPointCout()
+{
+    return transitCheckPointCount;
+}
+int CheckPoint::GetCheckPointDistance()
+{
+    return checkPointDistance;
+}
+;
 /// <summary>
 /// 初期化処理
 /// </summary>

@@ -1,16 +1,16 @@
-#include "DestinationLoader.h"
+#include "VECTOR3Loader.h"
 #include <iostream>
 #include <fstream>
 #include <string>
-DestinationLoader::DestinationLoader()
+VECTOR3Loader::VECTOR3Loader()
 {
 }
 
-DestinationLoader::~DestinationLoader()
+VECTOR3Loader::~VECTOR3Loader()
 {
 }
 
-void DestinationLoader::LoadCheckPoint(std::vector<VECTOR>* posVec, std::vector<VECTOR>* dirVec, std::string fileName)
+void VECTOR3Loader::LoadCheckPoint(std::vector<VECTOR>* posVec, std::vector<VECTOR>* dirVec, std::string fileName)
 {
     std::ifstream ifs(fileName);
     if (!ifs)

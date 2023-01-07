@@ -8,6 +8,7 @@ class CPUCar :
 {
 public:
     CPUCar();
+    CPUCar(VECTOR firstPos,VECTOR firstDir);
     ~CPUCar();
     void Update(const float deltaTime,const bool outsideHitFlag)override;
     
@@ -19,8 +20,7 @@ private:
     /// <param name="outsideHitFlag">コース外にぶつかったか</param>
     /// <returns></returns>
     VECTOR GetAccelVec(const float dir,const bool outsideHitFlag);
-    VECTOR firstPos = { -300.0f,-0.0f,-83.0f };//レース開始位置
-    VECTOR firstDir = { -0.9f,0,-0.02f };//初期向き
-    const float turnProccesLine = 0.4f;//目的地に向かうときに曲がるか判断する
+    void Init();
+    const float turnProccesLine = 0.3f;//目的地に向かうときに曲がるか判断する
 };
 

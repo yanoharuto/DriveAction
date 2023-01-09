@@ -1,7 +1,7 @@
 #pragma once
 #include "StageSelect.h"
 #include "UIManager.h"
-
+#include "CourceDataLoader.h"
 class TitleSceeneFlow
 {
 public:
@@ -15,6 +15,7 @@ private:
     void InitStageString();
     StageSelect* stageSelect;
     UIManager* uiManager;
+    CourceDataLoader* courceDataLoader;
     UIData uiData;
     int uiIndex;
 };

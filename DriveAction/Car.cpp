@@ -117,5 +117,4 @@ void Car::ModelSetMatrix()
 	MATRIX rotYMat = MGetRotY(180.0f * rage);
 	tmpMat = MMult(tmpMat, rotYMat);
 	MV1SetRotationMatrix(modelHandle, tmpMat);
-
 }

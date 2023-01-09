@@ -11,13 +11,7 @@ class CheckPoint final:
 {
 public:
     CheckPoint();
-    /// <summary>
-   /// コース情報得するよ
-   /// </summary>
-   /// <param name="roundNum">何週走るか</param>
-   /// <param name="fileName">どのファイルから所得するか</param>
-   /// <returns></returns>
-    CheckPoint(const TCHAR* fileName);
+
     /// <summary>
     /// コース情報複製用
     /// </summary>
@@ -30,7 +24,7 @@ public:
     /// プレイヤーがぶつかったら次の行き先を設定する
     /// </summary>
     /// <param name="carInfo">ぶつかったか調べる車</param>
-    void Update(const ArgumentConflictInfo carInfo);
+    bool CheckPointUpdate(const ArgumentConflictInfo carInfo);
     /// <summary>
     /// 他のCPUにもコピーさせるために渡す
     /// </summary>
@@ -45,9 +39,16 @@ public:
     /// チェックポイントまでの差を出す
     /// </summary>
     /// <returns>チェックポイントまでの差</returns>
-    int GetCheckPointDistance();
+    float GetCheckPointDistance();
 private:
-
+    VECTOR GetVector (std::list<VECTOR>::iterator listIte,int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            listIte++;
+        }
+        return *listIte;
+    }
     /// <summary>
     /// 初期化処理
     /// </summary>
@@ -65,6 +66,6 @@ private:
     //ベクター配列のサイズ
     int vecSize = 0;
     //チェックポイントまでの差
-    int checkPointDistance;
+    float checkPointDistance;
 };
 

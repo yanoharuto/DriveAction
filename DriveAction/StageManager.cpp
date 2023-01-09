@@ -1,18 +1,15 @@
 #include "StageManager.h"
 #include "Utility.h"
-#include "StageSelect.h"
-#include "DataAddresLoader.h"
-#include "StageDataClassificationStruct.h"
+#include "CourceDataLoader.h"
 StageManager::StageManager()
 {
-    std::list<std::string> stageDataList;
-    StageDataAddress address;
-    DataAddressLoader circuitDataLoader;
-    circuitDataLoader.GetString(&stageDataList, StageSelect::GetLoadeStageName()+address.cStageAddress);
-    std::string courceAdress = *stageDataList.begin();//サーキットの走る部分
-    std::string outsideAdress = *++stageDataList.begin();//サーキットの外
-    checkPointAddres = StageSelect::GetLoadeStageName() + address.cGoalStatus;
-    circuit = new CircuitTrack(courceAdress.c_str(), outsideAdress.c_str());
+    circuit = new CircuitTrack();
+    skyDome = new SkyDome();
+}
+
+StageManager::StageManager(CourceDataLoader* courceDataLoader)
+{
+    circuit = new CircuitTrack(courceDataLoader->GetCourceAddress(),courceDataLoader->GetOutsideAddress());
     skyDome = new SkyDome();
 }
 

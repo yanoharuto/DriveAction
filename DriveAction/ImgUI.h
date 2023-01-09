@@ -5,10 +5,11 @@ class ImgUI:public UI
 {
 public:
     ImgUI();
-    ImgUI(UIData data);
+    ImgUI(float size,UIData data);
     ~ImgUI();
     void DrawUI() override;
 private:
     UIData imgData;
+    float rate;
 };
 

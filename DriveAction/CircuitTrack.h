@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "ArgumentObjInfoStruct.h"
 #include <string>
 class Car;
 /// <summary>
@@ -15,7 +16,7 @@ public:
     /// <param name="courceModelAdress"></param>
     /// <param name="outsideModelAdress"></param>
     /// <returns></returns>
-    CircuitTrack(const TCHAR* courceModelAdress,const TCHAR* outsideModelAdress);
+    CircuitTrack(std::string courceModelAdress,std::string outsideModelAdress);
     CircuitTrack() {
         courceModelHandle = -1;
         outsideModelHandle = -1;

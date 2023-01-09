@@ -2,6 +2,7 @@
 #include "CircuitTrack.h"
 #include "SkyDome.h"
 #include <list>
+class CourceDataLoader;
 /// <summary>
 /// コースのロードや描画とか当たり判定とかする
 /// </summary>
@@ -13,6 +14,7 @@ public:
     /// </summary>
     /// <returns></returns>
     StageManager();
+    StageManager(CourceDataLoader* courceDataLoader);
 
     ~StageManager();
 

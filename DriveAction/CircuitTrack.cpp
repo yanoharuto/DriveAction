@@ -5,11 +5,10 @@
 /// </summary>
 /// <param name="player">プレイヤーの幅を取る</param>
 /// <returns></returns>
-
-CircuitTrack::CircuitTrack(const TCHAR* courceModelAdress, const TCHAR* outsideModelAdress)
+CircuitTrack::CircuitTrack(std::string courceModelAdress, std::string outsideModelAdress)
 {
-    courceModelHandle = MV1LoadModel(courceModelAdress);
-    outsideModelHandle = MV1LoadModel(outsideModelAdress);
+    courceModelHandle = MV1LoadModel(courceModelAdress.c_str());
+    outsideModelHandle = MV1LoadModel(outsideModelAdress.c_str());
     //若干コースの外側を下げる
     MV1SetPosition(outsideModelHandle, outsideModelPosition);
     VECTOR scale = VGet(courceModelScaleValue, courceModelScaleValue, courceModelScaleValue);

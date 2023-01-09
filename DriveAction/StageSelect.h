@@ -1,4 +1,5 @@
 #pragma once
+#include "DataAddresLoader.h"
 #include <list>
 #include <string>
 
@@ -27,8 +28,8 @@ public:
     /// <returns></returns>
     static std::string GetLoadeStageName();
 private:
-    std::list<std::string> stageFileNameList;//追加できても大丈夫なようにリストに
     std::list<std::string>::iterator fileNameIte;//プレイヤーが遊びたいステージのアセットのアドレスを指す
     const std::string allStageAddresFile = "data/stageData/AllStageFileName.txt";//ステージの一覧的な奴
+    DataAddressLoader* dataLoader;
 };
 

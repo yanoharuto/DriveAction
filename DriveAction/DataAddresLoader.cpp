@@ -5,11 +5,27 @@ DataAddressLoader::DataAddressLoader()
 {
 }
 
+DataAddressLoader::DataAddressLoader(std::string fileName)
+{
+    LoadAddres(fileName);
+}
+
 DataAddressLoader::~DataAddressLoader()
 {
 }
 
-void DataAddressLoader::GetString(std::list<std::string>* stringList, std::string fileName)
+std::list<std::string>::iterator DataAddressLoader::GetBeginIterator()
+{
+    return stringList.begin();
+}
+
+std::list<std::string>::iterator DataAddressLoader::GetEndIterator()
+{
+    
+    return stringList.end();
+}
+
+void DataAddressLoader::LoadAddres(std::string fileName)
 {
     std::ifstream ifs(fileName);
     if (!ifs)
@@ -22,6 +38,6 @@ void DataAddressLoader::GetString(std::list<std::string>* stringList, std::strin
     for (int i = 0; std::getline(ifs, charBuf); i++)
     {
         std::string backspaceChar = charBuf;
-        stringList->push_back(backspaceChar);
+        stringList.push_back(backspaceChar);
     }
 }

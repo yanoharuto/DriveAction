@@ -6,11 +6,26 @@ VECTOR3Loader::VECTOR3Loader()
 {
 }
 
+VECTOR3Loader::VECTOR3Loader(std::string fileName)
+{
+    LoadVectorData(fileName);
+}
+
 VECTOR3Loader::~VECTOR3Loader()
 {
 }
 
-void VECTOR3Loader::LoadCheckPoint(std::vector<VECTOR>* posVec, std::vector<VECTOR>* dirVec, std::string fileName)
+std::list<VECTOR>::iterator VECTOR3Loader::GetVectorListIterator()
+{
+    return vectorList.begin();
+}
+
+std::list<VECTOR> VECTOR3Loader::GetVectorList()
+{
+    return vectorList;
+}
+
+void VECTOR3Loader::LoadVectorData(std::string fileName)
 {
     std::ifstream ifs(fileName);
     if (!ifs)
@@ -50,16 +65,7 @@ void VECTOR3Loader::LoadCheckPoint(std::vector<VECTOR>* posVec, std::vector<VECT
             backspaceChar.erase(0, charLength + 1);
             lineProcessNum++;
         }
-        //ポジションの設定
-        if (i % 2 == 0)
-        {
-            posVec->push_back(goalData);
-        }
-        //中間地点の方向
-        else
-        {
-            dirVec->push_back(goalData);
-        }
+        vectorList.push_back(goalData);
     }
     ifs.close();
 }

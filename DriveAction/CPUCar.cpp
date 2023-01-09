@@ -31,27 +31,35 @@ CPUCar::~CPUCar()
 /// <param name="outsideHitFlag">コース外に出たか</param>
 void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
 {
-    //車の向いてる方向と目的地までの方向の外積を出して
-    //右に曲がるか左に曲がるか調べる
-
-    float destinationDir = VCross(VNorm(direction), VNorm(VSub(destinationPos,position))).y;
-    UpdateVelocity(deltaTime, GetAccelVec(destinationDir,outsideHitFlag));
-    UpdateMV1Pos();
-    ModelSetMatrix();
+    float destinationDir = 0;//目的地との距離のずれ
+    VECTOR distance = VSub(destinationPos, position);
+    destinationDir = VDot(direction, distance) / (VSize(distance) * VSize(direction));
+    destinationDir = acosf(destinationDir) / rage;
     //引数にして渡したい情報達
-    ArgumentCarInfo info = { MV1GetMatrix(modelHandle),direction,VSize(velocity) };
-    if (fabsf(destinationDir) > turnProccesLine)
-    {
-        info.handleDir = destinationDir > 0 ? HandleDirection::right : HandleDirection::left;
+    ArgumentCarInfo info;
+    if (destinationDir > turnProccesLine)
+    {    
+        //車の向いてる方向と目的地までの方向の外積を出して
+        //右に曲がるか左に曲がるか調べる
+        float crossY = VCross(VNorm(direction), VNorm(distance)).y;
+        info.handleDir = crossY > 0 ? HandleDirection::right : HandleDirection::left;
+        printfDx("%f,%f\n", destinationDir, crossY);
     }
     else
     {
         info.handleDir = HandleDirection::straight;
     }
+    UpdateVelocity(deltaTime, GetAccelVec(info.handleDir,outsideHitFlag));
+    UpdateMV1Pos();
+    ModelSetMatrix();
+    info.matrix = MV1GetMatrix(modelHandle);
+    info.velocitySize = VSize(velocity);
+    info.direction = direction;
+
     wheels->WheelUpdate(info);
 #ifdef _DEBUG
 
-    //printfDx("%f,%f\n", destinationPos.x, destinationPos.z);
+    printfDx("%f,%f\n", destinationPos.x, destinationPos.z);
 #endif
 }
 
@@ -61,7 +69,7 @@ void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
 /// <param name="dir">向かってる方向</param>
 /// <param name="outsideHitFlag"></param>
 /// <returns></returns>
-VECTOR CPUCar::GetAccelVec(const float dir,const bool outsideHitFlag)
+VECTOR CPUCar::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag)
 {
     // 加速処理.
     VECTOR accelVec = VGet(0, 0, 0);
@@ -69,10 +77,9 @@ VECTOR CPUCar::GetAccelVec(const float dir,const bool outsideHitFlag)
     // 止まっている場合は減速しない.
     if (VSize(velocity) > 0)
     {
-        if (fabsf(dir) > turnProccesLine)
+        if (handleDir!=HandleDirection::straight)
         {
             //左右に曲がろうとしたら減速する
-            //CPUだから常時かかることにする
             accelPower -= accelPower * gripDecel;
         }
         //コース外に出たら減速

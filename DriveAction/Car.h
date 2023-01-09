@@ -1,9 +1,7 @@
 #pragma once
 #include "DxLib.h"
 #include "Actor.h"
-
-class Wheels;
-
+#include "Wheels.h"
 /// <summary>
 /// Ô‚Ì‰Á‘¬‚Æ‚©Œ¸‘¬‚Æ‚©‚·‚é‚æB‚Ç‚ÌŒü‚«‚É‰Á‘¬‚·‚é‚©‚Æ‚©‚Íwheels‚©‚ç‚Æ‚Á‚Ä‚­‚é‚æ
 /// </summary>

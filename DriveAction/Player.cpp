@@ -33,7 +33,6 @@ Player::~Player()
 /// </summary>
 void Player::Update(const float deltaTime, const bool outsideHitFlag)
 {
-
 	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
 
 	UpdateVelocity(deltaTime, GetAccelVec(inputKey, outsideHitFlag));
@@ -56,8 +55,8 @@ void Player::Update(const float deltaTime, const bool outsideHitFlag)
 	// ƒ^ƒCƒ„‚Ìˆ—
 	wheels->WheelUpdate(info);
 #ifdef _DEBUG
-	printfDx("%f,%f\n", position.x,position.z);
-	printfDx("%f,%f\n", direction.x,direction.z);
+	//printfDx("%f,%f\n", position.x,position.z);
+	//printfDx("%f,%f\n", direction.x,direction.z);
 #endif
 }
 /// <summary>

@@ -8,11 +8,16 @@ class DataAddressLoader
 {
 public:
     DataAddressLoader();
+    DataAddressLoader(std::string fileName);
     ~DataAddressLoader();
+    std::list<std::string>::iterator GetBeginIterator();
+    std::list<std::string>::iterator GetEndIterator();
+private:
     /// <summary>
     /// 
     /// </summary>
     /// <param name="stringList">ここにデータのアドレスを入れる</param>
     /// <param name="fileName"></param>
-    void GetString(std::list <std::string>* stringList, std::string fileName);
+    void LoadAddres(std::string fileName);
+    std::list<std::string> stringList;
 };

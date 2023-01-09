@@ -1,16 +1,17 @@
 #include "StageSelect.h"
-#include "DataAddresLoader.h"
+#include "Utility.h"
 static std::string fileAddres;
 StageSelect::StageSelect()
 {
-    DataAddressLoader dataLoader;
-    dataLoader.GetString(&stageFileNameList,allStageAddresFile);
-    fileNameIte = stageFileNameList.begin();
+    dataLoader = new DataAddressLoader(allStageAddresFile);
+    fileNameIte = dataLoader->GetBeginIterator();
     fileAddres = *fileNameIte;
+    fileNameIte++;
 }
 
 StageSelect::~StageSelect()
 {
+    SAFE_DELETE(dataLoader);
 }
 
 void StageSelect::ChangeStage(bool up)
@@ -18,16 +19,16 @@ void StageSelect::ChangeStage(bool up)
     if (up)
     {
         fileNameIte++;
-        if (fileNameIte == stageFileNameList.end())
+        if (fileNameIte == dataLoader->GetEndIterator())
         {
-            fileNameIte = stageFileNameList.begin();
+            fileNameIte = dataLoader->GetBeginIterator();
         }
     }
     else
     {
-        if (fileNameIte == stageFileNameList.begin())
+        if (fileNameIte == dataLoader->GetBeginIterator())
         {
-            fileNameIte = stageFileNameList.end();
+            fileNameIte = dataLoader->GetEndIterator();
         }
         fileNameIte--;
     }

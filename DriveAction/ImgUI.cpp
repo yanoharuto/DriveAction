@@ -6,9 +6,10 @@ ImgUI::ImgUI()
     imgData = {};
 }
 
-ImgUI::ImgUI(UIData data)
+ImgUI::ImgUI(float size,UIData data)
 {
     imgData = data;
+    rate = size;
 }
 ImgUI::~ImgUI()
 {
@@ -17,5 +18,5 @@ ImgUI::~ImgUI()
 
 void ImgUI::DrawUI()
 {
-    DrawRotaGraph(imgData.x, imgData.y, 1, 0, imgData.dataHandle, false, 0, 0);
+    DrawRotaGraph(imgData.x, imgData.y, rate, 0, imgData.dataHandle, true, 0, 0);
 }

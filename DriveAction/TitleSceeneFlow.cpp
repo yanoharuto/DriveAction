@@ -8,9 +8,10 @@
 TitleSceeneFlow::TitleSceeneFlow()
 {
     uiManager = new UIManager();
-    stageSelect = new StageSelect();
+    stageSelect = new StageSelect();  
+    courceDataLoader = new CourceDataLoader();
     InitMinimapData();
-    ImgUI* miniMap = new ImgUI(uiData);
+    ImgUI* miniMap = new ImgUI(1.0f,uiData);
     uiManager->AddUI(miniMap);
     InitStageString();
     StringUI* stringUI = new StringUI(GetColor(0,0,255),uiData);
@@ -38,11 +39,8 @@ void TitleSceeneFlow::InitMinimapData()
 {
     uiData.x = 800;
     uiData.y = 400;
-    StageDataAddress dataAddress;
-    std::list<std::string> list;
-    DataAddressLoader addressLoader;
-    addressLoader.GetString(&list, stageSelect->GetLoadeStageName() + dataAddress.cStageAddress);
-    uiData.dataHandle = LoadGraph((*--list.end()).c_str());
+    std::string chara = courceDataLoader->GetMiniMapImgAddress();
+    uiData.dataHandle = LoadGraph(chara.c_str(),false);
 }
 
 void TitleSceeneFlow::InitStageString()

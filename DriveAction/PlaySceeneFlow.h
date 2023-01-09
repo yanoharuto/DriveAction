@@ -4,7 +4,9 @@
 #include "LacerManager.h"
 #include "Timer.h"
 #include "PlaySceneCamera.h"
+#include "CourceDataLoader.h"
 #include "StageManager.h"
+#include "CountDown.h"
 /// <summary>
 /// どういう順番で処理を行うか決める
 /// </summary>
@@ -27,10 +29,17 @@ public:
     /// </summary>
     void Draw();
 private:
+    void MakeCountDownUI();
+    void MakeMiniMapUI();
     UIManager* uiManager;//uiについてのマネージャー
-    LacerManager* lacerManager;//車乗りのマネージャー
+    RacerManager* racerManager;//車乗りのマネージャー
     StageManager* stageManager;//ステージのマネージャー
     Timer* timer;//時間経過観測
     PlaySceneCamera* camera;//カメラ
+    CourceDataLoader* courceDataLoader;
+    CountDown* countDown;
     PlaySceeneProgress nowProgress;//今何の処理を行うか決める変数
+    UIData uiData;
+    int countUINum;
+    int mapUINum;
 };

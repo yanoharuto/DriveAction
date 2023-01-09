@@ -1,3 +1,0 @@
-data/model/Circuit/RaceCircuit.mv1
-data/model/Circuit/CircuitOutside.mv1
-data/model/Circuit/CircuitMap.png

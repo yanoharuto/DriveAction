@@ -1,12 +1,17 @@
 #pragma once
-#include <vector>
+#include <list>
 #include<string>
 #include "DxLib.h"
 class VECTOR3Loader
 {
 public:
     VECTOR3Loader();
+    VECTOR3Loader(std::string fileName);
     ~VECTOR3Loader();
-    void LoadCheckPoint(std::vector<VECTOR>* posVec, std::vector<VECTOR>* dirVec, std::string fileName);
+    std::list<VECTOR>::iterator GetVectorListIterator();
+    std::list<VECTOR> GetVectorList();
+private:
+    void LoadVectorData(std::string fileName);
+    std::list<VECTOR> vectorList;
 };
 

@@ -1,6 +1,7 @@
 #include "CheckPoint.h"
 #include "VECTOR3Loader.h"
 #include "HitChecker.h"
+#include "Utility.h"
 /// <summary>
 /// デフォルトコンストラクタ
 /// </summary>
@@ -10,18 +11,7 @@ CheckPoint::CheckPoint()
     direction = {};
     vecSize = 0;
 }
-/// <summary>
-/// コース情報得するよ
-/// </summary>
-/// <param name="roundNum">何週走るか</param>
-/// <param name="fileName">どのファイルから所得するか</param>
-/// <returns></returns>
-CheckPoint::CheckPoint(const TCHAR* fileName)
-{
-    VECTOR3Loader loader;
-    loader.LoadCheckPoint(&cPParam.positionVec,&cPParam.directionVec, fileName);
-    InitMember();
-}
+
 /// <summary>
 /// コース情報複製用
 /// </summary>
@@ -41,7 +31,7 @@ CheckPoint::~CheckPoint()
 /// プレイヤーがぶつかったら次の行き先を設定する
 /// </summary>
 /// <param name="carInfo">ぶつかったか調べる車</param>
-void CheckPoint::Update(ArgumentConflictInfo carInfo)
+bool CheckPoint::CheckPointUpdate(ArgumentConflictInfo carInfo)
 {  
     HitChecker checker;
     for (int i = 0; i < vectorExamineCount; i++)
@@ -55,18 +45,19 @@ void CheckPoint::Update(ArgumentConflictInfo carInfo)
             {
                 transitCheckPointCount += i + 1;
                 //ゴールより先に行ったら最初のチェックポイントを取る
-                if (transitCheckPointCount < cPParam.positionVec.size())
+                if (transitCheckPointCount >= static_cast<int>(cPParam.positionVec.size()))
                 {
                     transitCheckPointCount = 0;
                 }
-                position = cPParam.positionVec[transitCheckPointCount];
-                direction = cPParam.directionVec[transitCheckPointCount];
+                position = GetVector(cPParam.positionVec.begin(),transitCheckPointCount);
+                direction = GetVector(cPParam.directionVec.begin(), transitCheckPointCount);
             }
-            break;
+            return true;
         }
     }
-    //最後に目標地点までどのぐらい離れてるか返す
+    //最後に目標地点までどのぐらい離れてるか
     checkPointDistance = VSize(VSub(position,carInfo.pos));
+    return false;
 }
 
 /// <summary>
@@ -81,7 +72,7 @@ int CheckPoint::GetTransitCheckPointCout()
 {
     return transitCheckPointCount;
 }
-int CheckPoint::GetCheckPointDistance()
+float CheckPoint::GetCheckPointDistance()
 {
     return checkPointDistance;
 }

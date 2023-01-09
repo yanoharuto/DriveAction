@@ -152,8 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CountDown.cpp" />
     <ClCompile Include="DataAddresLoader.cpp" />
     <ClCompile Include="CPUCar.cpp" />
+    <ClCompile Include="CourceDataLoader.cpp" />
+    <ClCompile Include="PointUI.cpp" />
+    <ClCompile Include="RacePrevProcess.cpp" />
     <ClCompile Include="VECTOR3Loader.cpp" />
     <ClCompile Include="ImgUI.cpp" />
     <ClCompile Include="LacerManager.cpp" />
@@ -183,9 +187,14 @@
     <ClInclude Include="ArgumentObjInfoStruct.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="CircuitDataStruct.h" />
+    <ClInclude Include="CountDown.h" />
     <ClInclude Include="DataAddresLoader.h" />
     <ClInclude Include="CPUCar.h" />
+    <ClInclude Include="CourceDataLoader.h" />
+    <ClInclude Include="ListUtility.h" />
     <ClInclude Include="ObjectTagEnum.h" />
+    <ClInclude Include="PointUI.h" />
+    <ClInclude Include="RacePrevProcess.h" />
     <ClInclude Include="StageDataAddressStruct.h" />
     <ClInclude Include="VECTOR3Loader.h" />
     <ClInclude Include="ImgUI.h" />

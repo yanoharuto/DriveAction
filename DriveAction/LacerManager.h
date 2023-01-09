@@ -2,6 +2,7 @@
 #include <List>
 #include <string>
 #include "HitChecker.h"
+class CourceDataLoader;
 class Object;
 class CheckPoint;
 class Car;
@@ -14,7 +15,7 @@ struct  ArgumentConflictInfo;
 /// <summary>
 /// 走ってる車の情報
 /// </summary>
-struct Lacer
+struct Racer
 {
     int rank;
     CheckPoint* checkPoint;
@@ -23,19 +24,19 @@ struct Lacer
 /// <summary>
 /// 車乗りのマネージャー
 /// </summary>
-class LacerManager
+class RacerManager
 {
 public:
 
-    LacerManager() {};
+    RacerManager() {};
     /// <summary>
     /// 初期化
     /// </summary>
     /// <param name="lacerNum">車乗りの数だけリストに追加するよ</param>
     /// <returns></returns>
-    LacerManager(int cpuNum,std::string chcekPointAddress);
+    RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader);
     //デストラクタ
-    ~LacerManager();
+    ~RacerManager();
     /// <summary>
     /// 車乗りたちの更新
     /// </summary>
@@ -64,12 +65,8 @@ public:
     void LacerConflictProcces();
 
 private:
-    void LacerUpdateProcces(Lacer ,float ,CircuitTrack* );
-    void LacerLoop(void(LacerManager::*function)(Lacer));
-    void LacerLoop(void(LacerManager::*function)(Lacer,float,CircuitTrack*), float deltaTime, CircuitTrack* circuit);
-
     //車乗り達のリスト
-    std::list<Lacer> lacerList;
+    std::list<Racer> RacerList;
     //当たってるかどうか調べる
     HitChecker hitChecker;
 };

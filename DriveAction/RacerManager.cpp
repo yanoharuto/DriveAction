@@ -1,17 +1,16 @@
-#include "LacerManager.h"
+#include "RacerManager.h"
 #include "CPUCar.h"
 #include "CheckPoint.h"
 #include "Player.h"
 #include "Utility.h"
 #include "CircuitTrack.h"
-#include "StageSelect.h"
 #include "StageDataAddressStruct.h"
-#include "VECTOR3Loader.h"
 #include "CourceDataLoader.h"
+#include <map>
 /// <summary>
 /// 初期化
 /// </summary>
-/// <param name="lacerNum">車乗りの数だけリストに追加するよ</param>
+/// <param name="racerNum">車乗りの数だけリストに追加するよ</param>
 /// <returns></returns>
 RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
 {
@@ -40,7 +39,7 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
 //デストラクタ
 RacerManager::~RacerManager()
 {
-    for (int i = 0; i < static_cast<signed>(RacerList.max_size()); i++)
+    for (int i = 0; i < static_cast<signed>(RacerList.size()); i++)
     {
         SAFE_DELETE(RacerList.front().car);
         SAFE_DELETE(RacerList.front().checkPoint);
@@ -51,31 +50,31 @@ RacerManager::~RacerManager()
 /// </summary>
 /// <param name="deltaTime">フレーム間の経過時間</param>
 /// <param name="circuit">走るコース</param>
-void RacerManager::Update(const float deltaTime, CircuitTrack* circuit)
+void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
 {
-    std::list<Racer>::iterator lacerIte;
-    Racer lacer;
-    for (lacerIte = RacerList.begin(); lacerIte != RacerList.end(); lacerIte++)
+    std::list<Racer>::iterator racerIte;
+    Racer racer;
+    for (racerIte = RacerList.begin(); racerIte != RacerList.end(); racerIte++)
     {
-        lacer = *lacerIte;
+        racer = *racerIte;
         ArgumentConflictInfo conflictInfo;
         //車の更新　コース外に出たかどうか第二引数で調べる
-        lacer.car->Update(deltaTime, circuit->GetOutsideHitFlag(lacer.car));
+        racer.car->Update(deltaTime, circuit->GetOutsideHitFlag(racer.car));
         //チェックポイントの更新の更新
-        conflictInfo.SetObjInfo(true, lacer.car);
+        conflictInfo.SetObjInfo(true, racer.car);
         //車がチェックポイントを通過したか調べる
-        if (lacer.checkPoint->CheckPointUpdate(conflictInfo))
+        if (racer.checkPoint->CheckPointUpdate(conflictInfo))
         {
             //車に次の目的地を伝える
-            conflictInfo.SetObjInfo(true, lacer.checkPoint);
-            lacer.car->ConflictProcess(conflictInfo);
+            conflictInfo.SetObjInfo(true, racer.checkPoint);
+            racer.car->ConflictProcess(conflictInfo);
         }
         //コースの塀とかにぶつかったか調べる
-        conflictInfo = circuit->GetCourceConflictInfo(lacer.car);
+        conflictInfo = circuit->GetCourceConflictInfo(racer.car);
         if (conflictInfo.hitFlag)
         {
             //ぶつかってたら衝突処理
-            lacer.car->ConflictProcess(conflictInfo);
+            racer.car->ConflictProcess(conflictInfo);
         }
     }
 }
@@ -87,34 +86,51 @@ void RacerManager::ArgumentConflictProcess(Object* obj)
 {
     ArgumentConflictInfo conflictInfo;
     conflictInfo.SetObjInfo(false,obj);
-    std::list<Racer>::iterator lacerIte;
-    Racer lacer;
-    for (lacerIte = RacerList.begin(); lacerIte != RacerList.end(); lacerIte++)
+    std::list<Racer>::iterator racerIte;
+    Racer racer;
+    for (racerIte = RacerList.begin(); racerIte != RacerList.end(); racerIte++)
     {
-        lacer = *lacerIte;
+        racer = *racerIte;
         //car自身と当たり判定取ってたら通らない
-        if (lacer.car != obj)
+        if (racer.car != obj)
         {
             //当たってるか調べる　
-            if (hitChecker.HitCheck(lacer.car, obj))
+            if (hitChecker.HitCheck(racer.car, obj))
             {
-                lacer.car->ConflictProcess(conflictInfo);
+                racer.car->ConflictProcess(conflictInfo);
             }
         }
     }
 }
+void RacerManager::RacerRankUpdate()
+{
+
+}
 /// <summary>
 /// 車乗りたち同士でぶつかってないか調べる
 /// </summary>
-void RacerManager::LacerConflictProcces()
+void RacerManager::RacerConflictProcces()
 {
-    std::list<Racer>::iterator lacerIte;
-    Racer lacer;
-    for (lacerIte = RacerList.begin(); lacerIte != RacerList.end(); lacerIte++)
+    std::list<Racer>::iterator racerIte;
+    Racer racer;
+    for (racerIte = RacerList.begin(); racerIte != RacerList.end(); racerIte++)
     {
-        lacer = *lacerIte;
-        ArgumentConflictProcess(lacer.car);
+        racer = *racerIte;
+        ArgumentConflictProcess(racer.car);
     }
+}
+/// <summary>
+/// プレイヤーのゴールした回数を返す
+/// </summary>
+/// <returns></returns>
+int RacerManager::GetPlayerGoalCount()
+{
+    return RacerList.front().checkPoint->GetGoalCount();
+}
+
+int RacerManager::GetPlayerRank()
+{
+    return RacerList.front().rank;
 }
 
 /// <summary>
@@ -123,12 +139,12 @@ void RacerManager::LacerConflictProcces()
   /// <returns></returns>
 void RacerManager::Draw()
 {
-    std::list<Racer>::iterator lacerIte;
-    Racer lacer;
-    for (lacerIte = RacerList.begin(); lacerIte != RacerList.end(); lacerIte++)
+    std::list<Racer>::iterator racerIte;
+    Racer racer;
+    for (racerIte = RacerList.begin(); racerIte != RacerList.end(); racerIte++)
     {
-        lacer = *lacerIte;
-        lacer.car->Draw();
+        racer = *racerIte;
+        racer.car->Draw();
     }
 }
 /// <summary>

@@ -15,12 +15,20 @@ Timer::~Timer()
 /// </summary>
 void Timer::Update()
 {
-    deltaTime = (GetNowCount() - time) / Thousand;
-    if (deltaTime < deltaTimeCalculationLine)
+    while (deltaTimeCalculationLine < 0.001f)
     {
-        deltaTime = deltaTimeCalculationLine;
+        deltaTimeCalculationLine = ((float)GetNowCount() - time) / Thousand;
     }
-    time = GetNowCount();
+
+    while (deltaTime < deltaTimeCalculationLine)
+    {
+        deltaTime = ((float)GetNowCount() - time) / Thousand;
+    }
+#ifdef _DEBUG
+
+    printfDx("%f,%f\n", deltaTime,deltaTimeCalculationLine);
+#endif
+    time = (float)GetNowCount();
 }
 /// <summary>
 /// デルタタイムを出すよ

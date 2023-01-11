@@ -27,7 +27,6 @@ struct Racer
 class RacerManager
 {
 public:
-
     RacerManager() {};
     /// <summary>
     /// 初期化
@@ -42,13 +41,14 @@ public:
     /// </summary>
     /// <param name="deltaTime">フレーム間の経過時間</param>
     /// <param name="circuit">走るコース</param>
-    void Update(const float deltaTime, CircuitTrack* circuit);
+    void RacerUpdate(const float deltaTime, CircuitTrack* circuit);
     /// <summary>
     /// 引数の物体にぶつかったか調べる
     /// </summary>
     /// <param name="obj"></param>
     void ArgumentConflictProcess(Object* obj);
 
+    void RacerRankUpdate();
     /// <summary>
     /// 描画
     /// </summary>
@@ -62,8 +62,13 @@ public:
     /// <summary>
     /// 車乗りたち同士でぶつかってないか調べる
     /// </summary>
-    void LacerConflictProcces();
-
+    void RacerConflictProcces();
+    /// <summary>
+    /// プレイヤーのゴールした回数を返す
+    /// </summary>
+    /// <returns></returns>
+    int GetPlayerGoalCount();
+    int GetPlayerRank();
 private:
     //車乗り達のリスト
     std::list<Racer> RacerList;

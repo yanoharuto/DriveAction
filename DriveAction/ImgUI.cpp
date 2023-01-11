@@ -3,20 +3,20 @@
 
 ImgUI::ImgUI()
 {
-    imgData = {};
+    uiData = {};
 }
 
 ImgUI::ImgUI(float size,UIData data)
+    :UI(data)
 {
-    imgData = data;
     rate = size;
 }
 ImgUI::~ImgUI()
 {
-    DeleteGraph(imgData.dataHandle);
+    DeleteGraph(uiData.dataHandle);
 }
 
 void ImgUI::DrawUI()
 {
-    DrawRotaGraph(imgData.x, imgData.y, rate, 0, imgData.dataHandle, true, 0, 0);
+    DrawRotaGraph(uiData.x, uiData.y, rate, 0, uiData.dataHandle, true, 0, 0);
 }

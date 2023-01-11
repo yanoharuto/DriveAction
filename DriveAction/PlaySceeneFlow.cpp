@@ -9,11 +9,12 @@ PlaySceeneFlow::PlaySceeneFlow()
 	courceDataLoader = new CourceDataLoader();
 	nowProgress = PlaySceeneProgress::start;
 	stageManager = new StageManager(courceDataLoader);
-	racerManager = new RacerManager(4,courceDataLoader);
+	racerManager = new RacerManager(2,courceDataLoader);
 	camera = new PlaySceneCamera();
 	timer = new Timer();
 	uiManager = new UIManager();
 	countDown = new CountDown();
+	miniMap = new MiniMap(uiManager,minimapX,minimapY, courceDataLoader->GetMiniMapImgAddress());
 	uiData = {};
 }
 
@@ -25,37 +26,52 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(uiManager);
 	SAFE_DELETE(timer);
 	SAFE_DELETE(countDown);
-	SAFE_DELETE(courceDataLoader)
+	SAFE_DELETE(courceDataLoader);
+	SAFE_DELETE(miniMap);
 }
 
 PlaySceeneProgress PlaySceeneFlow::Update()
 {
 	timer->Update();
 	std::string count;
+	int playerRank=0;
+	VECTOR playerPos = {};
 	switch (nowProgress)
 	{
+		//スタート処理
 	case PlaySceeneProgress::start:
 		nowProgress = PlaySceeneProgress::countDown;
 		MakeCountDownUI();
-		MakeMiniMapUI();
+
 		break;
+		//カウントダウン
 	case PlaySceeneProgress::countDown:
 		count = countDown->Update(timer->GetDeltaTime());
 		uiManager->Update(countUINum, count);
 		camera->Update(racerManager->GetPlayer());
+		//カウントダウンが終わったら
 		if (countDown->CountDownEnd())
 		{
 			uiManager->DeleteArgumentUI(countUINum);
 			nowProgress = PlaySceeneProgress::race;
 		}
 		break;
+		//レース
 	case PlaySceeneProgress::race:
-		racerManager->Update(timer->GetDeltaTime(), stageManager->GetCircuit());
-		racerManager->LacerConflictProcces();
+		racerManager->RacerUpdate(timer->GetDeltaTime(), stageManager->GetCircuit());
+		racerManager->RacerConflictProcces();
+		racerManager->RacerRankUpdate();
+		playerRank = racerManager->GetPlayerRank();
+		playerPos = racerManager->GetPlayer()->GetPos();
+		miniMap->Update(uiManager, playerPos.x,-playerPos.z);
 		camera->Update(racerManager->GetPlayer());
+		if (racerManager->GetPlayerGoalCount() == 1)
+		{
+			nowProgress = PlaySceeneProgress::playerGoal;
+		}
 		break;
 	case PlaySceeneProgress::playerGoal:
-
+		nowProgress = PlaySceeneProgress::end;
 		break;
 	case PlaySceeneProgress::end:
 		break;
@@ -63,11 +79,9 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		nowProgress = PlaySceeneProgress::end;
 		break;
 	}
-#ifdef  _DEBUG
-
-
-#endif //  _DEBUG
-
+#ifdef _DEBUG
+	DxLib::printfDx("%d", playerRank);
+#endif
 	return nowProgress;
 }
 
@@ -87,11 +101,12 @@ void PlaySceeneFlow::MakeCountDownUI()
 	countUINum = uiManager->AddUI(countDownUI);
 }
 
-void PlaySceeneFlow::MakeMiniMapUI()
+void PlaySceeneFlow::MakeRankUI()
 {
-	uiData.x = 1080;
-	uiData.y = 450;
-	uiData.dataHandle = LoadGraph(courceDataLoader->GetMiniMapImgAddress().c_str(),true);
-	ImgUI* miniMap = new ImgUI(0.4f,uiData);
-	mapUINum = uiManager->AddUI(miniMap);
+	uiData.x = 1000;
+	uiData.y = 200;
+	uiData.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
+	StringUI* countDownUI = new StringUI(GetColor(230, 0, 0), uiData);
+	
 }
+

@@ -23,7 +23,7 @@ public:
     float GetScoreTime();
 private:
     const float Thousand = 1000;
-    const float deltaTimeCalculationLine = 0.00001f;
+    float deltaTimeCalculationLine = 0;
     float startTime;
     float time;
     float deltaTime;

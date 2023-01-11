@@ -42,8 +42,8 @@ void Car::ConflictProcess(const ArgumentConflictInfo conflictInfo)
 	case ObjectTag::goal:
 		destinationPos = conflictInfo.pos;
 #ifdef _DEBUG
-		printfDx("%f,%f\n", conflictInfo.pos.x, conflictInfo.pos.z);
-		printfDx("%f,%f\n", destinationPos.x, destinationPos.z);
+		//printfDx("%f,%f\n", conflictInfo.pos.x, conflictInfo.pos.z);
+		//printfDx("%f,%f\n", destinationPos.x, destinationPos.z);
 #endif
 		break;
 	default:

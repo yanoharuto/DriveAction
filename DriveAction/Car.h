@@ -52,8 +52,8 @@ protected:
 	/// </summary>
 	void ModelSetMatrix();
 	// 静的定数.
-	const float accelSpeed = 1.8f;					// 通常の加速.
-	const float maxSpeed = 180.0f;					// 最高速度.
+	const float accelSpeed = 0.28f;					// 通常の加速.
+	const float maxSpeed = 140.0f;					// 最高速度.
 	const float defaultDecel = 0.04f;			// なにもしない時の減速.
 	const float breakDecel = 0.075f;				// ブレーキ時の減速.
 	const float gripDecel = 0.005f;				// グリップの減速.

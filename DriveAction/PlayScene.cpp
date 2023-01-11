@@ -26,7 +26,5 @@ SceneType PlayScene::Update()
 
 void PlayScene::Draw()
 {
-#ifdef _DEBUG
-#endif // _DEBUG
     playSceneFlow->Draw();
 }

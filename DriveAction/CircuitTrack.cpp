@@ -74,6 +74,6 @@ ArgumentConflictInfo  CircuitTrack::GetCourceConflictInfo(Car* car) const
 /// </summary>
 void CircuitTrack::Draw()
 {
-    MV1DrawModel(courceModelHandle);
-    MV1DrawModel(outsideModelHandle);
+  MV1DrawModel(courceModelHandle);
+  MV1DrawModel(outsideModelHandle);
 }

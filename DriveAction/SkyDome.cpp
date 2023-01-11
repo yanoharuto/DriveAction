@@ -19,5 +19,7 @@ SkyDome::~SkyDome()
 /// </summary>
 void SkyDome::Draw()
 {
+    SetUseLighting(false);
     MV1DrawModel(modelHandle);
+    SetUseLighting(true);
 }

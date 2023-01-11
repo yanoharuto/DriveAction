@@ -2,6 +2,7 @@
 #include "VECTOR3Loader.h"
 #include "HitChecker.h"
 #include "Utility.h"
+#include "ListUtility.h"
 /// <summary>
 /// デフォルトコンストラクタ
 /// </summary>
@@ -20,6 +21,8 @@ CheckPoint::CheckPoint()
 CheckPoint::CheckPoint(const CircuitData circuitData)
 {
     cPParam = circuitData;
+    vecSize = circuitData.positionVec.size();
+    checkPointDistance = 0;
     InitMember();
 }
 
@@ -34,24 +37,23 @@ CheckPoint::~CheckPoint()
 bool CheckPoint::CheckPointUpdate(ArgumentConflictInfo carInfo)
 {  
     HitChecker checker;
+    ArgumentConflictInfo thisInfo = {};
+    thisInfo.radius = radius;
     for (int i = 0; i < vectorExamineCount; i++)
     {
+        thisInfo.pos = GetArgumentCountVector(cPParam.positionVec.begin(), (transitCheckPointCount + i) % vecSize);
         //車がベクターの地点を通過してないか調べる
-        if (checker.HitCheck(this, carInfo))
+        if (checker.HitCheck(thisInfo, carInfo))
         {
-            float theta = VDot(carInfo.dir, direction);
-            //ぶつかった相手が逆走してなかったら次のチェックポイントに行く
-            if (theta > dirJugeLine)
+            transitCheckPointCount += i + 1;
+            //ゴールしたら
+            if (transitCheckPointCount >= vecSize)
             {
-                transitCheckPointCount += i + 1;
-                //ゴールより先に行ったら最初のチェックポイントを取る
-                if (transitCheckPointCount >= static_cast<int>(cPParam.positionVec.size()))
-                {
-                    transitCheckPointCount = 0;
-                }
-                position = GetVector(cPParam.positionVec.begin(),transitCheckPointCount);
-                direction = GetVector(cPParam.directionVec.begin(), transitCheckPointCount);
+                goalCount++;
             }
+            position = GetArgumentCountVector(cPParam.positionVec.begin(), transitCheckPointCount % vecSize);
+            direction = GetArgumentCountVector(cPParam.directionVec.begin(), transitCheckPointCount % vecSize);
+
             return true;
         }
     }
@@ -68,10 +70,18 @@ CircuitData CheckPoint::GetCheckPoint() const
 {
     return cPParam;
 }
-int CheckPoint::GetTransitCheckPointCout()
+/// <summary>
+/// ゴールした回数を返す
+/// </summary>
+/// <returns></returns>
+int CheckPoint::GetGoalCount()
 {
-    return transitCheckPointCount;
+    return goalCount;
 }
+/// <summary>
+/// チェックポイントまでの距離
+/// </summary>
+/// <returns></returns>
 float CheckPoint::GetCheckPointDistance()
 {
     return checkPointDistance;

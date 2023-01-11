@@ -18,6 +18,7 @@ public:
     /// <returns></returns>
     int AddUI(UI* ui);
     void Update(int index,std::string updateString);
+    void Update(int index,int x,int y);
     /// <summary>
     /// •`‰æ
     /// </summary>

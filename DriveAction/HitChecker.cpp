@@ -53,8 +53,10 @@ bool HitChecker::HitCheck(const ArgumentConflictInfo objAInfo, const ArgumentCon
 /// <returns>“–‚½‚Á‚½‚çTrue</returns>
 bool HitChecker::HitCheckProcess(ArgumentConflictInfo objAInfo, ArgumentConflictInfo objBInfo)
 {
+    //ˆø”“¯Žm‚Ì‹——£
     VECTOR distance = VSub(objAInfo.pos, objBInfo.pos);
     distance.y = 0;
+    //ˆø”“¯Žm‚Ì“–‚½‚è”»’è‚Ì‡Œv
     float range = objAInfo.radius + objBInfo.radius;
     if (range > VSize(distance))
     {

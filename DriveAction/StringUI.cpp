@@ -4,23 +4,23 @@
 StringUI::StringUI()
 {
     color = 0;
-    stringData = {};
+    uiData = {};
 }
 
 StringUI::StringUI(unsigned int colorValue,UIData data)
 {
     color = colorValue;
-    stringData = data;
+    uiData = data;
 }
 
 StringUI::~StringUI()
 {
-    DeleteFontToHandle(stringData.dataHandle);
+    DeleteFontToHandle(uiData.dataHandle);
 }
 
 void StringUI::DrawUI()
 {
-    DrawStringToHandle(stringData.x,stringData.y,string.c_str(),color,stringData.dataHandle);
+    DrawStringToHandle(uiData.x,uiData.y,string.c_str(),color,uiData.dataHandle);
 }
 
 void StringUI::Update(std::string updateString)

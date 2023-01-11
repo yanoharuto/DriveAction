@@ -23,6 +23,11 @@ void UIManager::Update(int index, std::string updateString)
     uiVec[index]->Update(updateString);
 }
 
+void UIManager::Update(int index, int x, int y)
+{
+    uiVec[index]->Update(x, y);
+}
+
 void UIManager::DrawUI()
 {
     for (int i = 0; i < uiVec.size(); i++)

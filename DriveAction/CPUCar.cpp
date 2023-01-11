@@ -43,7 +43,6 @@ void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
         //‰E‚É‹È‚ª‚é‚©¶‚É‹È‚ª‚é‚©’²‚×‚é
         float crossY = VCross(VNorm(direction), VNorm(distance)).y;
         info.handleDir = crossY > 0 ? HandleDirection::right : HandleDirection::left;
-        printfDx("%f,%f\n", destinationDir, crossY);
     }
     else
     {
@@ -57,10 +56,6 @@ void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
     info.direction = direction;
 
     wheels->WheelUpdate(info);
-#ifdef _DEBUG
-
-    printfDx("%f,%f\n", destinationPos.x, destinationPos.z);
-#endif
 }
 
 /// <summary>

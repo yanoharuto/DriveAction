@@ -31,24 +31,17 @@ public:
     /// <returns></returns>
     CircuitData GetCheckPoint() const;
     /// <summary>
-    /// チェックポイント通過回数を返す
+    /// ゴールした回数を返す
     /// </summary>
-    /// <returns>チェックポイント通過回数</returns>
-    int GetTransitCheckPointCout();
+    /// <returns></returns>
+    int GetGoalCount();
     /// <summary>
     /// チェックポイントまでの差を出す
     /// </summary>
     /// <returns>チェックポイントまでの差</returns>
     float GetCheckPointDistance();
 private:
-    VECTOR GetVector (std::list<VECTOR>::iterator listIte,int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            listIte++;
-        }
-        return *listIte;
-    }
+
     /// <summary>
     /// 初期化処理
     /// </summary>
@@ -56,13 +49,15 @@ private:
     //サーキットのデータ
     CircuitData cPParam;
     //positionからこれだけ近かったらゴール
-    const float goalRadius = 80.0f;
+    const float goalRadius = 100.0f;
     //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
     const float dirJugeLine = 0.8f;
     //チェックポイントのベクターを調べる回数
     const int vectorExamineCount = 5;
     //通過した回数
     int transitCheckPointCount = 0;
+    //ゴールした回数
+    int goalCount = 0;
     //ベクター配列のサイズ
     int vecSize = 0;
     //チェックポイントまでの差

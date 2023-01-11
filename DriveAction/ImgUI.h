@@ -9,7 +9,6 @@ public:
     ~ImgUI();
     void DrawUI() override;
 private:
-    UIData imgData;
     float rate;
 };
 

@@ -1,12 +1,13 @@
 #pragma once
 #include "PlaySceeneProgressEnum.h"
 #include "UIManager.h"
-#include "LacerManager.h"
+#include "RacerManager.h"
 #include "Timer.h"
 #include "PlaySceneCamera.h"
 #include "CourceDataLoader.h"
 #include "StageManager.h"
 #include "CountDown.h"
+#include "MiniMap.h"
 /// <summary>
 /// どういう順番で処理を行うか決める
 /// </summary>
@@ -30,7 +31,7 @@ public:
     void Draw();
 private:
     void MakeCountDownUI();
-    void MakeMiniMapUI();
+    void MakeRankUI();
     UIManager* uiManager;//uiについてのマネージャー
     RacerManager* racerManager;//車乗りのマネージャー
     StageManager* stageManager;//ステージのマネージャー
@@ -38,8 +39,10 @@ private:
     PlaySceneCamera* camera;//カメラ
     CourceDataLoader* courceDataLoader;
     CountDown* countDown;
+    MiniMap* miniMap;
     PlaySceeneProgress nowProgress;//今何の処理を行うか決める変数
     UIData uiData;
     int countUINum;
-    int mapUINum;
+    const int minimapX=1080;
+    const int minimapY=450;
 };

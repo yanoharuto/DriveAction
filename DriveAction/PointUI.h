@@ -4,10 +4,10 @@ class PointUI :
     public UI
 {
 public:
-    PointUI(unsigned int color, UIData uiData);
+    PointUI(unsigned int color, UIData uiData,float r);
     ~PointUI();
-    void Update(std::string xy) override;
     void DrawUI() override;
 private:
-    UIData uiData;
+    unsigned int pointColor;
+    float radius;
 };

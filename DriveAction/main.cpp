@@ -13,8 +13,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	{
 		return -1;			// エラーが起きたら直ちに終了
 	}
+	int width = SCREEN_WIDTH;
+	int height = SCREEN_HEIGHT;
 	// 画面モードのセット.
-	SetGraphMode(1240, 780, 16);
+	SetGraphMode(width,height,16);
 	ChangeWindowMode(TRUE);
 
 	//ひとつ前のシーン

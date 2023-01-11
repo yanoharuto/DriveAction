@@ -12,7 +12,6 @@ public:
     void DrawUI()override;
     void Update(std::string updateString) override;
 private:
-    UIData stringData;
     unsigned int color;
     std::string string;
 

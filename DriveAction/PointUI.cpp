@@ -1,19 +1,17 @@
 #include "PointUI.h"
-
-PointUI::PointUI(unsigned int color, UIData uiData)
+#include "DxLib.h"
+PointUI::PointUI(unsigned int color, UIData uiData,float r)
+    :UI(uiData)
 {
-
+    pointColor = color;
+    radius = r;
 }
 
 PointUI::~PointUI()
 {
 }
 
-void PointUI::Update(std::string xy)
-{
-   
-}
-
 void PointUI::DrawUI()
 {
+    DrawCircle(uiData.x,uiData.y,radius,pointColor,true);
 }

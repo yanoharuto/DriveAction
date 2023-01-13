@@ -48,7 +48,7 @@ void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
     {
         info.handleDir = HandleDirection::straight;
     }
-    UpdateVelocity(deltaTime, GetAccelVec(info.handleDir,outsideHitFlag));
+    UpdateVelocity(VScale(GetAccelVec(info.handleDir,outsideHitFlag,deltaTime),deltaTime));
     UpdateMV1Pos();
     ModelSetMatrix();
     info.matrix = MV1GetMatrix(modelHandle);
@@ -64,23 +64,24 @@ void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
 /// <param name="dir">向かってる方向</param>
 /// <param name="outsideHitFlag"></param>
 /// <returns></returns>
-VECTOR CPUCar::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag)
+VECTOR CPUCar::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag,float deltaTime)
 {
     // 加速処理.
     VECTOR accelVec = VGet(0, 0, 0);
-    accelPower += accelPower > maxSpeed ? 0 : accelSpeed;
+    accelPower += accelPower > maxSpeed ? 0 : accelSpeed * deltaTime;
     // 止まっている場合は減速しない.
     if (VSize(velocity) > 0)
     {
+        //左右に曲がろうとしていたら減速
         if (handleDir!=HandleDirection::straight)
         {
             //左右に曲がろうとしたら減速する
-            accelPower -= accelPower * gripDecel;
+            accelPower *= gripDecel * deltaTime;
         }
         //コース外に出たら減速
         if (outsideHitFlag)
         {
-            accelPower -= accelPower * outsideHitDecel;
+            accelPower *= outsideHitDecel * deltaTime;
         }
     }
     accelVec = VScale(direction, accelPower);

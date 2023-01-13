@@ -79,14 +79,14 @@ void Car::DamageReaction(const VECTOR conflictObjPos, const float conflictObjRad
 /// </summary>
 /// <param name="deltaTime">経過時間</param>
 /// <param name="accelVec">次の更新までに進む方向と速さ</param>
-void Car::UpdateVelocity(const float deltaTime, const VECTOR accelVec)
+void Car::UpdateVelocity(const VECTOR accelVec)
 {
 	//タイヤの向きから進行方向を取る
 	float theta = wheels->GetMoveDirTheta(VSize(velocity));
 	theta *= gripPower;
 	velocity = VTransform(velocity, MGetRotY(theta));
 	// ベロシティ加速計算.
-	velocity = VScale(VAdd(velocity, accelVec), deltaTime);
+	velocity = VAdd(velocity, accelVec);
 	// 上下方向にいかないようにベロシティを整える.
 	velocity = VGet(velocity.x, 0, velocity.z);	
 }

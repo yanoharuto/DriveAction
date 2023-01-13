@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -158,6 +158,7 @@
     <ClCompile Include="CourceDataLoader.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="PointUI.cpp" />
+    <ClCompile Include="PostGoalDirection.cpp" />
     <ClCompile Include="RacePrevProcess.cpp" />
     <ClCompile Include="VECTOR3Loader.cpp" />
     <ClCompile Include="ImgUI.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="ObjectTagEnum.h" />
     <ClInclude Include="PointUI.h" />
+    <ClInclude Include="PostGoalDirection.h" />
     <ClInclude Include="RacePrevProcess.h" />
     <ClInclude Include="StageDataAddressStruct.h" />
     <ClInclude Include="VECTOR3Loader.h" />

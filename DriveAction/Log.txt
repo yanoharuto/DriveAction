@@ -1,330 +1,340 @@
 ﻿0:ＤＸライブラリの初期化処理開始
-1:	設定されている画面設定 640x480 16bit color
-3:	ディスプレイ情報のセットアップ開始
-5:		モニターの数：1  ディスプレイデバイスの数：4
-5:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　60Hz  120x120dpi
-19:	ディスプレイ情報のセットアップ完了
-19:	対応している画面モードなし
-20:	設定されている画面設定 640x480 32bit color
+0:	設定されている画面設定 640x480 16bit color
+0:	ディスプレイ情報のセットアップ開始
+0:		モニターの数：2  ディスプレイデバイスの数：7
+0:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　120Hz  120x120dpi
+0:		No.1  モニター名：\\.\DISPLAY4　2400x1350　32bit　60Hz  120x120dpi
+21:	ディスプレイ情報のセットアップ完了
+21:	対応している画面モードなし
+21:	設定されている画面設定 640x480 32bit color
 21:	システムの情報を出力します
-22:		ＤＸライブラリ Ver3.23d
-22:		論理プロセッサの数 : 8
-23:		ＯＳ  Windows10 ( Build 19044  )
-24:	ＣＯＭの初期化... 成功
-88:	非同期読み込み処理の初期化...成功
-89:	ファイルアクセス処理の初期化...成功
-91:	メモリ総量:8044.40MB  空きメモリ領域:1653.49MB 
-91:	タイマーの精度を検査します
-92:	精度結果 更新回数 マルチメディアタイマー：0  パフォーマンスカウンター：60
-93:	 パフォーマンスカウンターを使用します タイマー精度 : 10000.000000 KHz 
-95:	 ソフトの二重起動検査... 二重起動はされていませんでした
-97:	ウインドウクラスを登録します... 登録に成功しました
-98:	フルスクリーンモード用のウインドウを作成します
-110:	ウインドウの作成に成功しました
-111:	ウインドウを表示します
-144:	カーソルを不可視にしました
-144:	ＩＭＥを無効にしました
-187:	DirectInput関係初期化処理
-187:		XInput DLL の読み込み中... 成功
-196:		DirectInput8 の取得を試みます...成功
-235:			引き続き初期化処理... 初期化成功
-239:		ジョイパッドの初期化... 
-240:			XInput 対応コントローラーのチェックを開始します
-240:				XInput 対応コントローラー No.0 をチェック
-241:				XInput 対応コントローラー No.0 の接続は確認できませんでした
-242:				XInput 対応コントローラー No.1 をチェック
-243:				XInput 対応コントローラー No.1 の接続は確認できませんでした
-243:				XInput 対応コントローラー No.2 をチェック
-244:				XInput 対応コントローラー No.2 の接続は確認できませんでした
-245:				XInput 対応コントローラー No.3 をチェック
-246:				XInput 対応コントローラー No.3 の接続は確認できませんでした
-247:			XInput 対応コントローラーのチェック完了
-247:			DirectInput 対応ジョイパッドの列挙を開始します
-365:			DirectInput 対応ジョイパッドの列挙終了
-366:		ジョイパッドの初期化は正常に終了しました
-366:		マウスデバイスの初期化... 初期化成功
-367:		キーボードデバイスの初期化... 初期化成功
-377:	DirectInput 関連の初期化は正常に終了しました
-403:	WASAPI の初期化を行います
-998:		デバイス名 : スピーカー (Realtek(R) Audio)
-1198:		デフォルト遅延時間 : 10.000 ms
-1199:		最小遅延時間       : 3.000 ms
-1199:		遅延時間           : 10.000 ms
-1210:		チャンネル数  　   : 8 ch
-1211:		量子化ビット深度   : 32 bit
-1211:		有効ビット深度　   : 32 bit
-1212:		サンプリングレート : 48000 Hz
-1213:		データ形式         : 浮動小数点型
-1336:		動作モード         : 共有モード
-1336:	WASAPI の初期化は正常に終了しました
-1338:	d3d11.dll の読み込み.... 成功
-1345:	dxgi.dll の読み込み.... 成功
-1346:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
-1348:	IDXGIFactory2 を作成します.... 成功
-1366:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
-1367:	IDXGIAdapter を列挙
-1368:		Adapter No.0 Desc:NVIDIA GeForce GTX 1650  VRAM:3072MB
-1369:			Output Device No.0 Name:\\.\DISPLAY1 ( 0, 0 )-( 1920, 1080 )
-1370:		Adapter No.1 Desc:Intel(R) UHD Graphics 630  VRAM:128MB
-1370:		Adapter No.2 Desc:Microsoft Basic Render Driver  VRAM:0MB
-1371:	API D3D11CreateDevice のアドレスを取得します.... 成功
-1372:	IDXGIAdapter を取得します.... 成功
-1372:	IDXGIAdapter1 を取得します.... 成功
-1373:	IDXGIAdapter2 を取得します.... 成功
-1374:	IDXGIAdapter3 を取得します.... 成功
-1375:	IDXGIAdapter4 を取得します.... 成功
-1376:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
-1377:	ID3D11Device オブジェクトを取得します.... 成功
-1666:	IDXGIDevice1 を取得します.... 成功
-1667:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
-1667:	[フルスクリーンモード 1920x1080]
-1668:	IDXGISwapChain2 を作成します.... 成功
-1863:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
-1864:	IDXGIOutput を取得します.... 成功
-1870:	Graphics Device:NVIDIA GeForce GTX 1650
-1871:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-1871:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
-1872:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
-1873:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
-1874:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-1875:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-1875:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
-1876:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-1877:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
-1877:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-1878:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
-1879:	ＤＸＴ２テクスチャフォーマットは使えません
-1880:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
-1880:	ＤＸＴ４テクスチャフォーマットは使えません
-1882:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
-1882:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
-1883:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
-1884:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-1885:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-1885:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-1886:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-1887:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-1888:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-1888:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-1889:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-1890:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-1891:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-1891:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-1892:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-1893:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-1893:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-1894:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-1895:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-1895:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-1896:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-1897:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-1899:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-1900:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-1900:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-1901:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-1902:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-1902:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-1903:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
-1904:	同時にレンダリングできるバッファの数:8
-1904:	最大テクスチャサイズ　幅:16384 高さ:16384
-1905:	標準描画用の頂点バッファの作成.... 成功
-1907:	シェーダーコード関係の初期化.... 成功
-1927:	各種シェーダー用定数バッファの作成.... 成功
-1929:	各種 ID3D11InputLayout の作成.... 成功
-1977:	画像の単純転送処理の初期化... 成功
-1985:	深度バッファを作成します.... 成功
-1993:	フォントの初期化を行います
-1999:	フォントの初期化は正常に終了しました
-2146:	文字コードバッファの初期化を行います... 完了しました
-2166:ＤＸライブラリの初期化処理終了
-2166:画面モード変更処理を開始します
-2168:	フォントの初期化を行います
-2169:	フォントの初期化は正常に終了しました
-2321:	d3d11.dll の解放 1
-2322:	dxgi.dll の解放 1
-2323:	Direct3D11 のオブジェクト数を出力
-2323:	Direct3D11 のオブジェクト合計数 : 0
-2324:	d3d11.dll の読み込み.... 成功
-2328:	dxgi.dll の読み込み.... 成功
-2329:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
-2330:	IDXGIFactory2 を作成します.... 成功
-2333:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
-2334:	API D3D11CreateDevice のアドレスを取得します.... 成功
-2335:	IDXGIAdapter を取得します.... 成功
-2336:	IDXGIAdapter1 を取得します.... 成功
-2337:	IDXGIAdapter2 を取得します.... 成功
-2338:	IDXGIAdapter3 を取得します.... 成功
-2339:	IDXGIAdapter4 を取得します.... 成功
-2340:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
-2340:	ID3D11Device オブジェクトを取得します.... 成功
-2435:	IDXGIDevice1 を取得します.... 成功
-2436:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
-2437:	ディスプレイ情報のセットアップ開始
-2437:		モニターの数：1  ディスプレイデバイスの数：4
-2439:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　60Hz  120x120dpi
-2449:	ディスプレイ情報のセットアップ完了
-2450:	[フルスクリーンモード 1920x1080]
-2451:	IDXGISwapChain2 を作成します.... 成功
-2545:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
-2546:	IDXGIOutput を取得します.... 成功
-2550:	Graphics Device:NVIDIA GeForce GTX 1650
-2551:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-2552:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
-2554:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
-2554:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
-2555:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-2556:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-2557:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
-2558:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-2558:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
-2559:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-2560:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
-2560:	ＤＸＴ２テクスチャフォーマットは使えません
-2561:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
-2562:	ＤＸＴ４テクスチャフォーマットは使えません
-2563:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
-2563:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
-2565:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
-2566:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-2567:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-2568:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-2568:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-2569:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-2569:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-2570:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-2571:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-2571:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-2572:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-2572:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-2573:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-2574:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-2574:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-2575:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-2575:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-2576:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-2577:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-2577:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-2578:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-2579:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-2579:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-2580:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-2581:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-2582:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-2582:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
-2583:	同時にレンダリングできるバッファの数:8
-2583:	最大テクスチャサイズ　幅:16384 高さ:16384
-2584:	標準描画用の頂点バッファの作成.... 成功
-2586:	シェーダーコード関係の初期化.... 成功
-2602:	各種シェーダー用定数バッファの作成.... 成功
-2604:	各種 ID3D11InputLayout の作成.... 成功
-2636:	画像の単純転送処理の初期化... 成功
-2639:	深度バッファを作成します.... 成功
-2645:	フォントの初期化を行います
-2650:	フォントの初期化は正常に終了しました
-2796:画面モード変更処理は正常に終了しました
-2830:ChangeWindowMode実行 
-2833:ウインドウモードフラグが立てられました
-2835:ウインドウスタイルをウインドウモード用に変更します... 完了
-2847:画面モード変更処理を開始します
-2849:	フォントの初期化を行います
-2851:	フォントの初期化は正常に終了しました
-3117:	d3d11.dll の解放 1
-3118:	dxgi.dll の解放 1
-3119:	Direct3D11 のオブジェクト数を出力
-3120:	Direct3D11 のオブジェクト合計数 : 0
-3121:	d3d11.dll の読み込み.... 成功
-3124:	dxgi.dll の読み込み.... 成功
-3125:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
-3126:	IDXGIFactory2 を作成します.... 成功
-3128:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
-3130:	API D3D11CreateDevice のアドレスを取得します.... 成功
-3131:	IDXGIAdapter を取得します.... 成功
-3132:	IDXGIAdapter1 を取得します.... 成功
-3133:	IDXGIAdapter2 を取得します.... 成功
-3135:	IDXGIAdapter3 を取得します.... 成功
-3136:	IDXGIAdapter4 を取得します.... 成功
-3137:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
-3137:	ID3D11Device オブジェクトを取得します.... 成功
-3224:	IDXGIDevice1 を取得します.... 成功
-3226:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
-3226:	[ウインドウモード 1240x780 ( 185, 42 )-( 1735, 1017 )]
-3227:	IDXGISwapChain2 を作成します.... 成功
-3229:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
-3230:	IDXGIOutput を取得します.... 成功
-3232:	Graphics Device:NVIDIA GeForce GTX 1650
-3232:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-3233:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
-3233:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
-3234:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
-3234:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-3235:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-3235:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
-3236:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-3237:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
-3237:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-3238:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
-3238:	ＤＸＴ２テクスチャフォーマットは使えません
-3239:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
-3239:	ＤＸＴ４テクスチャフォーマットは使えません
-3240:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
-3240:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
-3241:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
-3242:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-3242:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-3243:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-3243:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-3244:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-3244:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-3245:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-3245:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-3246:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-3246:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-3247:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-3247:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-3248:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-3248:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-3249:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-3249:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-3250:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-3250:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-3251:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-3251:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-3252:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-3253:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-3253:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-3254:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-3255:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-3255:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
-3256:	同時にレンダリングできるバッファの数:8
-3256:	最大テクスチャサイズ　幅:16384 高さ:16384
-3257:	標準描画用の頂点バッファの作成.... 成功
-3258:	シェーダーコード関係の初期化.... 成功
-3273:	各種シェーダー用定数バッファの作成.... 成功
-3276:	各種 ID3D11InputLayout の作成.... 成功
-3307:	画像の単純転送処理の初期化... 成功
-3309:	深度バッファを作成します.... 成功
-3313:	フォントの初期化を行います
-3315:	フォントの初期化は正常に終了しました
-3448:	ウインドウスタイルをウインドウモード用に変更します... ディスプレイ情報のセットアップ開始
-3453:		モニターの数：1  ディスプレイデバイスの数：4
-3454:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　60Hz  120x120dpi
-3480:	ディスプレイ情報のセットアップ完了
-3485:	完了
-3487:画面モード変更処理は正常に終了しました
-7924:ウインドウを閉じようとしています
-7939:ウインドウが破棄されようとしています
-7941:ソフトを終了する準備が整いました
-7970:フォントの初期化を行います
-7972:フォントの初期化は正常に終了しました
-8096:d3d11.dll の解放 1
-8099:dxgi.dll の解放 1
-8102:Direct3D11 のオブジェクト数を出力
-8103:Direct3D11 のオブジェクト合計数 : 0
-8112:DirectInput 関連の終了処理... 完了
-8119:サウンド関連の終了処理... 完了
-8131:ウィンドウ関連の終了処理... 完了
-8215:ＣＯＭを終了... 完了
-8217:
-8218:Alloc memory dump
-8220:	Total size:0(0.000kb)  Alloc num:0
-8221:
+21:		ＤＸライブラリ Ver3.23d
+21:		論理プロセッサの数 : 12
+21:		ＯＳ  Windows10 ( Build 19044  )
+133:		現時点のＣＰＵ動作速度：大体2.22GHz
+138:		ＭＭＸ命令を使用します
+139:		ＳＳＥ命令が使用可能です
+140:		ＳＳＥ２命令が使用可能です
+140:		ＣＰＵベンダ：GenuineIntel
+143:		ＣＰＵ名：Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz
+143:	ＣＯＭの初期化... 成功
+147:	非同期読み込み処理の初期化...成功
+148:	ファイルアクセス処理の初期化...成功
+149:	メモリ総量:16204.61MB  空きメモリ領域:8870.86MB 
+149:	タイマーの精度を検査します
+150:	精度結果 更新回数 マルチメディアタイマー：0  パフォーマンスカウンター：60
+150:	 パフォーマンスカウンターを使用します タイマー精度 : 10000.000000 KHz 
+151:	 ソフトの二重起動検査... 二重起動はされていませんでした
+151:	ウインドウクラスを登録します... 登録に成功しました
+152:	フルスクリーンモード用のウインドウを作成します
+157:	ウインドウの作成に成功しました
+157:	ウインドウを表示します
+174:	カーソルを不可視にしました
+174:	ＩＭＥを無効にしました
+205:	DirectInput関係初期化処理
+205:		XInput DLL の読み込み中... 成功
+209:		DirectInput8 の取得を試みます...成功
+224:			引き続き初期化処理... 初期化成功
+225:		ジョイパッドの初期化... 
+226:			XInput 対応コントローラーのチェックを開始します
+226:				XInput 対応コントローラー No.0 をチェック
+227:				XInput 対応コントローラー No.0 の接続は確認できませんでした
+227:				XInput 対応コントローラー No.1 をチェック
+227:				XInput 対応コントローラー No.1 の接続は確認できませんでした
+228:				XInput 対応コントローラー No.2 をチェック
+228:				XInput 対応コントローラー No.2 の接続は確認できませんでした
+229:				XInput 対応コントローラー No.3 をチェック
+230:				XInput 対応コントローラー No.3 の接続は確認できませんでした
+230:			XInput 対応コントローラーのチェック完了
+231:			DirectInput 対応ジョイパッドの列挙を開始します
+241:			DirectInput 対応ジョイパッドの列挙終了
+242:		ジョイパッドの初期化は正常に終了しました
+242:		マウスデバイスの初期化... 初期化成功
+243:		キーボードデバイスの初期化... 初期化成功
+250:	DirectInput 関連の初期化は正常に終了しました
+255:	WASAPI の初期化を行います
+260:		デバイス名 : スピーカー (Realtek(R) Audio)
+266:		デフォルト遅延時間 : 10.000 ms
+266:		最小遅延時間       : 3.000 ms
+267:		遅延時間           : 10.000 ms
+269:		チャンネル数  　   : 2 ch
+270:		量子化ビット深度   : 32 bit
+270:		有効ビット深度　   : 32 bit
+270:		サンプリングレート : 48000 Hz
+271:		データ形式         : 浮動小数点型
+321:		動作モード         : 共有モード
+321:	WASAPI の初期化は正常に終了しました
+325:	d3d11.dll の読み込み.... 成功
+329:	dxgi.dll の読み込み.... 成功
+331:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
+332:	IDXGIFactory2 を作成します.... 成功
+347:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
+348:	IDXGIAdapter を列挙
+349:		Adapter No.0 Desc:NVIDIA GeForce GTX 1070 with Max-Q Design  VRAM:8081MB
+349:			Output Device No.0 Name:\\.\DISPLAY4 ( 0, -1350 )-( 2400, 0 )
+350:		Adapter No.1 Desc:Intel(R) UHD Graphics 630  VRAM:128MB
+350:			Output Device No.0 Name:\\.\DISPLAY1 ( 0, 0 )-( 1920, 1080 )
+351:		Adapter No.2 Desc:Microsoft Basic Render Driver  VRAM:0MB
+351:	API D3D11CreateDevice のアドレスを取得します.... 成功
+352:	IDXGIAdapter を取得します.... 成功
+354:	IDXGIAdapter1 を取得します.... 成功
+355:	IDXGIAdapter2 を取得します.... 成功
+356:	IDXGIAdapter3 を取得します.... 成功
+357:	IDXGIAdapter4 を取得します.... 成功
+357:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
+358:	ID3D11Device オブジェクトを取得します.... 成功
+408:	IDXGIDevice1 を取得します.... 成功
+409:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
+410:	[フルスクリーンモード 1920x1080]
+410:	IDXGISwapChain2 を作成します.... 成功
+467:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
+468:	IDXGIOutput を取得します.... 成功
+469:	Graphics Device:Intel(R) UHD Graphics 630
+469:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+470:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
+470:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
+471:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
+472:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+473:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+473:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
+474:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+474:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
+475:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+475:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
+476:	ＤＸＴ２テクスチャフォーマットは使えません
+476:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
+477:	ＤＸＴ４テクスチャフォーマットは使えません
+478:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
+478:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
+479:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
+480:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+480:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+481:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+482:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+482:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+482:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+483:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+483:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+484:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+484:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+485:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+485:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+485:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+486:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+486:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+487:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+488:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+489:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+489:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+489:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+490:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+490:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+491:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+491:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+492:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+492:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
+492:	同時にレンダリングできるバッファの数:8
+493:	最大テクスチャサイズ　幅:16384 高さ:16384
+493:	標準描画用の頂点バッファの作成.... 成功
+494:	シェーダーコード関係の初期化.... 成功
+513:	各種シェーダー用定数バッファの作成.... 成功
+514:	各種 ID3D11InputLayout の作成.... 成功
+553:	画像の単純転送処理の初期化... 成功
+555:	深度バッファを作成します.... 成功
+558:	フォントの初期化を行います
+560:	フォントの初期化は正常に終了しました
+628:	文字コードバッファの初期化を行います... 完了しました
+638:ＤＸライブラリの初期化処理終了
+639:画面モード変更処理を開始します
+641:	フォントの初期化を行います
+641:	フォントの初期化は正常に終了しました
+749:	d3d11.dll の解放 1
+750:	dxgi.dll の解放 1
+750:	Direct3D11 のオブジェクト数を出力
+751:	Direct3D11 のオブジェクト合計数 : 0
+753:	d3d11.dll の読み込み.... 成功
+756:	dxgi.dll の読み込み.... 成功
+757:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
+759:	IDXGIFactory2 を作成します.... 成功
+768:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
+769:	API D3D11CreateDevice のアドレスを取得します.... 成功
+771:	IDXGIAdapter を取得します.... 成功
+772:	IDXGIAdapter1 を取得します.... 成功
+773:	IDXGIAdapter2 を取得します.... 成功
+775:	IDXGIAdapter3 を取得します.... 成功
+776:	IDXGIAdapter4 を取得します.... 成功
+778:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
+778:	ID3D11Device オブジェクトを取得します.... 成功
+833:	IDXGIDevice1 を取得します.... 成功
+834:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
+834:	ディスプレイ情報のセットアップ開始
+836:		モニターの数：2  ディスプレイデバイスの数：7
+837:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　120Hz  120x120dpi
+837:		No.1  モニター名：\\.\DISPLAY4　2400x1350　32bit　60Hz  120x120dpi
+864:	ディスプレイ情報のセットアップ完了
+864:	[フルスクリーンモード 1920x1080]
+865:	IDXGISwapChain2 を作成します.... 成功
+928:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
+929:	IDXGIOutput を取得します.... 成功
+931:	Graphics Device:Intel(R) UHD Graphics 630
+933:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+933:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
+934:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
+935:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
+936:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+937:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+938:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
+939:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+940:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
+941:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+941:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
+942:	ＤＸＴ２テクスチャフォーマットは使えません
+943:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
+944:	ＤＸＴ４テクスチャフォーマットは使えません
+945:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
+946:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
+948:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
+948:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+949:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+950:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+950:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+951:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+952:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+952:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+953:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+954:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+955:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+955:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+956:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+957:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+957:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+958:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+959:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+960:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+960:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+961:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+961:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+962:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+962:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+963:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+963:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+964:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+965:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
+965:	同時にレンダリングできるバッファの数:8
+966:	最大テクスチャサイズ　幅:16384 高さ:16384
+966:	標準描画用の頂点バッファの作成.... 成功
+967:	シェーダーコード関係の初期化.... 成功
+994:	各種シェーダー用定数バッファの作成.... 成功
+996:	各種 ID3D11InputLayout の作成.... 成功
+1027:	画像の単純転送処理の初期化... 成功
+1028:	深度バッファを作成します.... 成功
+1031:	フォントの初期化を行います
+1035:	フォントの初期化は正常に終了しました
+1103:画面モード変更処理は正常に終了しました
+1120:ChangeWindowMode実行 
+1120:ウインドウモードフラグが立てられました
+1121:ウインドウスタイルをウインドウモード用に変更します... 完了
+1123:画面モード変更処理を開始します
+1124:	フォントの初期化を行います
+1124:	フォントの初期化は正常に終了しました
+1245:	d3d11.dll の解放 1
+1246:	dxgi.dll の解放 1
+1247:	Direct3D11 のオブジェクト数を出力
+1248:	Direct3D11 のオブジェクト合計数 : 0
+1250:	d3d11.dll の読み込み.... 成功
+1257:	dxgi.dll の読み込み.... 成功
+1258:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
+1259:	IDXGIFactory2 を作成します.... 成功
+1267:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
+1268:	API D3D11CreateDevice のアドレスを取得します.... 成功
+1269:	IDXGIAdapter を取得します.... 成功
+1270:	IDXGIAdapter1 を取得します.... 成功
+1271:	IDXGIAdapter2 を取得します.... 成功
+1272:	IDXGIAdapter3 を取得します.... 成功
+1276:	IDXGIAdapter4 を取得します.... 成功
+1276:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
+1277:	ID3D11Device オブジェクトを取得します.... 成功
+1333:	IDXGIDevice1 を取得します.... 成功
+1334:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
+1335:	[ウインドウモード 1240x780 ( 185, 42 )-( 1735, 1017 )]
+1335:	IDXGISwapChain2 を作成します.... 成功
+1336:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
+1337:	IDXGIOutput を取得します.... 成功
+1337:	Graphics Device:Intel(R) UHD Graphics 630
+1338:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+1338:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
+1339:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
+1339:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
+1340:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+1340:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+1341:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
+1341:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+1342:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
+1342:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+1343:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
+1343:	ＤＸＴ２テクスチャフォーマットは使えません
+1343:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
+1344:	ＤＸＴ４テクスチャフォーマットは使えません
+1344:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
+1345:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
+1345:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
+1346:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+1346:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+1347:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+1347:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+1348:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+1348:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+1349:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+1349:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+1350:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+1350:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+1351:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+1351:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+1351:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+1352:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+1352:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+1353:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+1353:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+1354:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+1355:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+1355:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+1356:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+1357:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+1357:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+1358:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+1358:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+1359:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
+1360:	同時にレンダリングできるバッファの数:8
+1360:	最大テクスチャサイズ　幅:16384 高さ:16384
+1361:	標準描画用の頂点バッファの作成.... 成功
+1362:	シェーダーコード関係の初期化.... 成功
+1390:	各種シェーダー用定数バッファの作成.... 成功
+1392:	各種 ID3D11InputLayout の作成.... 成功
+1423:	画像の単純転送処理の初期化... 成功
+1425:	深度バッファを作成します.... 成功
+1428:	フォントの初期化を行います
+1431:	フォントの初期化は正常に終了しました
+1479:	ウインドウスタイルをウインドウモード用に変更します... ディスプレイ情報のセットアップ開始
+1482:		モニターの数：2  ディスプレイデバイスの数：7
+1483:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　120Hz  120x120dpi
+1484:		No.1  モニター名：\\.\DISPLAY4　2400x1350　32bit　60Hz  120x120dpi
+1501:	ディスプレイ情報のセットアップ完了
+1503:	完了
+1503:画面モード変更処理は正常に終了しました
+75444:ウインドウを閉じようとしています
+75452:ウインドウが破棄されようとしています
+75454:ソフトを終了する準備が整いました
+75462:フォントの初期化を行います
+75462:フォントの初期化は正常に終了しました
+75485:d3d11.dll の解放 1
+75486:dxgi.dll の解放 1
+75487:Direct3D11 のオブジェクト数を出力
+75487:Direct3D11 のオブジェクト合計数 : 0
+75493:DirectInput 関連の終了処理... 完了
+75499:サウンド関連の終了処理... 完了
+75508:ウィンドウ関連の終了処理... 完了
+75581:ＣＯＭを終了... 完了
+75582:
+75582:Alloc memory dump
+75583:	Total size:0(0.000kb)  Alloc num:0
+75583:

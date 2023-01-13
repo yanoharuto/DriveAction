@@ -35,7 +35,7 @@ void Player::Update(const float deltaTime, const bool outsideHitFlag)
 {
 	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
 
-	UpdateVelocity(deltaTime, GetAccelVec(inputKey, outsideHitFlag));
+	UpdateVelocity(VScale(GetAccelVec(inputKey, outsideHitFlag,deltaTime),deltaTime));
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	ArgumentCarInfo info = { MV1GetMatrix(modelHandle),direction,VSize(velocity) };
@@ -65,19 +65,20 @@ void Player::Update(const float deltaTime, const bool outsideHitFlag)
 /// <param name="inputKey">入力情報</param>
 /// <param name="outsideHitFlag">コースの外側にぶつかったかどうか</param>
 /// <returns>次の更新までに進む向きと速さ</returns>
-VECTOR Player::GetAccelVec(const int inputKey,const bool outsideHitFlag)
+VECTOR Player::GetAccelVec(const int inputKey,const bool outsideHitFlag, float deltaTime)
 {
 	// 加速処理.
 	VECTOR accelVec = VGet(0, 0, 0);
 	// 上を押していたら加速.
 	if (inputKey & PAD_INPUT_UP)
 	{
-		accelPower += accelPower > maxSpeed ? 0 : accelSpeed;
+		//速度が最高じゃなかったら加速
+		accelPower += accelPower > maxSpeed ? 0 : accelSpeed * deltaTime;
 	}
 	// 下を押していたら減速.
 	else if (inputKey & PAD_INPUT_DOWN)
 	{
-		accelPower -= accelPower * breakDecel;
+		accelPower *= breakDecel * deltaTime;
 	}
 	// 止まっている場合は減速しない.
 	if (VSize(velocity) > 0)
@@ -85,17 +86,17 @@ VECTOR Player::GetAccelVec(const int inputKey,const bool outsideHitFlag)
 		// 右か左を押していたらグリップによる減速.
 		if (inputKey & PAD_INPUT_RIGHT || inputKey & PAD_INPUT_LEFT)
 		{
-			accelPower -= accelPower * gripDecel;
+			accelPower *= gripDecel * deltaTime;
 		}
 		// 何も押さなければ減速.
 		if (inputKey == 0)
 		{
-			accelPower -= accelPower * defaultDecel;
+			accelPower *= defaultDecel * deltaTime;
 		}
 		//コース外に出たら減速
 		if (outsideHitFlag)
 		{
-			accelPower -= accelPower * outsideHitDecel;
+			accelPower *= outsideHitDecel * deltaTime;
 		}
 	}
 	accelVec = VScale(direction, accelPower);

@@ -20,21 +20,36 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
     std::list<VECTOR>::iterator firstPosIte = firstPosList.begin();
     //ÉvÉåÉCÉÑÅ[ÇÃèâä˙âªèàóù
     Racer racer{};
+
     racer.rank = 0;
     racer.checkPoint = new CheckPoint(circuitData);
+
     racer.car = new Player(*firstPosIte,courceDataLoader->GetFirstDir());
-    racerList.push_back(racer);
+    racerList.push_front(racer); 
+    RacerRankInfo rankInfo{};
+    Racer* racerP;
+    racerP = &racerList.front();
+    rankInfo.checkPoint = racerP->checkPoint;
+    rankInfo.rank = &racerP->rank;
     player = &racerList.front();
 
+    racerRankList.push_back(rankInfo);
     //ëºÇÃé‘ÇÃèâä˙âªèàóù
     ArgumentConflictInfo conflictInfo;
     for (int i = cpuNum; i > 0; i--)
     {
         firstPosIte++;
         racer.checkPoint = new CheckPoint(circuitData);
+        rankInfo.checkPoint = racer.checkPoint;
         racer.car = new CPUCar(*firstPosIte,courceDataLoader->GetFirstDir());
         racer.rank = 0;
-        racerList.push_back(racer);
+        racerList.push_front(racer);
+
+        racerP = &racerList.front();
+        rankInfo.checkPoint = racerP->checkPoint;
+        rankInfo.rank = &racerP->rank;
+        racerRankList.push_back(rankInfo);
+
         conflictInfo.SetObjInfo(false,racer.checkPoint);
         racer.car->ConflictProcess(conflictInfo);
     }
@@ -107,36 +122,27 @@ void RacerManager::ArgumentConflictProcess(Object* obj)
 }
 void RacerManager::RacerRankUpdate()
 {
-    std::list<Racer>::iterator racerIte;
-    std::list<Racer> tempRacerList = racerList;
-    Racer* racer;
-    int maxTransitCheckPoint = 0;
-    int transitCheckPoint = 0;
-    float maxDistance = 0;
-    float distance = 0;
-    for (racerIte = tempRacerList.begin(); racerIte != tempRacerList.end(); racerIte++)
+    std::list<RacerRankInfo>::iterator rankIte;
+    RacerRankInfo rankInfo;
+    int transitCheckCount = 0;
+    int maxTransitCheckCount = 0;
+    for (rankIte = racerRankList.begin(); rankIte != racerRankList.end(); rankIte++)
     {
-        racer = &(*racerIte);
-        transitCheckPoint= racer->checkPoint->GetTransitCheckPointCount();
-        if (transitCheckPoint > maxTransitCheckPoint)
+        rankInfo = *rankIte;
+        transitCheckCount = rankInfo.checkPoint->GetTransitCheckPointCount();
+        if (transitCheckCount > maxTransitCheckCount)
         {
-            std::swap(*racer,*tempRacerList.begin());
+            std::swap(*racerRankList.begin(), rankInfo);
         }
     }
-    int racerNum = racerList.size();
-    for (racerIte = tempRacerList.begin(); racerIte != tempRacerList.end(); racerIte++)
+    int rank = 1;
+    for (rankIte = racerRankList.begin(); rankIte != racerRankList.end(); rankIte++)
     {
-        racer = &(*racerIte);
-        for (std::list<Racer>::iterator racerIte2 = racerList.begin(); racerIte2 != racerList.end(); racerIte2++)
-        {
-            Racer* racer2 = &(*racerIte2);
-            if (racer->car == racer2->car)
-            {
-                racer2->rank = racerNum;
-            }
-        }
-        racerNum--;
+        rankInfo = *rankIte;
+        *rankInfo.rank = rank;
+        rank++;
     }
+    player;
 }
 /// <summary>
 /// é‘èÊÇËÇΩÇøìØémÇ≈Ç‘Ç¬Ç©Ç¡ÇƒÇ»Ç¢Ç©í≤Ç◊ÇÈ

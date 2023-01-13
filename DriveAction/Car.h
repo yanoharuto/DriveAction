@@ -42,7 +42,7 @@ protected:
 	/// </summary>
 	/// <param name"deltaTime">経過時間</param>
 	/// <param name="accelVec">次の更新までに進む方向と速さ</param>
-	void UpdateVelocity(const float deltaTime, const VECTOR accelVec);
+	void UpdateVelocity(const VECTOR accelVec);
 	/// <summary>
 	/// modelの描画場所を更新
 	/// </summary>
@@ -53,14 +53,14 @@ protected:
 	void ModelSetMatrix();
 	// 静的定数.
 	const float accelSpeed = 0.28f;					// 通常の加速.
-	const float maxSpeed = 140.0f;					// 最高速度.
+	const float maxSpeed = 16.0f;					// 最高速度.
 	const float defaultDecel = 0.04f;			// なにもしない時の減速.
 	const float breakDecel = 0.075f;				// ブレーキ時の減速.
-	const float gripDecel = 0.005f;				// グリップの減速.
-	const float gripPower = 1.2f;				// グリップ力.
+	const float gripDecel = 0.125f;				// グリップの減速.
+	const float gripPower = 0.02f;				// グリップ力.
 	const float maxGripPower = 0.4f;				// 最大グリップ力.
 	const float colideDecel = 0.45f;	    // 障害物にぶつかったときの減速率.
-	const float outsideHitDecel = 0.08f;   //コースの外側に来た時の減速
+	const float outsideHitDecel = 0.8f;   //コースの外側に来た時の減速
 	const float rage = static_cast<float>(DX_PI / 180.0f); //ラジアン
 	const float radiusValue = 3.0f; //車の幅
 	float accelPower = 0;             //計算結果によって出る速さ

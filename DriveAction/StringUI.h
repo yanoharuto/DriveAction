@@ -8,6 +8,7 @@ class StringUI:public UI
 public:
     StringUI();
     StringUI(unsigned int colorValue, UIData data);
+    StringUI(unsigned int colorValue, UIData data, std::string str);
     ~StringUI();
     void DrawUI()override;
     void Update(std::string updateString) override;

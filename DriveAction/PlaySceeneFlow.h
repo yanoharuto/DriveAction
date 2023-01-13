@@ -8,6 +8,7 @@
 #include "StageManager.h"
 #include "CountDown.h"
 #include "MiniMap.h"
+#include "PostGoalDirection.h"
 /// <summary>
 /// ‚Ç‚¤‚¢‚¤‡”Ô‚Åˆ—‚ğs‚¤‚©Œˆ‚ß‚é
 /// </summary>
@@ -40,6 +41,7 @@ private:
     CourceDataLoader* courceDataLoader;
     CountDown* countDown;
     MiniMap* miniMap;
+    PostGoalDirection* postGoalDirection;
     PlaySceeneProgress nowProgress;//¡‰½‚Ìˆ—‚ğs‚¤‚©Œˆ‚ß‚é•Ï”
     UIData uiData;
     int countUINum;

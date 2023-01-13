@@ -27,7 +27,7 @@ private:
 	/// <param name="inputKey">入力情報</param>
 	/// <param name="outsideHitFlag">コースの外側にぶつかったかどうか</param>
 	/// <returns>次の更新までに進む向きと速さ</returns>
-	VECTOR GetAccelVec(const int inputKey,const bool outsideHitFlag);
+	VECTOR GetAccelVec(const int inputKey,const bool outsideHitFlag,float deltaTime);
 	void Init();
 };
 

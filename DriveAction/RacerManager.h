@@ -21,6 +21,11 @@ struct Racer
     CheckPoint* checkPoint;
     Car* car;
 };
+struct RacerRankInfo
+{
+    int* rank;
+    CheckPoint* checkPoint;
+};
 /// <summary>
 /// 車乗りのマネージャー
 /// </summary>
@@ -72,6 +77,7 @@ public:
 private:
     //車乗り達のリスト
     std::list<Racer> racerList;
+    std::list<RacerRankInfo> racerRankList;
     //当たってるかどうか調べる
     HitChecker hitChecker;
     Racer* player;

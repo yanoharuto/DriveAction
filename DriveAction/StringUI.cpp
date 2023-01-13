@@ -13,6 +13,13 @@ StringUI::StringUI(unsigned int colorValue,UIData data)
     uiData = data;
 }
 
+StringUI::StringUI(unsigned int colorValue, UIData data, std::string str)
+{
+    color = colorValue;
+    uiData = data;
+    string = str;
+}
+
 StringUI::~StringUI()
 {
     DeleteFontToHandle(uiData.dataHandle);

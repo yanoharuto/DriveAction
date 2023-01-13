@@ -14,6 +14,7 @@ PlaySceeneFlow::PlaySceeneFlow()
 	timer = new Timer();
 	uiManager = new UIManager();
 	countDown = new CountDown();
+	postGoalDirection = nullptr;
 	miniMap = new MiniMap(uiManager,minimapX,minimapY, courceDataLoader->GetMiniMapImgAddress());
 	uiData = {};
 }
@@ -28,6 +29,7 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(countDown);
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(miniMap);
+	SAFE_DELETE(postGoalDirection)
 }
 
 PlaySceeneProgress PlaySceeneFlow::Update()
@@ -53,6 +55,7 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		if (countDown->CountDownEnd())
 		{
 			uiManager->DeleteArgumentUI(countUINum);
+			SAFE_DELETE(countDown);
 			nowProgress = PlaySceeneProgress::race;
 		}
 		break;
@@ -68,10 +71,14 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		if (racerManager->GetPlayerGoalCount() == 1)
 		{
 			nowProgress = PlaySceeneProgress::playerGoal;
+			postGoalDirection = new PostGoalDirection(uiManager);
 		}
 		break;
 	case PlaySceeneProgress::playerGoal:
-		nowProgress = PlaySceeneProgress::end;
+		if (postGoalDirection->Update(timer->GetDeltaTime(), uiManager))
+		{
+			nowProgress = PlaySceeneProgress::end;
+		}
 		break;
 	case PlaySceeneProgress::end:
 		break;

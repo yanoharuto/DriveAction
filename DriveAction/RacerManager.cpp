@@ -6,7 +6,7 @@
 #include "CircuitTrack.h"
 #include "StageDataAddressStruct.h"
 #include "CourceDataLoader.h"
-#include <map>
+#include <algorithm>
 /// <summary>
 /// 初期化
 /// </summary>
@@ -14,15 +14,18 @@
 /// <returns></returns>
 RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
 {
-    //プレイヤーの初期化処理
+    //コースの情報とかを引数からもらう
     CircuitData circuitData{ courceDataLoader->GetCheckPointPosList(),courceDataLoader->GetCheckPointDirList() };
     std::list<VECTOR> firstPosList = courceDataLoader->GetFirstPosList();
     std::list<VECTOR>::iterator firstPosIte = firstPosList.begin();
+    //プレイヤーの初期化処理
     Racer racer{};
     racer.rank = 0;
     racer.checkPoint = new CheckPoint(circuitData);
     racer.car = new Player(*firstPosIte,courceDataLoader->GetFirstDir());
-    RacerList.push_back(racer);
+    racerList.push_back(racer);
+    player = &racerList.front();
+
     //他の車の初期化処理
     ArgumentConflictInfo conflictInfo;
     for (int i = cpuNum; i > 0; i--)
@@ -31,7 +34,7 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
         racer.checkPoint = new CheckPoint(circuitData);
         racer.car = new CPUCar(*firstPosIte,courceDataLoader->GetFirstDir());
         racer.rank = 0;
-        RacerList.push_back(racer);
+        racerList.push_back(racer);
         conflictInfo.SetObjInfo(false,racer.checkPoint);
         racer.car->ConflictProcess(conflictInfo);
     }
@@ -39,10 +42,10 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
 //デストラクタ
 RacerManager::~RacerManager()
 {
-    for (int i = 0; i < static_cast<signed>(RacerList.size()); i++)
+    for (int i = 0; i < static_cast<signed>(racerList.size()); i++)
     {
-        SAFE_DELETE(RacerList.front().car);
-        SAFE_DELETE(RacerList.front().checkPoint);
+        SAFE_DELETE(racerList.front().car);
+        SAFE_DELETE(racerList.front().checkPoint);
     }
 }
 /// <summary>
@@ -54,7 +57,7 @@ void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
 {
     std::list<Racer>::iterator racerIte;
     Racer racer;
-    for (racerIte = RacerList.begin(); racerIte != RacerList.end(); racerIte++)
+    for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
         ArgumentConflictInfo conflictInfo;
@@ -88,7 +91,7 @@ void RacerManager::ArgumentConflictProcess(Object* obj)
     conflictInfo.SetObjInfo(false,obj);
     std::list<Racer>::iterator racerIte;
     Racer racer;
-    for (racerIte = RacerList.begin(); racerIte != RacerList.end(); racerIte++)
+    for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
         //car自身と当たり判定取ってたら通らない
@@ -104,7 +107,36 @@ void RacerManager::ArgumentConflictProcess(Object* obj)
 }
 void RacerManager::RacerRankUpdate()
 {
-
+    std::list<Racer>::iterator racerIte;
+    std::list<Racer> tempRacerList = racerList;
+    Racer* racer;
+    int maxTransitCheckPoint = 0;
+    int transitCheckPoint = 0;
+    float maxDistance = 0;
+    float distance = 0;
+    for (racerIte = tempRacerList.begin(); racerIte != tempRacerList.end(); racerIte++)
+    {
+        racer = &(*racerIte);
+        transitCheckPoint= racer->checkPoint->GetTransitCheckPointCount();
+        if (transitCheckPoint > maxTransitCheckPoint)
+        {
+            std::swap(*racer,*tempRacerList.begin());
+        }
+    }
+    int racerNum = racerList.size();
+    for (racerIte = tempRacerList.begin(); racerIte != tempRacerList.end(); racerIte++)
+    {
+        racer = &(*racerIte);
+        for (std::list<Racer>::iterator racerIte2 = racerList.begin(); racerIte2 != racerList.end(); racerIte2++)
+        {
+            Racer* racer2 = &(*racerIte2);
+            if (racer->car == racer2->car)
+            {
+                racer2->rank = racerNum;
+            }
+        }
+        racerNum--;
+    }
 }
 /// <summary>
 /// 車乗りたち同士でぶつかってないか調べる
@@ -113,7 +145,7 @@ void RacerManager::RacerConflictProcces()
 {
     std::list<Racer>::iterator racerIte;
     Racer racer;
-    for (racerIte = RacerList.begin(); racerIte != RacerList.end(); racerIte++)
+    for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
         ArgumentConflictProcess(racer.car);
@@ -125,12 +157,12 @@ void RacerManager::RacerConflictProcces()
 /// <returns></returns>
 int RacerManager::GetPlayerGoalCount()
 {
-    return RacerList.front().checkPoint->GetGoalCount();
+    return player->checkPoint->GetGoalCount();
 }
 
 int RacerManager::GetPlayerRank()
 {
-    return RacerList.front().rank;
+    return player->rank;
 }
 
 /// <summary>
@@ -141,7 +173,7 @@ void RacerManager::Draw()
 {
     std::list<Racer>::iterator racerIte;
     Racer racer;
-    for (racerIte = RacerList.begin(); racerIte != RacerList.end(); racerIte++)
+    for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
         racer.car->Draw();
@@ -151,8 +183,9 @@ void RacerManager::Draw()
 /// 一番最初に追加したオブジェクトを返す
 /// </summary>
 /// <returns></returns>
-Object* RacerManager::GetPlayer() const
+Object* RacerManager::GetPlayerCar() const
 {
-    return RacerList.front().car;
+    Car* playerCar= player->car;
+    return playerCar;
 }
 

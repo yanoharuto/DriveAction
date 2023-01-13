@@ -48,7 +48,7 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 	case PlaySceeneProgress::countDown:
 		count = countDown->Update(timer->GetDeltaTime());
 		uiManager->Update(countUINum, count);
-		camera->Update(racerManager->GetPlayer());
+		camera->Update(racerManager->GetPlayerCar());
 		//カウントダウンが終わったら
 		if (countDown->CountDownEnd())
 		{
@@ -62,9 +62,9 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		racerManager->RacerConflictProcces();
 		racerManager->RacerRankUpdate();
 		playerRank = racerManager->GetPlayerRank();
-		playerPos = racerManager->GetPlayer()->GetPos();
+		playerPos = racerManager->GetPlayerCar()->GetPos();
 		miniMap->Update(uiManager, playerPos.x,-playerPos.z);
-		camera->Update(racerManager->GetPlayer());
+		camera->Update(racerManager->GetPlayerCar());
 		if (racerManager->GetPlayerGoalCount() == 1)
 		{
 			nowProgress = PlaySceeneProgress::playerGoal;

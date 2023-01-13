@@ -18,7 +18,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// 画面モードのセット.
 	SetGraphMode(width,height,16);
 	ChangeWindowMode(TRUE);
-
 	//ひとつ前のシーン
 	SceneType prevSceneType = SceneType::TITLE;
 	//今のシーン

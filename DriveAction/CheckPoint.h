@@ -35,6 +35,7 @@ public:
     /// </summary>
     /// <returns></returns>
     int GetGoalCount();
+    int GetTransitCheckPointCount();
     /// <summary>
     /// チェックポイントまでの差を出す
     /// </summary>

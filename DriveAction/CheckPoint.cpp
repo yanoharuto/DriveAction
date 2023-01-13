@@ -78,6 +78,10 @@ int CheckPoint::GetGoalCount()
 {
     return goalCount;
 }
+int CheckPoint::GetTransitCheckPointCount()
+{
+    return transitCheckPointCount;
+}
 /// <summary>
 /// チェックポイントまでの距離
 /// </summary>

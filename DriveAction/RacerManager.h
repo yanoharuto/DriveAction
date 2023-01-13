@@ -58,7 +58,7 @@ public:
     /// 一番最初に追加したオブジェクトを返す
     /// </summary>
     /// <returns></returns>
-    Object* GetPlayer() const;
+    Object* GetPlayerCar() const;
     /// <summary>
     /// 車乗りたち同士でぶつかってないか調べる
     /// </summary>
@@ -71,8 +71,9 @@ public:
     int GetPlayerRank();
 private:
     //車乗り達のリスト
-    std::list<Racer> RacerList;
+    std::list<Racer> racerList;
     //当たってるかどうか調べる
     HitChecker hitChecker;
+    Racer* player;
 };
 

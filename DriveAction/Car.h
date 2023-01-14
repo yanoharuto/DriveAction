@@ -51,6 +51,9 @@ protected:
 	/// 車を回転させる
 	/// </summary>
 	void ModelSetMatrix();
+	void AutoDrive(const float deltaTime, const bool outsideHitFlag);
+	HandleDirection GetHandleDir();
+	virtual VECTOR GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float deltaTime);
 	// 静的定数.
 	const float accelSpeed = 0.28f;					// 通常の加速.
 	const float maxSpeed = 16.0f;					// 最高速度.
@@ -60,10 +63,11 @@ protected:
 	const float gripPower = 0.02f;				// グリップ力.
 	const float maxGripPower = 0.4f;				// 最大グリップ力.
 	const float colideDecel = 0.45f;	    // 障害物にぶつかったときの減速率.
-	const float outsideHitDecel = 0.8f;   //コースの外側に来た時の減速
+	const float outsideHitDecel = 0.2f;   //コースの外側に来た時の減速
 	const float rage = static_cast<float>(DX_PI / 180.0f); //ラジアン
 	const float radiusValue = 3.0f; //車の幅
 	float accelPower = 0;             //計算結果によって出る速さ
+	const float turnProccesLine = 7.0f;//目的地に向かうときに曲がるか判断する
 	Wheels* wheels;//タイヤ
 	VECTOR destinationPos;
 };

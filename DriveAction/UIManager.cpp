@@ -50,3 +50,8 @@ void UIManager::DeleteAllUI()
         DeleteArgumentUI(i);
     }
 }
+
+void UIManager::StopArgumentDrawUI(int uiNum, bool boolValue)
+{
+    uiVec[uiNum]->StopDrawUI(boolValue);
+}

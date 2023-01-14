@@ -13,5 +13,8 @@ PointUI::~PointUI()
 
 void PointUI::DrawUI()
 {
-    DrawCircle(uiData.x,uiData.y,radius,pointColor,true);
+    if (!IsStopDrawUI)
+    {
+        DrawCircle(uiData.x, uiData.y, radius, pointColor, true);
+    }
 }

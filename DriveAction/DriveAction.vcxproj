@@ -160,6 +160,8 @@
     <ClCompile Include="PointUI.cpp" />
     <ClCompile Include="PostGoalDirection.cpp" />
     <ClCompile Include="RacePrevProcess.cpp" />
+    <ClCompile Include="ResultSceneFlow.cpp" />
+    <ClCompile Include="ScoreTime.cpp" />
     <ClCompile Include="VECTOR3Loader.cpp" />
     <ClCompile Include="ImgUI.cpp" />
     <ClCompile Include="RacerManager.cpp" />
@@ -199,6 +201,8 @@
     <ClInclude Include="PointUI.h" />
     <ClInclude Include="PostGoalDirection.h" />
     <ClInclude Include="RacePrevProcess.h" />
+    <ClInclude Include="ResultSceneFlow.h" />
+    <ClInclude Include="ScoreTime.h" />
     <ClInclude Include="StageDataAddressStruct.h" />
     <ClInclude Include="VECTOR3Loader.h" />
     <ClInclude Include="ImgUI.h" />

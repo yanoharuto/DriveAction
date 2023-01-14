@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneBase.h"
+#include "ResultSceneFlow.h"
 class ResultScene final:
     public SceneBase
 {
@@ -10,5 +11,6 @@ public:
     SceneType Update() override;
     void Draw() override;
 private:
+    ResultSceneFlow* resultSceneFlow;
 };
 

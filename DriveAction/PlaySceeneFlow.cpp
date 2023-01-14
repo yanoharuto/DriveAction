@@ -68,7 +68,7 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		playerPos = racerManager->GetPlayerCar()->GetPos();
 		miniMap->Update(uiManager, playerPos.x,-playerPos.z);
 		camera->Update(racerManager->GetPlayerCar());
-		if (racerManager->GetPlayerGoalCount() == 1)
+		if (racerManager->GetPlayerGoalCount() == 0)
 		{
 			nowProgress = PlaySceeneProgress::playerGoal;
 			postGoalDirection = new PostGoalDirection(uiManager);

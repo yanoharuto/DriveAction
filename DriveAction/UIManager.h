@@ -32,6 +32,12 @@ public:
     /// ベクターに追加したUI全消し
     /// </summary>
     void DeleteAllUI();
+    /// <summary>
+    /// 描画をいったん止める用
+    /// </summary>
+    /// <param name="uiNum"></param>
+    /// <param name="boolValue"></param>
+    void StopArgumentDrawUI(int uiNum, bool boolValue);
 private:
     std::vector<UI*> uiVec;
 };

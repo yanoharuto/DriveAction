@@ -1,12 +1,15 @@
 #include "ResultScene.h"
 #include "DxLib.h"
+#include "Utility.h"
 ResultScene::ResultScene()
     :SceneBase(SceneType::RESULT)
 {
+    resultSceneFlow = new ResultSceneFlow();
 }
 
 ResultScene::~ResultScene()
 {
+    SAFE_DELETE(resultSceneFlow);
 }
 
 SceneType ResultScene::Update()
@@ -22,4 +25,5 @@ void ResultScene::Draw()
 {
 #ifdef _DEBUG
 #endif // _DEBUG
+    resultSceneFlow->Draw();
 }

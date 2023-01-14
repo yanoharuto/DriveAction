@@ -21,6 +21,7 @@ public:
     /// </summary>
     /// <returns>Œo‰ßŽžŠÔ</returns>
     float GetScoreTime();
+    
 private:
     const float Thousand = 1000;
     float deltaTimeCalculationLine = 0;

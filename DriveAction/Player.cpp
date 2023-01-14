@@ -96,7 +96,7 @@ VECTOR Player::GetAccelVec(const int inputKey,const bool outsideHitFlag, float d
 		//コース外に出たら減速
 		if (outsideHitFlag)
 		{
-			accelPower *= outsideHitDecel * deltaTime;
+			accelPower = outsideHitDecel * deltaTime;
 		}
 	}
 	accelVec = VScale(direction, accelPower);

@@ -27,7 +27,10 @@ StringUI::~StringUI()
 
 void StringUI::DrawUI()
 {
-    DrawStringToHandle(uiData.x,uiData.y,string.c_str(),color,uiData.dataHandle);
+    if (!IsStopDrawUI)
+    {
+        DrawStringToHandle(uiData.x, uiData.y, string.c_str(), color, uiData.dataHandle);
+    }
 }
 
 void StringUI::Update(std::string updateString)

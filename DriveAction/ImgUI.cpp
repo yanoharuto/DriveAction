@@ -18,5 +18,8 @@ ImgUI::~ImgUI()
 
 void ImgUI::DrawUI()
 {
-    DrawRotaGraph(uiData.x, uiData.y, rate, 0, uiData.dataHandle, true, 0, 0);
+    if (!IsStopDrawUI)
+    {
+        DrawRotaGraph(uiData.x, uiData.y, rate, 0, uiData.dataHandle, true, 0, 0);
+    }
 }

@@ -9,7 +9,9 @@ public:
     virtual ~UI() {};
     virtual void DrawUI() {};
     virtual void Update(std::string updateString) {};
-    virtual void Update(int x, int y) { uiData.x = x; uiData.y = y; };
+    void Update(int x, int y) { uiData.x = x; uiData.y = y; };
+    void StopDrawUI(bool boolvalue) { IsStopDrawUI = boolvalue; };
 protected:
     UIData uiData;
+    bool IsStopDrawUI=false;
 };

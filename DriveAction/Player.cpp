@@ -34,8 +34,9 @@ Player::~Player()
 void Player::Update(const float deltaTime, const bool outsideHitFlag)
 {
 	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
+	VECTOR accelVec = GetAccelVec(inputKey, outsideHitFlag, deltaTime);
 
-	UpdateVelocity(VScale(GetAccelVec(inputKey, outsideHitFlag,deltaTime),deltaTime));
+	UpdateVelocity(VScale(accelVec,deltaTime));
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	ArgumentCarInfo info = { MV1GetMatrix(modelHandle),direction,VSize(velocity) };
@@ -55,6 +56,7 @@ void Player::Update(const float deltaTime, const bool outsideHitFlag)
 	// タイヤの処理
 	wheels->WheelUpdate(info);
 #ifdef _DEBUG
+	//printfDx("%f,%f\n", accelVec.x,accelVec.z);
 	//printfDx("%f,%f\n", position.x,position.z);
 	//printfDx("%f,%f\n", direction.x,direction.z);
 #endif
@@ -67,18 +69,17 @@ void Player::Update(const float deltaTime, const bool outsideHitFlag)
 /// <returns>次の更新までに進む向きと速さ</returns>
 VECTOR Player::GetAccelVec(const int inputKey,const bool outsideHitFlag, float deltaTime)
 {
-	// 加速処理.
-	VECTOR accelVec = VGet(0, 0, 0);
 	// 上を押していたら加速.
 	if (inputKey & PAD_INPUT_UP)
 	{
 		//速度が最高じゃなかったら加速
 		accelPower += accelPower > maxSpeed ? 0 : accelSpeed * deltaTime;
+
 	}
 	// 下を押していたら減速.
 	else if (inputKey & PAD_INPUT_DOWN)
 	{
-		accelPower *= breakDecel * deltaTime;
+		accelPower -= accelPower * breakDecel * deltaTime;
 	}
 	// 止まっている場合は減速しない.
 	if (VSize(velocity) > 0)
@@ -86,20 +87,21 @@ VECTOR Player::GetAccelVec(const int inputKey,const bool outsideHitFlag, float d
 		// 右か左を押していたらグリップによる減速.
 		if (inputKey & PAD_INPUT_RIGHT || inputKey & PAD_INPUT_LEFT)
 		{
-			accelPower *= gripDecel * deltaTime;
+			accelPower -= accelPower * gripDecel * deltaTime;
 		}
 		// 何も押さなければ減速.
-		if (inputKey == 0)
+		else if (inputKey == 0)
 		{
-			accelPower *= defaultDecel * deltaTime;
+			accelPower -= accelPower * defaultDecel * deltaTime;
 		}
 		//コース外に出たら減速
 		if (outsideHitFlag)
 		{
-			accelPower = outsideHitDecel * deltaTime;
+			accelPower -= accelPower * outsideHitDecel * deltaTime;
 		}
 	}
-	accelVec = VScale(direction, accelPower);
+	//printfDx("%f\n", accelPower);
+	VECTOR accelVec = VScale(direction, accelPower);
 	return accelVec;
 }
 

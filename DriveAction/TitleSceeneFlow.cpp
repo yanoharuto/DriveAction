@@ -5,6 +5,7 @@
 #include "StageDataAddressStruct.h"
 #include "DataAddresLoader.h"
 #include "DxLib.h"
+
 TitleSceeneFlow::TitleSceeneFlow()
 {
     uiManager = new UIManager();
@@ -16,23 +17,27 @@ TitleSceeneFlow::TitleSceeneFlow()
     InitStageString();
     StringUI* stringUI = new StringUI(GetColor(0,0,255),uiData);
     uiIndex = uiManager->AddUI(stringUI);
+    switchUI = new SwitchUI();
 }
 
 TitleSceeneFlow::~TitleSceeneFlow()
 {
     SAFE_DELETE(uiManager);
     SAFE_DELETE(stageSelect);
+    SAFE_DELETE(switchUI);
 }
 
-void TitleSceeneFlow::Update()
+void TitleSceeneFlow::Update(float deltaTime)
 {
     std::string string = stageSelect->GetLoadeStageName();
     uiManager->Update(uiIndex, string);
+    switchUI->Update(deltaTime);
 }
 
 void TitleSceeneFlow::Draw()
 {
     uiManager->DrawUI();
+    switchUI->Draw();
 }
 
 void TitleSceeneFlow::InitMinimapData()
@@ -45,7 +50,7 @@ void TitleSceeneFlow::InitMinimapData()
 
 void TitleSceeneFlow::InitStageString()
 {
-    uiData.x = 300;
-    uiData.y = 700;
+    uiData.x = 200;
+    uiData.y = 200;
     uiData.dataHandle = CreateFontToHandle("BIZ UDÉSÉVÉbÉN",64,3,DX_FONTTYPE_NORMAL);
 }

@@ -55,13 +55,13 @@ protected:
 	HandleDirection GetHandleDir();
 	virtual VECTOR GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float deltaTime);
 	// 静的定数.
-	const float accelSpeed = 0.28f;					// 通常の加速.
-	const float maxSpeed = 16.0f;					// 最高速度.
+	const float accelSpeed =27.0f;					// 通常の加速.
+	const float maxSpeed = 250.0f;					// 最高速度.
 	const float defaultDecel = 0.04f;			// なにもしない時の減速.
-	const float breakDecel = 0.075f;				// ブレーキ時の減速.
+	const float breakDecel = 0.35f;				// ブレーキ時の減速.
 	const float gripDecel = 0.125f;				// グリップの減速.
-	const float gripPower = 0.02f;				// グリップ力.
-	const float maxGripPower = 0.4f;				// 最大グリップ力.
+	const float gripPower = 0.08f;				// グリップ力.
+	const float maxGripPower = 1.2f;				// 最大グリップ力.
 	const float colideDecel = 0.45f;	    // 障害物にぶつかったときの減速率.
 	const float outsideHitDecel = 0.2f;   //コースの外側に来た時の減速
 	const float rage = static_cast<float>(DX_PI / 180.0f); //ラジアン

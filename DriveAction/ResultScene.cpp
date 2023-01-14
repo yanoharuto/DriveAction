@@ -5,15 +5,19 @@ ResultScene::ResultScene()
     :SceneBase(SceneType::RESULT)
 {
     resultSceneFlow = new ResultSceneFlow();
+    timer = new Timer();
 }
 
 ResultScene::~ResultScene()
 {
     SAFE_DELETE(resultSceneFlow);
+    SAFE_DELETE(timer);
 }
 
 SceneType ResultScene::Update()
 {
+    timer->Update();
+    resultSceneFlow->Update(timer->GetDeltaTime());
     if (CheckHitKey(KEY_INPUT_W))
     {
         nowScenType = SceneType::TITLE;

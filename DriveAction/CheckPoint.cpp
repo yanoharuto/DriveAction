@@ -46,10 +46,11 @@ bool CheckPoint::CheckPointUpdate(ArgumentConflictInfo carInfo)
         if (checker.HitCheck(thisInfo, carInfo))
         {
             transitCheckPointCount += i + 1;
-            //ƒS[ƒ‹‚µ‚½‚ç
+            //1T‚µ‚½‚È‚ç
             if (transitCheckPointCount >= vecSize)
             {
                 goalCount++;
+                transitCheckPointCount = 0;
             }
             position = GetArgumentCountVector(cPParam.positionVec.begin(), transitCheckPointCount % vecSize);
             direction = GetArgumentCountVector(cPParam.directionVec.begin(), transitCheckPointCount % vecSize);

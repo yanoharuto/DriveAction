@@ -5,16 +5,19 @@ TitleScene::TitleScene()
     :SceneBase(SceneType::TITLE)
 {
     titleSceneFlow = new TitleSceeneFlow();
+    timer = new Timer();
 }
 
 TitleScene::~TitleScene()
 {
     SAFE_DELETE(titleSceneFlow);
+    SAFE_DELETE(timer);
 }
 
 SceneType TitleScene::Update()
 {
-    titleSceneFlow->Update();
+    timer->Update();
+    titleSceneFlow->Update(timer->GetDeltaTime());
     if (CheckHitKey(KEY_INPUT_Z))
     {
         nowScenType = SceneType::PLAY;

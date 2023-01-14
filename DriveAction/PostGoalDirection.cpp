@@ -17,10 +17,13 @@ PostGoalDirection::PostGoalDirection(UIManager* uimanager)
     goalMarkerUI.dataHandle = CreateFontToHandle("BIZ UDゴシック",122,3,DX_FONTTYPE_NORMAL);
     StringUI* goalUI = new StringUI(goalMarkerUIColor,goalMarkerUI,"Goal!!!");
     goalMarkerUINum = uimanager->AddUI(goalUI);
+
+    switchUI = new SwitchUI();
 }
 
 PostGoalDirection::~PostGoalDirection()
 {
+    SAFE_DELETE(switchUI);
 }
 
 bool PostGoalDirection::Update(float deltaTime, UIManager* uimanager)
@@ -38,24 +41,7 @@ bool PostGoalDirection::Update(float deltaTime, UIManager* uimanager)
         if (x > width)
         {
             isEndGoalUI = true;
-            x = SCREEN_WIDTH;
-            x /= 2;
-            y = SCREEN_HEIGHT;
-            y /= 5;
-            y *= 3;
-            UIData spaceKeyUI;
-            spaceKeyUI.x = x - 50;
-            spaceKeyUI.y = y;
-            spaceKeyUI.dataHandle = CreateFontToHandle("BIZ UDゴシック", bigPleaseSpaceKeySize, 3, DX_FONTTYPE_NORMAL);
-            StringUI* smallUI = new StringUI(pleaseSpaceKeyUIColor, spaceKeyUI, pleaseSpaceKeyUIString);
-            smallPleaseSpaceKeyUINum = uimanager->AddUI(smallUI);
-
-
-            x += bigPleaseSpaceKeySize - smallPleaseSpaceKeySize;
-            spaceKeyUI.dataHandle = CreateFontToHandle("BIZ UDゴシック", smallPleaseSpaceKeySize, 3, DX_FONTTYPE_NORMAL);
-            StringUI* bigUI = new StringUI(pleaseSpaceKeyUIColor, spaceKeyUI, pleaseSpaceKeyUIString);
-            bigPleaseSpaceKeyUINum= uimanager->AddUI(bigUI);
-            uimanager->StopArgumentDrawUI(bigPleaseSpaceKeyUINum,true);
+           
         }
         else
         {
@@ -65,16 +51,15 @@ bool PostGoalDirection::Update(float deltaTime, UIManager* uimanager)
     }
     else
     {
-        if ((int)time % 2 < 1)
-        {
-            uimanager->StopArgumentDrawUI(bigPleaseSpaceKeyUINum, true);
-            uimanager->StopArgumentDrawUI(smallPleaseSpaceKeyUINum, false);
-        }
-        else
-        {
-            uimanager->StopArgumentDrawUI(bigPleaseSpaceKeyUINum, false);
-            uimanager->StopArgumentDrawUI(smallPleaseSpaceKeyUINum, true);
-        }
+        switchUI->Update(deltaTime);
     }
     return false;
+}
+
+void PostGoalDirection::Draw()
+{
+    if (isEndGoalUI)
+    {
+        switchUI->Draw();
+    }
 }

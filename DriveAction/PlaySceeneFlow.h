@@ -9,6 +9,7 @@
 #include "CountDown.h"
 #include "MiniMap.h"
 #include "PostGoalDirection.h"
+#include "ScoreTime.h"
 /// <summary>
 /// ‚Ç‚¤‚¢‚¤‡”Ô‚Åˆ—‚ğs‚¤‚©Œˆ‚ß‚é
 /// </summary>
@@ -41,6 +42,7 @@ private:
     CourceDataLoader* courceDataLoader;
     CountDown* countDown;
     MiniMap* miniMap;
+    ScoreTime* scoreTime;
     PostGoalDirection* postGoalDirection;
     PlaySceeneProgress nowProgress;//¡‰½‚Ìˆ—‚ğs‚¤‚©Œˆ‚ß‚é•Ï”
     UIData uiData;

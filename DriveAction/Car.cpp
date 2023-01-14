@@ -57,7 +57,7 @@ void Car::Draw()
 	MV1DrawModel(modelHandle);
 	wheels->Draw();
 #ifdef _DEBUG
-	DrawSphere3D(position,radius,5,GetColor(100,100,255), GetColor(100, 100, 255),false);
+	//DrawSphere3D(position,radius,5,GetColor(100,100,255), GetColor(100, 100, 255),false);
 #endif
 }
 
@@ -82,12 +82,14 @@ void Car::DamageReaction(const VECTOR conflictObjPos, const float conflictObjRad
 /// <param name="accelVec">次の更新までに進む方向と速さ</param>
 void Car::UpdateVelocity(const VECTOR accelVec)
 {
+	velocity = accelVec;
 	//タイヤの向きから進行方向を取る
 	float theta = wheels->GetMoveDirTheta(VSize(velocity));
 	theta *= gripPower;
 	velocity = VTransform(velocity, MGetRotY(theta));
 	// ベロシティ加速計算.
-	velocity = VAdd(velocity, accelVec);
+
+
 	// 上下方向にいかないようにベロシティを整える.
 	velocity = VGet(velocity.x, 0, velocity.z);	
 }
@@ -128,7 +130,8 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag)
 {
 	ArgumentCarInfo info;
 	info.handleDir = GetHandleDir();
-	UpdateVelocity(VScale(GetAccelVec(info.handleDir, outsideHitFlag, deltaTime), deltaTime));
+	VECTOR accelVec = GetAccelVec(info.handleDir, outsideHitFlag, deltaTime);
+	UpdateVelocity(VScale(accelVec, deltaTime));
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	info.matrix = MV1GetMatrix(modelHandle);
@@ -174,6 +177,7 @@ VECTOR Car::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float de
 	// 加速処理.
 	VECTOR accelVec = VGet(0, 0, 0);
 	accelPower += accelPower > maxSpeed ? 0 : accelSpeed * deltaTime;
+
 	// 止まっている場合は減速しない.
 	if (VSize(velocity) > 0)
 	{
@@ -181,12 +185,12 @@ VECTOR Car::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float de
 		if (handleDir != HandleDirection::straight)
 		{
 			//左右に曲がろうとしたら減速する
-			accelPower *= gripDecel * deltaTime;
+			accelPower -= accelPower * gripDecel * deltaTime;
 		}
 		//コース外に出たら減速
 		if (outsideHitFlag)
 		{
-			accelPower *= outsideHitDecel * deltaTime;
+			accelPower -= accelPower * outsideHitDecel * deltaTime;
 		}
 	}
 	accelVec = VScale(direction, accelPower);

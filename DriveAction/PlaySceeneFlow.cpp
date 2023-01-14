@@ -29,7 +29,8 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(countDown);
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(miniMap);
-	SAFE_DELETE(postGoalDirection)
+	SAFE_DELETE(postGoalDirection);
+	SAFE_DELETE(scoreTime);
 }
 
 PlaySceeneProgress PlaySceeneFlow::Update()
@@ -68,10 +69,11 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		playerPos = racerManager->GetPlayerCar()->GetPos();
 		miniMap->Update(uiManager, playerPos.x,-playerPos.z);
 		camera->Update(racerManager->GetPlayerCar());
-		if (racerManager->GetPlayerGoalCount() == 0)
+		if (racerManager->GetPlayerGoalCount() == 1)
 		{
 			nowProgress = PlaySceeneProgress::playerGoal;
 			postGoalDirection = new PostGoalDirection(uiManager);
+			scoreTime = new ScoreTime(timer);
 		}
 		break;
 	case PlaySceeneProgress::playerGoal:
@@ -87,7 +89,7 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		break;
 	}
 #ifdef _DEBUG
-	DxLib::printfDx("%d", playerRank);
+	//DxLib::printfDx("%d", playerRank);
 #endif
 	return nowProgress;
 }
@@ -97,6 +99,22 @@ void PlaySceeneFlow::Draw()
 	racerManager->Draw();
 	stageManager->Draw();
 	uiManager->DrawUI();
+	switch (nowProgress)
+	{
+	case PlaySceeneProgress::start:
+		break;
+	case PlaySceeneProgress::countDown:
+		break;
+	case PlaySceeneProgress::race:
+		break;
+	case PlaySceeneProgress::playerGoal:
+		postGoalDirection->Draw();
+		break;
+	case PlaySceeneProgress::end:
+		break;
+	default:
+		break;
+	}
 }
 
 void PlaySceeneFlow::MakeCountDownUI()

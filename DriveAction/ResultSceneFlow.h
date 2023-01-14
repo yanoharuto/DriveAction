@@ -1,16 +1,19 @@
 #pragma once
 #include "StringUI.h"
 #include "ImgUI.h"
+#include "SwitchUI.h"
+#include <string>
 class ResultSceneFlow
 {
 public:
     ResultSceneFlow();
     ~ResultSceneFlow();
-    void Update();
+    void Update(float deltaTime);
     void Draw();
 private:
     const std::string resultBackImgAddress = "data/result/resultGraph.png";
     int backGraphHandle;
     StringUI* scoreUI;
+    SwitchUI* switchUI;
 };
 

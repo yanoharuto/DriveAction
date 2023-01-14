@@ -4,6 +4,9 @@
 #include"Utility.h"
 #include "ScoreTime.h"
 #include <iostream>
+#include <string>
+#include "SwitchUI.h"
+
 ResultSceneFlow::ResultSceneFlow()
 {
     backGraphHandle = LoadGraph(resultBackImgAddress.c_str());
@@ -15,10 +18,9 @@ ResultSceneFlow::ResultSceneFlow()
     scoreUIData.x = x;
     scoreUIData.y = y;
     scoreUIData.dataHandle=CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
-    scoreUI = new StringUI(GetColor(200,200,200),scoreUIData);
-    float scoreTime = ScoreTime::GetScoreTime();
-    std::string scoreTimeStr = scoreTime;
-    scoreUI->Update(scoreTimeStr);
+    scoreUI = new StringUI(GetColor(200,200,100),scoreUIData);
+    scoreUI->Update(std::to_string(ScoreTime::GetScoreTime())+"秒でクリア");
+    switchUI = new SwitchUI();
 }
 
 ResultSceneFlow::~ResultSceneFlow()
@@ -27,15 +29,17 @@ ResultSceneFlow::~ResultSceneFlow()
     {
         DeleteGraph(backGraphHandle);
     }
+    SAFE_DELETE(switchUI);
 }
 
-void ResultSceneFlow::Update()
+void ResultSceneFlow::Update(float deltaTime)
 {
-    
+    switchUI->Update(deltaTime);
 }
 
 void ResultSceneFlow::Draw()
 {
     DrawGraph(0, 0, backGraphHandle, false);
     scoreUI->DrawUI();
+    switchUI->Draw();
 }

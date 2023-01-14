@@ -26,7 +26,7 @@ void Timer::Update()
     }
 #ifdef _DEBUG
 
-    printfDx("%f,%f\n", deltaTime,deltaTimeCalculationLine);
+   // printfDx("%f,%f\n", deltaTime,deltaTimeCalculationLine);
 #endif
     time = (float)GetNowCount();
 }

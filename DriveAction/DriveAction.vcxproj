@@ -162,6 +162,7 @@
     <ClCompile Include="RacePrevProcess.cpp" />
     <ClCompile Include="ResultSceneFlow.cpp" />
     <ClCompile Include="ScoreTime.cpp" />
+    <ClCompile Include="SwitchUI.cpp" />
     <ClCompile Include="VECTOR3Loader.cpp" />
     <ClCompile Include="ImgUI.cpp" />
     <ClCompile Include="RacerManager.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="ResultSceneFlow.h" />
     <ClInclude Include="ScoreTime.h" />
     <ClInclude Include="StageDataAddressStruct.h" />
+    <ClInclude Include="SwitchUI.h" />
     <ClInclude Include="VECTOR3Loader.h" />
     <ClInclude Include="ImgUI.h" />
     <ClInclude Include="RacerManager.h" />

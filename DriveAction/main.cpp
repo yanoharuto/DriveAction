@@ -1,4 +1,5 @@
 #include "DxLib.h"
+#include "Effect.h"
 #include "SceneBase.h"
 #include "TitleScene.h"
 #include "PlayScene.h"
@@ -12,6 +13,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (DxLib_Init() == -1)		// ＤＸライブラリ初期化処理
 	{
 		return -1;			// エラーが起きたら直ちに終了
+	}
+	//Effekseerを初期化する
+	if (Effect_Initialize() == -1) 
+	{
+		DxLib_End();
+		return -1;
 	}
 	int width = SCREEN_WIDTH;
 	int height = SCREEN_HEIGHT;
@@ -31,10 +38,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	while (ProcessMessage() == 0 && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
 #ifdef _DEBUG
-		clsDx(); // printfDx の結果をリセットするための関数.
+		//clsDx(); // printfDx の結果をリセットするための関数.
 #endif	// ここでDEBUG用の処理を終了.
 		//更新
+		Effect_Update();
 		nowSceneType = scene->Update();
+		
 		userInput->Update();
 		ClearDrawScreen();//画面を初期化する
 		scene->Draw();//描画
@@ -50,6 +59,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//直前のシーンを記録
 		prevSceneType = nowSceneType;
 	}
+	Effect_Finalize();
 
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
 

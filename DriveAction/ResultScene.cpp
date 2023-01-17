@@ -16,12 +16,13 @@ ResultScene::~ResultScene()
 
 SceneType ResultScene::Update()
 {
-    timer->Update();
+    
     resultSceneFlow->Update(timer->GetDeltaTime());
     if (CheckHitKey(KEY_INPUT_W))
     {
         nowScenType = SceneType::TITLE;
     }
+    timer->Update();
     return nowScenType;
 }
 

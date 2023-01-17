@@ -51,7 +51,7 @@ public:
     /// 引数の物体にぶつかったか調べる
     /// </summary>
     /// <param name="obj"></param>
-    void ArgumentConflictProcess(Object* obj);
+    void ArgumentConflictProcess(float deltaTime,Object* obj);
 
     void RacerRankUpdate();
     /// <summary>
@@ -67,7 +67,7 @@ public:
     /// <summary>
     /// 車乗りたち同士でぶつかってないか調べる
     /// </summary>
-    void RacerConflictProcces();
+    void RacerConflictProcces(float deltaTime);
     /// <summary>
     /// プレイヤーのゴールした回数を返す
     /// </summary>

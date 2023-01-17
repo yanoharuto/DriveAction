@@ -63,7 +63,7 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		//ƒŒ[ƒX
 	case PlaySceeneProgress::race:
 		racerManager->RacerUpdate(timer->GetDeltaTime(), stageManager->GetCircuit());
-		racerManager->RacerConflictProcces();
+		racerManager->RacerConflictProcces(timer->GetDeltaTime());
 		racerManager->RacerRankUpdate();
 		playerRank = racerManager->GetPlayerRank();
 		playerPos = racerManager->GetPlayerCar()->GetPos();

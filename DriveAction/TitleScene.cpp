@@ -16,12 +16,12 @@ TitleScene::~TitleScene()
 
 SceneType TitleScene::Update()
 {
-    timer->Update();
     titleSceneFlow->Update(timer->GetDeltaTime());
     if (CheckHitKey(KEY_INPUT_Z))
     {
         nowScenType = SceneType::PLAY;
     }
+    timer->Update();
     return nowScenType;
 }
 

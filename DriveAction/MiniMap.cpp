@@ -25,9 +25,4 @@ void MiniMap::Update(UIManager* uiManager, float playerPosX, float playerPosY)
     float x = minimapX + courceModelStartPosX + playerPosX  * markerSize ;
     float y = minimapY + courceModelStartPosY + playerPosY * markerSize ;
     uiManager->Update(playerMarkerUINum,x,y);
-#ifdef _DEBUG
-  //  printfDx("miniMap::%f,%f\n",x,y);
-#endif // !_DEBUG
-
-    
 }

@@ -8,7 +8,8 @@ public:
     std::string Update(float deltaTime);
     bool CountDownEnd();
 private:
-    float time;
+    float startTime;
     bool countDownEnd;
+    int fiveTime = 5;
 };
 

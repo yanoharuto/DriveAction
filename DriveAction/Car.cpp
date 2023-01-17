@@ -31,21 +31,17 @@ Car::~Car()
 	SAFE_DELETE(wheels);
 }
 
-void Car::ConflictProcess(const ArgumentConflictInfo conflictInfo)
+void Car::ConflictProcess(float deltaTime,const ArgumentConflictInfo conflictInfo)
 {
 	switch (conflictInfo.tag)
 	{
 	case ObjectTag::car:
 	case ObjectTag::stage:
 	case ObjectTag::obstacle:
-		ConflictReaction(conflictInfo.pos, conflictInfo.radius);
+		ConflictReaction(deltaTime,conflictInfo.pos, radius);
 		break;
 	case ObjectTag::goal:
 		destinationPos = conflictInfo.pos;
-#ifdef _DEBUG
-		//printfDx("%f,%f\n", conflictInfo.pos.x, conflictInfo.pos.z);
-		//printfDx("%f,%f\n", destinationPos.x, destinationPos.z);
-#endif
 		break;
 	default:
 		break;
@@ -56,17 +52,19 @@ void Car::Draw()
 {
 	MV1DrawModel(modelHandle);
 	wheels->Draw();
-#ifdef _DEBUG
-	//DrawSphere3D(position,radius,5,GetColor(100,100,255), GetColor(100, 100, 255),false);
-#endif
 }
 
-void Car::ConflictReaction(const VECTOR conflictObjPos, const float conflictObjRad)
+/// <summary>
+/// Ç‘Ç¬Ç©Ç¡ÇΩéûÇÃèàóùÅ@å∏ë¨Ç∑ÇÈ
+/// </summary>
+/// <param name="conflictObjPos"></param>
+/// <param name="conflictObjRad"></param>
+void Car::ConflictReaction(float deltaTime, const VECTOR conflictObjPos, const float conflictObjRad)
 {
+	accelPower -= accelPower * colideDecel;
 	VECTOR nVSub = VSub(position,conflictObjPos);
 	nVSub = VNorm(nVSub);
-	accelPower -= accelPower * colideDecel;
-	nVSub = VScale(nVSub,colideDecel);
+	nVSub = VScale(nVSub,conflictObjRad);
 	nVSub.y = 0;
 	position = VAdd(position, nVSub);
 }

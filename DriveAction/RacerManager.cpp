@@ -49,9 +49,7 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
         rankInfo.checkPoint = racerP->checkPoint;
         rankInfo.rank = &racerP->rank;
         racerRankList.push_back(rankInfo);
-
-        conflictInfo.SetObjInfo(false,racer.checkPoint);
-        racer.car->ConflictProcess(conflictInfo);
+        
     }
 }
 //デストラクタ
@@ -81,18 +79,17 @@ void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
         //チェックポイントの更新の更新
         conflictInfo.SetObjInfo(true, racer.car);
         //車がチェックポイントを通過したか調べる
-        if (racer.checkPoint->CheckPointUpdate(conflictInfo))
-        {
-            //車に次の目的地を伝える
-            conflictInfo.SetObjInfo(true, racer.checkPoint);
-            racer.car->ConflictProcess(conflictInfo);
-        }
+        racer.checkPoint->CheckPointUpdate(conflictInfo);
+        //車に次の目的地を伝える
+        conflictInfo.SetObjInfo(true, racer.checkPoint);
+        racer.car->ConflictProcess(deltaTime, conflictInfo);
+
         //コースの塀とかにぶつかったか調べる
         conflictInfo = circuit->GetCourceConflictInfo(racer.car);
         if (conflictInfo.hitFlag)
         {
             //ぶつかってたら衝突処理
-            racer.car->ConflictProcess(conflictInfo);
+            racer.car->ConflictProcess(deltaTime, conflictInfo);
         }
     }
 }
@@ -100,7 +97,7 @@ void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
 /// 引数の物体にぶつかったか調べる
 /// </summary>
 /// <param name="obj">調べたい物体</param>
-void RacerManager::ArgumentConflictProcess(Object* obj)
+void RacerManager::ArgumentConflictProcess(float deltaTime,Object* obj)
 {
     ArgumentConflictInfo conflictInfo;
     conflictInfo.SetObjInfo(false,obj);
@@ -115,7 +112,7 @@ void RacerManager::ArgumentConflictProcess(Object* obj)
             //当たってるか調べる　
             if (hitChecker.HitCheck(racer.car, obj))
             {
-                racer.car->ConflictProcess(conflictInfo);
+                racer.car->ConflictProcess(deltaTime,conflictInfo);
             }
         }
     }
@@ -147,14 +144,14 @@ void RacerManager::RacerRankUpdate()
 /// <summary>
 /// 車乗りたち同士でぶつかってないか調べる
 /// </summary>
-void RacerManager::RacerConflictProcces()
+void RacerManager::RacerConflictProcces(float deltaTime)
 {
     std::list<Racer>::iterator racerIte;
     Racer racer;
     for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
-        ArgumentConflictProcess(racer.car);
+        ArgumentConflictProcess(deltaTime,racer.car);
     }
 }
 /// <summary>

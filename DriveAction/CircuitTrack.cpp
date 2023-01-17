@@ -9,12 +9,13 @@ CircuitTrack::CircuitTrack(std::string courceModelAdress, std::string outsideMod
 {
     courceModelHandle = MV1LoadModel(courceModelAdress.c_str());
     outsideModelHandle = MV1LoadModel(outsideModelAdress.c_str());
-    //若干コースの外側を下げる
-    MV1SetPosition(outsideModelHandle, outsideModelPosition);
+    MV1SetPosition(outsideModelHandle, outsideModelPosition);    //若干コースの外側を下げる
+    //大きさ変更
     VECTOR scale = VGet(courceModelScaleValue, courceModelScaleValue, courceModelScaleValue);
     MV1SetScale(courceModelHandle, scale);
     scale = VGet(outsideModelScaleValue, outsideModelScaleValue, outsideModelScaleValue);
     MV1SetScale(outsideModelHandle, scale);
+    //防壁の半径
     radius = gurdRadius;
     tag = ObjectTag::stage;
 }
@@ -51,22 +52,19 @@ bool CircuitTrack::GetOutsideHitFlag(Car* car)const
 /// <returns>ぶつかってたらTrue</returns>
 ArgumentConflictInfo  CircuitTrack::GetCourceConflictInfo(Car* car) const
 {
-    //線分の始まりと終わりを作る
-    //ｘとｚ座標を取ってくる
-    VECTOR startPos = car->GetPos();
-    VECTOR endPos = startPos;
-    float totalRad = car->GetRadius() + radius;
-    startPos.x += totalRad;
-    startPos.z += totalRad;
-    endPos.x -= totalRad;
-    endPos.z -= totalRad;
-    //壁にぶつかったか
-    MV1_COLL_RESULT_POLY polyInfo = MV1CollCheck_Line(courceModelHandle,-1, startPos, endPos, -1);
-    if (!polyInfo.HitFlag)
+    //壁にぶつかったか関数にかける
+    MV1_COLL_RESULT_POLY_DIM polyInfo;
+    polyInfo = MV1CollCheck_Sphere(courceModelHandle, -1, car->GetPos(),car->GetRadius());
+
+    //当たってる時は当たった場所を返す
+    if (polyInfo.HitNum != 0)
     {
-        return{};
+        VECTOR hitPos = polyInfo.Dim->HitPosition;
+        MV1CollResultPolyDimTerminate(polyInfo);
+        return { true,tag,hitPos,radius };
     }
-    return { true,tag,polyInfo.HitPosition,radius };
+  
+    return {};
 }
 
 /// <summary>

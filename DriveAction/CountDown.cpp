@@ -1,9 +1,9 @@
 #include "CountDown.h"
-
+#include "DxLib.h"
 CountDown::CountDown()
 {
 	countDownEnd = false;
-	time = 5;
+	startTime = 5.0f;
 }
 
 CountDown::~CountDown()
@@ -12,12 +12,8 @@ CountDown::~CountDown()
 
 std::string CountDown::Update(float deltaTime)
 {
-	time -= deltaTime;
-	if (time < 0)
-	{
-		time = 0;
-	}
-	switch (static_cast<int>(time))
+	startTime -= deltaTime;
+	switch (static_cast<int>(startTime))
 	{
 	case 3:
 		return "3";

@@ -156,6 +156,7 @@
     <ClCompile Include="DataAddresLoader.cpp" />
     <ClCompile Include="CPUCar.cpp" />
     <ClCompile Include="CourceDataLoader.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="PointUI.cpp" />
     <ClCompile Include="PostGoalDirection.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="DataAddresLoader.h" />
     <ClInclude Include="CPUCar.h" />
     <ClInclude Include="CourceDataLoader.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="ListUtility.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="ObjectTagEnum.h" />

@@ -1,6 +1,6 @@
 #pragma once
 #include "Object.h"
-#include "ArgumentObjInfoStruct.h"
+#include "ArgumentConflictInfo.h"
 /// <summary>
 /// “®‚­‚à‚Ì‚Í‘å‘Ì‚±‚ê
 /// </summary>

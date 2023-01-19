@@ -17,9 +17,9 @@ struct Wheel
 	MATRIX matrix;
 };
 /// <summary>
-/// 引数で渡してほしい車の情報
+/// タイヤに引数で渡してほしい車の情報
 /// </summary>
-struct ArgumentCarInfo
+struct WheelArgumentCarInfo
 {
 	MATRIX matrix;//車のmodelの行列
 	VECTOR direction;//車の向き
@@ -33,7 +33,7 @@ struct ArgumentCarInfo
 class Wheels 
 {
 public:
-    Wheels(const ArgumentCarInfo InitInfo);
+    Wheels(const WheelArgumentCarInfo InitInfo);
     ~Wheels();
     /// <summary>
     /// 描画
@@ -44,7 +44,7 @@ public:
 	/// 左右キーを入力したら傾け、上下キーで回転させる
 	/// </summary>
 	/// <param name="_Key">入力情報</param>
-	void WheelUpdate(const ArgumentCarInfo info);
+	void WheelUpdate(const WheelArgumentCarInfo info);
 
 	/// <summary>
 	/// どの向きに曲がればいいかタンジェントを返すよ
@@ -52,7 +52,12 @@ public:
 	/// <param name="velocitySize">速さのベクトルの大きさ</param>
 	/// <returns>負の数ならだったら左</returns>
 	float GetMoveDirTheta(const float velocitySize);
-private:
+private:	
+	/// <summary>
+	/// 煙のエフェクトが出る
+	/// </summary>
+	/// <param name="pos"></param>
+	void StartSmokeEffect(VECTOR pos);
 	/// <summary>
 	/// 全てのタイヤのマトリックスをセットする
 	/// </summary>
@@ -87,20 +92,22 @@ private:
 	
 	const float firstLWheelRota = 0.0f;		//左側タイヤの初期角度
 	const float firstRWheelRota = 180.0f;		//右側タイヤの初期角度
-	const float wheelDriveRotaSpeed = 200.0f;
-	const float wheelCurvePower = 1.7f;
-	const float maxWheelRotaY = 45.5f;
-	const float rotaCalculationLine = 1.2f;
+	const float wheelDriveRotaPower = 200.0f;//車の回転力
+	const float wheelCurvePower = 1.7f;//タイヤが左右に傾く力
+	const float maxWheelRotaY = 45.5f;//この角度までタイヤは傾くよ
+	const float rotaCalculationLine = 1.2f;//進行方向に影響するまでに必要なタイヤの角度
 	const float rage = static_cast<float>(DX_PI / 180.0f);
-	float wheelDriveSpeed = 0.0f;
-	float wheelDriveRota = 0.0f;
-
-	int modelHandle;
+	float wheelDriveSpeed = 0.0f;//車の回転速度
+	float wheelDriveRota = 0.0f;//車の左右への傾き
+	int effectResourceHandle = -1;//煙のエフェクト
+	bool isStraightDash;//まっすぐ進んでいるかどうか
+	int modelHandle;//タイヤのモデルハンドル
 	Wheel lFWheel;
 	Wheel lBWheel;
 	Wheel rFWheel;
 	Wheel rBWheel;
-	ArgumentCarInfo carInfo;
+	WheelArgumentCarInfo carInfo;
+	VECTOR wheelEffectPos;
 	const VECTOR fWheelPos = { 2.7f,-0.8f,1.6f };
 	const VECTOR bWheelPos = { 2.4f,-0.8f,1.6f };
 };

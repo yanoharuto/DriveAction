@@ -70,12 +70,18 @@ void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
 {
     std::list<Racer>::iterator racerIte;
     Racer racer;
+    bool hitFlag;
+    NeighborhoodInfo neighInfo;
     for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
         ArgumentConflictInfo conflictInfo;
-        //車の更新　コース外に出たかどうか第二引数で調べる
-        racer.car->Update(deltaTime, circuit->GetOutsideHitFlag(racer.car));
+        conflictInfo.SetObjInfo(false,racer.car);
+        //周りに何があるか調べる
+        hitFlag = circuit->GetOutsideHitFlag(conflictInfo);
+        neighInfo = circuit->GetObjNeighbornhoodInfo(racer.car->GetNeighExamineInfo());
+        //車の更新　
+        racer.car->Update(deltaTime, hitFlag,neighInfo);
         //チェックポイントの更新の更新
         conflictInfo.SetObjInfo(true, racer.car);
         //車がチェックポイントを通過したか調べる
@@ -83,12 +89,11 @@ void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
         //車に次の目的地を伝える
         conflictInfo.SetObjInfo(true, racer.checkPoint);
         racer.car->ConflictProcess(deltaTime, conflictInfo);
-
         //コースの塀とかにぶつかったか調べる
-        conflictInfo = circuit->GetCourceConflictInfo(racer.car);
-        if (conflictInfo.hitFlag)
+        conflictInfo.SetObjInfo(false, racer.car);
+        conflictInfo = circuit->GetCourceConflictInfo(conflictInfo);
+        if (conflictInfo.hitFlag)            //ぶつかってたら衝突処理
         {
-            //ぶつかってたら衝突処理
             racer.car->ConflictProcess(deltaTime, conflictInfo);
         }
     }

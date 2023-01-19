@@ -10,6 +10,17 @@
 SceneBase* MakeScene(SceneType _NowSceneType);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+
+	//描画先を裏画面に変更する。
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	// DirectX11を使用するようにする。(DirectX9も可、一部機能不可)
+	// Effekseerを使用するには必ず設定する。
+	SetUseDirect3DVersion(DX_DIRECT3D_11);
+	int width = SCREEN_WIDTH;
+	int height = SCREEN_HEIGHT;
+	// 画面モードのセット.
+	SetGraphMode(width, height, 16);
 	if (DxLib_Init() == -1)		// ＤＸライブラリ初期化処理
 	{
 		return -1;			// エラーが起きたら直ちに終了
@@ -20,11 +31,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		DxLib_End();
 		return -1;
 	}
-	int width = SCREEN_WIDTH;
-	int height = SCREEN_HEIGHT;
-	// 画面モードのセット.
-	SetGraphMode(width,height,16);
-	ChangeWindowMode(TRUE);
+
+	//ChangeWindowMode(TRUE);
 	//ひとつ前のシーン
 	SceneType prevSceneType = SceneType::TITLE;
 	//今のシーン
@@ -37,16 +45,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//ゲームループ エスケープキーを押したら終了
 	while (ProcessMessage() == 0 && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
+
 #ifdef _DEBUG
-		//clsDx(); // printfDx の結果をリセットするための関数.
+		clsDx(); // printfDx の結果をリセットするための関数.
 #endif	// ここでDEBUG用の処理を終了.
 		//更新
-		Effect_Update();
+	
 		nowSceneType = scene->Update();
-		
+		Effect_Update();
 		userInput->Update();
 		ClearDrawScreen();//画面を初期化する
 		scene->Draw();//描画
+		Effect_Draw();
 		ScreenFlip();//裏画面の内容を表画面に反映させる
 
 		//Updateで次のシーンに更新したなら
@@ -59,6 +69,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//直前のシーンを記録
 		prevSceneType = nowSceneType;
 	}
+
 	Effect_Finalize();
 
 	DxLib_End();				// ＤＸライブラリ使用の終了処理

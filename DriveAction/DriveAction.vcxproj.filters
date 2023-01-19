@@ -43,17 +43,14 @@
     <Filter Include="ソース ファイル\Manager">
       <UniqueIdentifier>{bcab736a-8690-4787-bc16-996bc2bc75f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Struct">
-      <UniqueIdentifier>{b2fbedbf-26c1-46e3-ba8e-9808f1d792fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Enum">
-      <UniqueIdentifier>{6fc6960b-3d23-445a-a9d2-4f4fec215b1f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Loader">
       <UniqueIdentifier>{43866282-d834-46d9-921c-4ce1e384f969}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Loader">
       <UniqueIdentifier>{08a6480f-c62b-4a47-87c2-801018dd7c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\StructAndEnum">
+      <UniqueIdentifier>{b2fbedbf-26c1-46e3-ba8e-9808f1d792fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -243,22 +240,16 @@
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="UIDataStruct.h">
-      <Filter>ヘッダー ファイル\Struct</Filter>
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
     <ClInclude Include="CircuitDataStruct.h">
-      <Filter>ヘッダー ファイル\Struct</Filter>
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
     <ClInclude Include="StageDataAddressStruct.h">
-      <Filter>ヘッダー ファイル\Struct</Filter>
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
-    <ClInclude Include="ArgumentObjInfoStruct.h">
-      <Filter>ヘッダー ファイル\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectTagEnum.h">
-      <Filter>ヘッダー ファイル\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="PlaySceeneProgressEnum.h">
-      <Filter>ヘッダー ファイル\Enum</Filter>
+    <ClInclude Include="ArgumentConflictInfo.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
     <ClInclude Include="RacePrevProcess.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -301,6 +292,18 @@
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="NeighborhoodInfo.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTagEnum.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySceeneProgressEnum.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="CarNeighborhoodExamineInfo.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

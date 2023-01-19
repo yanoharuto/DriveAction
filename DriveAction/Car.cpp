@@ -1,8 +1,10 @@
+#include <math.h>
 #include "Car.h"
 #include "Wheels.h"
 #include "Utility.h"
-#include "ArgumentObjInfoStruct.h"
-#include <math.h>
+#include "ArgumentConflictInfo.h"
+#include "EffekseerForDXLib.h"
+
 Car::Car()
 {
 	tag = ObjectTag::car;
@@ -10,7 +12,8 @@ Car::Car()
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	destinationPos = {};
-	wheels = new Wheels(ArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
+	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
+	effectResourceHandle = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
 }
 
 Car::Car(VECTOR firstPos, VECTOR firstDir)
@@ -22,7 +25,8 @@ Car::Car(VECTOR firstPos, VECTOR firstDir)
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	destinationPos = {};
-	wheels = new Wheels(ArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
+	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
+	effectResourceHandle = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
 }
 
 Car::~Car()
@@ -30,7 +34,11 @@ Car::~Car()
 	MV1DeleteModel(modelHandle);
 	SAFE_DELETE(wheels);
 }
-
+/// <summary>
+/// ぶつかった時の処理
+/// </summary>
+/// <param name="deltaTime"></param>
+/// <param name="conflictInfo"></param>
 void Car::ConflictProcess(float deltaTime,const ArgumentConflictInfo conflictInfo)
 {
 	switch (conflictInfo.tag)
@@ -52,6 +60,15 @@ void Car::Draw()
 {
 	MV1DrawModel(modelHandle);
 	wheels->Draw();
+}
+
+CarNeighborhoodExamineInfo Car::GetNeighExamineInfo()
+{
+	CarNeighborhoodExamineInfo examineInfo;
+	examineInfo.pos = position;
+	examineInfo.dir = direction;
+	examineInfo.range = examineRange;
+	return examineInfo;
 }
 
 /// <summary>
@@ -126,7 +143,7 @@ void Car::ModelSetMatrix()
 /// <param name="outsideHitFlag">コース外に出たか</param>
 void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag)
 {
-	ArgumentCarInfo info;
+	WheelArgumentCarInfo info;
 	info.handleDir = GetHandleDir();
 	VECTOR accelVec = GetAccelVec(info.handleDir, outsideHitFlag, deltaTime);
 	UpdateVelocity(VScale(accelVec, deltaTime));
@@ -139,6 +156,10 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag)
 	wheels->WheelUpdate(info);
 }
 
+/// <summary>
+/// ハンドルの向きを出す
+/// </summary>
+/// <returns></returns>
 HandleDirection Car::GetHandleDir()
 {
 	float destinationDir = 0;//目的地との距離のずれ
@@ -160,7 +181,6 @@ HandleDirection Car::GetHandleDir()
 			return HandleDirection::left;
 		}
 	}
-	
 	return HandleDirection::straight;
 }
 

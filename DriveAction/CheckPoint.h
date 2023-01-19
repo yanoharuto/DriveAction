@@ -1,7 +1,7 @@
 #pragma once
 #include "Car.h"
 #include <vector>
-#include "ArgumentObjInfoStruct.h"
+#include "ArgumentConflictInfo.h"
 #include "CircuitDataStruct.h"
 /// <summary>
 /// プレイヤーが何回ゴールしたか数える

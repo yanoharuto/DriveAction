@@ -2,6 +2,8 @@
 #include "DxLib.h"
 #include "Actor.h"
 #include "Wheels.h"
+#include "CarNeighborhoodExamineInfo.h"
+#include "NeighborhoodInfo.h"
 /// <summary>
 /// 車の加速とか減速とかするよ。どの向きに加速するかとかはwheelsからとってくるよ
 /// </summary>
@@ -14,7 +16,7 @@ public:
 	/// <summary>
     /// 更新（移動処理）
     /// </summary>
-	virtual void Update(const float deltaTime, const bool outsideHitFlag) {};
+	virtual void Update(const float deltaTime, const bool outsideHitFlag,NeighborhoodInfo neighInfo) {};
 	/// <summary>
 	/// 衝突処理
 	/// </summary>
@@ -24,7 +26,7 @@ public:
 	/// 描画
 	/// </summary>
 	virtual void Draw();
-
+	CarNeighborhoodExamineInfo GetNeighExamineInfo();
 protected:
 	/// <summary>
 	/// 車がぶつかった時の関数
@@ -71,9 +73,10 @@ protected:
 	/// <param name="deltaTime">経過時間</param>
 	/// <returns>進む量</returns>
 	virtual VECTOR GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float deltaTime);
+	
 	// 静的定数.
-	const float accelSpeed =27.0f;					// 通常の加速.
-	const float maxSpeed = 250.0f;					// 最高速度.
+	const float accelSpeed = 6.4f;					// 通常の加速.
+	const float maxSpeed = 180.0f;					// 最高速度.
 	const float defaultDecel = 0.04f;			// なにもしない時の減速.
 	const float breakDecel = 0.97f;				// ブレーキ時の減速.
 	const float gripDecel = 0.125f;				// グリップの減速.
@@ -83,8 +86,11 @@ protected:
 	const float outsideHitDecel = 0.2f;   //コースの外側に来た時の減速
 	const float rage = static_cast<float>(DX_PI / 180.0f); //ラジアン
 	const float radiusValue = 3.0f; //車の幅
-	float accelPower = 0;             //計算結果によって出る速さ
 	const float turnProccesLine = 0.25f;//目的地に向かうときに曲がるか判断する
+	const float examineRange = 3.0;
+	float accelPower = 0;             //計算結果によって出る速さ
+	int effectResourceHandle = -1;//煙のエフェクト
+	bool isStraightDash;//まっすぐ進んでいるかどうか
 	Wheels* wheels;//タイヤ
 	VECTOR destinationPos;
 };

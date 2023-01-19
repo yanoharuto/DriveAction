@@ -9,7 +9,7 @@ PlaySceeneFlow::PlaySceeneFlow()
 	courceDataLoader = new CourceDataLoader();
 	nowProgress = PlaySceeneProgress::start;
 	stageManager = new StageManager(courceDataLoader);
-	racerManager = new RacerManager(2,courceDataLoader);
+	racerManager = new RacerManager(0,courceDataLoader);
 	camera = new PlaySceneCamera();
 	timer = new Timer();
 	uiManager = new UIManager();

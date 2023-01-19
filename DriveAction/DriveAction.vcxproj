@@ -190,8 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
-    <ClInclude Include="ArgumentObjInfoStruct.h" />
+    <ClInclude Include="ArgumentConflictInfo.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="CarNeighborhoodExamineInfo.h" />
     <ClInclude Include="CircuitDataStruct.h" />
     <ClInclude Include="CountDown.h" />
     <ClInclude Include="DataAddresLoader.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="ListUtility.h" />
     <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="NeighborhoodInfo.h" />
     <ClInclude Include="ObjectTagEnum.h" />
     <ClInclude Include="PointUI.h" />
     <ClInclude Include="PostGoalDirection.h" />

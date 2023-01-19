@@ -1,6 +1,6 @@
 #include "HitChecker.h"
 #include "Object.h"
-#include "ArgumentObjInfoStruct.h"
+#include "ArgumentConflictInfo.h"
 #include "DxLib.h"
 HitChecker::HitChecker()
 {

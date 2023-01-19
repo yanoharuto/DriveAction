@@ -24,8 +24,12 @@ int Effect_Initialize() {
     // ウインドウとフルスクリーンの切り替えが発生する場合は必ず実行する。
     // ただし、DirectX11を使用する場合は実行する必要はない。
     Effekseer_SetGraphicsDeviceLostCallbackFunctions();
-
-
+    // Zバッファを有効にする。
+    // Effekseerを使用する場合、2DゲームでもZバッファを使用する。
+    SetUseZBuffer3D(TRUE);
+    // Zバッファへの書き込みを有効にする。
+    // Effekseerを使用する場合、2DゲームでもZバッファを使用する。
+    SetWriteZBuffer3D(TRUE);
     return 0;
 }
 //エフェクトの更新
@@ -33,19 +37,14 @@ void Effect_Update()
 {
     // DXライブラリのカメラとEffekseerのカメラを同期する。
     Effekseer_Sync3DSetting();
+    // Effekseerにより再生中のエフェクトを更新する。
+    UpdateEffekseer3D();
 }
 //エフェクトの描写
 void Effect_Draw() {
-    // 何でもいいので画像を描画する。
-    // こうして描画した後でないと、Effekseerは描画できない。
-    DrawGraph(0, 0, grBackgroundHandle, TRUE);
-    // 3Dを表示する。
-    DrawCapsule3D(
-        VGet(0.0f, 100.0f, 0.0f), VGet(0.0f, -100.0f, 0.0f), 6.0f, 16, GetColor(100, 100, 100), GetColor(255, 255, 255), TRUE);
+
     // Effekseerにより再生中のエフェクトを描画する。
     DrawEffekseer3D();
-    // エフェクトの上にも画像を描画できる。
-    DrawGraph(0, 0, grFrontHandle, TRUE);
 }
 //エフェクトの終了処理
 void Effect_Finalize() {

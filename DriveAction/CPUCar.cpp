@@ -29,7 +29,7 @@ CPUCar::~CPUCar()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param name="outsideHitFlag">コース外に出たか</param>
-void CPUCar::Update(const float deltaTime, const bool outsideHitFlag)
+void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo)
 {
     AutoDrive(deltaTime,outsideHitFlag);
 }

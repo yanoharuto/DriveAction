@@ -1,6 +1,7 @@
 #include "Wheels.h"
+#include "EffekseerForDXLib.h"
 #include <math.h>
-Wheels::Wheels(const ArgumentCarInfo InitInfo)
+Wheels::Wheels(const WheelArgumentCarInfo InitInfo)
 {
 	modelHandle= MV1LoadModel("data/model/Player/Wheel.MV1");
 	carInfo = InitInfo;
@@ -8,6 +9,7 @@ Wheels::Wheels(const ArgumentCarInfo InitInfo)
 	InitWheel(lBWheel, modelHandle, VGet(bWheelPos.x, fWheelPos.y, -fWheelPos.z), firstLWheelRota);
 	InitWheel(rBWheel, modelHandle, VGet(bWheelPos.x, fWheelPos.y, fWheelPos.z), firstRWheelRota);
 	InitWheel(rFWheel, modelHandle, VGet(-fWheelPos.x, fWheelPos.y, fWheelPos.z), firstRWheelRota);
+	effectResourceHandle = LoadEffekseerEffect("data/effect/smoke.efkefc", 0.4f);
 }
 
 Wheels::~Wheels()
@@ -17,6 +19,8 @@ Wheels::~Wheels()
 	MV1DeleteModel(rFWheel.modelHandle);
 	MV1DeleteModel(lBWheel.modelHandle);
 	MV1DeleteModel(rBWheel.modelHandle);
+	// エフェクトリソースを削除する。(Effekseer終了時に破棄されるので削除しなくてもいい)
+	DeleteEffekseerEffect(effectResourceHandle);
 }
 
 void Wheels::Draw()
@@ -31,14 +35,14 @@ void Wheels::Draw()
 /// 左右キーを入力したら傾け、上下キーで回転させる
 /// </summary>
 /// <param name="_Key">入力情報</param>
-void Wheels::WheelUpdate(const ArgumentCarInfo info)
+void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 {
 	carInfo = info;
 	AllSetWheelMatrix();
 	//車が速いとよく回る
 	if (carInfo.velocitySize > 0)
 	{
-		wheelDriveSpeed = -carInfo.velocitySize * wheelDriveRotaSpeed;
+		wheelDriveSpeed = -carInfo.velocitySize * wheelDriveRotaPower;
 	}
 	else
 	{
@@ -47,6 +51,12 @@ void Wheels::WheelUpdate(const ArgumentCarInfo info)
 	//タイヤを傾ける処理
 	if (carInfo.handleDir == HandleDirection::right)
 	{
+		wheelEffectPos.x = lBWheel.matrix.m[3][0];
+		wheelEffectPos.y = lBWheel.matrix.m[3][1];
+		wheelEffectPos.z = lBWheel.matrix.m[3][2];
+		StartSmokeEffect(wheelEffectPos);
+		
+		isStraightDash = false;
 		if (wheelDriveRota < maxWheelRotaY)
 		{
 			wheelDriveRota += wheelCurvePower;
@@ -55,9 +65,17 @@ void Wheels::WheelUpdate(const ArgumentCarInfo info)
 		{
 			wheelDriveRota = maxWheelRotaY;
 		}
+
 	}
 	else if (carInfo.handleDir == HandleDirection::left)
 	{
+
+		wheelEffectPos.x = rBWheel.matrix.m[3][0];
+		wheelEffectPos.y = rBWheel.matrix.m[3][1];
+		wheelEffectPos.z = rBWheel.matrix.m[3][2];
+		StartSmokeEffect(wheelEffectPos);
+		
+		isStraightDash = false;
 		if (wheelDriveRota > -maxWheelRotaY)
 		{
 			wheelDriveRota -= wheelCurvePower;
@@ -76,7 +94,14 @@ void Wheels::WheelUpdate(const ArgumentCarInfo info)
 		{
 			wheelDriveRota = 0;
 		}
+		isStraightDash = true;
 	}
+	else
+	{
+		isStraightDash = true;
+	}
+	
+	printfDx("wheelPos::%f,%f,%f\n", wheelEffectPos.x, wheelEffectPos.y, wheelEffectPos.z);
 }
 
 /// <summary>
@@ -96,6 +121,19 @@ float Wheels::GetMoveDirTheta(const float velocitySize)
 	}
 	
 	return 0.0f;
+}
+/// <summary>
+/// 煙のエフェクトが出る
+/// </summary>
+/// <param name="pos"></param>
+void Wheels::StartSmokeEffect(VECTOR pos)
+{
+	if (isStraightDash)
+	{
+
+		int playingEffectHandle = PlayEffekseer3DEffect(effectResourceHandle);
+		int effectSuccess = SetPosPlayingEffekseer3DEffect(playingEffectHandle, pos.x,pos.y,pos.z);
+	}
 }
 void Wheels::AllSetWheelMatrix()
 {
@@ -177,6 +215,7 @@ void Wheels::InitWheel(Wheel& wheel, int DuplicateSourceModel, VECTOR pos, float
 	wheel.betweenBody = pos;
 	VECTOR wheelPos = WheelGetPos(wheel);
 	MATRIX bodyMat = MV1GetMatrix(DuplicateSourceModel);
+
 	wheel.matrix = MMult(MGetRotY(rota * rage), MMult(bodyMat, MGetTranslate(wheelPos)));
 	MV1SetMatrix(wheel.modelHandle, wheel.matrix);
 }

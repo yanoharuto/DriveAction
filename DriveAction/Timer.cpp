@@ -38,7 +38,6 @@ void Timer::Update()
 
     if (term > 0)//‘Ò‚Â‚×‚«ŽžŠÔ‚¾‚¯‘Ò‚Â
     {
-        printfDx("%d\n", term);
         Sleep(term);
     }
     nowCount = GetNowCount();
@@ -65,7 +64,7 @@ void Timer::Update()
     
 #ifdef _DEBUG
 
-    printfDx("deltaTime,%f::FPS,%d\n", deltaTime, fpsCount);
+   // printfDx("deltaTime,%f::FPS,%d\n", deltaTime, fpsCount);
 
 #endif
 }

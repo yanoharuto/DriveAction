@@ -2,7 +2,7 @@
 #include "Wheels.h"
 #include "Utility.h"	
 #include <math.h>
-
+#include "EffekseerForDXLib.h"
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -31,15 +31,15 @@ Player::~Player()
 /// <summary>
 /// 更新
 /// </summary>
-void Player::Update(const float deltaTime, const bool outsideHitFlag)
+void Player::Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo)
 {
 	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
 	VECTOR accelVec = GetAccelVec(inputKey, outsideHitFlag, deltaTime);
-
+	printfDx("playerPos::%f,%f,%f\n", position.x, position.y, position.z);
 	UpdateVelocity(VScale(accelVec,deltaTime));
 	UpdateMV1Pos();
 	ModelSetMatrix();
-	ArgumentCarInfo info = { MV1GetMatrix(modelHandle),direction,VSize(velocity) };
+	WheelArgumentCarInfo info = { MV1GetMatrix(modelHandle),direction,VSize(velocity) };
 	//右か左か押してたら
 	if (inputKey & PAD_INPUT_RIGHT)
 	{

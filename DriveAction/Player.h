@@ -18,7 +18,7 @@ public:
     /// <summary>
     /// 更新（移動処理）
     /// </summary>
-    void Update(const float deltaTime,const bool outsideHitFlag) override;
+	void Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo) override;
 
 private:
 	/// <summary>

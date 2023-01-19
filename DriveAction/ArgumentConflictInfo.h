@@ -1,6 +1,7 @@
 #pragma once
 #include "DxLib.h"
 #include "ObjectTagEnum.h"
+#include "Object.h"
 /// <summary>
 /// “–‚½‚è”»’è‚Åg‚¤ˆø”‚É‚µ‚Ä“n‚µ‚½‚¢î•ñ
 /// </summary>

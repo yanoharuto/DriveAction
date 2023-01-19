@@ -1,8 +1,10 @@
 #pragma once
 #include "Object.h"
-#include "ArgumentObjInfoStruct.h"
+#include "ArgumentConflictInfo.h"
+#include "NeighborhoodInfo.h"
+#include "CarNeighborhoodExamineInfo.h"
 #include <string>
-class Car;
+
 /// <summary>
 /// コース
 /// </summary>
@@ -28,19 +30,23 @@ public:
     /// </summary>
     /// <param name="actor">外側にいるか調べたいもの</param>
     /// <returns>コースの外側にいるならTrue</returns>
-    bool GetOutsideHitFlag(Car* car) const;
+    bool GetOutsideHitFlag(ArgumentConflictInfo info) const;
     /// <summary>
     /// コースの壁にぶつかってるか調べる
     /// </summary>
     /// <param name="Actor">ぶつかってるか調べたいもの</param>
     /// <returns>ぶつかってたらTrue</returns>
-    ArgumentConflictInfo GetCourceConflictInfo(Car* car) const;
+    ArgumentConflictInfo GetCourceConflictInfo(ArgumentConflictInfo info) const;
+
+    NeighborhoodInfo GetObjNeighbornhoodInfo(CarNeighborhoodExamineInfo examineInfo) const;
     /// <summary>
     /// コースのモデルを描画
     /// </summary>
     void Draw();
 
 private:
+    NeighborhoodSituation SetNeighbornhoodSituation(CarNeighborhoodExamineInfo examineInfo, float crossY) const;
+    NeighborhoodSituation SetNeighbornhoodSituation(CarNeighborhoodExamineInfo examineInfo) const;
     //コリジョンのYの分割数
     const int setupYDivNum = 8;
     //コースの大きさ

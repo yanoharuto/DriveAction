@@ -11,7 +11,7 @@ class CircuitTrack;
 /// 当たり判定で使う渡してほしい情報
 /// Actorに定義
 /// </summary>
-struct  ArgumentConflictInfo;
+struct  ConflictProccessArgumentInfo;
 /// <summary>
 /// 走ってる車の情報
 /// </summary>
@@ -21,10 +21,19 @@ struct Racer
     CheckPoint* checkPoint;
     Car* car;
 };
-struct RacerRankInfo
+struct PlayerRacer
 {
     int* rank;
     CheckPoint* checkPoint;
+    Car* car;
+};
+/// <summary>
+/// 
+/// </summary>
+struct RacerRankInfo
+{
+    int* rankP;
+    CheckPoint* checkPointP;
 };
 /// <summary>
 /// 車乗りのマネージャー
@@ -75,11 +84,13 @@ public:
     int GetPlayerGoalCount();
     int GetPlayerRank();
 private:
+    static const int maxRacerNum = 6;
+    int racerNum = 0;
+    Racer racerInstanceArray[maxRacerNum];
     //車乗り達のリスト
-    std::list<Racer> racerList;
+    std::list<Racer*> racerList;
     std::list<RacerRankInfo> racerRankList;
     //当たってるかどうか調べる
     HitChecker hitChecker;
-    Racer* player;
+    PlayerRacer player;
 };
-

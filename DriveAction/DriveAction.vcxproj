@@ -203,6 +203,7 @@
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="NeighborhoodInfo.h" />
     <ClInclude Include="ObjectTagEnum.h" />
+    <ClInclude Include="OriginalMath.h" />
     <ClInclude Include="PointUI.h" />
     <ClInclude Include="PostGoalDirection.h" />
     <ClInclude Include="RacePrevProcess.h" />

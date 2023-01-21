@@ -34,10 +34,10 @@ CheckPoint::~CheckPoint()
 /// プレイヤーがぶつかったら次の行き先を設定する
 /// </summary>
 /// <param name="carInfo">ぶつかったか調べる車</param>
-bool CheckPoint::CheckPointUpdate(ArgumentConflictInfo carInfo)
+bool CheckPoint::CheckPointUpdate(ConflictProccessArgumentInfo carInfo)
 {  
     HitChecker checker;
-    ArgumentConflictInfo thisInfo = {};
+    ConflictProccessArgumentInfo thisInfo = {};
     thisInfo.radius = radius;
     for (int i = 0; i < vectorExamineCount; i++)
     {

@@ -100,8 +100,6 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 	{
 		isStraightDash = true;
 	}
-	
-	printfDx("wheelPos::%f,%f,%f\n", wheelEffectPos.x, wheelEffectPos.y, wheelEffectPos.z);
 }
 
 /// <summary>

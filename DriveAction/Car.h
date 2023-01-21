@@ -21,13 +21,18 @@ public:
 	/// 衝突処理
 	/// </summary>
 	/// <param name="conflictInfo">ぶつかったかオブジェクトの情報</param>
-	void ConflictProcess(float deltaTime, const ArgumentConflictInfo conflictInfo) override;
+	void ConflictProcess(float deltaTime, const ConflictProccessArgumentInfo conflictInfo) override;
 	/// <summary>
 	/// 描画
 	/// </summary>
 	virtual void Draw();
+	/// <summary>
+	/// 周辺を調べてもらうために渡す
+	/// </summary>
+	/// <returns></returns>
 	CarNeighborhoodExamineInfo GetNeighExamineInfo();
 protected:
+
 	/// <summary>
 	/// 車がぶつかった時の関数
 	/// </summary>
@@ -59,12 +64,12 @@ protected:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	/// <param name="outsideHitFlag"></param>
-	void AutoDrive(const float deltaTime, const bool outsideHitFlag);
+	void AutoDrive(const float deltaTime, const bool outsideHitFlag,NeighborhoodInfo neighInfo);
 	/// <summary>
 	/// 運転方向を返す
 	/// </summary>
 	/// <returns></returns>
-	HandleDirection GetHandleDir();
+	HandleDirection GetHandleDir(NeighborhoodInfo neighInfo);
 	/// <summary>
 	/// このフレームの間に進む量を出す
 	/// </summary>
@@ -73,7 +78,13 @@ protected:
 	/// <param name="deltaTime">経過時間</param>
 	/// <returns>進む量</returns>
 	virtual VECTOR GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float deltaTime);
-	
+	/// <summary>
+	/// 周辺情報から曲がる情報に影響を与える
+	/// </summary>
+	/// <param name="neighInfo"></param>
+	/// <returns></returns>
+	float GetNeighSize(NeighborhoodInfo neighInfo);
+
 	// 静的定数.
 	const float accelSpeed = 6.4f;					// 通常の加速.
 	const float maxSpeed = 180.0f;					// 最高速度.
@@ -84,10 +95,9 @@ protected:
 	const float maxGripPower = 1.2f;				// 最大グリップ力.
 	const float colideDecel = 0.45f;	    // 障害物にぶつかったときの減速率.
 	const float outsideHitDecel = 0.2f;   //コースの外側に来た時の減速
-	const float rage = static_cast<float>(DX_PI / 180.0f); //ラジアン
 	const float radiusValue = 3.0f; //車の幅
-	const float turnProccesLine = 0.25f;//目的地に向かうときに曲がるか判断する
-	const float examineRange = 3.0;
+	const float turnProccesLine = 7.0f;//目的地に向かうときに曲がるか判断する
+	const float examineRange = 150.0f;
 	float accelPower = 0;             //計算結果によって出る速さ
 	int effectResourceHandle = -1;//煙のエフェクト
 	bool isStraightDash;//まっすぐ進んでいるかどうか

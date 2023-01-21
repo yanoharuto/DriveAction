@@ -30,23 +30,22 @@ public:
     /// </summary>
     /// <param name="actor">外側にいるか調べたいもの</param>
     /// <returns>コースの外側にいるならTrue</returns>
-    bool GetOutsideHitFlag(ArgumentConflictInfo info) const;
+    bool GetOutsideHitFlag(ConflictProccessArgumentInfo info) const;
     /// <summary>
     /// コースの壁にぶつかってるか調べる
     /// </summary>
     /// <param name="Actor">ぶつかってるか調べたいもの</param>
     /// <returns>ぶつかってたらTrue</returns>
-    ArgumentConflictInfo GetCourceConflictInfo(ArgumentConflictInfo info) const;
+    ConflictProccessArgumentInfo GetCourceConflictInfo(ConflictProccessArgumentInfo info) const;
 
-    NeighborhoodInfo GetObjNeighbornhoodInfo(CarNeighborhoodExamineInfo examineInfo) const;
+    NeighborhoodInfo GetOutsideExamineInfo(CarNeighborhoodExamineInfo examineInfo) const;
     /// <summary>
     /// コースのモデルを描画
     /// </summary>
     void Draw();
 
 private:
-    NeighborhoodSituation SetNeighbornhoodSituation(CarNeighborhoodExamineInfo examineInfo, float crossY) const;
-    NeighborhoodSituation SetNeighbornhoodSituation(CarNeighborhoodExamineInfo examineInfo) const;
+    ConflictProccessArgumentInfo GetSphereConflictModelInfo(int modelHandle,CarNeighborhoodExamineInfo examineInfo) const;
     //コリジョンのYの分割数
     const int setupYDivNum = 8;
     //コースの大きさ

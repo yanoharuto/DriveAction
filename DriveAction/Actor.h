@@ -28,7 +28,7 @@ public:
     /// Õ“Ëˆ—
     /// </summary>
     /// <param name="tag">Õ“Ë‚µ‚½•¨‘Ì</param>
-    virtual void ConflictProcess(float deltaTime, const ArgumentConflictInfo conflictInfo) {};
+    virtual void ConflictProcess(float deltaTime, const ConflictProccessArgumentInfo conflictInfo) {};
 
     /// <summary>
     /// ‘¬“xŠ“¾

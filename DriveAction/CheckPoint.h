@@ -24,7 +24,7 @@ public:
     /// プレイヤーがぶつかったら次の行き先を設定する
     /// </summary>
     /// <param name="carInfo">ぶつかったか調べる車</param>
-    bool CheckPointUpdate(const ArgumentConflictInfo carInfo);
+    bool CheckPointUpdate(const ConflictProccessArgumentInfo carInfo);
     /// <summary>
     /// 他のCPUにもコピーさせるために渡す
     /// </summary>

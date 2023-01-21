@@ -17,9 +17,9 @@ HitChecker::~HitChecker()
 /// <returns>当たったらTrue</returns>
 bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 {
-    ArgumentConflictInfo aInfo;
+    ConflictProccessArgumentInfo aInfo;
     aInfo.SetObjInfo(false, objA);
-    ArgumentConflictInfo bInfo;
+    ConflictProccessArgumentInfo bInfo;
     bInfo.SetObjInfo(false,objB);
     return HitCheckProcess(aInfo, bInfo);
 }
@@ -29,9 +29,9 @@ bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 /// <param name="objA">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheck(Object* const objA, const ArgumentConflictInfo objBInfo)
+bool HitChecker::HitCheck(Object* const objA, const ConflictProccessArgumentInfo objBInfo)
 {
-    ArgumentConflictInfo aInfo;
+    ConflictProccessArgumentInfo aInfo;
     aInfo.SetObjInfo(false,objA);
     return HitCheckProcess(aInfo, objBInfo);
 }
@@ -41,7 +41,7 @@ bool HitChecker::HitCheck(Object* const objA, const ArgumentConflictInfo objBInf
 /// <param name="objAInfo">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheck(const ArgumentConflictInfo objAInfo, const ArgumentConflictInfo objBInfo)
+bool HitChecker::HitCheck(const ConflictProccessArgumentInfo objAInfo, const ConflictProccessArgumentInfo objBInfo)
 {
     return HitCheckProcess(objAInfo, objBInfo);
 }
@@ -51,7 +51,7 @@ bool HitChecker::HitCheck(const ArgumentConflictInfo objAInfo, const ArgumentCon
 /// <param name="objAInfo">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheckProcess(ArgumentConflictInfo objAInfo, ArgumentConflictInfo objBInfo)
+bool HitChecker::HitCheckProcess(ConflictProccessArgumentInfo objAInfo, ConflictProccessArgumentInfo objBInfo)
 {
     //引数同士の距離
     VECTOR distance = VSub(objAInfo.pos, objBInfo.pos);

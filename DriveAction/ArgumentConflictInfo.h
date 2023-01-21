@@ -5,7 +5,7 @@
 /// <summary>
 /// 当たり判定で使う引数にして渡したい情報
 /// </summary>
-struct ArgumentConflictInfo
+struct ConflictProccessArgumentInfo
 {
     bool hitFlag = false;//当たり判定で当たったか
     ObjectTag tag = ObjectTag::obstacle;//オブジェクトのタグ

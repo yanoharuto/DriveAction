@@ -1,4 +1,4 @@
-#include <math.h>
+#include "OriginalMath.h"
 #include "Car.h"
 #include "Wheels.h"
 #include "Utility.h"
@@ -39,7 +39,7 @@ Car::~Car()
 /// </summary>
 /// <param name="deltaTime"></param>
 /// <param name="conflictInfo"></param>
-void Car::ConflictProcess(float deltaTime,const ArgumentConflictInfo conflictInfo)
+void Car::ConflictProcess(float deltaTime,const ConflictProccessArgumentInfo conflictInfo)
 {
 	switch (conflictInfo.tag)
 	{
@@ -66,7 +66,6 @@ CarNeighborhoodExamineInfo Car::GetNeighExamineInfo()
 {
 	CarNeighborhoodExamineInfo examineInfo;
 	examineInfo.pos = position;
-	examineInfo.dir = direction;
 	examineInfo.range = examineRange;
 	return examineInfo;
 }
@@ -132,7 +131,7 @@ void Car::ModelSetMatrix()
 	MV1SetRotationZYAxis(modelHandle, direction, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 	// モデルに向いてほしい方向に回転.
 	MATRIX tmpMat = MV1GetMatrix(modelHandle);
-	MATRIX rotYMat = MGetRotY(180.0f * rage);
+	MATRIX rotYMat = MGetRotY(180.0f * RAGE);
 	tmpMat = MMult(tmpMat, rotYMat);
 	MV1SetRotationMatrix(modelHandle, tmpMat);
 }
@@ -141,10 +140,10 @@ void Car::ModelSetMatrix()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param name="outsideHitFlag">コース外に出たか</param>
-void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag)
+void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag,NeighborhoodInfo neighInfo)
 {
 	WheelArgumentCarInfo info;
-	info.handleDir = GetHandleDir();
+	info.handleDir = GetHandleDir(neighInfo);
 	VECTOR accelVec = GetAccelVec(info.handleDir, outsideHitFlag, deltaTime);
 	UpdateVelocity(VScale(accelVec, deltaTime));
 	UpdateMV1Pos();
@@ -160,18 +159,16 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag)
 /// ハンドルの向きを出す
 /// </summary>
 /// <returns></returns>
-HandleDirection Car::GetHandleDir()
+HandleDirection Car::GetHandleDir(NeighborhoodInfo neighInfo)
 {
-	float destinationDir = 0;//目的地との距離のずれ
-	VECTOR distance = VSub(destinationPos, position);
-	destinationDir = VDot(direction, distance) / (VSize(distance) * VSize(direction));
-	destinationDir = acosf(destinationDir) / rage;
-
-	if (destinationDir > turnProccesLine)
+	//目的地までの距離
+	VECTOR destinationBetween = VSub(destinationPos, position);
+	float angular = GetAngularMisalignment(direction, destinationBetween);
+	if (angular > turnProccesLine)
 	{
 		//車の向いてる方向と目的地までの方向の外積を出して
 		//右に曲がるか左に曲がるか調べる
-		float crossY = VCross(VNorm(direction), VNorm(distance)).y;
+		float crossY = VCross(VNorm(direction), VNorm(destinationBetween)).y;
 		if (crossY > 0)
 		{
 			return HandleDirection::right;
@@ -213,4 +210,14 @@ VECTOR Car::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float de
 	}
 	accelVec = VScale(direction, accelPower);
 	return accelVec;
+}
+
+float Car::GetNeighSize(NeighborhoodInfo neighInfo)
+{
+	float angular = 0;
+	float neighSize;
+	if (neighInfo.outside.hitFlag)
+	{
+	}
+	return angular;
 }

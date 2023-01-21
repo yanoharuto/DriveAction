@@ -305,5 +305,8 @@
     <ClInclude Include="CarNeighborhoodExamineInfo.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
+    <ClInclude Include="OriginalMath.h">
+      <Filter>ヘッダー ファイル\Other</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

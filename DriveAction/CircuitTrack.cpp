@@ -33,7 +33,7 @@ CircuitTrack::~CircuitTrack()
 /// </summary>
 /// <param name="actor">外側にいるか調べたいもの</param>
 /// <returns>コースの外側にいるならTrue</returns>
-bool CircuitTrack::GetOutsideHitFlag(ArgumentConflictInfo info)const
+bool CircuitTrack::GetOutsideHitFlag(ConflictProccessArgumentInfo info)const
 {
     //線分の始まりと終わりを作る
     //ｘとｚ座標を取ってくる
@@ -50,40 +50,34 @@ bool CircuitTrack::GetOutsideHitFlag(ArgumentConflictInfo info)const
 /// </summary>
 /// <param name="Actor">ぶつかってるか調べたいもの</param>
 /// <returns>ぶつかってたらTrue</returns>
-ArgumentConflictInfo  CircuitTrack::GetCourceConflictInfo(ArgumentConflictInfo info) const
+ConflictProccessArgumentInfo  CircuitTrack::GetCourceConflictInfo(ConflictProccessArgumentInfo info) const
 {
-    //壁にぶつかったか関数にかける
-    MV1_COLL_RESULT_POLY_DIM polyInfo;
-    polyInfo = MV1CollCheck_Sphere(courceModelHandle, -1,info.pos,info.radius);
-
-    //当たってる時は当たった場所を返す
-    if (polyInfo.HitNum != 0)
+    //
+    CarNeighborhoodExamineInfo examineInfo = { info.pos,info.radius };
+    ConflictProccessArgumentInfo conflictInfo = GetSphereConflictModelInfo(courceModelHandle, examineInfo);
+    //当たってる時
+    if (conflictInfo.hitFlag)
     {
-        VECTOR hitPos = polyInfo.Dim->HitPosition;
-        MV1CollResultPolyDimTerminate(polyInfo);
-        return { true,tag,hitPos,radius };
+        conflictInfo.radius = radius;
+        conflictInfo.tag = tag;
+        return conflictInfo;
     }
   
-    return {};
+    return { false,tag,{},radius };
 }
 
-NeighborhoodInfo CircuitTrack::GetObjNeighbornhoodInfo(CarNeighborhoodExamineInfo examineInfo) const
+/// <summary>
+/// 引数の範囲に何かあるか調べるよ
+/// </summary>
+/// <param name="examineInfo"></param>
+/// <returns></returns>
+NeighborhoodInfo CircuitTrack::GetOutsideExamineInfo(CarNeighborhoodExamineInfo examineInfo) const
 {
     NeighborhoodInfo returnValueInfo;
-    for (int i = 0; i < 3; i++)
-    {
-        switch (i)
-        {
-        case 0:
-            returnValueInfo.diagonallyForwardLeft = SetNeighbornhoodSituation(examineInfo, 0.5f);
-        case 1:
-            returnValueInfo.diagonallyForwardRight = SetNeighbornhoodSituation(examineInfo, -0.5f);
-        case 2:
-            returnValueInfo.forward = SetNeighbornhoodSituation(examineInfo);
-        default:
-            break;
-        }
-    }
+    returnValueInfo.outside = GetSphereConflictModelInfo(outsideModelHandle,examineInfo);
+    CarNeighborhoodExamineInfo examineInfo2 = examineInfo;
+    examineInfo2.pos.y = outsideModelPosition.y;
+    returnValueInfo.obstacle = GetSphereConflictModelInfo(courceModelHandle, examineInfo2);
     return returnValueInfo;
 }
 
@@ -94,41 +88,22 @@ void CircuitTrack::Draw()
 {
     MV1DrawModel(courceModelHandle);
 }
-
-NeighborhoodSituation CircuitTrack::SetNeighbornhoodSituation(CarNeighborhoodExamineInfo examineInfo, float crossY) const
+/// <summary>
+/// MV1CollCheck_Sphereを使ってモデルハンドルが射程内か調べるよ
+/// </summary>
+/// <param name="modelHandle">調べるモデル</param>
+/// <param name="examineInfo">調べるために必要な情報</param>
+/// <returns>ぶつかった位置を返すよ。ぶつかってないならHitFlagはfalse</returns>
+ConflictProccessArgumentInfo CircuitTrack::GetSphereConflictModelInfo(int modelHandle,CarNeighborhoodExamineInfo examineInfo) const
 {
-    //線分の始まりと終わりを作る
-        //ｘとｚ座標を取ってくる
-    VECTOR startPos = examineInfo.pos;
-    VECTOR endPos = VCross(examineInfo.dir,VGet(0,crossY,0));
-    endPos = VScale(endPos, examineInfo.range);
-    endPos.y = eY;
-    //外側にいるか調べる
-    DxLib::MV1_COLL_RESULT_POLY polyInfo = MV1CollCheck_Line(outsideModelHandle, -1, startPos, endPos);
-    if (polyInfo.HitFlag)
+    DxLib::MV1_COLL_RESULT_POLY_DIM polyInfo = MV1CollCheck_Sphere(modelHandle, -1, examineInfo.pos, examineInfo.range);
+    ConflictProccessArgumentInfo conflictPos = {};
+    if (polyInfo.HitNum!=0)
     {
-        return  NeighborhoodSituation::outside;
+        conflictPos.hitFlag = true;
+        conflictPos.pos = polyInfo.Dim[0].HitPosition;
+        MV1CollResultPolyDimTerminate(polyInfo);
+        return  conflictPos;
     }
-
-    return NeighborhoodSituation::cource;
-
-}
-
-NeighborhoodSituation CircuitTrack::SetNeighbornhoodSituation(CarNeighborhoodExamineInfo examineInfo) const
-{
-    //線分の始まりと終わりを作る
-    //ｘとｚ座標を取ってくる
-    VECTOR startPos = examineInfo.pos;
-    VECTOR endPos = examineInfo.dir;
-
-    endPos = VScale(endPos, examineInfo.range);
-    endPos.y = eY;
-    //外側にいるか調べる
-    DxLib::MV1_COLL_RESULT_POLY polyInfo = MV1CollCheck_Line(outsideModelHandle, -1, startPos, endPos);
-    if (polyInfo.HitFlag)
-    {
-        return  NeighborhoodSituation::outside;
-    }
-
-    return NeighborhoodSituation::cource;
+    return conflictPos;
 }

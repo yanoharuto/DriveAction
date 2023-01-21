@@ -31,7 +31,7 @@ CPUCar::~CPUCar()
 /// <param name="outsideHitFlag">コース外に出たか</param>
 void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo)
 {
-    AutoDrive(deltaTime,outsideHitFlag);
+    AutoDrive(deltaTime,outsideHitFlag,neighInfo);
 }
 
 

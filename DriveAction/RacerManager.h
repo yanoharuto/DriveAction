@@ -2,6 +2,7 @@
 #include <List>
 #include <string>
 #include "HitChecker.h"
+#include "StringUI.h"
 class CourceDataLoader;
 class Object;
 class CheckPoint;
@@ -93,4 +94,5 @@ private:
     //“–‚½‚Á‚Ä‚é‚©‚Ç‚¤‚©’²‚×‚é
     HitChecker hitChecker;
     PlayerRacer player;
+    StringUI* stringUI;
 };

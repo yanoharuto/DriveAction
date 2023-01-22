@@ -45,8 +45,11 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
         rankInfo.rankP = &racerInstanceArray[i].rank;
         racerRankList.push_front(rankInfo);
     }
-    int* a= &racerInstanceArray[0].rank;
-    player.rank;
+    UIData uiData;
+    uiData.x = SCREEN_WIDTH / 13;
+    uiData.y = SCREEN_HEIGHT / 11;
+    uiData.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
+    stringUI = new StringUI(GetColor(0,255,0), uiData);
 }
 //デストラクタ
 RacerManager::~RacerManager()
@@ -56,6 +59,7 @@ RacerManager::~RacerManager()
         SAFE_DELETE(racerInstanceArray[i].car);
         SAFE_DELETE(racerInstanceArray[i].checkPoint);
     }
+    SAFE_DELETE(stringUI);
 }
 /// <summary>
 /// 車乗りたちの更新
@@ -121,32 +125,46 @@ void RacerManager::ArgumentConflictProcess(float deltaTime,Object* obj)
 void RacerManager::RacerRankUpdate()
 {
     std::list<RacerRankInfo>::iterator rankIte;
-    RacerRankInfo rankInfo;
-    int transitCheckCount = 0;//通過回数
-    int maxTransitCheckCount = 0;//最大通過回数
-    float size = 0;
-    float maxSize = 0;
+    RacerRankInfo* swapRankInfo = nullptr;
+    int transitCheckCount = 0;//チェックポイント通過回数
+    int maxTransitCheckCount = 0;//チェックポイント最大通過回数
+    float checkPointBetween = 0;//次のチェックポイントまでの距離距離
+    float minCheckPointBetween = 0;//次のチェックポイントまでの現状の最短距離
+    //ソート
     for (rankIte = racerRankList.begin(); rankIte != racerRankList.end(); rankIte++)
-    {
-        rankInfo = *rankIte;
-        transitCheckCount = rankInfo.checkPointP->GetTransitCheckPointCount();
-        size = rankInfo.checkPointP->GetCheckPointDistance();
-        printfDx("%d::size%d::\n", rankInfo.rankP,size);
-        if (size > maxSize)
+    {   
+        minCheckPointBetween = (*rankIte).checkPointP->GetCheckPointDistance();
+        maxTransitCheckCount= (*rankIte).checkPointP->GetTransitCheckPointCount();
+        swapRankInfo = nullptr;
+        for (std::list<RacerRankInfo>::iterator rankIte2 = rankIte; rankIte2 != racerRankList.end(); rankIte2++)
         {
-
-            std::swap(*racerRankList.begin(), rankInfo);
-            maxSize = size;
+            transitCheckCount = (*rankIte2).checkPointP->GetTransitCheckPointCount();
+            checkPointBetween = (*rankIte2).checkPointP->GetCheckPointDistance();
+            //チェックポイントがより近くて
+            if (checkPointBetween < minCheckPointBetween)
+            {
+                //チェックポイントを通過した回数が多い人がより高順位
+                if (transitCheckCount >= maxTransitCheckCount)
+                {
+                    minCheckPointBetween = checkPointBetween;
+                    maxTransitCheckCount = transitCheckCount;
+                    swapRankInfo = &(*rankIte2);
+                }
+            }
+        }
+        //スワップ
+        if (swapRankInfo != nullptr)
+        {
+            std::swap((*rankIte), *swapRankInfo);
         }
     }
-    int rank = racerNum;
+    //順位更新
+    int rank = 0;
     for (rankIte = racerRankList.begin(); rankIte != racerRankList.end(); rankIte++)
     {
-        rankInfo = *rankIte;
-        *rankInfo.rankP = rank;
-        rank--;
+        *(*rankIte).rankP = ++rank;
     }
-    printfDx("playerRank::%d::%d\n", player.rank,*player.rank);
+    stringUI->UpdateString(std::to_string(*player.rank));
 }
 /// <summary>
 /// 車乗りたち同士でぶつかってないか調べる
@@ -188,6 +206,7 @@ void RacerManager::Draw()
         racer = *racerIte;
         racer->car->Draw();
     }
+    stringUI->DrawUI();
 }
 /// <summary>
 /// 一番最初に追加したオブジェクトを返す

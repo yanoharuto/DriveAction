@@ -2,14 +2,14 @@
 #include "UIManager.h"
 #include "DxLib.h"
 #include "SwitchUI.h"
+#include "StringUI.h"
 #include <string>
 class PostGoalDirection
 {
 public:
     PostGoalDirection();
-    PostGoalDirection(UIManager* uimanager);
     ~PostGoalDirection();
-    bool Update(float deltaTime,UIManager* uimanager);
+    bool Update(float deltaTime);
     void Draw();
 private:
     float x = 0.0f;
@@ -21,5 +21,6 @@ private:
 
     unsigned int goalMarkerUIColor = GetColor(200, 200, 0);
     SwitchUI* switchUI;
+    StringUI* stringUI;
 };
 

@@ -1,17 +1,17 @@
 #pragma once
 #include <string>
 #include "DxLib.h"
-#include "UIDataStruct.h"
-#include "UIManager.h"
-
+#include "ImgUI.h"
+#include "PointUI.h"
 class MiniMap
 {
 public:
-    MiniMap(UIManager* uiManager, float mapPosX, float mapPosY, std::string mapGraphAddress);
+    MiniMap(float mapPosX, float mapPosY, std::string mapGraphAddress);
     MiniMap() {
     };
     ~MiniMap();
-    void Update(UIManager* uiManager, float playerPosX, float playerPosY);
+    void Update(float playerPosX, float playerPosY);
+    void Draw();
 private:
     const unsigned int playerColor = GetColor(255,0,0);
     int playerMarkerUINum = 0;
@@ -24,6 +24,7 @@ private:
     int minimapY = 0;
 
     const float markerRadius = 5.75f;
-    UIData uiData = {};
+    ImgUI* miniMap;
+    PointUI* pointUI;
 };
 

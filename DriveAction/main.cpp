@@ -10,7 +10,7 @@
 SceneBase* MakeScene(SceneType _NowSceneType);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
+	ChangeWindowMode(true);
 	//•`‰ææ‚ğ— ‰æ–Ê‚É•ÏX‚·‚éB
 	SetDrawScreen(DX_SCREEN_BACK);
 

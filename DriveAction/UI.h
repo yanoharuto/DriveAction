@@ -8,8 +8,7 @@ public:
     UI(UIData data) { uiData = data; };
     virtual ~UI() {};
     virtual void DrawUI() {};
-    virtual void Update(std::string updateString) {};
-    void Update(int x, int y) { uiData.x = x; uiData.y = y; };
+    void SetXY(int x, int y) { uiData.x = x; uiData.y = y; };
     void StopDrawUI(bool boolvalue) { IsStopDrawUI = boolvalue; };
 protected:
     UIData uiData;

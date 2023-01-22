@@ -1,12 +1,6 @@
 #include "PostGoalDirection.h"
-#include "StringUI.h"
-#include "DxLib.h"
 #include "Utility.h"
 PostGoalDirection::PostGoalDirection()
-{
-}
-
-PostGoalDirection::PostGoalDirection(UIManager* uimanager)
 {
     x = 0.0f;
     y = SCREEN_HEIGHT;
@@ -14,19 +8,19 @@ PostGoalDirection::PostGoalDirection(UIManager* uimanager)
     UIData goalMarkerUI;
     goalMarkerUI.x = x;
     goalMarkerUI.y = y;
-    goalMarkerUI.dataHandle = CreateFontToHandle("BIZ UDゴシック",122,3,DX_FONTTYPE_NORMAL);
-    StringUI* goalUI = new StringUI(goalMarkerUIColor,goalMarkerUI,"Goal!!!");
-    goalMarkerUINum = uimanager->AddUI(goalUI);
-
+    goalMarkerUI.dataHandle = CreateFontToHandle("BIZ UDゴシック", 122, 3, DX_FONTTYPE_NORMAL);
+    stringUI = new StringUI(goalMarkerUIColor, goalMarkerUI, "Goal!!!");
     switchUI = new SwitchUI();
 }
+
 
 PostGoalDirection::~PostGoalDirection()
 {
     SAFE_DELETE(switchUI);
+    SAFE_DELETE(stringUI);
 }
 
-bool PostGoalDirection::Update(float deltaTime, UIManager* uimanager)
+bool PostGoalDirection::Update(float deltaTime)
 {
     int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
@@ -46,7 +40,7 @@ bool PostGoalDirection::Update(float deltaTime, UIManager* uimanager)
         else
         {
             x += goalMoveX * deltaTime;
-            uimanager->Update(goalMarkerUINum, static_cast<int>(x), y);
+            stringUI->SetXY(static_cast<int>(x), static_cast<int>(y));
         }
     }
     else
@@ -61,5 +55,9 @@ void PostGoalDirection::Draw()
     if (isEndGoalUI)
     {
         switchUI->Draw();
+    }
+    else
+    {
+        stringUI->DrawUI();
     }
 }

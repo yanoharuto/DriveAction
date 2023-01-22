@@ -39,6 +39,7 @@ bool CheckPoint::CheckPointUpdate(ConflictProccessArgumentInfo carInfo)
     HitChecker checker;
     ConflictProccessArgumentInfo thisInfo = {};
     thisInfo.radius = radius;
+    //何回かだけチェックポイントを通過したか調べる
     for (int i = 0; i < vectorExamineCount; i++)
     {
         thisInfo.pos = GetArgumentCountVector(cPParam.positionVec.begin(), (transitCheckPointCount + i) % vecSize);

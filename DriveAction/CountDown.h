@@ -1,15 +1,19 @@
 #pragma once
 #include <string>
+#include "StringUI.h"
 class CountDown
 {
 public:
     CountDown();
     ~CountDown();
-    std::string Update(float deltaTime);
+    void Update(float deltaTime);
     bool CountDownEnd();
+    void DrawUI();
 private:
     float startTime;
     bool countDownEnd;
     int fiveTime = 5;
+    std::string count;
+    StringUI* countDownUI;
 };
 

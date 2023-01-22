@@ -20,12 +20,12 @@ int UIManager::AddUI(UI* ui)
 
 void UIManager::Update(int index, std::string updateString)
 {
-    uiVec[index]->Update(updateString);
+
 }
 
 void UIManager::Update(int index, int x, int y)
 {
-    uiVec[index]->Update(x, y);
+    uiVec[index]->SetXY(x, y);
 }
 
 void UIManager::DrawUI()

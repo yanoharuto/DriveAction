@@ -2,27 +2,36 @@
 #include "UIManager.h"
 #include "ImgUI.h"
 #include "PointUI.h"
-MiniMap::MiniMap(UIManager* uiManager, float mapPosX,float mapPosY,std::string mapGraphAddress)
+#include "Utility.h"
+MiniMap::MiniMap(float mapPosX,float mapPosY,std::string mapGraphAddress)
 {
+    UIData uiData;
     minimapX = mapPosX;
     minimapY = mapPosY;
     uiData.x = mapPosX;
     uiData.y = mapPosY;
     uiData.dataHandle = LoadGraph(mapGraphAddress.c_str(), true);
-    ImgUI* miniMap = new ImgUI(mapSize, uiData);
-    mapUINum = uiManager->AddUI(miniMap);
+    miniMap = new ImgUI(mapSize, uiData);
 
-    PointUI* pointUI = new PointUI(playerColor,uiData,markerRadius);
-    playerMarkerUINum = uiManager->AddUI(pointUI);
+
+    pointUI = new PointUI(playerColor,uiData,markerRadius);
 }
 
 MiniMap::~MiniMap()
 {
+    SAFE_DELETE(miniMap);
+    SAFE_DELETE(pointUI);
 }
 
-void MiniMap::Update(UIManager* uiManager, float playerPosX, float playerPosY)
+void MiniMap::Update(float playerPosX, float playerPosY)
 {
     float x = minimapX + courceModelStartPosX + playerPosX  * markerSize ;
     float y = minimapY + courceModelStartPosY + playerPosY * markerSize ;
-    uiManager->Update(playerMarkerUINum,x,y);
+    pointUI->SetXY(x, y);
+}
+
+void MiniMap::Draw()
+{
+    miniMap->DrawUI();
+    pointUI->DrawUI();
 }

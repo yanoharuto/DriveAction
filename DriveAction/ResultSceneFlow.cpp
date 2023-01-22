@@ -19,7 +19,7 @@ ResultSceneFlow::ResultSceneFlow()
     scoreUIData.y = y;
     scoreUIData.dataHandle=CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
     scoreUI = new StringUI(GetColor(200,200,100),scoreUIData);
-    scoreUI->Update(std::to_string(ScoreTime::GetScoreTime())+"秒でクリア");
+    scoreUI->UpdateString(std::to_string(ScoreTime::GetScoreTime())+"秒でクリア");
     switchUI = new SwitchUI();
 }
 

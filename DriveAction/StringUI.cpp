@@ -33,7 +33,8 @@ void StringUI::DrawUI()
     }
 }
 
-void StringUI::Update(std::string updateString)
+void StringUI::UpdateString(std::string updateString)
 {
     string = updateString;
+
 }

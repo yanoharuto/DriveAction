@@ -86,15 +86,15 @@ protected:
 	float GetNeighSize(NeighborhoodInfo neighInfo);
 
 	// 静的定数.
-	const float accelSpeed = 6.4f;					// 通常の加速.
-	const float maxSpeed = 180.0f;					// 最高速度.
+	const float accelSpeed = 12.4f;					// 通常の加速.
+	const float maxSpeed = 200.0f;					// 最高速度.
 	const float defaultDecel = 0.04f;			// なにもしない時の減速.
 	const float breakDecel = 0.97f;				// ブレーキ時の減速.
 	const float gripDecel = 0.125f;				// グリップの減速.
 	const float gripPower = 0.08f;				// グリップ力.
 	const float maxGripPower = 1.2f;				// 最大グリップ力.
-	const float colideDecel = 0.45f;	    // 障害物にぶつかったときの減速率.
-	const float outsideHitDecel = 0.2f;   //コースの外側に来た時の減速
+	const float colideDecel = 0.2f;	    // 障害物にぶつかったときの減速率.
+	const float outsideHitDecel = 0.4f;   //コースの外側に来た時の減速
 	const float radiusValue = 3.0f; //車の幅
 	const float turnProccesLine = 7.0f;//目的地に向かうときに曲がるか判断する
 	const float examineRange = 150.0f;

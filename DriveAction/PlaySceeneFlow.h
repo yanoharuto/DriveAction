@@ -34,7 +34,6 @@ public:
 private:
     void MakeCountDownUI();
     void MakeRankUI();
-    UIManager* uiManager;//uiについてのマネージャー
     RacerManager* racerManager;//車乗りのマネージャー
     StageManager* stageManager;//ステージのマネージャー
     Timer* timer;//時間経過観測
@@ -45,7 +44,6 @@ private:
     ScoreTime* scoreTime;
     PostGoalDirection* postGoalDirection;
     PlaySceeneProgress nowProgress;//今何の処理を行うか決める変数
-    UIData uiData;
     int countUINum;
     const int minimapX=1080;
     const int minimapY=450;

@@ -10,6 +10,8 @@
 #include "MiniMap.h"
 #include "PostGoalDirection.h"
 #include "ScoreTime.h"
+#include "LapUI.h"
+#include "GimmickObjManager.h"
 /// <summary>
 /// どういう順番で処理を行うか決める
 /// </summary>
@@ -32,7 +34,6 @@ public:
     /// </summary>
     void Draw();
 private:
-    void MakeCountDownUI();
     void MakeRankUI();
     RacerManager* racerManager;//車乗りのマネージャー
     StageManager* stageManager;//ステージのマネージャー
@@ -43,8 +44,11 @@ private:
     MiniMap* miniMap;
     ScoreTime* scoreTime;
     PostGoalDirection* postGoalDirection;
+    LapUI* lapUI;
+    GimmickObjManager* gimmickObjManager;
     PlaySceeneProgress nowProgress;//今何の処理を行うか決める変数
     int countUINum;
     const int minimapX=1080;
     const int minimapY=450;
+    const int maxLap = 3;
 };

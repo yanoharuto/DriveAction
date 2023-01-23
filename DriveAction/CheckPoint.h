@@ -1,7 +1,6 @@
 #pragma once
-#include "Car.h"
 #include <vector>
-#include "ArgumentConflictInfo.h"
+#include "ConflictExamineResultInfo.h"
 #include "CircuitDataStruct.h"
 /// <summary>
 /// プレイヤーが何回ゴールしたか数える
@@ -24,7 +23,7 @@ public:
     /// プレイヤーがぶつかったら次の行き先を設定する
     /// </summary>
     /// <param name="carInfo">ぶつかったか調べる車</param>
-    bool CheckPointUpdate(const ConflictProccessArgumentInfo carInfo);
+    bool CheckPointUpdate(const ConflictExamineResultInfo carInfo);
     /// <summary>
     /// 他のCPUにもコピーさせるために渡す
     /// </summary>
@@ -50,11 +49,11 @@ private:
     //サーキットのデータ
     CircuitData cPParam;
     //positionからこれだけ近かったらゴール
-    const float goalRadius = 100.0f;
+    const float goalRadius = 120.0f;
     //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
     const float dirJugeLine = 0.8f;
     //チェックポイントのベクターを調べる回数
-    const int vectorExamineCount = 5;
+    const int vectorExamineCount = 10;
     //通過した回数
     int transitCheckPointCount = 0;
     //ゴールした回数

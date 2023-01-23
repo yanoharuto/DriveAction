@@ -1,6 +1,6 @@
 #include "HitChecker.h"
 #include "Object.h"
-#include "ArgumentConflictInfo.h"
+#include "ConflictExamineResultInfo.h"
 #include "DxLib.h"
 HitChecker::HitChecker()
 {
@@ -17,9 +17,9 @@ HitChecker::~HitChecker()
 /// <returns>当たったらTrue</returns>
 bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 {
-    ConflictProccessArgumentInfo aInfo;
+    ConflictExamineResultInfo aInfo;
     aInfo.SetObjInfo(false, objA);
-    ConflictProccessArgumentInfo bInfo;
+    ConflictExamineResultInfo bInfo;
     bInfo.SetObjInfo(false,objB);
     return HitCheckProcess(aInfo, bInfo);
 }
@@ -29,9 +29,9 @@ bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 /// <param name="objA">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheck(Object* const objA, const ConflictProccessArgumentInfo objBInfo)
+bool HitChecker::HitCheck(Object* const objA, const ConflictExamineResultInfo objBInfo)
 {
-    ConflictProccessArgumentInfo aInfo;
+    ConflictExamineResultInfo aInfo;
     aInfo.SetObjInfo(false,objA);
     return HitCheckProcess(aInfo, objBInfo);
 }
@@ -41,7 +41,7 @@ bool HitChecker::HitCheck(Object* const objA, const ConflictProccessArgumentInfo
 /// <param name="objAInfo">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheck(const ConflictProccessArgumentInfo objAInfo, const ConflictProccessArgumentInfo objBInfo)
+bool HitChecker::HitCheck(const ConflictExamineResultInfo objAInfo, const ConflictExamineResultInfo objBInfo)
 {
     return HitCheckProcess(objAInfo, objBInfo);
 }
@@ -51,7 +51,7 @@ bool HitChecker::HitCheck(const ConflictProccessArgumentInfo objAInfo, const Con
 /// <param name="objAInfo">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheckProcess(ConflictProccessArgumentInfo objAInfo, ConflictProccessArgumentInfo objBInfo)
+bool HitChecker::HitCheckProcess(ConflictExamineResultInfo objAInfo, ConflictExamineResultInfo objBInfo)
 {
     //引数同士の距離
     VECTOR distance = VSub(objAInfo.pos, objBInfo.pos);

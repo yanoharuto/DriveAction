@@ -48,8 +48,7 @@ void Effect_Draw() {
 }
 //エフェクトの終了処理
 void Effect_Finalize() {
-    // エフェクトリソースを削除する。(Effekseer終了時に破棄されるので削除しなくてもいい)
-    DeleteEffekseerEffect(effectResourceHandle);
+
     // Effekseerを終了する。
     Effkseer_End();
 }

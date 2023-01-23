@@ -1,5 +1,5 @@
 #pragma once
-struct ConflictProccessArgumentInfo;
+struct ConflictExamineResultInfo;
 class Object;
 /// <summary>
 /// 球同士の当たり判定をやります
@@ -22,14 +22,14 @@ public:
     /// <param name="objA">調べたいオブジェクトA<</param>
     /// <param name="objBInfo">調べたいオブジェクトB</param>
     /// <returns>当たったらTrue</returns>
-    bool HitCheck(Object* const objA, const ConflictProccessArgumentInfo objBInfo);
+    bool HitCheck(Object* const objA, const ConflictExamineResultInfo objBInfo);
     /// <summary>
     /// 当たったかどうか調べるよ
     /// </summary>
     /// <param name="objAInfo">調べたいオブジェクトA<</param>
     /// <param name="objBInfo">調べたいオブジェクトB</param>
     /// <returns>当たったらTrue</returns>
-    bool HitCheck(const ConflictProccessArgumentInfo objAInfo, const ConflictProccessArgumentInfo objBInfo);
+    bool HitCheck(const ConflictExamineResultInfo objAInfo, const ConflictExamineResultInfo objBInfo);
 private:
     /// <summary>
     /// 当たったかどうか調べるときの共通処理
@@ -37,6 +37,6 @@ private:
     /// <param name="objAInfo">調べたいオブジェクトA</param>
     /// <param name="objBInfo">調べたいオブジェクトB</param>
     /// <returns>当たったらTrue</returns>
-    bool HitCheckProcess(ConflictProccessArgumentInfo objAInfo, ConflictProccessArgumentInfo objBInfo);
+    bool HitCheckProcess(ConflictExamineResultInfo objAInfo, ConflictExamineResultInfo objBInfo);
 };
 

@@ -12,7 +12,7 @@ class CircuitTrack;
 /// “–‚½‚è”»’è‚Åg‚¤“n‚µ‚Ä‚Ù‚µ‚¢î•ñ
 /// Actor‚É’è‹`
 /// </summary>
-struct  ConflictProccessArgumentInfo;
+struct  ConflictExamineResultInfo;
 /// <summary>
 /// ‘–‚Á‚Ä‚éÔ‚Ìî•ñ
 /// </summary>
@@ -94,5 +94,6 @@ private:
     //“–‚½‚Á‚Ä‚é‚©‚Ç‚¤‚©’²‚×‚é
     HitChecker hitChecker;
     PlayerRacer player;
-    StringUI* stringUI;
+    StringUI* rankUI;
+    StringUI* rapUI;
 };

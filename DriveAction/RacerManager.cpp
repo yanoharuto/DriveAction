@@ -17,17 +17,20 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
     racerNum = cpuNum > maxRacerNum ? maxRacerNum : cpuNum;
     //コースの情報とかを引数からもらう
     CircuitData circuitData{ courceDataLoader->GetCheckPointPosList(),courceDataLoader->GetCheckPointDirList() };
-    std::list<VECTOR> firstPosList = courceDataLoader->GetFirstPosList();
+    std::list<VECTOR> firstPosList = courceDataLoader->GetCarFirstPosList();
+    //最初の一行は向く方向なので消す
+    firstPosList.erase(firstPosList.begin());
+    //ポジションのイテレーター
     std::list<VECTOR>::iterator firstPosIte = firstPosList.begin();
     //プレイヤーの初期化処理
     RacerRankInfo rankInfo{};
-
+    player = {};
     for (int i = 0; i < racerNum; i++)
     {
         firstPosIte++;
         if (i == 0)
         {
-            racerInstanceArray[i].car = new Player(*firstPosIte, courceDataLoader->GetFirstDir());
+            racerInstanceArray[i].car = new Player(*firstPosIte, courceDataLoader->GetCarFirstDir());
             racerInstanceArray[i].rank = 0;
             racerInstanceArray[i].checkPoint = new CheckPoint(circuitData);
             player.car = racerInstanceArray[i].car;
@@ -36,7 +39,7 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
         }
         else
         {
-            racerInstanceArray[i].car = new CPUCar(*firstPosIte, courceDataLoader->GetFirstDir());
+            racerInstanceArray[i].car = new CPUCar(*firstPosIte, courceDataLoader->GetCarFirstDir());
             racerInstanceArray[i].rank = 0;
             racerInstanceArray[i].checkPoint = new CheckPoint(circuitData);
         }
@@ -47,9 +50,14 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
     }
     UIData uiData;
     uiData.x = SCREEN_WIDTH / 13;
-    uiData.y = SCREEN_HEIGHT / 11;
+    uiData.y = SCREEN_HEIGHT / 9;
     uiData.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
-    stringUI = new StringUI(GetColor(0,255,0), uiData);
+    rankUI = new StringUI(GetColor(0,255,0), uiData);
+
+    uiData.x = SCREEN_WIDTH / 15;
+    uiData.y = SCREEN_HEIGHT / 13;
+    uiData.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
+    rapUI = new StringUI(GetColor(0, 0, 0), uiData);
 }
 //デストラクタ
 RacerManager::~RacerManager()
@@ -59,7 +67,7 @@ RacerManager::~RacerManager()
         SAFE_DELETE(racerInstanceArray[i].car);
         SAFE_DELETE(racerInstanceArray[i].checkPoint);
     }
-    SAFE_DELETE(stringUI);
+    SAFE_DELETE(rankUI);
 }
 /// <summary>
 /// 車乗りたちの更新
@@ -72,7 +80,7 @@ void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
     Racer* racer;
     bool hitFlag;
     NeighborhoodInfo neighInfo;
-    ConflictProccessArgumentInfo conflictInfo;
+    ConflictExamineResultInfo conflictInfo;
     for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
@@ -104,7 +112,7 @@ void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
 /// <param name="obj">調べたい物体</param>
 void RacerManager::ArgumentConflictProcess(float deltaTime,Object* obj)
 {
-    ConflictProccessArgumentInfo conflictInfo;
+    ConflictExamineResultInfo conflictInfo;
     conflictInfo.SetObjInfo(false,obj);
     std::list<Racer*>::iterator racerIte;
     Racer* racer;
@@ -164,7 +172,8 @@ void RacerManager::RacerRankUpdate()
     {
         *(*rankIte).rankP = ++rank;
     }
-    stringUI->UpdateString(std::to_string(*player.rank));
+    rankUI->UpdateString(std::to_string(*player.rank));
+    rapUI->UpdateString(std::to_string(player.checkPoint->GetGoalCount()));
 }
 /// <summary>
 /// 車乗りたち同士でぶつかってないか調べる
@@ -206,7 +215,8 @@ void RacerManager::Draw()
         racer = *racerIte;
         racer->car->Draw();
     }
-    stringUI->DrawUI();
+    rankUI->DrawUI();
+    //rapUI->DrawUI();
 }
 /// <summary>
 /// 一番最初に追加したオブジェクトを返す

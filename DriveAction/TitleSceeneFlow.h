@@ -1,8 +1,9 @@
 #pragma once
 #include "StageSelect.h"
-#include "UIManager.h"
 #include "CourceDataLoader.h"
 #include "SwitchUI.h"
+#include "ImgUI.h"
+#include "StringUI.h"
 class TitleSceeneFlow
 {
 public:
@@ -15,9 +16,10 @@ private:
     void InitMinimapData();
     void InitStageString();
     StageSelect* stageSelect;
-    UIManager* uiManager;
     CourceDataLoader* courceDataLoader;
     SwitchUI* switchUI;
+    StringUI* stringUI;
+    ImgUI* miniMap;
+    ImgUI* backGround;
     UIData uiData;
-    int uiIndex;
 };

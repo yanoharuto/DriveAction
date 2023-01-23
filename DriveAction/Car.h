@@ -21,7 +21,7 @@ public:
 	/// 衝突処理
 	/// </summary>
 	/// <param name="conflictInfo">ぶつかったかオブジェクトの情報</param>
-	void ConflictProcess(float deltaTime, const ConflictProccessArgumentInfo conflictInfo) override;
+	void ConflictProcess(float deltaTime, const ConflictExamineResultInfo conflictInfo) override;
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -91,12 +91,12 @@ protected:
 	const float defaultDecel = 0.04f;			// なにもしない時の減速.
 	const float breakDecel = 0.97f;				// ブレーキ時の減速.
 	const float gripDecel = 0.125f;				// グリップの減速.
-	const float gripPower = 0.08f;				// グリップ力.
+	const float gripPower = 0.06f;				// グリップ力.
 	const float maxGripPower = 1.2f;				// 最大グリップ力.
 	const float colideDecel = 0.2f;	    // 障害物にぶつかったときの減速率.
 	const float outsideHitDecel = 0.4f;   //コースの外側に来た時の減速
 	const float radiusValue = 3.0f; //車の幅
-	const float turnProccesLine = 7.0f;//目的地に向かうときに曲がるか判断する
+	const float turnProccesLine = 9.0f;//目的地に向かうときに曲がるか判断する
 	const float examineRange = 150.0f;
 	float accelPower = 0;             //計算結果によって出る速さ
 	int effectResourceHandle = -1;//煙のエフェクト

@@ -2,7 +2,7 @@
 #include "Car.h"
 #include "Wheels.h"
 #include "Utility.h"
-#include "ArgumentConflictInfo.h"
+#include "ConflictExamineResultInfo.h"
 #include "EffekseerForDXLib.h"
 
 Car::Car()
@@ -39,7 +39,7 @@ Car::~Car()
 /// </summary>
 /// <param name="deltaTime"></param>
 /// <param name="conflictInfo"></param>
-void Car::ConflictProcess(float deltaTime,const ConflictProccessArgumentInfo conflictInfo)
+void Car::ConflictProcess(float deltaTime,const ConflictExamineResultInfo conflictInfo)
 {
 	switch (conflictInfo.tag)
 	{
@@ -163,7 +163,8 @@ HandleDirection Car::GetHandleDir(NeighborhoodInfo neighInfo)
 {
 	//目的地までの距離
 	VECTOR destinationBetween = VSub(destinationPos, position);
-	float angular = GetAngularMisalignment(direction, destinationBetween);
+	OriginalMath math;
+	float angular = math.GetDegreeMisalignment(direction, destinationBetween);
 	if (angular > turnProccesLine)
 	{
 		//車の向いてる方向と目的地までの方向の外積を出して

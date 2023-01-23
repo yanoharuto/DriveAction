@@ -3,15 +3,16 @@
 #include "ObjectTagEnum.h"
 #include "Object.h"
 /// <summary>
-/// 当たり判定で使う引数にして渡したい情報
+/// 当たり判定の結果で出来る情報
 /// </summary>
-struct ConflictProccessArgumentInfo
+struct ConflictExamineResultInfo
 {
     bool hitFlag = false;//当たり判定で当たったか
     ObjectTag tag = ObjectTag::obstacle;//オブジェクトのタグ
-    VECTOR pos = {};//ポジション
+    VECTOR pos = {};//当たったオブジェクトのポジション
     VECTOR dir = {};//向いてる方向
     float radius = 0;//半径
+    float bouncePower;//反発力
     /// <summary>
     /// 引数のオブジェクトから情報を作成
     /// </summary>
@@ -24,5 +25,6 @@ struct ConflictProccessArgumentInfo
         pos = obj->GetPos();
         dir = obj->GetDir();
         radius = obj->GetRadius();
+        bouncePower = obj->GetBouncePower();
     }
 };

@@ -35,7 +35,6 @@ void Player::Update(const float deltaTime, const bool outsideHitFlag, Neighborho
 {
 	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
 	VECTOR accelVec = GetAccelVec(inputKey, outsideHitFlag, deltaTime);
-	printfDx("playerPos::%f,%f,%f\n", position.x, position.y, position.z);
 	UpdateVelocity(VScale(accelVec,deltaTime));
 	UpdateMV1Pos();
 	ModelSetMatrix();
@@ -57,8 +56,8 @@ void Player::Update(const float deltaTime, const bool outsideHitFlag, Neighborho
 	wheels->WheelUpdate(info);
 #ifdef _DEBUG
 	//printfDx("%f,%f\n", accelVec.x,accelVec.z);
-	//printfDx("%f,%f\n", position.x,position.z);
-	//printfDx("%f,%f\n", direction.x,direction.z);
+	printfDx("%f,%f\n", position.x,position.z);
+	printfDx("%f,%f\n", direction.x,direction.z);
 #endif
 }
 /// <summary>

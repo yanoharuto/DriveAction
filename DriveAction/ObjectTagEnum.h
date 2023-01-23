@@ -6,5 +6,6 @@ enum class ObjectTag
     enemyAttack,
     obstacle,
     stage,
-    goal
+    goal,
+    acelerationFloor
 };

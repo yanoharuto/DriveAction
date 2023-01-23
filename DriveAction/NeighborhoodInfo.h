@@ -1,9 +1,9 @@
 #pragma once
-#include "ArgumentConflictInfo.h"
+#include "ConflictExamineResultInfo.h"
 /// <summary>
 /// ü•Óî•ñ@
 /// </summary>
 struct NeighborhoodInfo
 {
-    ConflictProccessArgumentInfo outside, obstacle, player;
+    ConflictExamineResultInfo outside, obstacle, player;
 }; 

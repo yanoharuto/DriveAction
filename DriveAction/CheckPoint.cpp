@@ -3,6 +3,7 @@
 #include "HitChecker.h"
 #include "Utility.h"
 #include "ListUtility.h"
+#include "OriginalMath.h"
 /// <summary>
 /// デフォルトコンストラクタ
 /// </summary>
@@ -34,29 +35,38 @@ CheckPoint::~CheckPoint()
 /// プレイヤーがぶつかったら次の行き先を設定する
 /// </summary>
 /// <param name="carInfo">ぶつかったか調べる車</param>
-bool CheckPoint::CheckPointUpdate(ConflictProccessArgumentInfo carInfo)
+bool CheckPoint::CheckPointUpdate(ConflictExamineResultInfo carInfo)
 {  
     HitChecker checker;
-    ConflictProccessArgumentInfo thisInfo = {};
+    ConflictExamineResultInfo thisInfo = {};//このチェックポイントクラスの情報
     thisInfo.radius = radius;
     //何回かだけチェックポイントを通過したか調べる
     for (int i = 0; i < vectorExamineCount; i++)
     {
-        thisInfo.pos = GetArgumentCountVector(cPParam.positionVec.begin(), (transitCheckPointCount + i) % vecSize);
-        //車がベクターの地点を通過してないか調べる
-        if (checker.HitCheck(thisInfo, carInfo))
+        int count = (transitCheckPointCount + i) % vecSize;
+        count = count > vecSize ? vecSize : count;
+        thisInfo.pos = GetArgumentCountVector(cPParam.positionVec.begin(), count);
+        if (checker.HitCheck(carInfo, thisInfo))
         {
-            transitCheckPointCount += i + 1;
-            //1週したなら
-            if (transitCheckPointCount >= vecSize)
+            VECTOR startPos = VAdd(VScale(VCross(direction, VGet(0, 1, 0)), radius), position);
+            VECTOR endPos = VAdd(VScale(VCross(direction, VGet(0, -1, 0)), radius), position);
+            VECTOR dir = VSub(endPos, startPos);
+            VECTOR dir2 = VSub(carInfo.pos, startPos);
+            float crossY = VCross(VNorm(dir), VNorm(dir2)).y;
+            if (crossY > 0)
             {
-                goalCount++;
-                transitCheckPointCount = 0;
-            }
-            position = GetArgumentCountVector(cPParam.positionVec.begin(), transitCheckPointCount % vecSize);
-            direction = GetArgumentCountVector(cPParam.directionVec.begin(), transitCheckPointCount % vecSize);
+                transitCheckPointCount += i + 1;
+                //1週したなら
+                if (transitCheckPointCount >= vecSize)
+                {
+                    goalCount++;
+                    transitCheckPointCount = 0;
+                }
+                position = GetArgumentCountVector(cPParam.positionVec.begin(), transitCheckPointCount % vecSize);
+                direction = GetArgumentCountVector(cPParam.directionVec.begin(), transitCheckPointCount % vecSize);
 
-            return true;
+                return true;
+            }
         }
     }
     //最後に目標地点までどのぐらい離れてるか
@@ -82,7 +92,7 @@ int CheckPoint::GetGoalCount()
 }
 int CheckPoint::GetTransitCheckPointCount()
 {
-    return transitCheckPointCount;
+    return transitCheckPointCount + goalCount * vecSize;
 }
 /// <summary>
 /// チェックポイントまでの距離

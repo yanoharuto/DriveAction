@@ -162,6 +162,21 @@
     <ClCompile Include="Effect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="GimmickObjManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="AccelerationFloor.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Saw.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="LapUI.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GimmickObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SkyDome.h">
@@ -248,7 +263,7 @@
     <ClInclude Include="StageDataAddressStruct.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
-    <ClInclude Include="ArgumentConflictInfo.h">
+    <ClInclude Include="ConflictExamineResultInfo.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
     <ClInclude Include="RacePrevProcess.h">
@@ -307,6 +322,24 @@
     </ClInclude>
     <ClInclude Include="OriginalMath.h">
       <Filter>ヘッダー ファイル\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="LapUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AccelerationFloor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GimmickObjManager.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="GimmickObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Saw.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="HitCheckExamineObjectInfo.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

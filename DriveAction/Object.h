@@ -46,6 +46,10 @@ public:
     {
         return radius;
     }
+    const float GetBouncePower()
+    {
+        return bouncePower;
+    }
     /// <summary>
 /// Œü‚«Š“¾
 /// </summary>
@@ -63,8 +67,7 @@ public:
         return tag;
     };
 protected:
-    //êŠ
-    VECTOR position;
+    float bouncePower;
     //”¼Œa
     float radius;
     //¶‘¶ƒtƒ‰ƒO
@@ -73,5 +76,7 @@ protected:
     ObjectTag tag;
     //•ûŒü
     VECTOR direction;
+    //êŠ
+    VECTOR position;
 };
 

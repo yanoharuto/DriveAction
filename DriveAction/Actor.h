@@ -1,6 +1,6 @@
 #pragma once
 #include "Object.h"
-#include "ArgumentConflictInfo.h"
+#include "ConflictExamineResultInfo.h"
 /// <summary>
 /// “®‚­‚à‚Ì‚Í‘å‘Ì‚±‚ê
 /// </summary>
@@ -28,7 +28,7 @@ public:
     /// Õ“Ëˆ—
     /// </summary>
     /// <param name="tag">Õ“Ë‚µ‚½•¨‘Ì</param>
-    virtual void ConflictProcess(float deltaTime, const ConflictProccessArgumentInfo conflictInfo) {};
+    virtual void ConflictProcess(float deltaTime, const ConflictExamineResultInfo conflictInfo) {};
 
     /// <summary>
     /// ‘¬“xŠ“¾

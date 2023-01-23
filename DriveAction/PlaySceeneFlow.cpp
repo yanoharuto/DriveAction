@@ -15,6 +15,8 @@ PlaySceeneFlow::PlaySceeneFlow()
 	countDown = new CountDown();
 	postGoalDirection = nullptr;
 	miniMap = new MiniMap(minimapX,minimapY, courceDataLoader->GetMiniMapImgAddress());
+	lapUI = new LapUI(maxLap);
+	gimmickObjManager = new GimmickObjManager(courceDataLoader);
 }
 
 PlaySceeneFlow::~PlaySceeneFlow()
@@ -28,6 +30,8 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(miniMap);
 	SAFE_DELETE(postGoalDirection);
 	SAFE_DELETE(scoreTime);
+	SAFE_DELETE(lapUI);
+	SAFE_DELETE(courceDataLoader);
 }
 
 PlaySceeneProgress PlaySceeneFlow::Update()
@@ -46,6 +50,7 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 	case PlaySceeneProgress::countDown:
 		countDown->Update(timer->GetDeltaTime());
 		camera->Update(racerManager->GetPlayerCar());
+		racerManager->RacerUpdate(0, stageManager->GetCircuit());
 		//カウントダウンが終わったら
 		if (countDown->CountDownEnd())
 		{
@@ -55,14 +60,18 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 		break;
 		//レース
 	case PlaySceeneProgress::race:
+		//レーサーの処理
 		racerManager->RacerUpdate(timer->GetDeltaTime(), stageManager->GetCircuit());
 		racerManager->RacerConflictProcces(timer->GetDeltaTime());
 		racerManager->RacerRankUpdate();
-		playerRank = racerManager->GetPlayerRank();
-		playerPos = racerManager->GetPlayerCar()->GetPos();
+		racerManager->GetPlayerRank();
+		racerManager->GetPlayerCar()->GetPos();
+		//ミニマップ
 		miniMap->Update(playerPos.x,-playerPos.z);
+		//カメラの処理
 		camera->Update(racerManager->GetPlayerCar());
-		if (racerManager->GetPlayerGoalCount() == 1)
+		lapUI->Update(racerManager->GetPlayerGoalCount());
+		if (racerManager->GetPlayerGoalCount() == 3)
 		{
 			nowProgress = PlaySceeneProgress::playerGoal;
 			postGoalDirection = new PostGoalDirection();
@@ -91,6 +100,7 @@ void PlaySceeneFlow::Draw()
 {	
 	stageManager->Draw();
 	racerManager->Draw();
+	gimmickObjManager->Draw();
 	switch (nowProgress)
 	{
 	case PlaySceeneProgress::start:
@@ -99,6 +109,7 @@ void PlaySceeneFlow::Draw()
 		countDown->DrawUI();
 		break;
 	case PlaySceeneProgress::race:
+		lapUI->Draw();
 		miniMap->Draw();
 		break;
 	case PlaySceeneProgress::playerGoal:

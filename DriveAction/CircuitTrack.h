@@ -1,6 +1,6 @@
 #pragma once
 #include "Object.h"
-#include "ArgumentConflictInfo.h"
+#include "ConflictExamineResultInfo.h"
 #include "NeighborhoodInfo.h"
 #include "CarNeighborhoodExamineInfo.h"
 #include <string>
@@ -30,13 +30,13 @@ public:
     /// </summary>
     /// <param name="actor">外側にいるか調べたいもの</param>
     /// <returns>コースの外側にいるならTrue</returns>
-    bool GetOutsideHitFlag(ConflictProccessArgumentInfo info) const;
+    bool GetOutsideHitFlag(ConflictExamineResultInfo info) const;
     /// <summary>
     /// コースの壁にぶつかってるか調べる
     /// </summary>
     /// <param name="Actor">ぶつかってるか調べたいもの</param>
     /// <returns>ぶつかってたらTrue</returns>
-    ConflictProccessArgumentInfo GetCourceConflictInfo(ConflictProccessArgumentInfo info) const;
+    ConflictExamineResultInfo GetCourceConflictInfo(ConflictExamineResultInfo info) const;
 
     NeighborhoodInfo GetOutsideExamineInfo(CarNeighborhoodExamineInfo examineInfo) const;
     /// <summary>
@@ -45,7 +45,7 @@ public:
     void Draw();
 
 private:
-    ConflictProccessArgumentInfo GetSphereConflictModelInfo(int modelHandle,CarNeighborhoodExamineInfo examineInfo) const;
+    ConflictExamineResultInfo GetSphereConflictModelInfo(int modelHandle,CarNeighborhoodExamineInfo examineInfo) const;
     //コリジョンのYの分割数
     const int setupYDivNum = 8;
     //コースの大きさ

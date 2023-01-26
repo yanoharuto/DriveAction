@@ -1,6 +1,5 @@
 #pragma once
 #include "PlaySceeneProgressEnum.h"
-#include "UIManager.h"
 #include "RacerManager.h"
 #include "Timer.h"
 #include "PlaySceneCamera.h"
@@ -10,8 +9,9 @@
 #include "MiniMap.h"
 #include "PostGoalDirection.h"
 #include "ScoreTime.h"
-#include "LapUI.h"
 #include "GimmickObjManager.h"
+#include "ConflictProcesser.h"
+#include "PlayerRelatedUI.h"
 /// <summary>
 /// ‚Ç‚¤‚¢‚¤‡”Ô‚Åˆ—‚ğs‚¤‚©Œˆ‚ß‚é
 /// </summary>
@@ -44,8 +44,9 @@ private:
     MiniMap* miniMap;
     ScoreTime* scoreTime;
     PostGoalDirection* postGoalDirection;
-    LapUI* lapUI;
     GimmickObjManager* gimmickObjManager;
+    ConflictProcesser* conflictProcesser;
+    PlayerRelatedUI* playerRelatedUI;
     PlaySceeneProgress nowProgress;//¡‰½‚Ìˆ—‚ğs‚¤‚©Œˆ‚ß‚é•Ï”
     int countUINum;
     const int minimapX=1080;

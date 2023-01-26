@@ -1,6 +1,6 @@
 #include "HitChecker.h"
 #include "Object.h"
-#include "ConflictExamineResultInfo.h"
+#include "HitCheckExamineObjectInfo.h"
 #include "DxLib.h"
 HitChecker::HitChecker()
 {
@@ -17,10 +17,10 @@ HitChecker::~HitChecker()
 /// <returns>当たったらTrue</returns>
 bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 {
-    ConflictExamineResultInfo aInfo;
-    aInfo.SetObjInfo(false, objA);
-    ConflictExamineResultInfo bInfo;
-    bInfo.SetObjInfo(false,objB);
+    HitCheckExamineObjectInfo aInfo;
+    aInfo.SetExamineInfo(*objA);
+    HitCheckExamineObjectInfo bInfo;
+    bInfo.SetExamineInfo(*objB);
     return HitCheckProcess(aInfo, bInfo);
 }
 /// <summary>
@@ -29,10 +29,10 @@ bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 /// <param name="objA">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheck(Object* const objA, const ConflictExamineResultInfo objBInfo)
+bool HitChecker::HitCheck(Object* const objA, const HitCheckExamineObjectInfo objBInfo)
 {
-    ConflictExamineResultInfo aInfo;
-    aInfo.SetObjInfo(false,objA);
+    HitCheckExamineObjectInfo aInfo;
+    aInfo.SetExamineInfo(*objA);
     return HitCheckProcess(aInfo, objBInfo);
 }
 /// <summary>
@@ -41,7 +41,7 @@ bool HitChecker::HitCheck(Object* const objA, const ConflictExamineResultInfo ob
 /// <param name="objAInfo">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheck(const ConflictExamineResultInfo objAInfo, const ConflictExamineResultInfo objBInfo)
+bool HitChecker::HitCheck(const HitCheckExamineObjectInfo objAInfo, const HitCheckExamineObjectInfo objBInfo)
 {
     return HitCheckProcess(objAInfo, objBInfo);
 }
@@ -51,7 +51,7 @@ bool HitChecker::HitCheck(const ConflictExamineResultInfo objAInfo, const Confli
 /// <param name="objAInfo">調べたいオブジェクトA</param>
 /// <param name="objBInfo">調べたいオブジェクトB</param>
 /// <returns>当たったらTrue</returns>
-bool HitChecker::HitCheckProcess(ConflictExamineResultInfo objAInfo, ConflictExamineResultInfo objBInfo)
+bool HitChecker::HitCheckProcess(HitCheckExamineObjectInfo objAInfo, HitCheckExamineObjectInfo objBInfo)
 {
     //引数同士の距離
     VECTOR distance = VSub(objAInfo.pos, objBInfo.pos);

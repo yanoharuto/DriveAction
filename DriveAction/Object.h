@@ -26,7 +26,7 @@ public:
     /// 現在動けるかどうか
     /// </summary>
     /// <returns></returns>
-    const bool GetAliveFlag() const
+    bool GetAliveFlag() const
     {
         return aliveFlag;
     };
@@ -34,7 +34,7 @@ public:
     /// ポジション所得
     /// </summary>
     /// <returns></returns>
-    const VECTOR& GetPos()const
+    VECTOR GetPos()const
     {
         return position;
     };
@@ -42,11 +42,11 @@ public:
     /// objectの半径
     /// </summary>
     /// <returns></returns>
-    const float GetRadius()
+    float GetRadius() const
     {
         return radius;
     }
-    const float GetBouncePower()
+    float GetBouncePower() const
     {
         return bouncePower;
     }
@@ -54,7 +54,7 @@ public:
 /// 向き所得
 /// </summary>
 /// <returns></returns>
-    const VECTOR& GetDir() const
+    VECTOR GetDir() const
     {
         return direction;
     };
@@ -62,7 +62,7 @@ public:
     /// 自分のタグを返す
     /// </summary>
     /// <returns></returns>
-    const ObjectTag GetTag()
+    ObjectTag GetTag() const
     {
         return tag;
     };

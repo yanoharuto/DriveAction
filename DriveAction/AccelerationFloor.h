@@ -12,6 +12,9 @@ public:
     void Draw();
 private:
     const float addAccel = 50.0f;
+    const float setRadius = 35.0f;
+    const float setScale = 5.0f;
     int effekseerModelHandle;
     int playingEffect;
+
 };

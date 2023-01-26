@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	Player();
-	Player(VECTOR firstPos,VECTOR firstDir);
+	Player(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos);
 	///デストラクタ
     ~Player();
     /// <summary>

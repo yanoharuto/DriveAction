@@ -4,9 +4,8 @@
 #include "Player.h"
 #include "Utility.h"
 #include "CircuitTrack.h"
-#include "StageDataAddressStruct.h"
 #include "CourceDataLoader.h"
-#include <algorithm>
+#include "PlayerRelatedInfo.h"
 /// <summary>
 /// 初期化
 /// </summary>
@@ -30,34 +29,24 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
         firstPosIte++;
         if (i == 0)
         {
-            racerInstanceArray[i].car = new Player(*firstPosIte, courceDataLoader->GetCarFirstDir());
-            racerInstanceArray[i].rank = 0;
             racerInstanceArray[i].checkPoint = new CheckPoint(circuitData);
+            racerInstanceArray[i].car = new Player(*firstPosIte, courceDataLoader->GetCarFirstDir(),racerInstanceArray[i].checkPoint->GetPos());
+            racerInstanceArray[i].rank = 0;
             player.car = racerInstanceArray[i].car;
             player.rank = &racerInstanceArray[i].rank;
             player.checkPoint = racerInstanceArray[i].checkPoint;
         }
         else
         {
-            racerInstanceArray[i].car = new CPUCar(*firstPosIte, courceDataLoader->GetCarFirstDir());
-            racerInstanceArray[i].rank = 0;
             racerInstanceArray[i].checkPoint = new CheckPoint(circuitData);
+            racerInstanceArray[i].car = new CPUCar(*firstPosIte, courceDataLoader->GetCarFirstDir(), racerInstanceArray[i].checkPoint->GetPos());
+            racerInstanceArray[i].rank = 0;
         }
         racerList.push_front(&racerInstanceArray[i]);
         rankInfo.checkPointP = racerInstanceArray[i].checkPoint;
         rankInfo.rankP = &racerInstanceArray[i].rank;
         racerRankList.push_front(rankInfo);
     }
-    UIData uiData;
-    uiData.x = SCREEN_WIDTH / 13;
-    uiData.y = SCREEN_HEIGHT / 9;
-    uiData.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
-    rankUI = new StringUI(GetColor(0,255,0), uiData);
-
-    uiData.x = SCREEN_WIDTH / 15;
-    uiData.y = SCREEN_HEIGHT / 13;
-    uiData.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
-    rapUI = new StringUI(GetColor(0, 0, 0), uiData);
 }
 //デストラクタ
 RacerManager::~RacerManager()
@@ -67,42 +56,52 @@ RacerManager::~RacerManager()
         SAFE_DELETE(racerInstanceArray[i].car);
         SAFE_DELETE(racerInstanceArray[i].checkPoint);
     }
-    SAFE_DELETE(rankUI);
 }
 /// <summary>
 /// 車乗りたちの更新
 /// </summary>
 /// <param name="deltaTime">フレーム間の経過時間</param>
 /// <param name="circuit">走るコース</param>
-void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
+void RacerManager::RacerUpdate(ConflictProcesser* conflictProcesser,const float deltaTime, CircuitTrack* circuit)
 {
     std::list<Racer*>::iterator racerIte;
     Racer* racer;
     bool hitFlag;
     NeighborhoodInfo neighInfo;
-    ConflictExamineResultInfo conflictInfo;
+    HitCheckExamineObjectInfo racerHitCheckExamineInfo;
+    ConflictExamineResultInfo conflictResultInfo;
     for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
-        conflictInfo.SetObjInfo(false,racer->car);
+
+        racerHitCheckExamineInfo.SetExamineInfo(*racer->car);
         //周りに何があるか調べる
-        hitFlag = circuit->GetOutsideHitFlag(conflictInfo);
-        neighInfo = circuit->GetOutsideExamineInfo(racer->car->GetNeighExamineInfo());
+        hitFlag = circuit->GetOutsideHitFlag(racerHitCheckExamineInfo);
+        neighInfo = circuit->GetOutsideExamineInfo(racerHitCheckExamineInfo);
         //車の更新　
         racer->car->Update(deltaTime, hitFlag,neighInfo);
-        //チェックポイントの更新の更新
-        conflictInfo.SetObjInfo(true, racer->car);
+        //更新後の情報をもらう
+        racerHitCheckExamineInfo.SetExamineInfo(*racer->car);
         //車がチェックポイントを通過したか調べる
-        racer->checkPoint->CheckPointUpdate(conflictInfo);
-        //車に次の目的地を伝える
-        conflictInfo.SetObjInfo(true, racer->checkPoint);
-        racer->car->ConflictProcess(deltaTime, conflictInfo);
-        //コースの塀とかにぶつかったか調べる
-        conflictInfo.SetObjInfo(false, racer->car);
-        conflictInfo = circuit->GetCourceConflictInfo(conflictInfo);
-        if (conflictInfo.hitFlag)            //ぶつかってたら衝突処理
+        conflictResultInfo = racer->checkPoint->CheckPointUpdate(racerHitCheckExamineInfo);
+        if (conflictResultInfo.hitFlag)
         {
-            racer->car->ConflictProcess(deltaTime, conflictInfo);
+            //車に次の目的地を伝える
+            racer->car->ConflictProcess(deltaTime, conflictResultInfo);
+        }
+        //コースの塀にぶつかったか調べる
+        conflictResultInfo = circuit->GetCourceConflictInfo(racerHitCheckExamineInfo);
+        if (conflictResultInfo.hitFlag)            //ぶつかってたら衝突処理
+        {
+            racer->car->ConflictProcess(deltaTime, conflictResultInfo);
+        }
+        conflictResultInfo = circuit->GetCourceConflictInfo(racerHitCheckExamineInfo);
+        //加速床とかにぶつかってたら
+        racerHitCheckExamineInfo.SetExamineInfo(*racer->car);
+        conflictResultInfo = conflictProcesser->GetConflictObjInfo(racerHitCheckExamineInfo);
+        if (conflictResultInfo.hitFlag)            //ぶつかってたら衝突処理
+        {
+            racer->car->ConflictProcess(deltaTime, conflictResultInfo);
         }
     }
 }
@@ -172,8 +171,6 @@ void RacerManager::RacerRankUpdate()
     {
         *(*rankIte).rankP = ++rank;
     }
-    rankUI->UpdateString(std::to_string(*player.rank));
-    rapUI->UpdateString(std::to_string(player.checkPoint->GetGoalCount()));
 }
 /// <summary>
 /// 車乗りたち同士でぶつかってないか調べる
@@ -202,6 +199,17 @@ int RacerManager::GetPlayerRank()
     return *player.rank;
 }
 
+PlayerRelatedInfo RacerManager::GetPlayerRelatedInfo()
+{
+    PlayerRelatedInfo relatedInfo = {};
+    relatedInfo.carDirection = player.car->GetDir();
+    relatedInfo.nextCheckPointDirection = player.checkPoint->GetDir();
+    relatedInfo.lap = player.checkPoint->GetGoalCount() + 1;
+    relatedInfo.rank = *player.rank;
+    relatedInfo.accelPower = player.car->GetAccelPower();
+    return relatedInfo;
+}
+
 /// <summary>
   /// 描画
   /// </summary>
@@ -215,13 +223,8 @@ void RacerManager::Draw()
         racer = *racerIte;
         racer->car->Draw();
     }
-    rankUI->DrawUI();
-    //rapUI->DrawUI();
 }
-/// <summary>
-/// 一番最初に追加したオブジェクトを返す
-/// </summary>
-/// <returns></returns>
+
 Object* RacerManager::GetPlayerCar() const
 {
     Car* playerCar= player.car;

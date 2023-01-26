@@ -3,6 +3,7 @@
 #include "DxLib.h"
 LapUI::LapUI()
 {
+    lap = nullptr;
 }
 
 LapUI::LapUI(int maxLap)
@@ -22,7 +23,7 @@ LapUI::~LapUI()
 
 void LapUI::Update(int nowLap)
 {
-    std::string string = "Lap::" + std::to_string(nowLap + 1) + "/" + maxLapString;
+    std::string string = "Lap::" + std::to_string(nowLap) + "/" + maxLapString;
     lap->UpdateString(string);
 }
 

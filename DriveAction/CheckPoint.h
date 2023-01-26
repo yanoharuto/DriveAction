@@ -2,6 +2,8 @@
 #include <vector>
 #include "ConflictExamineResultInfo.h"
 #include "CircuitDataStruct.h"
+#include "HitCheckExamineObjectInfo.h"
+
 /// <summary>
 /// プレイヤーが何回ゴールしたか数える
 /// </summary>
@@ -23,12 +25,8 @@ public:
     /// プレイヤーがぶつかったら次の行き先を設定する
     /// </summary>
     /// <param name="carInfo">ぶつかったか調べる車</param>
-    bool CheckPointUpdate(const ConflictExamineResultInfo carInfo);
-    /// <summary>
-    /// 他のCPUにもコピーさせるために渡す
-    /// </summary>
-    /// <returns></returns>
-    CircuitData GetCheckPoint() const;
+    ConflictExamineResultInfo CheckPointUpdate(const HitCheckExamineObjectInfo carInfo);
+
     /// <summary>
     /// ゴールした回数を返す
     /// </summary>

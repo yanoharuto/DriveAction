@@ -16,13 +16,18 @@ private:
     const unsigned int playerColor = GetColor(255,0,0);
     int playerMarkerUINum = 0;
     const float mapSize = 0.4f;
-    const float markerSize = 0.1f;
-    const int courceModelStartPosX = -12;
-    const int courceModelStartPosY = -12;
+    float markerBetweenScaleX = 0.1f;
+    float markerBetweenScaleZ = 0.1f;
+    const float courceModelStartPosX = 88.56;
+    const float courceModelStartPosZ = 16.43;
+    const float minimapEdgeX = 1430;
+    const float minimapEdgeZ = 1377;
     int mapUINum = 0;
     int minimapX = 0;
     int minimapY = 0;
-
+    int minimapWidth = 0;
+    int minimapHeight = 0;
+    
     const float markerRadius = 5.75f;
     ImgUI* miniMap;
     PointUI* pointUI;

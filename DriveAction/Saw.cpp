@@ -12,6 +12,7 @@ Saw::Saw(VECTOR pos, int duplicateModelHandle)
     modelHandle = duplicateModel;
     tag = ObjectTag::obstacle;
     MV1SetPosition(modelHandle,position);
+    radius = setRadius;
 }
 
 Saw::~Saw()

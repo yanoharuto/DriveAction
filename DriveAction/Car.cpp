@@ -13,10 +13,12 @@ Car::Car()
 	ModelSetMatrix();
 	destinationPos = {};
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
-	effectResourceHandle = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
+	smokeEffectResource = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
+	conflictEffectResource = LoadEffekseerEffect("data/effect/conflict.efkefc", 1.0f);
+
 }
 
-Car::Car(VECTOR firstPos, VECTOR firstDir)
+Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos)
 {
 	position = firstPos;
 	direction = firstDir;
@@ -24,14 +26,19 @@ Car::Car(VECTOR firstPos, VECTOR firstDir)
 	radius = radiusValue;
 	UpdateMV1Pos();
 	ModelSetMatrix();
-	destinationPos = {};
+	destinationPos = firstDestinationPos;
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
-	effectResourceHandle = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
+	smokeEffectResource = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
+	conflictEffectResource = LoadEffekseerEffect("data/effect/conflict.efkefc", 1.0f);
+	accelerationEffectResource = LoadEffekseerEffect("data/effect/accelation.efkefc", 20.0f);
 }
 
 Car::~Car()
 {
 	MV1DeleteModel(modelHandle);
+	DeleteEffekseerEffect(smokeEffectResource);
+	DeleteEffekseerEffect(conflictEffectResource);
+	DeleteEffekseerEffect(accelerationEffectResource);
 	SAFE_DELETE(wheels);
 }
 /// <summary>
@@ -41,6 +48,7 @@ Car::~Car()
 /// <param name="conflictInfo"></param>
 void Car::ConflictProcess(float deltaTime,const ConflictExamineResultInfo conflictInfo)
 {
+	
 	switch (conflictInfo.tag)
 	{
 	case ObjectTag::car:
@@ -50,6 +58,10 @@ void Car::ConflictProcess(float deltaTime,const ConflictExamineResultInfo confli
 		break;
 	case ObjectTag::goal:
 		destinationPos = conflictInfo.pos;
+		break;
+	case ObjectTag::acelerationFloor: 
+
+		accelPower += 5.0f;
 		break;
 	default:
 		break;
@@ -77,11 +89,16 @@ CarNeighborhoodExamineInfo Car::GetNeighExamineInfo()
 /// <param name="conflictObjRad"></param>
 void Car::ConflictReaction(float deltaTime, const VECTOR conflictObjPos, const float conflictObjRad)
 {
+
+	//衝突エフェクト
+	int playingEffect = PlayEffekseer3DEffect(conflictEffectResource);
+	SetPosPlayingEffekseer3DEffect(playingEffect, position.x, position.y, position.z);
+	//衝突処理
 	accelPower -= accelPower * colideDecel;
 	VECTOR nVSub = VSub(position,conflictObjPos);
 	nVSub = VNorm(nVSub);
 	nVSub = VScale(nVSub,conflictObjRad);
-	nVSub.y = 0;
+	nVSub.y = 0;	
 	position = VAdd(position, nVSub);
 }
 
@@ -221,4 +238,9 @@ float Car::GetNeighSize(NeighborhoodInfo neighInfo)
 	{
 	}
 	return angular;
+}
+
+float Car::GetAccelPower()
+{
+	return accelPower;
 }

@@ -1,8 +1,8 @@
 #pragma once
 #include <List>
 #include <string>
+#include "ConflictProcesser.h"
 #include "HitChecker.h"
-#include "StringUI.h"
 class CourceDataLoader;
 class Object;
 class CheckPoint;
@@ -12,7 +12,8 @@ class CircuitTrack;
 /// 当たり判定で使う渡してほしい情報
 /// Actorに定義
 /// </summary>
-struct  ConflictExamineResultInfo;
+struct ConflictExamineResultInfo;
+struct PlayerRelatedInfo;
 /// <summary>
 /// 走ってる車の情報
 /// </summary>
@@ -56,13 +57,15 @@ public:
     /// </summary>
     /// <param name="deltaTime">フレーム間の経過時間</param>
     /// <param name="circuit">走るコース</param>
-    void RacerUpdate(const float deltaTime, CircuitTrack* circuit);
+    void RacerUpdate(ConflictProcesser* conflictProcesser,const float deltaTime, CircuitTrack* circuit);
     /// <summary>
     /// 引数の物体にぶつかったか調べる
     /// </summary>
     /// <param name="obj"></param>
     void ArgumentConflictProcess(float deltaTime,Object* obj);
-
+    /// <summary>
+    /// レーサーたちの順位の更新
+    /// </summary>
     void RacerRankUpdate();
     /// <summary>
     /// 描画
@@ -83,7 +86,12 @@ public:
     /// </summary>
     /// <returns></returns>
     int GetPlayerGoalCount();
+    /// <summary>
+    /// プレイヤーのランクを表示
+    /// </summary>
+    /// <returns></returns>
     int GetPlayerRank();
+    PlayerRelatedInfo GetPlayerRelatedInfo();
 private:
     static const int maxRacerNum = 6;
     int racerNum = 0;
@@ -94,6 +102,4 @@ private:
     //当たってるかどうか調べる
     HitChecker hitChecker;
     PlayerRacer player;
-    StringUI* rankUI;
-    StringUI* rapUI;
 };

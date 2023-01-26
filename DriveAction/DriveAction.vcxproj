@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="AccelerationFloor.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="ConflictProcesser.cpp" />
     <ClCompile Include="CountDown.cpp" />
     <ClCompile Include="DataAddresLoader.cpp" />
     <ClCompile Include="CPUCar.cpp" />
@@ -162,6 +163,8 @@
     <ClCompile Include="GimmickObjManager.cpp" />
     <ClCompile Include="LapUI.cpp" />
     <ClCompile Include="MiniMap.cpp" />
+    <ClCompile Include="PlayerRelatedUI.cpp" />
+    <ClCompile Include="ReverseDrivingCautionUI.cpp" />
     <ClCompile Include="Saw.cpp" />
     <ClCompile Include="PointUI.cpp" />
     <ClCompile Include="PostGoalDirection.cpp" />
@@ -200,6 +203,7 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarNeighborhoodExamineInfo.h" />
     <ClInclude Include="CircuitDataStruct.h" />
+    <ClInclude Include="ConflictProcesser.h" />
     <ClInclude Include="CountDown.h" />
     <ClInclude Include="DataAddresLoader.h" />
     <ClInclude Include="CPUCar.h" />
@@ -212,6 +216,9 @@
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="NeighborhoodInfo.h" />
     <ClInclude Include="ObjectTagEnum.h" />
+    <ClInclude Include="PlayerRelatedInfo.h" />
+    <ClInclude Include="PlayerRelatedUI.h" />
+    <ClInclude Include="ReverseDrivingCautionUI.h" />
     <ClInclude Include="Saw.h" />
     <ClInclude Include="OriginalMath.h" />
     <ClInclude Include="PointUI.h" />

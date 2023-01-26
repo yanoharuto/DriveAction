@@ -20,7 +20,7 @@ private:
     unsigned int bigPleaseSpaceKeyUIColor = GetColor(255, 255, 255);
     unsigned int smallPleaseSpaceKeyUIColor = GetColor(55, 55, 55);
     const int bigPleaseSpaceKeySize = 64;
-    const int smallPleaseSpaceKeySize = 56;
+    const int smallPleaseSpaceKeySize = 64;
     std::string pleaseSpaceKeyUIString = "PleaseSpaceKey";
     StringUI* bigUI;
     StringUI* smallUI;

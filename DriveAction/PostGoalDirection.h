@@ -4,6 +4,9 @@
 #include "SwitchUI.h"
 #include "StringUI.h"
 #include <string>
+/// <summary>
+/// ƒS[ƒ‹Œã‚Ì‰‰o
+/// </summary>
 class PostGoalDirection
 {
 public:

@@ -33,7 +33,7 @@ CircuitTrack::~CircuitTrack()
 /// </summary>
 /// <param name="actor">外側にいるか調べたいもの</param>
 /// <returns>コースの外側にいるならTrue</returns>
-bool CircuitTrack::GetOutsideHitFlag(ConflictExamineResultInfo info)const
+bool CircuitTrack::GetOutsideHitFlag(HitCheckExamineObjectInfo info)const
 {
     //線分の始まりと終わりを作る
     //ｘとｚ座標を取ってくる
@@ -50,11 +50,9 @@ bool CircuitTrack::GetOutsideHitFlag(ConflictExamineResultInfo info)const
 /// </summary>
 /// <param name="Actor">ぶつかってるか調べたいもの</param>
 /// <returns>ぶつかってたらTrue</returns>
-ConflictExamineResultInfo  CircuitTrack::GetCourceConflictInfo(ConflictExamineResultInfo info) const
+ConflictExamineResultInfo  CircuitTrack::GetCourceConflictInfo(HitCheckExamineObjectInfo info) const
 {
-    //
-    CarNeighborhoodExamineInfo examineInfo = { info.pos,info.radius };
-    ConflictExamineResultInfo conflictInfo = GetSphereConflictModelInfo(courceModelHandle, examineInfo);
+    ConflictExamineResultInfo conflictInfo = GetSphereConflictModelInfo(courceModelHandle,info);
     //当たってる時
     if (conflictInfo.hitFlag)
     {
@@ -71,11 +69,11 @@ ConflictExamineResultInfo  CircuitTrack::GetCourceConflictInfo(ConflictExamineRe
 /// </summary>
 /// <param name="examineInfo"></param>
 /// <returns></returns>
-NeighborhoodInfo CircuitTrack::GetOutsideExamineInfo(CarNeighborhoodExamineInfo examineInfo) const
+NeighborhoodInfo CircuitTrack::GetOutsideExamineInfo(HitCheckExamineObjectInfo examineInfo) const
 {
     NeighborhoodInfo returnValueInfo;
     returnValueInfo.outside = GetSphereConflictModelInfo(outsideModelHandle,examineInfo);
-    CarNeighborhoodExamineInfo examineInfo2 = examineInfo;
+    HitCheckExamineObjectInfo examineInfo2 = examineInfo;
     examineInfo2.pos.y = outsideModelPosition.y;
     returnValueInfo.obstacle = GetSphereConflictModelInfo(courceModelHandle, examineInfo2);
     return returnValueInfo;
@@ -94,9 +92,9 @@ void CircuitTrack::Draw()
 /// <param name="modelHandle">調べるモデル</param>
 /// <param name="examineInfo">調べるために必要な情報</param>
 /// <returns>ぶつかった位置を返すよ。ぶつかってないならHitFlagはfalse</returns>
-ConflictExamineResultInfo CircuitTrack::GetSphereConflictModelInfo(int modelHandle,CarNeighborhoodExamineInfo examineInfo) const
+ConflictExamineResultInfo CircuitTrack::GetSphereConflictModelInfo(int modelHandle,HitCheckExamineObjectInfo examineInfo) const
 {
-    DxLib::MV1_COLL_RESULT_POLY_DIM polyInfo = MV1CollCheck_Sphere(modelHandle, -1, examineInfo.pos, examineInfo.range);
+    DxLib::MV1_COLL_RESULT_POLY_DIM polyInfo = MV1CollCheck_Sphere(modelHandle, -1, examineInfo.pos, examineInfo.radius);
     ConflictExamineResultInfo conflictPos = {};
     if (polyInfo.HitNum!=0)
     {

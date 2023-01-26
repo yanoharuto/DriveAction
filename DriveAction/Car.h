@@ -11,7 +11,7 @@ class Car :public Actor
 {
 public:
 	Car();
-	Car(VECTOR firstPos,VECTOR firstDir);
+	Car(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos);
     virtual ~Car();
 	/// <summary>
     /// 更新（移動処理）
@@ -31,6 +31,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	CarNeighborhoodExamineInfo GetNeighExamineInfo();
+	float GetAccelPower();
 protected:
 
 	/// <summary>
@@ -99,7 +100,10 @@ protected:
 	const float turnProccesLine = 9.0f;//目的地に向かうときに曲がるか判断する
 	const float examineRange = 150.0f;
 	float accelPower = 0;             //計算結果によって出る速さ
-	int effectResourceHandle = -1;//煙のエフェクト
+	int smokeEffectResource = -1;//煙のエフェクト
+	int conflictEffectResource = -1;
+	int accelerationEffectResource = -1;
+	
 	bool isStraightDash;//まっすぐ進んでいるかどうか
 	Wheels* wheels;//タイヤ
 	VECTOR destinationPos;

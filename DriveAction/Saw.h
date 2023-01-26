@@ -15,6 +15,7 @@ public:
     void Draw();
 private:
     const float addRotate = 0.02f;
+    const float setRadius = 26.0f;
     int modelHandle;
 };
 

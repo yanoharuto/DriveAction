@@ -16,7 +16,7 @@ public:
     /// <returns></returns>
     float GetDegreeMisalignment(VECTOR direction1, VECTOR direction2)
     {
-        float destinationDir = 0;//–Ú“I’n‚Æ‚Ì‹——£‚Ì‚¸‚ê
+        float destinationDir = 0;
         destinationDir = VDot(direction1, direction2) / (VSize(direction2) * VSize(direction1));
         destinationDir = acosf(destinationDir) / RAGE;
         return destinationDir;

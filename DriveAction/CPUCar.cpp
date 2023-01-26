@@ -10,8 +10,8 @@ CPUCar::CPUCar()
 {
     Init();
 }
-CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir)
-    :Car(firstPos,firstDir)
+CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos)
+    :Car(firstPos,firstDir, destinationPos)
 {
     Init();
 }

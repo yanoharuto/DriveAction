@@ -12,8 +12,8 @@ Player::Player()
 	Init();
 }
 
-Player::Player(VECTOR firstPos, VECTOR firstDir)
-	:Car(firstPos,firstDir)
+Player::Player(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos)
+	:Car(firstPos,firstDir,destinationPos)
 {
 	Init();
 }

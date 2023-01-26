@@ -1,10 +1,10 @@
 #pragma once
+#include <string>
 #include "Object.h"
 #include "ConflictExamineResultInfo.h"
+#include "HitCheckExamineObjectInfo.h"
 #include "NeighborhoodInfo.h"
 #include "CarNeighborhoodExamineInfo.h"
-#include <string>
-
 /// <summary>
 /// コース
 /// </summary>
@@ -30,22 +30,21 @@ public:
     /// </summary>
     /// <param name="actor">外側にいるか調べたいもの</param>
     /// <returns>コースの外側にいるならTrue</returns>
-    bool GetOutsideHitFlag(ConflictExamineResultInfo info) const;
+    bool GetOutsideHitFlag(HitCheckExamineObjectInfo info) const;
     /// <summary>
     /// コースの壁にぶつかってるか調べる
     /// </summary>
     /// <param name="Actor">ぶつかってるか調べたいもの</param>
     /// <returns>ぶつかってたらTrue</returns>
-    ConflictExamineResultInfo GetCourceConflictInfo(ConflictExamineResultInfo info) const;
-
-    NeighborhoodInfo GetOutsideExamineInfo(CarNeighborhoodExamineInfo examineInfo) const;
+    ConflictExamineResultInfo GetCourceConflictInfo(HitCheckExamineObjectInfo info) const;
+    NeighborhoodInfo GetOutsideExamineInfo(HitCheckExamineObjectInfo examineInfo) const;
     /// <summary>
     /// コースのモデルを描画
     /// </summary>
     void Draw();
 
 private:
-    ConflictExamineResultInfo GetSphereConflictModelInfo(int modelHandle,CarNeighborhoodExamineInfo examineInfo) const;
+    ConflictExamineResultInfo GetSphereConflictModelInfo(int modelHandle,HitCheckExamineObjectInfo examineInfo) const;
     //コリジョンのYの分割数
     const int setupYDivNum = 8;
     //コースの大きさ

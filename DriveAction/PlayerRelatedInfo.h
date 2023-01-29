@@ -1,5 +1,8 @@
 #pragma once
 #include "DxLib.h"
+/// <summary>
+/// ƒvƒŒƒCƒ„[ü‚è‚Ìî•ñ
+/// </summary>
 struct  PlayerRelatedInfo
 {
     int lap;

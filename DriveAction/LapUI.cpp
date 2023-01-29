@@ -29,5 +29,5 @@ void LapUI::Update(int nowLap)
 
 void LapUI::Draw()
 {
-    lap->DrawUI();
+    lap->DrawRightAlignedString();
 }

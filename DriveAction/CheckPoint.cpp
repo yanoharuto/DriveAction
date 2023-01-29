@@ -59,7 +59,7 @@ ConflictExamineResultInfo CheckPoint::CheckPointUpdate(HitCheckExamineObjectInfo
             VECTOR dir2 = VSub(carInfo.pos, startPos);
             float crossY = VCross(VNorm(dir), VNorm(dir2)).y;
             //通過したときは外積のYがプラスになる
-            if (crossY > 0)
+            if (crossY < 0)
             {
                 //チェックポイント通過回数加算
                 transitCheckPointCount += i + 1;

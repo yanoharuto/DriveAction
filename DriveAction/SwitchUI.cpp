@@ -44,6 +44,6 @@ void SwitchUI::Update(float deltaTime)
 
 void SwitchUI::Draw()
 {
-    bigUI->DrawUI();
-    smallUI->DrawUI();
+    bigUI->DrawRightAlignedString();
+    smallUI->DrawRightAlignedString();
 }

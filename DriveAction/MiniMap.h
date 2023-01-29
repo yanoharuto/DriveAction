@@ -18,10 +18,10 @@ private:
     const float mapSize = 0.4f;
     float markerBetweenScaleX = 0.1f;
     float markerBetweenScaleZ = 0.1f;
-    const float courceModelStartPosX = 88.56;
-    const float courceModelStartPosZ = 16.43;
-    const float minimapEdgeX = 1430;
-    const float minimapEdgeZ = 1377;
+    const float mapStartPosX = -15.7f;
+    const float mapStartPosZ = 10.0f;
+    const float minimapEdgeX = 1350;
+    const float minimapEdgeZ = 1350;
     int mapUINum = 0;
     int minimapX = 0;
     int minimapY = 0;
@@ -32,4 +32,3 @@ private:
     ImgUI* miniMap;
     PointUI* pointUI;
 };
-

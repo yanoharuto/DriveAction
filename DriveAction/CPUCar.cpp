@@ -1,7 +1,8 @@
+#include <math.h>
 #include "CPUCar.h"
 #include "Wheels.h"
 #include "Utility.h"
-#include <math.h>
+
 /// <summary>
 /// 初期化
 /// </summary>
@@ -10,8 +11,8 @@ CPUCar::CPUCar()
 {
     Init();
 }
-CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos)
-    :Car(firstPos,firstDir, destinationPos)
+CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos,SoundPlayer* soundPlayer)
+    :Car(firstPos,firstDir, destinationPos,soundPlayer)
 {
     Init();
 }
@@ -28,10 +29,10 @@ CPUCar::~CPUCar()
 /// 自動操縦。
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
-/// <param name="outsideHitFlag">コース外に出たか</param>
-void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo)
+/// <param nadme="outsideHitFlag">コース外に出たか</param>
+void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo, SoundPlayer* soundPlayer)
 {
-    AutoDrive(deltaTime,outsideHitFlag,neighInfo);
+    AutoDrive(deltaTime, outsideHitFlag, neighInfo, soundPlayer);
 }
 
 

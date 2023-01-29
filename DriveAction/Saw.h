@@ -16,6 +16,7 @@ public:
 private:
     const float addRotate = 0.02f;
     const float setRadius = 26.0f;
+    const float setBouncePower = 4.0f;
     int modelHandle;
 };
 

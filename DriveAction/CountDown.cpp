@@ -49,5 +49,5 @@ bool CountDown::CountDownEnd()
 
 void CountDown::DrawUI()
 {
-	countDownUI->DrawUI();
+	countDownUI->DrawRightAlignedString();
 }

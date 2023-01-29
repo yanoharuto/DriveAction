@@ -18,11 +18,12 @@ Car::Car()
 
 }
 
-Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos)
+Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,SoundPlayer* soundPlayer)
 {
 	position = firstPos;
 	direction = firstDir;
 	tag = ObjectTag::car;
+	bouncePower = setBouncePower;
 	radius = radiusValue;
 	UpdateMV1Pos();
 	ModelSetMatrix();
@@ -31,6 +32,15 @@ Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos)
 	smokeEffectResource = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
 	conflictEffectResource = LoadEffekseerEffect("data/effect/conflict.efkefc", 1.0f);
 	accelerationEffectResource = LoadEffekseerEffect("data/effect/accelation.efkefc", 20.0f);
+
+	soundPlayer->Add3DSound(drivingSEAddress);
+
+	soundPlayer->Add3DSound(carClashSEAddress);
+
+	soundPlayer->Add3DSound(carHornSEAddress);
+	
+	soundPlayer->Add3DSound(drivingSEAddress);
+	
 }
 
 Car::~Car()
@@ -46,15 +56,14 @@ Car::~Car()
 /// </summary>
 /// <param name="deltaTime"></param>
 /// <param name="conflictInfo"></param>
-void Car::ConflictProcess(float deltaTime,const ConflictExamineResultInfo conflictInfo)
+void Car::ConflictProcess(float deltaTime,const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer)
 {
-	
 	switch (conflictInfo.tag)
 	{
 	case ObjectTag::car:
 	case ObjectTag::stage:
 	case ObjectTag::obstacle:
-		ConflictReaction(deltaTime,conflictInfo.pos, radius);
+		ConflictReaction(deltaTime,conflictInfo,soundPlayer);
 		break;
 	case ObjectTag::goal:
 		destinationPos = conflictInfo.pos;
@@ -87,19 +96,27 @@ CarNeighborhoodExamineInfo Car::GetNeighExamineInfo()
 /// </summary>
 /// <param name="conflictObjPos"></param>
 /// <param name="conflictObjRad"></param>
-void Car::ConflictReaction(float deltaTime, const VECTOR conflictObjPos, const float conflictObjRad)
+void Car::ConflictReaction(float deltaTime, const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer)
 {
+	soundPlayer->SetSoundVolume(MAX1BYTEVALUE, carClashSEAddress);
+	soundPlayer->SetSoundRadius(MAX1BYTEVALUE, carClashSEAddress);
+	soundPlayer->SetPosition3DSound(position, carClashSEAddress);
+	soundPlayer->Play3DSE(position, carClashSEAddress);
 
+	soundPlayer->SetSoundVolume(MAX1BYTEVALUE, carHornSEAddress);
+	soundPlayer->SetSoundRadius(MAX1BYTEVALUE, carHornSEAddress);
+	soundPlayer->SetPosition3DSound(position, carHornSEAddress);
+	soundPlayer->Play3DSE(position, carHornSEAddress);
 	//衝突エフェクト
 	int playingEffect = PlayEffekseer3DEffect(conflictEffectResource);
 	SetPosPlayingEffekseer3DEffect(playingEffect, position.x, position.y, position.z);
 	//衝突処理
 	accelPower -= accelPower * colideDecel;
-	VECTOR nVSub = VSub(position,conflictObjPos);
-	nVSub = VNorm(nVSub);
-	nVSub = VScale(nVSub,conflictObjRad);
-	nVSub.y = 0;	
-	position = VAdd(position, nVSub);
+	conflictVec = VSub(position, conflictInfo.pos);
+	conflictVec = VNorm(conflictVec);
+	conflictVec.y = 0;
+	position = VAdd(position, VScale(conflictVec,conflictInfo.radius));
+	conflictObjBouncePower = conflictInfo.bouncePower;
 }
 
 void Car::DamageReaction(const VECTOR conflictObjPos, const float conflictObjRad)
@@ -136,6 +153,12 @@ void Car::UpdateMV1Pos()
 	}
 	// ポジションを更新.
 	position = VAdd(position, velocity);
+	if (conflictObjBouncePower > 0.0f)
+	{
+		conflictObjBouncePower -= conflictObjBouncePower * defaultDecel;
+		conflictObjBouncePower = conflictObjBouncePower > 0 ? conflictObjBouncePower : 0;
+		position = VAdd(position, VScale(conflictVec,conflictObjBouncePower));
+	}
 	// ３Dモデルのポジション設定
 	MV1SetPosition(modelHandle, position);
 }
@@ -157,26 +180,23 @@ void Car::ModelSetMatrix()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param name="outsideHitFlag">コース外に出たか</param>
-void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag,NeighborhoodInfo neighInfo)
+void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag,NeighborhoodInfo neighInfo, SoundPlayer* soundPlayer)
 {
-	WheelArgumentCarInfo info;
-	info.handleDir = GetHandleDir(neighInfo);
-	VECTOR accelVec = GetAccelVec(info.handleDir, outsideHitFlag, deltaTime);
+	wheelArgumentCarInfo.handleDir = GetHandleDir();
+	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.handleDir, outsideHitFlag, deltaTime,soundPlayer);
 	UpdateVelocity(VScale(accelVec, deltaTime));
 	UpdateMV1Pos();
 	ModelSetMatrix();
-	info.matrix = MV1GetMatrix(modelHandle);
-	info.velocitySize = VSize(velocity);
-	info.direction = direction;
-
-	wheels->WheelUpdate(info);
+	InitWheelArgumentCarInfo();
+	wheels->WheelUpdate(wheelArgumentCarInfo);
 }
+
 
 /// <summary>
 /// ハンドルの向きを出す
 /// </summary>
 /// <returns></returns>
-HandleDirection Car::GetHandleDir(NeighborhoodInfo neighInfo)
+HandleDirection Car::GetHandleDir()
 {
 	//目的地までの距離
 	VECTOR destinationBetween = VSub(destinationPos, position);
@@ -205,15 +225,40 @@ HandleDirection Car::GetHandleDir(NeighborhoodInfo neighInfo)
 /// <param name="dir">向かってる方向</param>
 /// <param name="outsideHitFlag"></param>
 /// <returns></returns>
-VECTOR Car::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float deltaTime)
+VECTOR Car::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float deltaTime, SoundPlayer* soundPlayer)
 {
-	// 加速処理.
-	VECTOR accelVec = VGet(0, 0, 0);
-	accelPower += accelPower > maxSpeed ? 0 : accelSpeed * deltaTime;
+	if (handleDir == HandleDirection::brake)//ブレーキ
+	{
+		accelPower -= accelPower * breakDecel * deltaTime;
+
+		soundPlayer->StopSound(drivingSEAddress);
+		if (!soundPlayer->IsPlaySound(breakeSEAddress))
+		{
+			soundPlayer->SetSoundRadius(MAX1BYTEVALUE, breakeSEAddress);
+			soundPlayer->SetSoundVolume(MAX1BYTEVALUE, breakeSEAddress);
+			soundPlayer->SetPosition3DSound(position, breakeSEAddress);
+			soundPlayer->Play3DSE(position, breakeSEAddress);
+		}
+	}
+	else if (handleDir != HandleDirection::non)//何も入力していないなら
+	{
+		// 加速処理.
+		accelPower += accelPower > maxSpeed ? 0 : accelSpeed * deltaTime;
+
+		soundPlayer->SetSoundRadius(MAX1BYTEVALUE, drivingSEAddress);
+		soundPlayer->SetSoundVolume(MAX1BYTEVALUE, drivingSEAddress);
+		soundPlayer->SetPosition3DSound(position, drivingSEAddress);
+		if(!soundPlayer->IsPlaySound(drivingSEAddress))
+		{
+
+			soundPlayer->Play3DSE(position, drivingSEAddress);
+		}
+	}
 
 	// 止まっている場合は減速しない.
 	if (VSize(velocity) > 0)
 	{
+		
 		//左右に曲がろうとしていたら減速
 		if (handleDir != HandleDirection::straight)
 		{
@@ -226,8 +271,12 @@ VECTOR Car::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float de
 			accelPower -= accelPower * outsideHitDecel * deltaTime;
 		}
 	}
-	accelVec = VScale(direction, accelPower);
-	return accelVec;
+	else//止まったら音を止める
+	{
+		soundPlayer->StopSound(drivingSEAddress);
+	}
+
+	return VScale(direction, accelPower);
 }
 
 float Car::GetNeighSize(NeighborhoodInfo neighInfo)
@@ -238,6 +287,13 @@ float Car::GetNeighSize(NeighborhoodInfo neighInfo)
 	{
 	}
 	return angular;
+}
+
+void Car::InitWheelArgumentCarInfo()
+{
+	wheelArgumentCarInfo.matrix = MV1GetMatrix(modelHandle);
+	wheelArgumentCarInfo.direction = direction;
+	wheelArgumentCarInfo.velocitySize = VSize(velocity);
 }
 
 float Car::GetAccelPower()

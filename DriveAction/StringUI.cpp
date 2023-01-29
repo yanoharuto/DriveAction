@@ -25,12 +25,15 @@ StringUI::~StringUI()
     DeleteFontToHandle(uiData.dataHandle);
 }
 
-void StringUI::DrawUI()
+void StringUI::DrawRightAlignedString()
 {
-    if (!IsStopDrawUI)
-    {
-        DrawStringToHandle(uiData.x, uiData.y, string.c_str(), color, uiData.dataHandle);
-    }
+
+    DrawStringToHandle(uiData.x, uiData.y, string.c_str(), color, uiData.dataHandle);
+}
+
+void StringUI::DrawLeftAlignedString()
+{
+    DrawFormatStringToHandle(uiData.x, uiData.y, color, uiData.dataHandle,"%-s", string.c_str());
 }
 
 void StringUI::UpdateString(std::string updateString)

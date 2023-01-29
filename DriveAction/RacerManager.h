@@ -3,6 +3,7 @@
 #include <string>
 #include "ConflictProcesser.h"
 #include "HitChecker.h"
+#include "SoundPlayer.h"
 class CourceDataLoader;
 class Object;
 class CheckPoint;
@@ -22,6 +23,7 @@ struct Racer
     int rank;
     CheckPoint* checkPoint;
     Car* car;
+    SoundPlayer* soundPlayer;
 };
 struct PlayerRacer
 {
@@ -57,7 +59,7 @@ public:
     /// </summary>
     /// <param name="deltaTime">フレーム間の経過時間</param>
     /// <param name="circuit">走るコース</param>
-    void RacerUpdate(ConflictProcesser* conflictProcesser,const float deltaTime, CircuitTrack* circuit);
+    void RacerUpdate(const float deltaTime, CircuitTrack* circuit);
     /// <summary>
     /// 引数の物体にぶつかったか調べる
     /// </summary>
@@ -80,7 +82,7 @@ public:
     /// <summary>
     /// 車乗りたち同士でぶつかってないか調べる
     /// </summary>
-    void RacerConflictProcces(float deltaTime);
+    void RacerConflictProcces(ConflictProcesser* conflictProcesser, CircuitTrack* circuit, float deltaTime);
     /// <summary>
     /// プレイヤーのゴールした回数を返す
     /// </summary>

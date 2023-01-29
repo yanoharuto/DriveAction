@@ -55,6 +55,8 @@ private:
     const float sY = 0;
     //コースの位置探索に使う線分の終点
     const float eY = -11;
+    //はじき返す力
+    const float setBouncePower = 1.0f;
     //コースの赤白の奴
     const float gurdRadius = 2.0f;
     //コースのmodel
@@ -63,5 +65,6 @@ private:
     int outsideModelHandle;
     //コースの外側のmodelのポジション
     const VECTOR outsideModelPosition = { 0,-8,0 };
+
 };
 

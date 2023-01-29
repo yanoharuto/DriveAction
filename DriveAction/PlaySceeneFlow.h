@@ -1,4 +1,5 @@
 #pragma once
+#include "SoundPlayer.h"
 #include "PlaySceeneProgressEnum.h"
 #include "RacerManager.h"
 #include "Timer.h"
@@ -47,9 +48,11 @@ private:
     GimmickObjManager* gimmickObjManager;
     ConflictProcesser* conflictProcesser;
     PlayerRelatedUI* playerRelatedUI;
+    SoundPlayer* soundPlayer;
     PlaySceeneProgress nowProgress;//¡‰½‚Ìˆ—‚ğs‚¤‚©Œˆ‚ß‚é•Ï”
     int countUINum;
     const int minimapX=1080;
     const int minimapY=450;
-    const int maxLap = 3;
+    const int maxLap = 1;
+    float gameStartTime = 0;
 };

@@ -6,6 +6,8 @@ enum class HandleDirection
 	straight,
 	left,
 	right,
+	brake,
+	non
 };
 /// <summary>
 /// ƒ^ƒCƒ„ˆê‚Âˆê‚Â‚ª‚Á‚Ä‚¢‚éî•ñ

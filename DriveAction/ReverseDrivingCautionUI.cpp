@@ -28,7 +28,6 @@ void ReverseDrivingCautionUI::Update(VECTOR carDir, VECTOR checkPointDir, float 
     {
         time = limitedTime;
     }
-    printfDx("%f\n", dot);
 }
 
 void ReverseDrivingCautionUI::Draw()

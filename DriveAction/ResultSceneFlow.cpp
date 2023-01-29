@@ -40,6 +40,6 @@ void ResultSceneFlow::Update(float deltaTime)
 void ResultSceneFlow::Draw()
 {
     DrawGraph(0, 0, backGraphHandle, false);
-    scoreUI->DrawUI();
+    scoreUI->DrawRightAlignedString();
     switchUI->Draw();
 }

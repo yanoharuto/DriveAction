@@ -10,7 +10,8 @@ public:
     StringUI(unsigned int colorValue, UIData data);
     StringUI(unsigned int colorValue, UIData data, std::string str);
     ~StringUI();
-    void DrawUI()override;
+    void DrawRightAlignedString();
+    void DrawLeftAlignedString();
     void UpdateString(std::string updateString);
 private:
     unsigned int color;

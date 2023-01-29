@@ -39,7 +39,7 @@ void TitleSceeneFlow::Update(float deltaTime)
 void TitleSceeneFlow::Draw()
 {  
     backGround->DrawUI();
-    stringUI->DrawUI();
+    stringUI->DrawRightAlignedString();
     miniMap->DrawUI();
     switchUI->Draw();
 

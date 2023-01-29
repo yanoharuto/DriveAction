@@ -4,13 +4,14 @@
 #include "Utility.h"
 #include "ImgUI.h"
 #include "StringUI.h"
-
+#include "SoundPlayer.h"
 PlaySceeneFlow::PlaySceeneFlow()
 {
+	soundPlayer = new SoundPlayer();
 	courceDataLoader = new CourceDataLoader();
 	nowProgress = PlaySceeneProgress::start;
 	stageManager = new StageManager(courceDataLoader);
-	racerManager = new RacerManager(4,courceDataLoader);
+	racerManager = new RacerManager(3,courceDataLoader);
 	camera = new PlaySceneCamera();
 	timer = new Timer();
 	countDown = new CountDown();
@@ -19,6 +20,7 @@ PlaySceeneFlow::PlaySceeneFlow()
 	conflictProcesser = new ConflictProcesser();
 	gimmickObjManager = new GimmickObjManager(conflictProcesser,courceDataLoader);
 	playerRelatedUI = new PlayerRelatedUI(maxLap);
+
 }
 
 PlaySceeneFlow::~PlaySceeneFlow()
@@ -35,6 +37,7 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(conflictProcesser);
 	SAFE_DELETE(playerRelatedUI);
+	SAFE_DELETE(soundPlayer);
 }
 
 PlaySceeneProgress PlaySceeneFlow::Update()
@@ -54,29 +57,30 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 	case PlaySceeneProgress::countDown:
 		countDown->Update(timer->GetDeltaTime());
 		camera->Update(racerManager->GetPlayerCar());
-		racerManager->RacerUpdate(conflictProcesser, 0, stageManager->GetCircuit());
+		racerManager->RacerUpdate(0, stageManager->GetCircuit());
 		//カウントダウンが終わったら
 		if (countDown->CountDownEnd())
 		{
 			SAFE_DELETE(countDown);
 			nowProgress = PlaySceeneProgress::race;
+			gameStartTime = timer->GetScoreTime();
 		}
 		break;
 		//レース
 	case PlaySceeneProgress::race:
 		//レーサーの処理
-		racerManager->RacerUpdate(conflictProcesser,timer->GetDeltaTime(), stageManager->GetCircuit());
-		racerManager->RacerConflictProcces(timer->GetDeltaTime());
+		racerManager->RacerUpdate(timer->GetDeltaTime(), stageManager->GetCircuit());
+		racerManager->RacerConflictProcces(conflictProcesser, stageManager->GetCircuit(), timer->GetDeltaTime());
 		racerManager->RacerRankUpdate();
 		playerRelatedInfo = racerManager->GetPlayerRelatedInfo();
-		playerRelatedInfo.time = timer->GetScoreTime();
+		playerRelatedInfo.time = round((timer->GetScoreTime() - gameStartTime) / 10) / 100;
 		playerRelatedUI->Update(playerRelatedInfo,timer->GetDeltaTime());
 		playerPos = racerManager->GetPlayerCar()->GetPos();
 		//ミニマップ
 		miniMap->Update(-playerPos.x,playerPos.z);
 		//カメラの処理
-		camera->Update(racerManager->GetPlayerCar());;
-		if (playerRelatedInfo.lap == 3)
+		camera->Update(racerManager->GetPlayerCar());
+		if (playerRelatedInfo.lap == maxLap)
 		{
 			nowProgress = PlaySceeneProgress::playerGoal;
 			postGoalDirection = new PostGoalDirection();

@@ -31,14 +31,14 @@ void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo,float deltaTime)
 {
     reverseDrivingCautionUI->Update(relatedInfo.carDirection,relatedInfo.nextCheckPointDirection,deltaTime);
     rankUI->UpdateString(std::to_string(relatedInfo.rank));
-    lapUI->Update(relatedInfo.lap);
+    lapUI->Update(relatedInfo.lap + 1);
     timeUI->UpdateString(std::to_string(relatedInfo.time));
 }
 
 void PlayerRelatedUI::Draw()
 {
     reverseDrivingCautionUI->Draw();
-    rankUI->DrawUI();
+    rankUI->DrawRightAlignedString();
     lapUI ->Draw();
-    timeUI->DrawUI();
+    timeUI->DrawLeftAlignedString();
 }

@@ -8,9 +8,9 @@ class CPUCar :
 {
 public:
     CPUCar();
-    CPUCar(VECTOR firstPos,VECTOR firstDir ,VECTOR destinationPos);
+    CPUCar(VECTOR firstPos,VECTOR firstDir ,VECTOR destinationPos,SoundPlayer* soundPlayer);
     ~CPUCar();
-    void Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo)override;
+    void Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo,SoundPlayer* soundPlayer)override;
     
 private:
     void Init();

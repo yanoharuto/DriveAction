@@ -58,6 +58,6 @@ void PostGoalDirection::Draw()
     }
     else
     {
-        stringUI->DrawUI();
+        stringUI->DrawRightAlignedString();
     }
 }

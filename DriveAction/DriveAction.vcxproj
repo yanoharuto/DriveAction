@@ -90,11 +90,13 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>DxLib_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>DxLib_h</AdditionalLibraryDirectories>
+      <AdditionalDependencies>onecore.lib;onecoreuap.lib;user32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -114,6 +116,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\8bith\OneDrive\デスクトップ\DxLib_h</AdditionalLibraryDirectories>
+      <AdditionalDependencies>onecore.lib;onecoreuap.lib;user32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,6 +132,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>DxLib_h</AdditionalLibraryDirectories>
+      <AdditionalDependencies>onecore.lib;onecoreuap.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,10 +152,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\8bith\OneDrive\デスクトップ\DxLib_h</AdditionalLibraryDirectories>
+      <AdditionalDependencies>onecore.lib;onecoreuap.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AccelerationFloor.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="ConflictProcesser.cpp" />
     <ClCompile Include="CountDown.cpp" />
@@ -199,6 +205,7 @@
   <ItemGroup>
     <ClInclude Include="AccelerationFloor.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="ConflictExamineResultInfo.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarNeighborhoodExamineInfo.h" />
@@ -226,6 +233,7 @@
     <ClInclude Include="RacePrevProcess.h" />
     <ClInclude Include="ResultSceneFlow.h" />
     <ClInclude Include="ScoreTime.h" />
+    <ClInclude Include="SoundsGenerated.h" />
     <ClInclude Include="StageDataAddressStruct.h" />
     <ClInclude Include="SwitchUI.h" />
     <ClInclude Include="VECTOR3Loader.h" />

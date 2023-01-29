@@ -4915,7 +4915,7 @@ extern	int			StopBeep(							void ) ;																					// ビープ音を止める
 extern	int			PlaySoundFile(						const TCHAR *FileName,                        int PlayType ) ;								// サウンドファイルを再生する
 extern	int			PlaySoundFileWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int PlayType ) ;								// サウンドファイルを再生する
 #ifndef DX_COMPILE_TYPE_C_LANGUAGE
-extern	int			PlaySound(							const TCHAR *FileName,                        int PlayType ) ;								// PlaySoundFile の旧名称
+extern	int			PlayS(							const TCHAR *FileName,                        int PlayType ) ;								// PlaySoundFile の旧名称
 extern	int			PlaySoundWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int PlayType ) ;								// PlaySoundFile の旧名称
 #endif // DX_COMPILE_TYPE_C_LANGUAGE
 extern	int			PlaySoundDX(						const TCHAR *FileName,                        int PlayType ) ;								// PlaySoundFile の旧名称

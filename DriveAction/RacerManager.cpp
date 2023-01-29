@@ -24,23 +24,25 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
     //プレイヤーの初期化処理
     RacerRankInfo rankInfo{};
     player = {};
-    for (int i = 0; i < racerNum; i++)
+    for (int i = 0; i < racerNum + 1; i++)
     {
         firstPosIte++;
+        racerInstanceArray[i].checkPoint = new CheckPoint(circuitData);
+        racerInstanceArray[i].soundPlayer = new SoundPlayer();
+        racerInstanceArray[i].rank = 0;
         if (i == 0)
         {
-            racerInstanceArray[i].checkPoint = new CheckPoint(circuitData);
-            racerInstanceArray[i].car = new Player(*firstPosIte, courceDataLoader->GetCarFirstDir(),racerInstanceArray[i].checkPoint->GetPos());
-            racerInstanceArray[i].rank = 0;
+            racerInstanceArray[i].car = new Player(*firstPosIte, courceDataLoader->GetCarFirstDir(),racerInstanceArray[i].checkPoint->GetPos(),racerInstanceArray[i].soundPlayer);
+         
             player.car = racerInstanceArray[i].car;
             player.rank = &racerInstanceArray[i].rank;
             player.checkPoint = racerInstanceArray[i].checkPoint;
         }
         else
         {
-            racerInstanceArray[i].checkPoint = new CheckPoint(circuitData);
-            racerInstanceArray[i].car = new CPUCar(*firstPosIte, courceDataLoader->GetCarFirstDir(), racerInstanceArray[i].checkPoint->GetPos());
-            racerInstanceArray[i].rank = 0;
+
+            racerInstanceArray[i].car = new CPUCar(*firstPosIte, courceDataLoader->GetCarFirstDir(), racerInstanceArray[i].checkPoint->GetPos(), racerInstanceArray[i].soundPlayer);
+
         }
         racerList.push_front(&racerInstanceArray[i]);
         rankInfo.checkPointP = racerInstanceArray[i].checkPoint;
@@ -55,6 +57,7 @@ RacerManager::~RacerManager()
     {
         SAFE_DELETE(racerInstanceArray[i].car);
         SAFE_DELETE(racerInstanceArray[i].checkPoint);
+        SAFE_DELETE(racerInstanceArray[i].soundPlayer);
     }
 }
 /// <summary>
@@ -62,7 +65,7 @@ RacerManager::~RacerManager()
 /// </summary>
 /// <param name="deltaTime">フレーム間の経過時間</param>
 /// <param name="circuit">走るコース</param>
-void RacerManager::RacerUpdate(ConflictProcesser* conflictProcesser,const float deltaTime, CircuitTrack* circuit)
+void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit)
 {
     std::list<Racer*>::iterator racerIte;
     Racer* racer;
@@ -79,7 +82,7 @@ void RacerManager::RacerUpdate(ConflictProcesser* conflictProcesser,const float 
         hitFlag = circuit->GetOutsideHitFlag(racerHitCheckExamineInfo);
         neighInfo = circuit->GetOutsideExamineInfo(racerHitCheckExamineInfo);
         //車の更新　
-        racer->car->Update(deltaTime, hitFlag,neighInfo);
+        racer->car->Update(deltaTime, hitFlag, neighInfo,racer->soundPlayer);
         //更新後の情報をもらう
         racerHitCheckExamineInfo.SetExamineInfo(*racer->car);
         //車がチェックポイントを通過したか調べる
@@ -87,21 +90,7 @@ void RacerManager::RacerUpdate(ConflictProcesser* conflictProcesser,const float 
         if (conflictResultInfo.hitFlag)
         {
             //車に次の目的地を伝える
-            racer->car->ConflictProcess(deltaTime, conflictResultInfo);
-        }
-        //コースの塀にぶつかったか調べる
-        conflictResultInfo = circuit->GetCourceConflictInfo(racerHitCheckExamineInfo);
-        if (conflictResultInfo.hitFlag)            //ぶつかってたら衝突処理
-        {
-            racer->car->ConflictProcess(deltaTime, conflictResultInfo);
-        }
-        conflictResultInfo = circuit->GetCourceConflictInfo(racerHitCheckExamineInfo);
-        //加速床とかにぶつかってたら
-        racerHitCheckExamineInfo.SetExamineInfo(*racer->car);
-        conflictResultInfo = conflictProcesser->GetConflictObjInfo(racerHitCheckExamineInfo);
-        if (conflictResultInfo.hitFlag)            //ぶつかってたら衝突処理
-        {
-            racer->car->ConflictProcess(deltaTime, conflictResultInfo);
+            racer->car->ConflictProcess(deltaTime, conflictResultInfo,racer->soundPlayer);
         }
     }
 }
@@ -124,7 +113,7 @@ void RacerManager::ArgumentConflictProcess(float deltaTime,Object* obj)
             //当たってるか調べる　
             if (hitChecker.HitCheck(racer->car, obj))
             {
-                racer->car->ConflictProcess(deltaTime,conflictInfo);
+                racer->car->ConflictProcess(deltaTime, conflictInfo, racer->soundPlayer);
             }
         }
     }
@@ -175,14 +164,31 @@ void RacerManager::RacerRankUpdate()
 /// <summary>
 /// 車乗りたち同士でぶつかってないか調べる
 /// </summary>
-void RacerManager::RacerConflictProcces(float deltaTime)
+void RacerManager::RacerConflictProcces(ConflictProcesser* conflictProcesser,CircuitTrack* circuit,float deltaTime)
 {
     std::list<Racer*>::iterator racerIte;
     Racer* racer;
+    HitCheckExamineObjectInfo racerHitCheckExamineInfo;
+    ConflictExamineResultInfo conflictResultInfo;
     for (racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
     {
         racer = *racerIte;
-        ArgumentConflictProcess(deltaTime,racer->car);
+        ArgumentConflictProcess(deltaTime, racer->car);
+
+        //加速床とかにぶつかってたら
+        racerHitCheckExamineInfo.SetExamineInfo(*racer->car);
+        conflictResultInfo = conflictProcesser->GetConflictObjInfo(racerHitCheckExamineInfo);
+        if (conflictResultInfo.hitFlag)            //ぶつかってたら衝突処理
+        {
+            racer->car->ConflictProcess(deltaTime, conflictResultInfo, racer->soundPlayer);
+        }
+        //コースの塀にぶつかったか調べる
+        conflictResultInfo = circuit->GetCourceConflictInfo(racerHitCheckExamineInfo);
+        if (conflictResultInfo.hitFlag)            //ぶつかってたら衝突処理
+        {
+            racer->car->ConflictProcess(deltaTime, conflictResultInfo, racer->soundPlayer);
+        }
+
     }
 }
 /// <summary>
@@ -204,11 +210,12 @@ PlayerRelatedInfo RacerManager::GetPlayerRelatedInfo()
     PlayerRelatedInfo relatedInfo = {};
     relatedInfo.carDirection = player.car->GetDir();
     relatedInfo.nextCheckPointDirection = player.checkPoint->GetDir();
-    relatedInfo.lap = player.checkPoint->GetGoalCount() + 1;
+    relatedInfo.lap = player.checkPoint->GetGoalCount();
     relatedInfo.rank = *player.rank;
     relatedInfo.accelPower = player.car->GetAccelPower();
     return relatedInfo;
 }
+
 
 /// <summary>
   /// 描画

@@ -18,6 +18,7 @@ CircuitTrack::CircuitTrack(std::string courceModelAdress, std::string outsideMod
     //–h•Ç‚Ì”¼Œa
     radius = gurdRadius;
     tag = ObjectTag::stage;
+    bouncePower = setBouncePower;
 }
 /// <summary>
 /// model‚Ì‰ğ•ú@ƒRƒŠƒWƒ‡ƒ“‚àÁ‚¦‚é
@@ -58,6 +59,7 @@ ConflictExamineResultInfo  CircuitTrack::GetCourceConflictInfo(HitCheckExamineOb
     {
         conflictInfo.radius = radius;
         conflictInfo.tag = tag;
+        conflictInfo.bouncePower = bouncePower;
         return conflictInfo;
     }
   

@@ -7,6 +7,7 @@ Saw::Saw()
 Saw::Saw(VECTOR pos, int duplicateModelHandle)
 {
     position = pos;
+    bouncePower = setBouncePower;
     direction = {};
     int duplicateModel = MV1DuplicateModel(duplicateModelHandle);
     modelHandle = duplicateModel;

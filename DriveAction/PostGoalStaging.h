@@ -7,11 +7,11 @@
 /// <summary>
 /// ÉSÅ[Éãå„ÇÃââèo
 /// </summary>
-class PostGoalDirection
+class PostGoalStaging
 {
 public:
-    PostGoalDirection();
-    ~PostGoalDirection();
+    PostGoalStaging();
+    ~PostGoalStaging();
     bool Update(float deltaTime);
     void Draw();
 private:

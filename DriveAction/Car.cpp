@@ -1,4 +1,4 @@
-#include "OriginalMath.h"
+ï»¿#include "OriginalMath.h"
 #include "Car.h"
 #include "Wheels.h"
 #include "Utility.h"
@@ -21,6 +21,7 @@ Car::Car()
 Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,SoundPlayer* soundPlayer)
 {
 	position = firstPos;
+	firstPosY = firstPos.y;
 	direction = firstDir;
 	tag = ObjectTag::car;
 	bouncePower = setBouncePower;
@@ -52,7 +53,7 @@ Car::~Car()
 	SAFE_DELETE(wheels);
 }
 /// <summary>
-/// ‚Ô‚Â‚©‚Á‚½‚Ìˆ—
+/// ã¶ã¤ã‹ã£ãŸæ™‚ã®å‡¦ç†
 /// </summary>
 /// <param name="deltaTime"></param>
 /// <param name="conflictInfo"></param>
@@ -66,11 +67,14 @@ void Car::ConflictProcess(float deltaTime,const ConflictExamineResultInfo confli
 		ConflictReaction(deltaTime,conflictInfo,soundPlayer);
 		break;
 	case ObjectTag::goal:
+		checkCount++;
+		isGoalConflict = true;
 		destinationPos = conflictInfo.pos;
+		destinationDir = conflictInfo.dir;
 		break;
 	case ObjectTag::acelerationFloor: 
 
-		accelPower += 5.0f;
+		addForcePower = accelPower > maxAddSpeed ? maxAddSpeed : addForcePower + addAccelSpeed;
 		break;
 	default:
 		break;
@@ -82,7 +86,70 @@ void Car::Draw()
 	MV1DrawModel(modelHandle);
 	wheels->Draw();
 }
-
+/// <summary>
+/// çˆ†å¼¾ã§æ”»æ’ƒã™ã‚‹
+/// </summary>
+void Car::BombAttack()
+{
+}
+/// <summary>
+/// ç©ºã‚’é£›ã¶
+/// </summary>
+/// <param name="deltaTime"></param>
+void Car::Fly(float deltaTime)
+{
+	//åˆ¶é™æ™‚é–“ä¸­ã‹ç©ºã‚’é£›ã¶ãƒ¢ãƒ¼ãƒ‰ã«ãªã£ãŸã‚‰
+	if (flyTime > 0 && carMode == CarMode::flying)
+	{
+		if (position.y < maxHeight)//æœ€é«˜é«˜åº¦ã‚ˆã‚Šä¸‹ãªã‚‰ä¸Šæ˜‡
+		{
+			flyY += flyPower * deltaTime;
+			flyY = flyY < maxHeight ? flyY : maxHeight;
+		}
+		flyTime -= deltaTime;
+	}
+	else
+	{
+		carMode = CarMode::downing;
+	}
+}
+/// <summary>
+/// è½ä¸‹ã™ã‚‹
+/// </summary>
+/// <param name="deltaTime"></param>
+void Car::Down(float deltaTime)
+{
+	if (position.y > firstPosY)
+	{
+		flyY = -downSpeed * deltaTime;
+	}
+	else
+	{
+		flyY = 0;
+		carMode = CarMode::normal;
+	}
+}
+void Car::FlyUpdate(float deltaTime)
+{
+	switch (carMode)
+	{
+	case CarMode::normal:
+		flyTime = maxFlyTime;
+		break;
+	case CarMode::flying:
+		Fly(deltaTime);
+		break;
+	case CarMode::downing:
+		Down(deltaTime);
+		break;
+	default:
+		break;
+	}
+}
+/// <summary>
+/// å‘¨è¾ºã‚’èª¿ã¹ã¦ã‚‚ã‚‰ã†ãŸã‚ã«å¿…è¦ãªæƒ…å ±ã‚’æ¸¡ã™
+/// </summary>
+/// <returns></returns>
 CarNeighborhoodExamineInfo Car::GetNeighExamineInfo()
 {
 	CarNeighborhoodExamineInfo examineInfo;
@@ -92,7 +159,7 @@ CarNeighborhoodExamineInfo Car::GetNeighExamineInfo()
 }
 
 /// <summary>
-/// ‚Ô‚Â‚©‚Á‚½‚Ìˆ—@Œ¸‘¬‚·‚é
+/// ã¶ã¤ã‹ã£ãŸæ™‚ã®å‡¦ç†ã€€æ¸›é€Ÿã™ã‚‹
 /// </summary>
 /// <param name="conflictObjPos"></param>
 /// <param name="conflictObjRad"></param>
@@ -107,10 +174,10 @@ void Car::ConflictReaction(float deltaTime, const ConflictExamineResultInfo conf
 	soundPlayer->SetSoundRadius(MAX1BYTEVALUE, carHornSEAddress);
 	soundPlayer->SetPosition3DSound(position, carHornSEAddress);
 	soundPlayer->Play3DSE(position, carHornSEAddress);
-	//Õ“ËƒGƒtƒFƒNƒg
+	//è¡çªã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	int playingEffect = PlayEffekseer3DEffect(conflictEffectResource);
 	SetPosPlayingEffekseer3DEffect(playingEffect, position.x, position.y, position.z);
-	//Õ“Ëˆ—
+	//è¡çªå‡¦ç†
 	accelPower -= accelPower * colideDecel;
 	conflictVec = VSub(position, conflictInfo.pos);
 	conflictVec = VNorm(conflictVec);
@@ -124,159 +191,205 @@ void Car::DamageReaction(const VECTOR conflictObjPos, const float conflictObjRad
 }
 
 /// <summary>
-/// i‚Ş•ûŒü‚Æ‘¬‚³‚ğXV‚·‚é
+/// é€²ã‚€æ–¹å‘ã¨é€Ÿã•ã‚’æ›´æ–°ã™ã‚‹
 /// </summary>
-/// <param name="deltaTime">Œo‰ßŠÔ</param>
-/// <param name="accelVec">Ÿ‚ÌXV‚Ü‚Å‚Éi‚Ş•ûŒü‚Æ‘¬‚³</param>
+/// <param name="deltaTime">çµŒéæ™‚é–“</param>
+/// <param name="accelVec">æ¬¡ã®æ›´æ–°ã¾ã§ã«é€²ã‚€æ–¹å‘ã¨é€Ÿã•</param>
 void Car::UpdateVelocity(const VECTOR accelVec)
 {
 	velocity = accelVec;
-	//ƒ^ƒCƒ„‚ÌŒü‚«‚©‚çis•ûŒü‚ğæ‚é
+	//ã‚¿ã‚¤ãƒ¤ã®å‘ãã‹ã‚‰é€²è¡Œæ–¹å‘ã‚’å–ã‚‹
 	float theta = wheels->GetMoveDirTheta(VSize(velocity));
 	theta *= gripPower;
 	velocity = VTransform(velocity, MGetRotY(theta));
-	// ƒxƒƒVƒeƒB‰Á‘¬ŒvZ.
-
-
-	// ã‰º•ûŒü‚É‚¢‚©‚È‚¢‚æ‚¤‚ÉƒxƒƒVƒeƒB‚ğ®‚¦‚é.
+	// ãƒ™ãƒ­ã‚·ãƒ†ã‚£åŠ é€Ÿè¨ˆç®—.
+	// ä¸Šä¸‹æ–¹å‘ã«ã„ã‹ãªã„ã‚ˆã†ã«ãƒ™ãƒ­ã‚·ãƒ†ã‚£ã‚’æ•´ãˆã‚‹.
 	velocity = VGet(velocity.x, 0, velocity.z);	
 }
 /// <summary>
-/// model‚Ì•`‰æêŠ‚ğXV
+/// modelã®æç”»å ´æ‰€ã‚’æ›´æ–°
 /// </summary>
 void Car::UpdateMV1Pos()
 {
-	// —Í‚ğ‚©‚¯I‚í‚Á‚½ƒxƒƒVƒeƒB‚Ì•ûŒü‚ÉƒfƒBƒŒƒNƒVƒ‡ƒ“‚ğ’²®.
+	// åŠ›ã‚’ã‹ã‘çµ‚ã‚ã£ãŸãƒ™ãƒ­ã‚·ãƒ†ã‚£ã®æ–¹å‘ã«ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’èª¿æ•´.
 	if (VSize(velocity) != 0)
 	{
 		direction = VNorm(velocity);
 	}
-	// ƒ|ƒWƒVƒ‡ƒ“‚ğXV.
+	// ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’æ›´æ–°.
 	position = VAdd(position, velocity);
+	//è¡çªæ™‚ã®è¡æ’ƒã«ã‚ˆã£ã¦ç§»å‹•
 	if (conflictObjBouncePower > 0.0f)
 	{
 		conflictObjBouncePower -= conflictObjBouncePower * defaultDecel;
 		conflictObjBouncePower = conflictObjBouncePower > 0 ? conflictObjBouncePower : 0;
 		position = VAdd(position, VScale(conflictVec,conflictObjBouncePower));
 	}
-	// ‚RDƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“İ’è
+	if (carMode == CarMode::normal)
+	{
+		position.y = firstPosY;
+	}
+	else
+	{
+		position.y += flyY;
+	}
+	// ï¼“Dãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¸ã‚·ãƒ§ãƒ³è¨­å®š
 	MV1SetPosition(modelHandle, position);
 }
 /// <summary>
-/// Ô‚ğ‰ñ“]‚³‚¹‚é
+/// è»Šã‚’å›è»¢ã•ã›ã‚‹
 /// </summary>
 void Car::ModelSetMatrix()
 {
-	// Œü‚«‚É‡‚í‚¹‚Ä‰ñ“].
+	// å‘ãã«åˆã‚ã›ã¦å›è»¢.
 	MV1SetRotationZYAxis(modelHandle, direction, VGet(0.0f, 1.0f, 0.0f), 0.0f);
-	// ƒ‚ƒfƒ‹‚ÉŒü‚¢‚Ä‚Ù‚µ‚¢•ûŒü‚É‰ñ“].
+	// ãƒ¢ãƒ‡ãƒ«ã«å‘ã„ã¦ã»ã—ã„æ–¹å‘ã«å›è»¢.
 	MATRIX tmpMat = MV1GetMatrix(modelHandle);
 	MATRIX rotYMat = MGetRotY(180.0f * RAGE);
 	tmpMat = MMult(tmpMat, rotYMat);
 	MV1SetRotationMatrix(modelHandle, tmpMat);
 }
 /// <summary>
-/// ©“®‘€cB
+/// è‡ªå‹•æ“ç¸¦ã€‚
 /// </summary>
-/// <param name="deltaTime">ƒtƒŒ[ƒ€ŠÔ·•ª</param>
-/// <param name="outsideHitFlag">ƒR[ƒXŠO‚Éo‚½‚©</param>
-void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag,NeighborhoodInfo neighInfo, SoundPlayer* soundPlayer)
+/// <param name="deltaTime">ãƒ•ãƒ¬ãƒ¼ãƒ é–“å·®åˆ†</param>
+/// <param name="outsideHitFlag">ã‚³ãƒ¼ã‚¹å¤–ã«å‡ºãŸã‹</param>
+void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag,VECTOR pos, SoundPlayer* soundPlayer)
 {
-	wheelArgumentCarInfo.handleDir = GetHandleDir();
-	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.handleDir, outsideHitFlag, deltaTime,soundPlayer);
+	wheelArgumentCarInfo.inputDir = GetAutoDriveDirection();
+	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
 	UpdateVelocity(VScale(accelVec, deltaTime));
+	
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	InitWheelArgumentCarInfo();
 	wheels->WheelUpdate(wheelArgumentCarInfo);
+	PlayDriveSound(wheelArgumentCarInfo.inputDir,soundPlayer);
+	bouncePower = setBouncePower + GetAccelPowerPercent() / 100;
 }
 
 
 /// <summary>
-/// ƒnƒ“ƒhƒ‹‚ÌŒü‚«‚ğo‚·
+/// ãƒãƒ³ãƒ‰ãƒ«ã®å‘ãã‚’å‡ºã™
 /// </summary>
 /// <returns></returns>
-HandleDirection Car::GetHandleDir()
+InputInfo Car::GetAutoDriveDirection()
 {
-	//–Ú“I’n‚Ü‚Å‚Ì‹——£
-	VECTOR destinationBetween = VSub(destinationPos, position);
+	InputInfo inputInfo;
+	inputInfo.isBreake = false;
+	inputInfo.nonInput = false;
+	
+	//ç›®çš„åœ°ã¾ã§ã®è·é›¢
+	VECTOR tempVec = isGoalConflict ? destinationDir : VSub(destinationPos, position);
 	OriginalMath math;
-	float angular = math.GetDegreeMisalignment(direction, destinationBetween);
-	if (angular > turnProccesLine)
+
+	float angular = math.GetDegreeMisalignment(direction, tempVec);
+
+	if (angular > turnProccesAngularLine)
 	{
-		//Ô‚ÌŒü‚¢‚Ä‚é•ûŒü‚Æ–Ú“I’n‚Ü‚Å‚Ì•ûŒü‚ÌŠOÏ‚ğo‚µ‚Ä
-		//‰E‚É‹È‚ª‚é‚©¶‚É‹È‚ª‚é‚©’²‚×‚é
-		float crossY = VCross(VNorm(direction), VNorm(destinationBetween)).y;
+		//è»Šã®å‘ã„ã¦ã‚‹æ–¹å‘ã¨ç›®çš„åœ°ã¾ã§ã®æ–¹å‘ã®å¤–ç©ã‚’å‡ºã—ã¦
+		//å³ã«æ›²ãŒã‚‹ã‹å·¦ã«æ›²ãŒã‚‹ã‹èª¿ã¹ã‚‹
+		float crossY = VCross(VNorm(direction), VNorm(tempVec)).y;
 		if (crossY > 0)
 		{
-			return HandleDirection::right;
+
+			inputInfo.handleDir = HandleDirection::right;
+
 		}
 		else
 		{
-			return HandleDirection::left;
+			inputInfo.handleDir = HandleDirection::left;
 		}
+
 	}
-	return HandleDirection::straight;
+	else
+	{
+
+		inputInfo.handleDir = HandleDirection::straight;
+	}
+	
+	return inputInfo;
 }
 
-/// <summary>
-/// ‰Á‘¬‚·‚é‚½‚ß‚Ìˆ—
-/// </summary>
-/// <param name="dir">Œü‚©‚Á‚Ä‚é•ûŒü</param>
-/// <param name="outsideHitFlag"></param>
-/// <returns></returns>
-VECTOR Car::GetAccelVec(HandleDirection handleDir, bool outsideHitFlag, float deltaTime, SoundPlayer* soundPlayer)
+
+VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime)
 {
-	if (handleDir == HandleDirection::brake)//ƒuƒŒ[ƒL
+	
+	if (!inputDir.nonInput && !inputDir.isBreake)
 	{
-		accelPower -= accelPower * breakDecel * deltaTime;
+		// åŠ é€Ÿå‡¦ç†.
+		accelPower = accelPower > maxAccelSpeed ? maxAccelSpeed : accelPower + accelAddSpeed * deltaTime;
 
-		soundPlayer->StopSound(drivingSEAddress);
-		if (!soundPlayer->IsPlaySound(breakeSEAddress))
-		{
-			soundPlayer->SetSoundRadius(MAX1BYTEVALUE, breakeSEAddress);
-			soundPlayer->SetSoundVolume(MAX1BYTEVALUE, breakeSEAddress);
-			soundPlayer->SetPosition3DSound(position, breakeSEAddress);
-			soundPlayer->Play3DSE(position, breakeSEAddress);
-		}
 	}
-	else if (handleDir != HandleDirection::non)//‰½‚à“ü—Í‚µ‚Ä‚¢‚È‚¢‚È‚ç
-	{
-		// ‰Á‘¬ˆ—.
-		accelPower += accelPower > maxSpeed ? 0 : accelSpeed * deltaTime;
-
-		soundPlayer->SetSoundRadius(MAX1BYTEVALUE, drivingSEAddress);
-		soundPlayer->SetSoundVolume(MAX1BYTEVALUE, drivingSEAddress);
-		soundPlayer->SetPosition3DSound(position, drivingSEAddress);
-		if(!soundPlayer->IsPlaySound(drivingSEAddress))
-		{
-
-			soundPlayer->Play3DSE(position, drivingSEAddress);
-		}
-	}
-
-	// ~‚Ü‚Á‚Ä‚¢‚éê‡‚ÍŒ¸‘¬‚µ‚È‚¢.
+	// æ­¢ã¾ã£ã¦ã„ã‚‹å ´åˆã¯æ¸›é€Ÿã—ãªã„.
 	if (VSize(velocity) > 0)
 	{
-		
-		//¶‰E‚É‹È‚ª‚ë‚¤‚Æ‚µ‚Ä‚¢‚½‚çŒ¸‘¬
-		if (handleDir != HandleDirection::straight)
+		if (inputDir.isBreake)
 		{
-			//¶‰E‚É‹È‚ª‚ë‚¤‚Æ‚µ‚½‚çŒ¸‘¬‚·‚é
+			accelPower -= accelPower * breakDecel * deltaTime;
+			if (accelPower < stopAccelLine)
+			{
+				accelPower = 0;
+			}
+		}
+		else if (inputDir.nonInput)
+		{
+			accelPower -= accelPower * defaultDecel * deltaTime;
+			if (accelPower < stopAccelLine)
+			{
+				accelPower = 0;
+			}
+		}
+		//å·¦å³ã«æ›²ãŒã‚ã†ã¨ã—ã¦ã„ãŸã‚‰æ¸›é€Ÿ
+		if (inputDir.handleDir!=HandleDirection::straight)
+		{
+			//å·¦å³ã«æ›²ãŒã‚ã†ã¨ã—ãŸã‚‰æ¸›é€Ÿã™ã‚‹
 			accelPower -= accelPower * gripDecel * deltaTime;
 		}
-		//ƒR[ƒXŠO‚Éo‚½‚çŒ¸‘¬
+
+		//ã‚³ãƒ¼ã‚¹å¤–ã«å‡ºãŸã‚‰æ¸›é€Ÿ
 		if (outsideHitFlag)
 		{
 			accelPower -= accelPower * outsideHitDecel * deltaTime;
 		}
+		//å¤–çš„è¦å› ã§åŠ é€Ÿã—ãŸã¨ãã«å°‘ã—ãšã¤å…ƒã«æˆ»ã‚‹
+		if (addForcePower > 0)
+		{
+			addForcePower -= addForcePower * defaultDecel * deltaTime;
+			addForcePower = addForcePower < 0 ? 0 : addForcePower;
+		}
 	}
-	else//~‚Ü‚Á‚½‚ç‰¹‚ğ~‚ß‚é
+
+	return VScale(direction, accelPower + addForcePower);
+}
+
+void Car::PlayDriveSound(InputInfo inputDir, SoundPlayer* soundPlayer)
+{
+	if (inputDir.isBreake)
+	{
+		soundPlayer->StopSound(drivingSEAddress);		
+		soundPlayer->SetPosition3DSound(position, breakeSEAddress);
+		if (!soundPlayer->IsPlaySound(breakeSEAddress))
+		{
+			soundPlayer->SetSoundRadius(MAX1BYTEVALUE, breakeSEAddress);
+			soundPlayer->SetSoundVolume(MAX1BYTEVALUE, breakeSEAddress);
+			soundPlayer->Play3DSE(position, breakeSEAddress);
+		}
+	}
+	else if (!inputDir.nonInput)
+	{
+		soundPlayer->SetPosition3DSound(position, drivingSEAddress);
+		if (!soundPlayer->IsPlaySound(drivingSEAddress))
+		{
+			soundPlayer->SetSoundRadius(MAX1BYTEVALUE, drivingSEAddress);
+			soundPlayer->SetSoundVolume(MAX1BYTEVALUE, drivingSEAddress);
+			soundPlayer->Play3DSE(position, drivingSEAddress);
+		}
+	}
+	else
 	{
 		soundPlayer->StopSound(drivingSEAddress);
 	}
-
-	return VScale(direction, accelPower);
 }
 
 float Car::GetNeighSize(NeighborhoodInfo neighInfo)
@@ -296,7 +409,7 @@ void Car::InitWheelArgumentCarInfo()
 	wheelArgumentCarInfo.velocitySize = VSize(velocity);
 }
 
-float Car::GetAccelPower()
+float Car::GetAccelPowerPercent()
 {
-	return accelPower;
+	return (accelPower + addForcePower) / (maxAccelSpeed + maxAddSpeed)*100;
 }

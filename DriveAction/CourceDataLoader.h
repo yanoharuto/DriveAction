@@ -76,9 +76,9 @@ private:
     //初期位置が書いてあるテキスト
     const std::string firstPosAddress = "/firstPosition.txt";
     //ゴールまでの道のりテキスト
-    const std::string checkPointPosAddress = "/checkPointPos.txt";
+    const std::string checkPointPosAddress = "/CourcePos.txt";        // ;"/checkPointPos.txt"
     //ゴールまでの道のりテキスト
-    const std::string checkPointDirAddress = "/checkPointDir.txt";
+    const std::string checkPointDirAddress = "/CourceDir.txt";         //;"/checkPointDir.txt"
     //コースのモデル
     const std::string courceAddress = "/Asset/RaceCircuit.mv1";
     //コースの外側のモデル

@@ -1,14 +1,8 @@
 #pragma once
 #include "DxLib.h"
-//ハンドルがどっち向きなのか
-enum class HandleDirection
-{	
-	straight,
-	left,
-	right,
-	brake,
-	non
-};
+#include "InputDirection.h"
+#include "HandleDirection.h"
+
 /// <summary>
 /// タイヤ一つ一つが持っている情報
 /// </summary>
@@ -26,7 +20,7 @@ struct WheelArgumentCarInfo
 	MATRIX matrix;//車のmodelの行列
 	VECTOR direction;//車の向き
 	float velocitySize;//速さの大きさ
-	HandleDirection handleDir;	//ハンドルがどっち向きなのか
+	InputInfo inputDir;	//ハンドルがどっち向きなのか
 };
 
 /// <summary>
@@ -65,10 +59,10 @@ private:
 	/// </summary>
 	void AllSetWheelMatrix();
 	/// <summary>
-/// 回転するための半径を返す
-/// </summary>
-/// <param name="firstWheelRota"></param>
-/// <returns></returns>
+    /// 回転するための半径を返す
+    /// </summary>
+    /// <param name="firstWheelRota"></param>
+    /// <returns></returns>
 	float GetRotationRadius(const float firstWheelRota);
 	/// <summary>
     /// 車から見たタイヤの座標が返ってくる
@@ -94,7 +88,7 @@ private:
 	
 	const float firstLWheelRota = 0.0f;		//左側タイヤの初期角度
 	const float firstRWheelRota = 180.0f;		//右側タイヤの初期角度
-	const float wheelDriveRotaPower = 200.0f;//車の回転力
+	const float wheelDriveRotaPower = 30.0f;//車の回転力
 	const float wheelCurvePower = 1.7f;//タイヤが左右に傾く力
 	const float maxWheelRotaY = 45.5f;//この角度までタイヤは傾くよ
 	const float rotaCalculationLine = 1.2f;//進行方向に影響するまでに必要なタイヤの角度

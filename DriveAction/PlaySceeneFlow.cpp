@@ -1,4 +1,4 @@
-#include "PlaySceeneFlow.h"
+ï»¿#include "PlaySceeneFlow.h"
 #include "StageManager.h"
 #include "PlayerRelatedInfo.h"
 #include "Utility.h"
@@ -13,9 +13,9 @@ PlaySceeneFlow::PlaySceeneFlow()
 	stageManager = new StageManager(courceDataLoader);
 	racerManager = new RacerManager(3,courceDataLoader);
 	camera = new PlaySceneCamera();
-	timer = new Timer();
+	dataCreator = new CreatePosAndDirData();
 	countDown = new CountDown();
-	postGoalDirection = nullptr;
+	postGoalStaging = nullptr;
 	miniMap = new MiniMap(minimapX,minimapY, courceDataLoader->GetMiniMapImgAddress());
 	conflictProcesser = new ConflictProcesser();
 	gimmickObjManager = new GimmickObjManager(conflictProcesser,courceDataLoader);
@@ -28,11 +28,11 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(racerManager);
 	SAFE_DELETE(stageManager);
 	SAFE_DELETE(camera);
-	SAFE_DELETE(timer);
+	SAFE_DELETE(dataCreator);
 	SAFE_DELETE(countDown);
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(miniMap);
-	SAFE_DELETE(postGoalDirection);
+	SAFE_DELETE(postGoalStaging);
 	SAFE_DELETE(scoreTime);
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(conflictProcesser);
@@ -40,60 +40,64 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(soundPlayer);
 }
 
-PlaySceeneProgress PlaySceeneFlow::Update()
+void PlaySceeneFlow::Update(float deltaTime)
 {
-	timer->Update();
-	int playerRank=0;
+	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	VECTOR playerPos = {};
 	PlayerRelatedInfo playerRelatedInfo = {};
 	switch (nowProgress)
 	{
-		//ƒXƒ^[ƒgˆ—
+		//ã‚¹ã‚¿ãƒ¼ãƒˆå‡¦ç†
 	case PlaySceeneProgress::start:
 		nowProgress = PlaySceeneProgress::countDown;
 
 		break;
-		//ƒJƒEƒ“ƒgƒ_ƒEƒ“
+		//ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³
 	case PlaySceeneProgress::countDown:
-		countDown->Update(timer->GetDeltaTime());
+		countDown->Update(deltaTime);
 		camera->Update(racerManager->GetPlayerCar());
 		racerManager->RacerUpdate(0, stageManager->GetCircuit());
-		//ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ªI‚í‚Á‚½‚ç
+		//ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ãŒçµ‚ã‚ã£ãŸã‚‰
 		if (countDown->CountDownEnd())
 		{
 			SAFE_DELETE(countDown);
 			nowProgress = PlaySceeneProgress::race;
-			gameStartTime = timer->GetScoreTime();
 		}
 		break;
-		//ƒŒ[ƒX
+		//ãƒ¬ãƒ¼ã‚¹
 	case PlaySceeneProgress::race:
-		//ƒŒ[ƒT[‚Ìˆ—
-		racerManager->RacerUpdate(timer->GetDeltaTime(), stageManager->GetCircuit());
-		racerManager->RacerConflictProcces(conflictProcesser, stageManager->GetCircuit(), timer->GetDeltaTime());
+		raceTime += deltaTime;
+		//ãƒ¬ãƒ¼ã‚µãƒ¼ã®å‡¦ç†
+		racerManager->RacerUpdate(deltaTime, stageManager->GetCircuit());
+		racerManager->RacerConflictProcces(conflictProcesser, stageManager->GetCircuit(), deltaTime);
 		racerManager->RacerRankUpdate();
 		playerRelatedInfo = racerManager->GetPlayerRelatedInfo();
-		playerRelatedInfo.time = round((timer->GetScoreTime() - gameStartTime) / 10) / 100;
-		playerRelatedUI->Update(playerRelatedInfo,timer->GetDeltaTime());
+		playerRelatedInfo.time = raceTime;
+		playerRelatedUI->Update(playerRelatedInfo, deltaTime);
 		playerPos = racerManager->GetPlayerCar()->GetPos();
-		//ƒ~ƒjƒ}ƒbƒv
-		miniMap->Update(-playerPos.x,playerPos.z);
-		//ƒJƒƒ‰‚Ìˆ—
+		dataCreator->WriteWhereToTurn(playerPos, racerManager->GetPlayerCar()->GetDir());
+		//ãƒŸãƒ‹ãƒžãƒƒãƒ—
+		miniMap->Update(-playerPos.x, playerPos.z);
+		//ã‚«ãƒ¡ãƒ©ã®å‡¦ç†
 		camera->Update(racerManager->GetPlayerCar());
-		if (playerRelatedInfo.lap == maxLap)
+
+		if (playerRelatedInfo.lap == maxLap)//ãƒ¬ãƒ¼ã‚¹çµ‚äº†
 		{
+			dataCreator->WritePosAndDir(racerManager->GetPlayerCar()->GetPos(), racerManager->GetPlayerCar()->GetDir());
 			nowProgress = PlaySceeneProgress::playerGoal;
-			postGoalDirection = new PostGoalDirection();
-			scoreTime = new ScoreTime(timer);
+			postGoalStaging = new PostGoalStaging();
+			scoreTime = new ScoreTime(raceTime);
 		}
 		break;
 	case PlaySceeneProgress::playerGoal:
-		if (postGoalDirection->Update(timer->GetDeltaTime()))
+		
+		if (postGoalStaging->Update(deltaTime))
 		{
 			nowProgress = PlaySceeneProgress::end;
 		}
 		break;
 	case PlaySceeneProgress::end:
+		isEndProccess = true;
 		break;
 	default:
 		nowProgress = PlaySceeneProgress::end;
@@ -102,7 +106,6 @@ PlaySceeneProgress PlaySceeneFlow::Update()
 #ifdef _DEBUG
 	//DxLib::printfDx("%d", playerRank);
 #endif
-	return nowProgress;
 }
 
 void PlaySceeneFlow::Draw()
@@ -122,7 +125,7 @@ void PlaySceeneFlow::Draw()
 		playerRelatedUI->Draw();
 		break;
 	case PlaySceeneProgress::playerGoal:
-		postGoalDirection->Draw();
+		postGoalStaging->Draw();
 		break;
 	case PlaySceeneProgress::end:
 		break;
@@ -130,8 +133,3 @@ void PlaySceeneFlow::Draw()
 		break;
 	}
 }
-
-void PlaySceeneFlow::MakeRankUI()
-{
-}
-

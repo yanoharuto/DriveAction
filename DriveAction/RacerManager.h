@@ -64,7 +64,7 @@ public:
     /// 引数の物体にぶつかったか調べる
     /// </summary>
     /// <param name="obj"></param>
-    void ArgumentConflictProcess(float deltaTime,Object* obj);
+    void ArgumentConflictProcess(float deltaTime,Racer* obj);
     /// <summary>
     /// レーサーたちの順位の更新
     /// </summary>

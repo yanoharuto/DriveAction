@@ -1,58 +1,59 @@
-#pragma once
+ï»¿#pragma once
+#include "CreatePosAndDirData.h"
+#include "SceneFlowBase.h"
 #include "SoundPlayer.h"
 #include "PlaySceeneProgressEnum.h"
 #include "RacerManager.h"
-#include "Timer.h"
 #include "PlaySceneCamera.h"
 #include "CourceDataLoader.h"
 #include "StageManager.h"
 #include "CountDown.h"
 #include "MiniMap.h"
-#include "PostGoalDirection.h"
+#include "PostGoalStaging.h"
 #include "ScoreTime.h"
 #include "GimmickObjManager.h"
 #include "ConflictProcesser.h"
 #include "PlayerRelatedUI.h"
 /// <summary>
-/// ‚Ç‚¤‚¢‚¤‡”Ô‚Åˆ—‚ğs‚¤‚©Œˆ‚ß‚é
+/// ã©ã†ã„ã†é †ç•ªã§å‡¦ç†ã‚’è¡Œã†ã‹æ±ºã‚ã‚‹
 /// </summary>
-class PlaySceeneFlow
+class PlaySceeneFlow final:public SceneFlowBase
 {
 public:
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     /// <returns></returns>
     PlaySceeneFlow();
     ~PlaySceeneFlow();
     /// <summary>
-    /// ƒvƒŒƒCƒV[ƒ“‚ÌXV
+    /// ãƒ—ãƒ¬ã‚¤ã‚·ãƒ¼ãƒ³ã®æ›´æ–°
     /// </summary>
     /// <returns></returns>
-    PlaySceeneProgress Update();
+    void Update(float deltaTime) override;
     /// <summary>
-    /// •`‰æ
+    /// æç”»
     /// </summary>
-    void Draw();
+    void Draw() override;
+
 private:
-    void MakeRankUI();
-    RacerManager* racerManager;//Ôæ‚è‚Ìƒ}ƒl[ƒWƒƒ[
-    StageManager* stageManager;//ƒXƒe[ƒW‚Ìƒ}ƒl[ƒWƒƒ[
-    Timer* timer;//ŠÔŒo‰ßŠÏ‘ª
-    PlaySceneCamera* camera;//ƒJƒƒ‰
+    RacerManager* racerManager;//è»Šä¹—ã‚Šã®ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
+    StageManager* stageManager;//ã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
+    PlaySceneCamera* camera;//ã‚«ãƒ¡ãƒ©
     CourceDataLoader* courceDataLoader;
     CountDown* countDown;
     MiniMap* miniMap;
     ScoreTime* scoreTime;
-    PostGoalDirection* postGoalDirection;
+    PostGoalStaging* postGoalStaging;
     GimmickObjManager* gimmickObjManager;
     ConflictProcesser* conflictProcesser;
     PlayerRelatedUI* playerRelatedUI;
     SoundPlayer* soundPlayer;
-    PlaySceeneProgress nowProgress;//¡‰½‚Ìˆ—‚ğs‚¤‚©Œˆ‚ß‚é•Ï”
+    CreatePosAndDirData* dataCreator;
+    PlaySceeneProgress nowProgress;//ä»Šä½•ã®å‡¦ç†ã‚’è¡Œã†ã‹æ±ºã‚ã‚‹å¤‰æ•°
     int countUINum;
     const int minimapX=1080;
     const int minimapY=450;
-    const int maxLap = 1;
-    float gameStartTime = 0;
+    const int maxLap = 3;
+    float raceTime = 0;
 };

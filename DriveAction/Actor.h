@@ -24,7 +24,7 @@ public:
     /// <summary>
     /// •`‰æ
     /// </summary>
-    virtual void Draw() {};
+    virtual void Draw() =0;
 
     /// <summary>
     /// ‘¬“xŠ“¾

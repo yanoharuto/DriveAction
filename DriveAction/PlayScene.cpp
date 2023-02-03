@@ -8,6 +8,9 @@ PlayScene::PlayScene()
     :SceneBase(SceneType::PLAY)
 {
     playSceneFlow = new PlaySceeneFlow();
+    fadeInFadeOut = new FadeInFadeOut();
+    fadeInFadeOut->FadeInStart();
+    timer = new Timer();
 }
 
 PlayScene::~PlayScene()
@@ -17,9 +20,27 @@ PlayScene::~PlayScene()
 
 SceneType PlayScene::Update()
 {
-    if (playSceneFlow->Update() == PlaySceeneProgress::end)
+    timer->Update();
+    switch (fadeInFadeOut->GetFadeMode())
     {
+    case FadeMode::fadeInStart:
+        fadeInFadeOut->FadeIn(timer->GetDeltaTime());
+        break;
+    case FadeMode::fadeInEnd:
+        playSceneFlow->Update(timer->GetDeltaTime());
+        if (playSceneFlow->GetIsEndProccess())
+        {
+            fadeInFadeOut->FadeOutStart();
+        }
+        break;
+    case FadeMode::fadeOutStart:
+        fadeInFadeOut->FadeOut(timer->GetDeltaTime());
+        break;
+    case FadeMode::fadeOutEnd:
         return SceneType::RESULT;
+        break;
+    default:
+        break;
     }
     return nowScenType;
 }
@@ -27,4 +48,5 @@ SceneType PlayScene::Update()
 void PlayScene::Draw()
 {
     playSceneFlow->Draw();
+    fadeInFadeOut->Draw();
 }

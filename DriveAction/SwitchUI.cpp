@@ -30,20 +30,17 @@ SwitchUI::~SwitchUI()
 void SwitchUI::Update(float deltaTime)
 {
     time += deltaTime;
-    if ((int)time % 2 == 1)
-    {
-        bigUI->StopDrawUI(false);
-        smallUI->StopDrawUI(true);
-    }
-    else
-    {
-        bigUI->StopDrawUI(true);
-        smallUI->StopDrawUI(false);
-    }
+    
 }
 
 void SwitchUI::Draw()
 {
-    bigUI->DrawRightAlignedString();
-    smallUI->DrawRightAlignedString();
+    if ((int)time % 2 == 1)
+    {
+        bigUI->DrawRightAlignedString();
+    }
+    else
+    {
+        smallUI->DrawRightAlignedString();
+    }
 }

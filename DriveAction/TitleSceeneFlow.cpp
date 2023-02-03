@@ -34,6 +34,11 @@ void TitleSceeneFlow::Update(float deltaTime)
     std::string string = stageSelect->GetLoadeStageName();
     stringUI->UpdateString(string);
     switchUI->Update(deltaTime);
+    int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+    if (key & PAD_INPUT_10)
+    {
+        isProccessEnd = true;
+    }
 }
 
 void TitleSceeneFlow::Draw()
@@ -43,6 +48,11 @@ void TitleSceeneFlow::Draw()
     miniMap->DrawUI();
     switchUI->Draw();
 
+}
+
+bool TitleSceeneFlow::GetIsProccessEnd()
+{
+    return isProccessEnd;
 }
 
 void TitleSceeneFlow::InitMinimapData()

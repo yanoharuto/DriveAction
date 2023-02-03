@@ -13,6 +13,5 @@ public:
     void Draw() override;
 private:
     ResultSceneFlow* resultSceneFlow;
-    Timer* timer;
 };
 

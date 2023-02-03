@@ -2,6 +2,7 @@
 #include "LapUI.h"
 #include "ReverseDrivingCautionUI.h"
 #include "PlayerRelatedInfo.h"
+#include "AccelMeter.h"
 class PlayerRelatedUI
 {
 public:
@@ -15,4 +16,5 @@ private:
     StringUI* rankUI;
     StringUI* timeUI;
     ReverseDrivingCautionUI* reverseDrivingCautionUI;
+    AccelMeter* accelMeter;
 };

@@ -32,49 +32,50 @@ Player::~Player()
 /// <summary>
 /// 更新
 /// </summary>
-void Player::Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo,SoundPlayer* soundPlayer)
+void Player::Update(const float deltaTime, const bool outsideHitFlag, VECTOR pos,SoundPlayer* soundPlayer)
 {
-	VECTOR accelVec = GetAccelVec(GetHandleDir(), outsideHitFlag, deltaTime, soundPlayer);
-	UpdateVelocity(VScale(accelVec, deltaTime));
-	UpdateMV1Pos();
-	ModelSetMatrix();
-	InitWheelArgumentCarInfo();
 	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
 
+	wheelArgumentCarInfo.inputDir.isBreake = false;
+	wheelArgumentCarInfo.inputDir.nonInput = false;
 	//右か左か押してたら
 	if (inputKey & PAD_INPUT_RIGHT)
 	{
-		wheelArgumentCarInfo.handleDir = HandleDirection::right;
-
+		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::right;
 
 	}
 	else if (inputKey & PAD_INPUT_LEFT)
 	{
-		wheelArgumentCarInfo.handleDir = HandleDirection::left;
-
+		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::left;
 	}
 	else if (inputKey & PAD_INPUT_UP)
 	{
-		wheelArgumentCarInfo.handleDir = HandleDirection::straight;
+		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::straight;
 	}
-	else
+	else//なにも押していない時の処理
 	{
-		wheelArgumentCarInfo.handleDir = HandleDirection::non;
+		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::straight;
+		wheelArgumentCarInfo.inputDir.isBreake = false;
+		wheelArgumentCarInfo.inputDir.nonInput = true;
 	}
 	if (inputKey & PAD_INPUT_DOWN)
 	{
-		if (wheelArgumentCarInfo.handleDir != HandleDirection::brake)
-		{
-			wheelArgumentCarInfo.handleDir = HandleDirection::brake;
-		}
+		wheelArgumentCarInfo.inputDir.isBreake = true;
+		wheelArgumentCarInfo.inputDir.nonInput = false;
 	}
+	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
+	UpdateVelocity(VScale(accelVec, deltaTime));
+	UpdateMV1Pos();
+	ModelSetMatrix();
+	InitWheelArgumentCarInfo();
+	PlayDriveSound(wheelArgumentCarInfo.inputDir,soundPlayer);
 	// タイヤの処理
 	wheels->WheelUpdate(wheelArgumentCarInfo);
 	soundPlayer->SetListener(position, VAdd(position, direction));
 #ifdef _DEBUG
 	//printfDx("%f,%f\n", accelVec.x,accelVec.z);
-	//printfDx("%f,%f\n", position.x,position.z);
-	//printfDx("%f,%f\n", direction.x,direction.z);
+	printfDx("position::%f,%f\n", position.x,position.z);
+	//printfDx("direction::%f,%f\n", direction.x,direction.z);
 #endif
 }
 

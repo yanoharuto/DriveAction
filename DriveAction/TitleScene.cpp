@@ -5,24 +5,41 @@ TitleScene::TitleScene()
     :SceneBase(SceneType::TITLE)
 {
     titleSceneFlow = new TitleSceeneFlow();
+    fadeInFadeOut = new FadeInFadeOut();
+    fadeInFadeOut->FadeInStart();
     timer = new Timer();
 }
 
 TitleScene::~TitleScene()
 {
     SAFE_DELETE(titleSceneFlow);
-    SAFE_DELETE(timer);
 }
 
 SceneType TitleScene::Update()
 {
-    titleSceneFlow->Update(timer->GetDeltaTime());
-    if (CheckHitKey(KEY_INPUT_Z))
-    {
-        nowScenType = SceneType::PLAY;
-    }
+    
     timer->Update();
-    return nowScenType;
+    switch (fadeInFadeOut->GetFadeMode())
+    {
+    case FadeMode::fadeInStart:
+        fadeInFadeOut->FadeIn(timer->GetDeltaTime());
+        break;
+    case FadeMode::fadeInEnd:
+        titleSceneFlow->Update(timer->GetDeltaTime());
+        if (titleSceneFlow->GetIsProccessEnd())
+        {
+            fadeInFadeOut->FadeOutStart();
+        }
+        break;
+    case FadeMode::fadeOutStart:
+        fadeInFadeOut->FadeOut(timer->GetDeltaTime());
+        break;
+    case FadeMode::fadeOutEnd:
+        return SceneType::PLAY;
+        break;
+    default:
+        break;
+    }    return nowScenType;
 }
 
 void TitleScene::Draw()
@@ -30,4 +47,5 @@ void TitleScene::Draw()
 #ifdef _DEBUG
 #endif // _DEBUG
     titleSceneFlow->Draw();
+    fadeInFadeOut->Draw();
 }

@@ -4,7 +4,7 @@ class ScoreTime
 {
 public:
     ScoreTime();
-    ScoreTime(Timer* timer);
+    ScoreTime(float timer);
     ~ScoreTime() {};
     static float GetScoreTime();
 };

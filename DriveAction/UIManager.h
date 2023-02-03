@@ -2,6 +2,9 @@
 #include <vector>
 #include "UI.h"
 #include <string>
+/// <summary>
+/// UIを纏めるマネージャー
+/// </summary>
 class UIManager
 {
 public:
@@ -18,6 +21,7 @@ public:
     /// <returns></returns>
     int AddUI(UI* ui);
     void Update(int index,std::string updateString);
+
     void Update(int index,int x,int y);
     /// <summary>
     /// 描画
@@ -32,12 +36,6 @@ public:
     /// ベクターに追加したUI全消し
     /// </summary>
     void DeleteAllUI();
-    /// <summary>
-    /// 描画をいったん止める用
-    /// </summary>
-    /// <param name="uiNum"></param>
-    /// <param name="boolValue"></param>
-    void StopArgumentDrawUI(int uiNum, bool boolValue);
-private:
+ private:
     std::vector<UI*> uiVec;
 };

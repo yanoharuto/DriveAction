@@ -2,8 +2,8 @@
 #include "DxLib.h"
 Timer::Timer()
 {
-    time = 0;
-    deltaTime = deltaTimeCalculationLine;
+    time = GetNowCount();
+    deltaTime = setDeltaTime;
     startTime = GetNowCount();
     fpsCount = 0;
     averageFPS = 0;
@@ -64,7 +64,7 @@ void Timer::Update()
     
 #ifdef _DEBUG
 
-   // printfDx("deltaTime,%f::FPS,%d\n", deltaTime, fpsCount);
+    //printfDx("deltaTime,%f::FPS,%d\n", deltaTime, fpsCount);
 
 #endif
 }

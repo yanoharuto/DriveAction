@@ -26,12 +26,20 @@ public:
     /// </summary>
     /// <param name="carInfo">ぶつかったか調べる車</param>
     ConflictExamineResultInfo CheckPointUpdate(const HitCheckExamineObjectInfo carInfo);
-
+    /// <summary>
+    /// チェックポイントに車が通過したか判定する
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="dir"></param>
+    /// <param name="carPos"></param>
+    /// <returns></returns>
+    bool IsTransitCheckPointCar(VECTOR pos,VECTOR dir,VECTOR carPos);
     /// <summary>
     /// ゴールした回数を返す
     /// </summary>
     /// <returns></returns>
     int GetGoalCount();
+    //チェックポイントに通過した回数を返す
     int GetTransitCheckPointCount();
     /// <summary>
     /// チェックポイントまでの差を出す
@@ -47,11 +55,11 @@ private:
     //サーキットのデータ
     CircuitData cPParam;
     //positionからこれだけ近かったらゴール
-    const float goalRadius = 120.0f;
+    const float goalRadius = 70.0f;
     //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
     const float dirJugeLine = 0.8f;
     //チェックポイントのベクターを調べる回数
-    const int vectorExamineCount = 10;
+    const int checkPointExamineCount = 4;
     //通過した回数
     int transitCheckPointCount = 0;
     //ゴールした回数

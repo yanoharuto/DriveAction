@@ -1,10 +1,10 @@
-#include <math.h>
+ï»¿#include <math.h>
 #include "CPUCar.h"
 #include "Wheels.h"
 #include "Utility.h"
 
 /// <summary>
-/// ‰Šú‰»
+/// åˆæœŸåŒ–
 /// </summary>
 /// <returns></returns>
 CPUCar::CPUCar()
@@ -17,7 +17,7 @@ CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos,SoundPlaye
     Init();
 }
 /// <summary>
-/// model‚Æƒ^ƒCƒ„‚ÌŒãn––
+/// modelã¨ã‚¿ã‚¤ãƒ¤ã®å¾Œå§‹æœ«
 /// </summary>
 /// <returns></returns>
 CPUCar::~CPUCar()
@@ -26,17 +26,28 @@ CPUCar::~CPUCar()
     SAFE_DELETE(wheels)
 }
 /// <summary>
-/// ©“®‘€cB
+/// è‡ªå‹•æ“ç¸¦ã€‚
 /// </summary>
-/// <param name="deltaTime">ƒtƒŒ[ƒ€ŠÔ·•ª</param>
-/// <param nadme="outsideHitFlag">ƒR[ƒXŠO‚Éo‚½‚©</param>
-void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo, SoundPlayer* soundPlayer)
+/// <param name="deltaTime">ãƒ•ãƒ¬ãƒ¼ãƒ é–“å·®åˆ†</param>
+/// <param nadme="outsideHitFlag">ã‚³ãƒ¼ã‚¹å¤–ã«å‡ºãŸã‹</param>
+void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, VECTOR pos, SoundPlayer* soundPlayer)
 {
-    AutoDrive(deltaTime, outsideHitFlag, neighInfo, soundPlayer);
+    AutoDrive(deltaTime, outsideHitFlag, pos, soundPlayer);
+    printfDx("count%d\n", checkCount);
+    if (checkCount % 4 == 3)
+    {
+        carMode = CarMode::flying;
+        flyTime = maxFlyTime;
+    }
+    FlyUpdate(deltaTime);
+
 }
 
 
 void CPUCar::Init()
 {
     modelHandle = MV1LoadModel("data/model/Player/RedCar.mv1");
+    carMode = CarMode::normal;
 }
+
+

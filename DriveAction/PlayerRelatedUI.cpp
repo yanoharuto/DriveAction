@@ -17,6 +17,7 @@ PlayerRelatedUI::PlayerRelatedUI(const int maxLap)
     uiData.x = SCREEN_WIDTH / 13 * 11;
     uiData.y = SCREEN_HEIGHT / 9;
     timeUI = new StringUI(GetColor(40,40,40), uiData);
+    accelMeter = new AccelMeter();
 }
 
 PlayerRelatedUI::~PlayerRelatedUI()
@@ -25,6 +26,7 @@ PlayerRelatedUI::~PlayerRelatedUI()
     SAFE_DELETE(lapUI);
     SAFE_DELETE(reverseDrivingCautionUI);
     SAFE_DELETE(timeUI);
+    SAFE_DELETE(accelMeter);
 }
 
 void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo,float deltaTime)
@@ -33,6 +35,7 @@ void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo,float deltaTime)
     rankUI->UpdateString(std::to_string(relatedInfo.rank));
     lapUI->Update(relatedInfo.lap + 1);
     timeUI->UpdateString(std::to_string(relatedInfo.time));
+    accelMeter->Update(relatedInfo.accelPower);
 }
 
 void PlayerRelatedUI::Draw()
@@ -41,4 +44,5 @@ void PlayerRelatedUI::Draw()
     rankUI->DrawRightAlignedString();
     lapUI ->Draw();
     timeUI->DrawLeftAlignedString();
+    accelMeter->Draw();
 }

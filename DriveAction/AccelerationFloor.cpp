@@ -1,4 +1,4 @@
-#include "AccelerationFloor.h"
+ï»¿#include "AccelerationFloor.h"
 #include "EffekseerForDXLib.h"
 #include "OriginalMath.h"
 AccelerationFloor::AccelerationFloor()
@@ -23,7 +23,7 @@ AccelerationFloor::AccelerationFloor(VECTOR pos, VECTOR dir)
 
 AccelerationFloor::~AccelerationFloor()
 {
-    // ƒGƒtƒFƒNƒgƒŠƒ\[ƒX‚ğíœ‚·‚éB(EffekseerI—¹‚É”jŠü‚³‚ê‚é‚Ì‚Åíœ‚µ‚È‚­‚Ä‚à‚¢‚¢)
+    // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒªã‚½ãƒ¼ã‚¹ã‚’å‰Šé™¤ã™ã‚‹ã€‚(Effekseerçµ‚äº†æ™‚ã«ç ´æ£„ã•ã‚Œã‚‹ã®ã§å‰Šé™¤ã—ãªãã¦ã‚‚ã„ã„)
     DeleteEffekseerEffect(effekseerModelHandle);
 }
 

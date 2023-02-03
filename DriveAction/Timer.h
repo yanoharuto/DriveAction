@@ -30,7 +30,7 @@ private:
     int FPSCounter = 0;
     float FPSCheckTime = 0;
     const float thousand = 1000;
-    float deltaTimeCalculationLine = 0;
+    const float setDeltaTime = 0.001f;
     int startTime;
     int time;
     float deltaTime;

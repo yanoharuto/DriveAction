@@ -3,7 +3,7 @@ enum class ObjectTag
 {
     car,
     enemy,
-    enemyAttack,
+    damageObject,
     obstacle,
     stage,
     goal,

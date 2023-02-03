@@ -5,10 +5,9 @@ ScoreTime::ScoreTime()
 {
 }
 
-ScoreTime::ScoreTime(Timer* timer)
+ScoreTime::ScoreTime(float timer)
 {
-    scoreTime = timer->GetScoreTime();
-    scoreTime /= 1000;
+    scoreTime = timer;
 }
 
 float ScoreTime::GetScoreTime()

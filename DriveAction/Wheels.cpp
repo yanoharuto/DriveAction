@@ -49,7 +49,7 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 		wheelDriveSpeed = 0;
 	}
 	//É^ÉCÉÑÇåXÇØÇÈèàóù
-	if (carInfo.handleDir == HandleDirection::right)
+	if (carInfo.inputDir.handleDir == HandleDirection::right)
 	{
 		wheelEffectPos.x = lBWheel.matrix.m[3][0];
 		wheelEffectPos.y = lBWheel.matrix.m[3][1];
@@ -67,7 +67,7 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 		}
 
 	}
-	else if (carInfo.handleDir == HandleDirection::left)
+	else if (carInfo.inputDir.handleDir == HandleDirection::left)
 	{
 
 		wheelEffectPos.x = rBWheel.matrix.m[3][0];
@@ -95,11 +95,7 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 			wheelDriveRota = 0;
 		}
 		isStraightDash = true;
-	}
-	else
-	{
-		isStraightDash = true;
-	}
+	}	
 }
 
 /// <summary>
@@ -117,7 +113,6 @@ float Wheels::GetMoveDirTheta(const float velocitySize)
 	{
 		return -atan2f(velocitySize,GetRotationRadius(firstLWheelRota));
 	}
-	
 	return 0.0f;
 }
 /// <summary>

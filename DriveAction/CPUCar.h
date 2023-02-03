@@ -1,5 +1,6 @@
 #pragma once
 #include "Car.h"
+
 /// <summary>
 /// Ž©“®‰^“]‚ÌŽÔ
 /// </summary>
@@ -10,10 +11,9 @@ public:
     CPUCar();
     CPUCar(VECTOR firstPos,VECTOR firstDir ,VECTOR destinationPos,SoundPlayer* soundPlayer);
     ~CPUCar();
-    void Update(const float deltaTime, const bool outsideHitFlag, NeighborhoodInfo neighInfo,SoundPlayer* soundPlayer)override;
-    
+    void Update(const float deltaTime, const bool outsideHitFlag, VECTOR pos,SoundPlayer* soundPlayer)override;
 private:
     void Init();
-    
+
 };
 

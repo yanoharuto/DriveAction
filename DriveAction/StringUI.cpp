@@ -27,7 +27,6 @@ StringUI::~StringUI()
 
 void StringUI::DrawRightAlignedString()
 {
-
     DrawStringToHandle(uiData.x, uiData.y, string.c_str(), color, uiData.dataHandle);
 }
 

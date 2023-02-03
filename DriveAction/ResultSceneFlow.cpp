@@ -35,6 +35,16 @@ ResultSceneFlow::~ResultSceneFlow()
 void ResultSceneFlow::Update(float deltaTime)
 {
     switchUI->Update(deltaTime);
+    int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+    if (key & PAD_INPUT_10)
+    {
+        isProccessEnd = true;
+    }
+}
+
+bool ResultSceneFlow::IsProccssEnd()
+{
+    return isProccessEnd;
 }
 
 void ResultSceneFlow::Draw()

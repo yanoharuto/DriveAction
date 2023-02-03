@@ -1,6 +1,6 @@
-#include "PostGoalDirection.h"
+#include "PostGoalStaging.h"
 #include "Utility.h"
-PostGoalDirection::PostGoalDirection()
+PostGoalStaging::PostGoalStaging()
 {
     x = 0.0f;
     y = SCREEN_HEIGHT;
@@ -14,25 +14,25 @@ PostGoalDirection::PostGoalDirection()
 }
 
 
-PostGoalDirection::~PostGoalDirection()
+PostGoalStaging::~PostGoalStaging()
 {
     SAFE_DELETE(switchUI);
     SAFE_DELETE(stringUI);
 }
 
-bool PostGoalDirection::Update(float deltaTime)
+bool PostGoalStaging::Update(float deltaTime)
 {
     int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
     time += deltaTime;
-    int width = SCREEN_WIDTH;
+
     if (key & PAD_INPUT_10)
     {
         return true;
     }
     if(!isEndGoalUI)
     {
-        if (x > width)
+        if (x > SCREEN_WIDTH)
         {
             isEndGoalUI = true;
            
@@ -50,7 +50,7 @@ bool PostGoalDirection::Update(float deltaTime)
     return false;
 }
 
-void PostGoalDirection::Draw()
+void PostGoalStaging::Draw()
 {
     if (isEndGoalUI)
     {

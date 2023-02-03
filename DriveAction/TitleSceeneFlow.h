@@ -1,4 +1,5 @@
 #pragma once
+#include "SceneFlowBase.h"
 #include "StageSelect.h"
 #include "CourceDataLoader.h"
 #include "SwitchUI.h"
@@ -11,7 +12,7 @@ public:
     ~TitleSceeneFlow();
     void Update(float deltaTime);
     void Draw();
-
+    bool GetIsProccessEnd();
 private:
     void InitMinimapData();
     void InitStageString();
@@ -22,4 +23,5 @@ private:
     ImgUI* miniMap;
     ImgUI* backGround;
     UIData uiData;
+    bool isProccessEnd;
 };

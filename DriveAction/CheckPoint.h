@@ -3,12 +3,12 @@
 #include "ConflictExamineResultInfo.h"
 #include "CircuitDataStruct.h"
 #include "HitCheckExamineObjectInfo.h"
-
+#include "Actor.h"
 /// <summary>
 /// プレイヤーが何回ゴールしたか数える
 /// </summary>
 class CheckPoint final:
-    public Object
+    public Actor
 {
 public:
     CheckPoint();
@@ -46,16 +46,15 @@ public:
     /// </summary>
     /// <returns>チェックポイントまでの差</returns>
     float GetCheckPointDistance();
+    bool HitCheckConflict(HitCheckExamineObjectInfo objInfo) override;
 private:
 
-    /// <summary>
-    /// 初期化処理
-    /// </summary>
-    void InitMember();
     //サーキットのデータ
     CircuitData cPParam;
     //positionからこれだけ近かったらゴール
-    const float goalRadius = 70.0f;
+    const float goalTapeHalfLength = 70.0f;
+    //次のチェックポイントまでの向きを出し始める範囲
+    const float goalRadius = 125.0f;
     //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
     const float dirJugeLine = 0.8f;
     //チェックポイントのベクターを調べる回数

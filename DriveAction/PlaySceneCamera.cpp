@@ -11,10 +11,10 @@ PlaySceneCamera::~PlaySceneCamera()
 {
 }
 
-void PlaySceneCamera::Update(const Object* const player)
+void PlaySceneCamera::Update(PlaySceneCameraArgumentInfo argumentInfo)
 {
-    VECTOR playerPos = player->GetPos();
-    VECTOR playerDir = player->GetDir();
+    VECTOR playerPos = argumentInfo.pos;
+    VECTOR playerDir = argumentInfo.dir;
     // lerp
     VECTOR aimPos = VAdd(playerPos, VScale(playerDir, aimBetween));
     position = playerPos;

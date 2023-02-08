@@ -14,14 +14,14 @@ Car::Car()
 	destinationPos = {};
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 	smokeEffectResource = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
-	conflictEffectResource = LoadEffekseerEffect("data/effect/conflict.efkefc", 1.0f);
+	conflictEffectResource = LoadEffekseerEffect("data/effect/conflict.efkefc", 5.0f);
 
 }
 
 Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,SoundPlayer* soundPlayer)
 {
 	position = firstPos;
-	firstPosY = firstPos.y;
+	position.y = firstPosY;
 	direction = firstDir;
 	tag = ObjectTag::car;
 	bouncePower = setBouncePower;
@@ -32,7 +32,7 @@ Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,SoundPlaye
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 	smokeEffectResource = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
 	conflictEffectResource = LoadEffekseerEffect("data/effect/conflict.efkefc", 1.0f);
-	accelerationEffectResource = LoadEffekseerEffect("data/effect/accelation.efkefc", 20.0f);
+	accelerationEffectResource = LoadEffekseerEffect("data/effect/accelation.efkefc", 30.0f);
 
 	soundPlayer->Add3DSound(drivingSEAddress);
 
@@ -73,8 +73,18 @@ void Car::ConflictProcess(float deltaTime,const ConflictExamineResultInfo confli
 		destinationDir = conflictInfo.dir;
 		break;
 	case ObjectTag::acelerationFloor: 
+		forcePower += addAccelForce * deltaTime;
+		forcePower = forcePower > maxAddForcePower ? maxAddForcePower : forcePower;
+		break;
+	case ObjectTag::itemBox:
 
-		addForcePower = accelPower > maxAddSpeed ? maxAddSpeed : addForcePower + addAccelSpeed;
+		break;
+	case ObjectTag::damageObject:
+		isDamage = true;
+		damageReactionTime = setDamageReactionTime;
+		accelPower = 0;
+		forcePower = 0;
+		ConflictReaction(deltaTime, conflictInfo, soundPlayer);
 		break;
 	default:
 		break;
@@ -86,76 +96,10 @@ void Car::Draw()
 	MV1DrawModel(modelHandle);
 	wheels->Draw();
 }
-/// <summary>
-/// 爆弾で攻撃する
-/// </summary>
-void Car::BombAttack()
+
+ItemArgumentCarInfo Car::GetItemArgumentInfo()
 {
-}
-/// <summary>
-/// 空を飛ぶ
-/// </summary>
-/// <param name="deltaTime"></param>
-void Car::Fly(float deltaTime)
-{
-	//制限時間中か空を飛ぶモードになったら
-	if (flyTime > 0 && carMode == CarMode::flying)
-	{
-		if (position.y < maxHeight)//最高高度より下なら上昇
-		{
-			flyY += flyPower * deltaTime;
-			flyY = flyY < maxHeight ? flyY : maxHeight;
-		}
-		flyTime -= deltaTime;
-	}
-	else
-	{
-		carMode = CarMode::downing;
-	}
-}
-/// <summary>
-/// 落下する
-/// </summary>
-/// <param name="deltaTime"></param>
-void Car::Down(float deltaTime)
-{
-	if (position.y > firstPosY)
-	{
-		flyY = -downSpeed * deltaTime;
-	}
-	else
-	{
-		flyY = 0;
-		carMode = CarMode::normal;
-	}
-}
-void Car::FlyUpdate(float deltaTime)
-{
-	switch (carMode)
-	{
-	case CarMode::normal:
-		flyTime = maxFlyTime;
-		break;
-	case CarMode::flying:
-		Fly(deltaTime);
-		break;
-	case CarMode::downing:
-		Down(deltaTime);
-		break;
-	default:
-		break;
-	}
-}
-/// <summary>
-/// 周辺を調べてもらうために必要な情報を渡す
-/// </summary>
-/// <returns></returns>
-CarNeighborhoodExamineInfo Car::GetNeighExamineInfo()
-{
-	CarNeighborhoodExamineInfo examineInfo;
-	examineInfo.pos = position;
-	examineInfo.range = examineRange;
-	return examineInfo;
+	return {position,direction,velocity};
 }
 
 /// <summary>
@@ -168,12 +112,12 @@ void Car::ConflictReaction(float deltaTime, const ConflictExamineResultInfo conf
 	soundPlayer->SetSoundVolume(MAX1BYTEVALUE, carClashSEAddress);
 	soundPlayer->SetSoundRadius(MAX1BYTEVALUE, carClashSEAddress);
 	soundPlayer->SetPosition3DSound(position, carClashSEAddress);
-	soundPlayer->Play3DSE(position, carClashSEAddress);
+	soundPlayer->Play3DSE(carClashSEAddress);
 
 	soundPlayer->SetSoundVolume(MAX1BYTEVALUE, carHornSEAddress);
 	soundPlayer->SetSoundRadius(MAX1BYTEVALUE, carHornSEAddress);
 	soundPlayer->SetPosition3DSound(position, carHornSEAddress);
-	soundPlayer->Play3DSE(position, carHornSEAddress);
+	soundPlayer->Play3DSE(carHornSEAddress);
 	//衝突エフェクト
 	int playingEffect = PlayEffekseer3DEffect(conflictEffectResource);
 	SetPosPlayingEffekseer3DEffect(playingEffect, position.x, position.y, position.z);
@@ -186,8 +130,13 @@ void Car::ConflictReaction(float deltaTime, const ConflictExamineResultInfo conf
 	conflictObjBouncePower = conflictInfo.bouncePower;
 }
 
-void Car::DamageReaction(const VECTOR conflictObjPos, const float conflictObjRad)
+void Car::DamageReaction(float deltaTime)
 {
+	damageReactionTime -= deltaTime;
+	if (damageReactionTime < 0)
+	{
+		isDamage = false;
+	}
 }
 
 /// <summary>
@@ -200,7 +149,7 @@ void Car::UpdateVelocity(const VECTOR accelVec)
 	velocity = accelVec;
 	//タイヤの向きから進行方向を取る
 	float theta = wheels->GetMoveDirTheta(VSize(velocity));
-	theta *= gripPower;
+	theta *= gripPower - (gripPower  * GetTotalAccelPowerPercent()) / 120;
 	velocity = VTransform(velocity, MGetRotY(theta));
 	// ベロシティ加速計算.
 	// 上下方向にいかないようにベロシティを整える.
@@ -225,14 +174,7 @@ void Car::UpdateMV1Pos()
 		conflictObjBouncePower = conflictObjBouncePower > 0 ? conflictObjBouncePower : 0;
 		position = VAdd(position, VScale(conflictVec,conflictObjBouncePower));
 	}
-	if (carMode == CarMode::normal)
-	{
-		position.y = firstPosY;
-	}
-	else
-	{
-		position.y += flyY;
-	}
+	
 	// ３Dモデルのポジション設定
 	MV1SetPosition(modelHandle, position);
 }
@@ -241,11 +183,18 @@ void Car::UpdateMV1Pos()
 /// </summary>
 void Car::ModelSetMatrix()
 {
+	float rota = 0;
+	if (isDamage)
+	{
+		rota = damageReactionTime / setDamageReactionTime * 100;
+		rota *= 120.0f;
+
+	}
 	// 向きに合わせて回転.
 	MV1SetRotationZYAxis(modelHandle, direction, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 	// モデルに向いてほしい方向に回転.
 	MATRIX tmpMat = MV1GetMatrix(modelHandle);
-	MATRIX rotYMat = MGetRotY(180.0f * RAGE);
+	MATRIX rotYMat = MGetRotY((180.0f+rota) * RAGE);
 	tmpMat = MMult(tmpMat, rotYMat);
 	MV1SetRotationMatrix(modelHandle, tmpMat);
 }
@@ -254,18 +203,32 @@ void Car::ModelSetMatrix()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param name="outsideHitFlag">コース外に出たか</param>
-void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag,VECTOR pos, SoundPlayer* soundPlayer)
+void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo, SoundPlayer* soundPlayer)
 {
-	wheelArgumentCarInfo.inputDir = GetAutoDriveDirection();
-	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
-	UpdateVelocity(VScale(accelVec, deltaTime));
 	
+	Down(deltaTime);
+	if (itemInfo.itemTag != non)
+	{
+		ItemArgumentCarInfo carInfo = { position,direction,velocity };
+	}
+	if (isDamage)
+	{
+		DamageReaction(deltaTime);
+	}
+	else
+	{
+		RecieveItemEffecacy(itemInfo, deltaTime);
+	}
+	VECTOR accelVec = {};
+	wheelArgumentCarInfo.inputDir = GetAutoDriveDirection();
+	accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
+	UpdateVelocity(VScale(accelVec, deltaTime));
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	InitWheelArgumentCarInfo();
 	wheels->WheelUpdate(wheelArgumentCarInfo);
 	PlayDriveSound(wheelArgumentCarInfo.inputDir,soundPlayer);
-	bouncePower = setBouncePower + GetAccelPowerPercent() / 100;
+	bouncePower = setBouncePower + GetTotalAccelPowerPercent() / 100;
 }
 
 
@@ -276,11 +239,23 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag,VECTOR pos,
 InputInfo Car::GetAutoDriveDirection()
 {
 	InputInfo inputInfo;
+	if (isDamage)
+	{
+		inputInfo.isBreake = true;
+		inputInfo.nonInput = true;
+		inputInfo.handleDir = HandleDirection::straight;
+		return inputInfo;
+	}
 	inputInfo.isBreake = false;
 	inputInfo.nonInput = false;
 	
 	//目的地までの距離
-	VECTOR tempVec = isGoalConflict ? destinationDir : VSub(destinationPos, position);
+	VECTOR tempVec = destinationDir; 
+	VECTOR between = VSub(VGet(destinationPos.x, 0, destinationPos.z), VGet(position.x, 0, position.z));
+	if (VSize(between) > 450)
+	{
+		tempVec = between;
+	}
 	OriginalMath math;
 
 	float angular = math.GetDegreeMisalignment(direction, tempVec);
@@ -292,9 +267,7 @@ InputInfo Car::GetAutoDriveDirection()
 		float crossY = VCross(VNorm(direction), VNorm(tempVec)).y;
 		if (crossY > 0)
 		{
-
 			inputInfo.handleDir = HandleDirection::right;
-
 		}
 		else
 		{
@@ -315,7 +288,7 @@ InputInfo Car::GetAutoDriveDirection()
 VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime)
 {
 	
-	if (!inputDir.nonInput && !inputDir.isBreake)
+	if (!inputDir.nonInput)
 	{
 		// 加速処理.
 		accelPower = accelPower > maxAccelSpeed ? maxAccelSpeed : accelPower + accelAddSpeed * deltaTime;
@@ -324,6 +297,20 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime
 	// 止まっている場合は減速しない.
 	if (VSize(velocity) > 0)
 	{
+
+		//左右に曲がろうとしていたら減速
+		if (inputDir.handleDir != HandleDirection::straight)
+		{
+			//左右に曲がろうとしたら減速する
+			accelPower -= accelPower * gripDecel * deltaTime;
+		}
+
+		//コース外に出たら減速
+		if (outsideHitFlag && isOnGround)
+		{
+			accelPower -= accelPower * outsideHitDecel * deltaTime;
+		}
+		//ブレーキしていたら
 		if (inputDir.isBreake)
 		{
 			accelPower -= accelPower * breakDecel * deltaTime;
@@ -332,6 +319,7 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime
 				accelPower = 0;
 			}
 		}
+		//入力が何もなかったら
 		else if (inputDir.nonInput)
 		{
 			accelPower -= accelPower * defaultDecel * deltaTime;
@@ -340,29 +328,22 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime
 				accelPower = 0;
 			}
 		}
-		//左右に曲がろうとしていたら減速
-		if (inputDir.handleDir!=HandleDirection::straight)
-		{
-			//左右に曲がろうとしたら減速する
-			accelPower -= accelPower * gripDecel * deltaTime;
-		}
-
-		//コース外に出たら減速
-		if (outsideHitFlag)
-		{
-			accelPower -= accelPower * outsideHitDecel * deltaTime;
-		}
 		//外的要因で加速したときに少しずつ元に戻る
-		if (addForcePower > 0)
+		if (forcePower > 0)
 		{
-			addForcePower -= addForcePower * defaultDecel * deltaTime;
-			addForcePower = addForcePower < 0 ? 0 : addForcePower;
+			forcePower -= forcePower * defaultDecel * deltaTime;
+			forcePower = forcePower > 0 ? forcePower : 0;
+			
 		}
+
 	}
-
-	return VScale(direction, accelPower + addForcePower);
+	return VScale(direction, accelPower + forcePower);
 }
-
+/// <summary>
+/// 運転中になる音を再生する
+/// </summary>
+/// <param name="inputDir"></param>
+/// <param name="soundPlayer"></param>
 void Car::PlayDriveSound(InputInfo inputDir, SoundPlayer* soundPlayer)
 {
 	if (inputDir.isBreake)
@@ -373,7 +354,7 @@ void Car::PlayDriveSound(InputInfo inputDir, SoundPlayer* soundPlayer)
 		{
 			soundPlayer->SetSoundRadius(MAX1BYTEVALUE, breakeSEAddress);
 			soundPlayer->SetSoundVolume(MAX1BYTEVALUE, breakeSEAddress);
-			soundPlayer->Play3DSE(position, breakeSEAddress);
+			soundPlayer->Play3DSE(breakeSEAddress);
 		}
 	}
 	else if (!inputDir.nonInput)
@@ -383,7 +364,7 @@ void Car::PlayDriveSound(InputInfo inputDir, SoundPlayer* soundPlayer)
 		{
 			soundPlayer->SetSoundRadius(MAX1BYTEVALUE, drivingSEAddress);
 			soundPlayer->SetSoundVolume(MAX1BYTEVALUE, drivingSEAddress);
-			soundPlayer->Play3DSE(position, drivingSEAddress);
+			soundPlayer->Play3DSE(drivingSEAddress);
 		}
 	}
 	else
@@ -392,24 +373,63 @@ void Car::PlayDriveSound(InputInfo inputDir, SoundPlayer* soundPlayer)
 	}
 }
 
-float Car::GetNeighSize(NeighborhoodInfo neighInfo)
-{
-	float angular = 0;
-	float neighSize;
-	if (neighInfo.outside.hitFlag)
-	{
-	}
-	return angular;
-}
-
+/// <summary>
+/// タイヤに渡す情報の初期化
+/// </summary>
 void Car::InitWheelArgumentCarInfo()
 {
 	wheelArgumentCarInfo.matrix = MV1GetMatrix(modelHandle);
 	wheelArgumentCarInfo.direction = direction;
 	wheelArgumentCarInfo.velocitySize = VSize(velocity);
 }
-
-float Car::GetAccelPowerPercent()
+void Car::Down(float deltaTime)
+{		//地面に降りれてないなら降りれるようにする
+	if (!isOnGround)
+	{
+		if (position.y > firstPosY)
+		{
+			position.y = position.y - downSpeed * deltaTime;;
+		}
+		else
+		{
+			//地面に降りたらこのまま
+			position.y = firstPosY;
+			isOnGround = true;
+		}
+	}
+}
+/// <summary>
+/// 今の速度は最大速度の何割なのか所得出来る
+/// </summary>
+/// <returns></returns>
+float Car::GetTotalAccelPowerPercent()
 {
-	return (accelPower + addForcePower) / (maxAccelSpeed + maxAddSpeed)*100;
+	return (accelPower + forcePower) / (maxAccelSpeed + maxAddForcePower) * 100;
+}
+
+/// <summary>
+/// アイテムの効果を受け取る
+/// </summary>
+/// <param name="item"></param>
+/// <param name="deltaTime"></param>
+void Car::RecieveItemEffecacy(ItemInfo itemInfo,float deltaTime)
+{
+	if (itemInfo.itemTag != non && !isDamage)
+	{
+		//アイテム使用中ならその効果を受ける
+		if (itemInfo.itemSituation == ItemUseSituation::Useing)
+		{
+			switch (itemInfo.itemTag)
+			{
+			case kite:
+				position.y = itemInfo.effecacyValue;
+				isOnGround = false;
+				break;
+			case accelerator:
+				forcePower +=  itemInfo.effecacyValue * deltaTime;
+				forcePower = forcePower > maxAddForcePower ? maxAddForcePower : forcePower;
+				break;
+			}
+		}
+	}
 }

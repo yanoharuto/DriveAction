@@ -30,7 +30,7 @@ void SoundPlayer::PlaySE(std::string soundFileName)
     }
 }
 
-void SoundPlayer::Play3DSE(VECTOR pos, std::string soundFileName)
+void SoundPlayer::Play3DSE(std::string soundFileName)
 {
 
     if (soundHandleMap.contains(soundFileName))

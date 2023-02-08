@@ -17,6 +17,8 @@ CourceDataLoader::CourceDataLoader()
     accelFloorDirLoader = new VECTOR3Loader(genericAddress + accelerationFloorDirAddress);
     accelFloorPosLoader = new VECTOR3Loader(genericAddress + accelerationFloorPosAddress);
     obstraclePosLoader = new VECTOR3Loader(genericAddress + obstaclePosListAddress);
+    itemDirLoader = new VECTOR3Loader(genericAddress + itemBoxDirAddress);
+    itemPosLoader = new VECTOR3Loader(genericAddress + itemBoxPosAddress);
 }
 CourceDataLoader::~CourceDataLoader()
 {
@@ -26,6 +28,8 @@ CourceDataLoader::~CourceDataLoader()
     SAFE_DELETE(accelFloorPosLoader);
     SAFE_DELETE(accelFloorDirLoader);
     SAFE_DELETE(obstraclePosLoader);
+    SAFE_DELETE(itemPosLoader);
+    SAFE_DELETE(itemDirLoader);
 }
 /// <summary>
 /// コースのミニマップ
@@ -54,15 +58,7 @@ const std::string CourceDataLoader::GetCourceAddress()
     std::string chara = genericAddress + courceAddress;
     return chara;
 }
-/// <summary>
-/// 障害物のアドレス
-/// </summary>
-/// <returns></returns>
-const std::string CourceDataLoader::GetObstracleAddress()
-{
-    std::string chara = prevAddress + obstacleModelAddress;
-    return chara;
-}
+
 /// <summary>
 /// 車の初期位置
 /// </summary>
@@ -119,4 +115,14 @@ const std::list<VECTOR> CourceDataLoader::GetAccelFloorDirList()
 const std::list<VECTOR> CourceDataLoader::GetObstraclePosList()
 {
     return obstraclePosLoader->GetVectorList();
+}
+
+const std::list<VECTOR> CourceDataLoader::GetItemPosList()
+{
+    return itemPosLoader->GetVectorList();
+}
+
+const std::list<VECTOR> CourceDataLoader::GetItemDirList()
+{
+    return itemDirLoader->GetVectorList();
 }

@@ -1,85 +1,60 @@
 #include "Player.h"
-#include "Wheels.h"
-#include "Utility.h"	
-#include <math.h>
-#include "EffekseerForDXLib.h"
-/// <summary>
-/// コンストラクタ
-/// </summary>
-/// <returns></returns>
+
 Player::Player()
 {
-	Init();
 }
 
-Player::Player(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos,SoundPlayer* soundPlayer)
-	:Car(firstPos,firstDir,destinationPos,soundPlayer)
+Player::Player(CircuitData circuitData, VECTOR firstPos, VECTOR firstDir)
+    :Racer(circuitData)
 {
-	soundPlayer->SetListener(position,VAdd(position,direction));
-	Init();
+    playerCar = new PlayerCar(firstPos,firstDir,checkPoint->GetPos(), soundPlayer);
+    SetCarPointer(playerCar);
 }
 
-/// <summary>
-/// デストラクタ
-/// </summary>
-/// <returns></returns>
 Player::~Player()
 {
-	MV1DeleteModel(modelHandle);
-	SAFE_DELETE(wheels);
 }
 
-/// <summary>
-/// 更新
-/// </summary>
-void Player::Update(const float deltaTime, const bool outsideHitFlag, VECTOR pos,SoundPlayer* soundPlayer)
+void Player::Update(float deltaTime, bool outsideHitFlag, FiringItemManager* firingItemManager)
 {
-	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
 
-	wheelArgumentCarInfo.inputDir.isBreake = false;
-	wheelArgumentCarInfo.inputDir.nonInput = false;
-	//右か左か押してたら
-	if (inputKey & PAD_INPUT_RIGHT)
-	{
-		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::right;
 
-	}
-	else if (inputKey & PAD_INPUT_LEFT)
-	{
-		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::left;
-	}
-	else if (inputKey & PAD_INPUT_UP)
-	{
-		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::straight;
-	}
-	else//なにも押していない時の処理
-	{
-		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::straight;
-		wheelArgumentCarInfo.inputDir.isBreake = false;
-		wheelArgumentCarInfo.inputDir.nonInput = true;
-	}
-	if (inputKey & PAD_INPUT_DOWN)
-	{
-		wheelArgumentCarInfo.inputDir.isBreake = true;
-		wheelArgumentCarInfo.inputDir.nonInput = false;
-	}
-	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
-	UpdateVelocity(VScale(accelVec, deltaTime));
-	UpdateMV1Pos();
-	ModelSetMatrix();
-	InitWheelArgumentCarInfo();
-	PlayDriveSound(wheelArgumentCarInfo.inputDir,soundPlayer);
-	// タイヤの処理
-	wheels->WheelUpdate(wheelArgumentCarInfo);
-	soundPlayer->SetListener(position, VAdd(position, direction));
-#ifdef _DEBUG
-	//printfDx("%f,%f\n", accelVec.x,accelVec.z);
-	printfDx("position::%f,%f\n", position.x,position.z);
-	//printfDx("direction::%f,%f\n", direction.x,direction.z);
-#endif
+    ItemInfo itemInfo = itemHolder->GetItemInfo();
+    car->Update(deltaTime, outsideHitFlag, itemInfo, soundPlayer);
+    int inputKey = GetJoypadInputState(DX_INPUT_KEY);
+    if ((inputKey & PAD_INPUT_10 || itemInfo.itemSituation == ItemUseSituation::Useing) && itemInfo.itemTag != non)
+    {
+        itemHolder->ShowItem();
+    }
+    itemHolder->Update(firingItemManager, car->GetItemArgumentInfo(), deltaTime);
+    HitCheckExamineObjectInfo racerHitCheckExamineInfo;
+    racerHitCheckExamineInfo.SetExamineInfo(*car);
+    //車がチェックポイントを通過したか調べる
+    ConflictExamineResultInfo conflictResultInfo;
+    conflictResultInfo = checkPoint->CheckPointUpdate(racerHitCheckExamineInfo);
+    if (conflictResultInfo.hitFlag)
+    {
+        //車に次の目的地を伝える
+        car->ConflictProcess(deltaTime, conflictResultInfo, soundPlayer);
+    }
 }
 
-void Player::Init()
+PlayerRelatedInfo Player::GetRelatedInfo()
 {
-	modelHandle = MV1LoadModel("data/model/Player/WhiteCar.mv1");
+    PlayerRelatedInfo info;
+    info.accelPower = car->GetTotalAccelPowerPercent();
+    info.carDirection = car->GetDir();
+    info.itemTag = itemHolder->GetItemInfo().itemTag;
+    info.lap = checkPoint->GetGoalCount();
+    info.rank = rank;
+    info.nextCheckPointDirection = checkPoint->GetDir();
+    return info;
+}
+
+PlaySceneCameraArgumentInfo Player::GetCameraArgumentInfo()
+{
+    PlaySceneCameraArgumentInfo argumentInfo;
+    argumentInfo.dir = playerCar->GetDir();
+    argumentInfo.pos = playerCar->GetPos();
+    return argumentInfo;
 }

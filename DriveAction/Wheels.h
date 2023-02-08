@@ -20,7 +20,7 @@ struct WheelArgumentCarInfo
 	MATRIX matrix;//車のmodelの行列
 	VECTOR direction;//車の向き
 	float velocitySize;//速さの大きさ
-	InputInfo inputDir;	//ハンドルがどっち向きなのか
+	InputInfo inputDir;
 };
 
 /// <summary>
@@ -85,25 +85,40 @@ private:
 	/// <param name="_Rota">回転角</param>
 	void InitWheel(Wheel& wheel, int DuplicateSourceModel, VECTOR pos, float rota);
 
-	
-	const float firstLWheelRota = 0.0f;		//左側タイヤの初期角度
-	const float firstRWheelRota = 180.0f;		//右側タイヤの初期角度
-	const float wheelDriveRotaPower = 30.0f;//車の回転力
-	const float wheelCurvePower = 1.7f;//タイヤが左右に傾く力
-	const float maxWheelRotaY = 45.5f;//この角度までタイヤは傾くよ
-	const float rotaCalculationLine = 1.2f;//進行方向に影響するまでに必要なタイヤの角度
+	//左側タイヤの初期角度
+	const float firstLWheelRota = 0.0f;	
+	//右側タイヤの初期角度
+	const float firstRWheelRota = 180.0f;
+	//車の回転力
+	const float wheelDriveRotaPower = 30.0f;
+	//タイヤが左右に傾く力
+	const float wheelCurvePower = 1.7f;
+	//この角度までタイヤは傾くよ
+	const float maxWheelRotaY = 45.5f;
+	//進行方向に影響するまでに必要なタイヤの角度
+	const float rotaCalculationLine = 1.2f;
 	const float rage = static_cast<float>(DX_PI / 180.0f);
-	float wheelDriveSpeed = 0.0f;//車の回転速度
-	float wheelDriveRota = 0.0f;//車の左右への傾き
-	int effectResourceHandle = -1;//煙のエフェクト
-	bool isStraightDash;//まっすぐ進んでいるかどうか
-	int modelHandle;//タイヤのモデルハンドル
+	//車の回転速度
+	float wheelDriveSpeed = 0.0f;
+	//車の左右への傾き
+	float wheelDriveRota = 0.0f;
+	//煙のエフェクト
+	int effectResourceHandle = -1;
+	//まっすぐ進んでいるかどうか
+	bool isStraightDash;
+	//タイヤのモデルハンドル
+	int modelHandle;
+	//左前方タイヤ
 	Wheel lFWheel;
+	//左後方タイヤ
 	Wheel lBWheel;
+	//右前方タイヤ
 	Wheel rFWheel;
+	//右後方タイヤ
 	Wheel rBWheel;
+	//車の情報
 	WheelArgumentCarInfo carInfo;
 	VECTOR wheelEffectPos;
-	const VECTOR fWheelPos = { 2.7f,-0.8f,1.6f };
-	const VECTOR bWheelPos = { 2.4f,-0.8f,1.6f };
+	const VECTOR fWheelPos = { 6.1f,0.8f,2.8f };
+	const VECTOR bWheelPos = { 3.8f,0.8f,2.8f };
 };

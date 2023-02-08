@@ -157,9 +157,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AccelerationFloor.cpp" />
+    <ClCompile Include="Accelerator.cpp" />
     <ClCompile Include="AccelMeter.cpp" />
+    <ClCompile Include="CPU.cpp" />
+    <ClCompile Include="DamageImpact.cpp" />
+    <ClCompile Include="DamageObject.cpp" />
+    <ClCompile Include="FiringItemManager.cpp" />
+    <ClCompile Include="ItemHolder.cpp" />
     <ClCompile Include="CreatePosAndDirData.cpp" />
     <ClCompile Include="FadeInFadeOut.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemBox.cpp" />
+    <ClCompile Include="Kite.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Racer.cpp" />
     <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="SceneFlowBase.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
@@ -202,7 +213,7 @@
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerCar.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -210,14 +221,30 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AccelerationFloor.h" />
+    <ClInclude Include="Accelerator.h" />
     <ClInclude Include="AccelMeter.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="CPU.h" />
+    <ClInclude Include="DamageImpact.h" />
+    <ClInclude Include="DamageObject.h" />
+    <ClInclude Include="FiringItemManager.h" />
+    <ClInclude Include="ItemHolder.h" />
     <ClInclude Include="CpuCarMode.h" />
     <ClInclude Include="CreatePosAndDirData.h" />
     <ClInclude Include="FadeInFadeOut.h" />
     <ClInclude Include="FadeMode.h" />
     <ClInclude Include="HandleDirection.h" />
     <ClInclude Include="InputDirection.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemArgumentCarInfo.h" />
+    <ClInclude Include="ItemBox.h" />
+    <ClInclude Include="ItemInfo.h" />
+    <ClInclude Include="ItemTag.h" />
+    <ClInclude Include="ItemUseSituation.h" />
+    <ClInclude Include="Kite.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlaySceneCamaeraArgumentInfo.h" />
+    <ClInclude Include="Racer.h" />
     <ClInclude Include="Rocket.h" />
     <ClInclude Include="SceneFlowBase.h" />
     <ClInclude Include="SoundPlayer.h" />
@@ -248,7 +275,6 @@
     <ClInclude Include="RacePrevProcess.h" />
     <ClInclude Include="ResultSceneFlow.h" />
     <ClInclude Include="ScoreTime.h" />
-    <ClInclude Include="SoundsGenerated.h" />
     <ClInclude Include="StageDataAddressStruct.h" />
     <ClInclude Include="SwitchUI.h" />
     <ClInclude Include="VECTOR3Loader.h" />
@@ -273,13 +299,12 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UserInput.h" />
     <ClInclude Include="SkyDome.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerCar.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="HitCheckExamineObjectInfo.h" />
-    <ClInclude Include="ヘッダー.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

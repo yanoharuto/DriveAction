@@ -4,14 +4,23 @@
 #include "ConflictExamineResultInfo.h"
 #include "HitCheckExamineObjectInfo.h"
 #include "HitChecker.h"
-#include "Object.h"
+#include "Actor.h"
 class ConflictProcesser
 {
 public:
     ConflictProcesser();
     ~ConflictProcesser();
-    void AddConflictObject(Object* obj);
+    /// <summary>
+    /// ぶつかってるか調べたいやつを追加する
+    /// </summary>
+    /// <param name="obj"></param>
+    void AddConflictObject(Actor* obj);
+    /// <summary>
+    /// 引数のオブジェクトとぶつかっているか調べる
+    /// </summary>
+    /// <param name="examineObjInfo"></param>
+    /// <returns></returns>
     ConflictExamineResultInfo GetConflictObjInfo(HitCheckExamineObjectInfo examineObjInfo);
 private:
-    std::list<Object*> conflictObjList;
+    std::list<Actor*> conflictObjList;
 };

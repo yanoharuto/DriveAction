@@ -14,6 +14,7 @@
 #include "GimmickObjManager.h"
 #include "ConflictProcesser.h"
 #include "PlayerRelatedUI.h"
+#include "FiringItemManager.h"
 /// <summary>
 /// どういう順番で処理を行うか決める
 /// </summary>
@@ -50,10 +51,14 @@ private:
     PlayerRelatedUI* playerRelatedUI;
     SoundPlayer* soundPlayer;
     CreatePosAndDirData* dataCreator;
+    FiringItemManager* firingManager;
     PlaySceeneProgress nowProgress;//今何の処理を行うか決める変数
     int countUINum;
+    bool isSpaceInput = false;
     const int minimapX=1080;
     const int minimapY=450;
-    const int maxLap = 3;
+    const int maxLap = 2;
+    const int racerNum = 3;
     float raceTime = 0;
+    
 };

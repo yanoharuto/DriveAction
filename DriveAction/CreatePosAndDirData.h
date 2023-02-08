@@ -34,6 +34,6 @@ private:
     //ÅŒã‚É‹È‚ª‚Á‚½‚Ì•ûŒü
     VECTOR prevVec = {-0.999753,0.00000,-0.022217};
     //‹È‚ª‚Á‚½”»’è‚Åg‚¤
-    const float turnProccesLine = 6.0f;
+    const float turnProccesLine = 3.0f;
 };
 

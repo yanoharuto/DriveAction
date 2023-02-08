@@ -46,6 +46,10 @@ bool CircuitTrack::GetOutsideHitFlag(HitCheckExamineObjectInfo info)const
     DxLib::MV1_COLL_RESULT_POLY polyInfo = MV1CollCheck_Line(outsideModelHandle, -1, startPos, endPos);
     return polyInfo.HitFlag;
 }
+bool CircuitTrack::HitCheckConflict(const HitCheckExamineObjectInfo examineObjInfo)
+{
+    return GetCourceConflictInfo(examineObjInfo).hitFlag;
+}
 /// <summary>
 /// ÉRÅ[ÉXÇÃï«Ç…Ç‘Ç¬Ç©Ç¡ÇƒÇÈÇ©í≤Ç◊ÇÈ
 /// </summary>

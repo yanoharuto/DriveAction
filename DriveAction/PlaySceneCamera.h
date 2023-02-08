@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include "PlaySceneCamaeraArgumentInfo.h"
 //プレイヤークラスの前方宣言
 class Object;
 class PlaySceneCamera final
@@ -8,7 +9,7 @@ public:
     PlaySceneCamera();
     ~PlaySceneCamera();
 
-    void Update(const Object* const player);
+    void Update(PlaySceneCameraArgumentInfo argumentInfo);
 
 private:
     VECTOR position;

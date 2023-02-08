@@ -5,7 +5,7 @@
 #include "StringUI.h"
 #include <string>
 /// <summary>
-/// ゴール後の演出
+/// ゴール後の演出をする
 /// </summary>
 class PostGoalStaging
 {

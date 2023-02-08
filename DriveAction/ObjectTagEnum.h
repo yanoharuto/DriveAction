@@ -2,7 +2,7 @@
 enum class ObjectTag
 {
     car,
-    enemy,
+    itemBox,
     damageObject,
     obstacle,
     stage,

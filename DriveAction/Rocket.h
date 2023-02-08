@@ -1,18 +1,24 @@
 #pragma once
-#include "Actor.h"
+#include "DamageObject.h"
+#include "ItemArgumentCarInfo.h"
 #include "DxLib.h"
-class Rocket final :public Actor
+class Rocket final :public DamageObject
 {
 public:
-    Rocket();
-    Rocket(VECTOR pos,int modelResourceHandle);
+    Rocket() {};
+    Rocket(ItemArgumentCarInfo carInfo,int modelResourceHandle);
     ~Rocket();
-    void Update();
-    void Draw();
+    void Update(float deltaTime)override;
+    void ConflictProccess()override;
 private:
-    std::string rocketModelAddress = "data/model/Roket/Rocket04_Grey.mv1";
+
+    float fallingSpeed = 24.5f;
+    float setBouncePower = 4.25f;
     const float gravityPower = 0.9f;
-    float fallingSpeed = 1;
-    float setBouncePower = 15;
+    const float setSize = 1.000f;
+    const float setRadius = 2.0f;
+    int effectResource;
+    int playEffect;
+    bool onGround;
 };
 

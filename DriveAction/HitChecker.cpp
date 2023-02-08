@@ -1,4 +1,4 @@
-#include "HitChecker.h"
+ï»¿#include "HitChecker.h"
 #include "Object.h"
 #include "HitCheckExamineObjectInfo.h"
 #include "DxLib.h"
@@ -10,11 +10,11 @@ HitChecker::~HitChecker()
 {
 }
 /// <summary>
-/// “–‚½‚Á‚½‚©‚Ç‚¤‚©’²‚×‚é‚æ
+/// å½“ãŸã£ãŸã‹ã©ã†ã‹èª¿ã¹ã‚‹ã‚ˆ
 /// </summary>
-/// <param name="objA">’²‚×‚½‚¢ƒIƒuƒWƒFƒNƒgA</param>
-/// <param name="objB">’²‚×‚½‚¢ƒIƒuƒWƒFƒNƒgB</param>
-/// <returns>“–‚½‚Á‚½‚çTrue</returns>
+/// <param name="objA">èª¿ã¹ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆA</param>
+/// <param name="objB">èª¿ã¹ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆB</param>
+/// <returns>å½“ãŸã£ãŸã‚‰True</returns>
 bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 {
     HitCheckExamineObjectInfo aInfo;
@@ -24,11 +24,11 @@ bool HitChecker::HitCheck(Object* const objA, Object* const objB)
     return HitCheckProcess(aInfo, bInfo);
 }
 /// <summary>
-/// “–‚½‚Á‚½‚©‚Ç‚¤‚©’²‚×‚é‚æ
+/// å½“ãŸã£ãŸã‹ã©ã†ã‹èª¿ã¹ã‚‹ã‚ˆ
 /// </summary>
-/// <param name="objA">’²‚×‚½‚¢ƒIƒuƒWƒFƒNƒgA</param>
-/// <param name="objBInfo">’²‚×‚½‚¢ƒIƒuƒWƒFƒNƒgB</param>
-/// <returns>“–‚½‚Á‚½‚çTrue</returns>
+/// <param name="objA">èª¿ã¹ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆA</param>
+/// <param name="objBInfo">èª¿ã¹ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆB</param>
+/// <returns>å½“ãŸã£ãŸã‚‰True</returns>
 bool HitChecker::HitCheck(Object* const objA, const HitCheckExamineObjectInfo objBInfo)
 {
     HitCheckExamineObjectInfo aInfo;
@@ -36,28 +36,28 @@ bool HitChecker::HitCheck(Object* const objA, const HitCheckExamineObjectInfo ob
     return HitCheckProcess(aInfo, objBInfo);
 }
 /// <summary>
-/// “–‚½‚Á‚½‚©‚Ç‚¤‚©’²‚×‚é‚æ
+/// å½“ãŸã£ãŸã‹ã©ã†ã‹èª¿ã¹ã‚‹ã‚ˆ
 /// </summary>
-/// <param name="objAInfo">’²‚×‚½‚¢ƒIƒuƒWƒFƒNƒgA</param>
-/// <param name="objBInfo">’²‚×‚½‚¢ƒIƒuƒWƒFƒNƒgB</param>
-/// <returns>“–‚½‚Á‚½‚çTrue</returns>
+/// <param name="objAInfo">èª¿ã¹ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆA</param>
+/// <param name="objBInfo">èª¿ã¹ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆB</param>
+/// <returns>å½“ãŸã£ãŸã‚‰True</returns>
 bool HitChecker::HitCheck(const HitCheckExamineObjectInfo objAInfo, const HitCheckExamineObjectInfo objBInfo)
 {
     return HitCheckProcess(objAInfo, objBInfo);
 }
 /// <summary>
-/// “–‚½‚Á‚½‚©‚Ç‚¤‚©’²‚×‚é‚Æ‚«‚Ì‹¤’Êˆ—
+/// å½“ãŸã£ãŸã‹ã©ã†ã‹èª¿ã¹ã‚‹ã¨ãã®å…±é€šå‡¦ç†
 /// </summary>
-/// <param name="objAInfo">’²‚×‚½‚¢ƒIƒuƒWƒFƒNƒgA</param>
-/// <param name="objBInfo">’²‚×‚½‚¢ƒIƒuƒWƒFƒNƒgB</param>
-/// <returns>“–‚½‚Á‚½‚çTrue</returns>
+/// <param name="objAInfo">èª¿ã¹ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆA</param>
+/// <param name="objBInfo">èª¿ã¹ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆB</param>
+/// <returns>å½“ãŸã£ãŸã‚‰True</returns>
 bool HitChecker::HitCheckProcess(HitCheckExamineObjectInfo objAInfo, HitCheckExamineObjectInfo objBInfo)
 {
-    //ˆø”“¯m‚Ì‹——£
+    //å¼•æ•°åŒå£«ã®è·é›¢
     VECTOR distance = VSub(objAInfo.pos, objBInfo.pos);
-    distance.y = 0;
-    //ˆø”“¯m‚Ì“–‚½‚è”»’è‚Ì‡Œv
+    //å¼•æ•°åŒå£«ã®åŠå¾„ã®åˆè¨ˆ
     float range = objAInfo.radius + objBInfo.radius;
+    //åŠå¾„ã®åˆè¨ˆã‚ˆã‚Šå°ã•ã‹ã£ãŸã‚‰å½“ãŸã£ãŸ
     if (range > VSize(distance))
     {
         return true;

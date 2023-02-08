@@ -13,7 +13,8 @@ public:
         direction({}),
         position({}),
         tag(ObjectTag::car),
-        radius(0)
+        radius(0),
+        bouncePower(0.0f)
     {
     };
     /// <summary>
@@ -21,7 +22,7 @@ public:
     /// </summary>
     /// <returns></returns>
     virtual ~Object() {};
-   
+
     /// <summary>
     /// Œ»İ“®‚¯‚é‚©‚Ç‚¤‚©
     /// </summary>
@@ -46,14 +47,18 @@ public:
     {
         return radius;
     }
+    /// <summary>
+    /// ’µ‚Ë•Ô‚è—Í‚ğ•Ô‚·
+    /// </summary>
+    /// <returns></returns>
     float GetBouncePower() const
     {
         return bouncePower;
     }
     /// <summary>
-/// Œü‚«Š“¾
-/// </summary>
-/// <returns></returns>
+    /// Œü‚«Š“¾
+    /// </summary>
+    /// <returns></returns>
     VECTOR GetDir() const
     {
         return direction;

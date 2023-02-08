@@ -27,10 +27,9 @@ AccelerationFloor::~AccelerationFloor()
     DeleteEffekseerEffect(effekseerModelHandle);
 }
 
-void AccelerationFloor::Update()
+void AccelerationFloor::Update(const float deltaTime)
 {
 }
-
 void AccelerationFloor::Draw()
 {
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Object.h"
+#include "Actor.h"
 #include "ConflictExamineResultInfo.h"
 #include "HitCheckExamineObjectInfo.h"
 #include "NeighborhoodInfo.h"
@@ -9,7 +9,7 @@
 /// コース
 /// </summary>
 class CircuitTrack final:
-    public Object
+    public Actor
 {
 public:
     /// <summary>
@@ -31,6 +31,7 @@ public:
     /// <param name="actor">外側にいるか調べたいもの</param>
     /// <returns>コースの外側にいるならTrue</returns>
     bool GetOutsideHitFlag(HitCheckExamineObjectInfo info) const;
+    bool HitCheckConflict(const HitCheckExamineObjectInfo examineObjInfo);
     /// <summary>
     /// コースの壁にぶつかってるか調べる
     /// </summary>
@@ -57,8 +58,8 @@ private:
     const float eY = -11;
     //はじき返す力
     const float setBouncePower = 1.0f;
-    //コースの赤白の奴
-    const float gurdRadius = 2.0f;
+    //コースの赤白の奴の大きさ
+    const float gurdRadius = 3.5f;
     //コースのmodel
     int courceModelHandle;
     //コースの外側のmodel

@@ -1,11 +1,11 @@
 #pragma once
-#include "Object.h"
+#include "Actor.h"
 #include "DxLib.h"
 /// <summary>
 /// 加速床
 /// </summary>
 class AccelerationFloor :
-    public Object
+    public Actor
 {
 public:
     AccelerationFloor();
@@ -19,11 +19,11 @@ public:
     /// <summary>
     /// 更新
     /// </summary>
-    void Update();
+    void Update(const float deltaTime) override;
     /// <summary>
     /// 描画
     /// </summary>
-    void Draw();
+    void Draw() override;
 private:
     // 加速度
     const float addAccel = 50.0f;
@@ -33,6 +33,6 @@ private:
     const float setScale = 5.0f;
     //エフェクト　（本体）
     int effekseerModelHandle;
-    //
+    //d
     int playingEffect;
 };

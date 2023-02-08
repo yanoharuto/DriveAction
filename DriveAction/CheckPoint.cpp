@@ -24,7 +24,11 @@ CheckPoint::CheckPoint(const CircuitData circuitData)
     cPParam = circuitData;
     vecSize = circuitData.positionVec.size();
     checkPointDistance = 0;
-    InitMember();
+    tag = ObjectTag::goal;
+    position = cPParam.positionVec.front();
+    direction = cPParam.directionVec.front();
+    radius = goalRadius;
+    vecSize = cPParam.positionVec.size();
 }
 
 CheckPoint::~CheckPoint()
@@ -38,38 +42,38 @@ CheckPoint::~CheckPoint()
 ConflictExamineResultInfo CheckPoint::CheckPointUpdate(HitCheckExamineObjectInfo carInfo)
 {  
     HitChecker checker;
-    HitCheckExamineObjectInfo thisInfo = {};//このチェックポイントクラスの情報
     ConflictExamineResultInfo conflictInfo;
     conflictInfo.SetObjInfo(false, this);
-    thisInfo.radius = radius;
+    VECTOR carPos = carInfo.pos;
+    carPos.y = 0;
     //何回かだけチェックポイントを通過したか調べる
     for (int i = 0; i < checkPointExamineCount; i++)
     {
-        int count = (transitCheckPointCount + i) % vecSize;
+        int count = (transitCheckPointCount + i) % vecSize;//一周のうちの通過回数
         count = count > vecSize ? vecSize : count;
         VECTOR pos = GetArgumentCountVector(cPParam.positionVec.begin(), count);
         VECTOR dir = GetArgumentCountVector(cPParam.directionVec.begin(), count);
         //通過したときは外積のYがプラスになる
-        if (IsTransitCheckPointCar(pos,dir,carInfo.pos))
+        if (IsTransitCheckPointCar(pos, dir, carPos))
         {
             //チェックポイント通過回数加算
             transitCheckPointCount += i + 1;
             position = GetArgumentCountVector(cPParam.positionVec.begin(), transitCheckPointCount % vecSize);
             direction = GetArgumentCountVector(cPParam.directionVec.begin(), transitCheckPointCount % vecSize);
-            conflictInfo.pos = position;
-            conflictInfo.dir = direction;
-            conflictInfo.hitFlag = true;
-            //1週したなら
             if (transitCheckPointCount >= vecSize)
             {
                 goalCount++;
                 transitCheckPointCount = 0;
             }
+            conflictInfo.pos = position;
+            conflictInfo.dir = direction;
+            conflictInfo.hitFlag = true;
             return conflictInfo;
         }
-        else if (VSize(VSub(position,carInfo.pos))< radius)
+        else if (checkPointDistance < radius)
         {
-            conflictInfo.dir= GetArgumentCountVector(cPParam.directionVec.begin(), transitCheckPointCount % vecSize);
+            conflictInfo.pos = position;
+            conflictInfo.dir = GetArgumentCountVector(cPParam.directionVec.begin(), (transitCheckPointCount + 1) % vecSize);
             conflictInfo.hitFlag = true;
             return conflictInfo;
         }
@@ -81,14 +85,15 @@ ConflictExamineResultInfo CheckPoint::CheckPointUpdate(HitCheckExamineObjectInfo
 bool CheckPoint::IsTransitCheckPointCar(VECTOR pos, VECTOR dir, VECTOR carPos)
 {
     //startPosからendPosまでの間を通過処理
-    VECTOR rightEdge = VAdd(VScale(VCross(dir, VGet(0, 1, 0)), radius), pos);
-    VECTOR leftEdge = VAdd(VScale(VCross(dir, VGet(0, -1, 0)), radius), pos);
+    VECTOR rightEdge = VAdd(VScale(VCross(dir, VGet(0, 1, 0)), goalTapeHalfLength), pos);
+    VECTOR leftEdge = VAdd(VScale(VCross(dir, VGet(0, -1, 0)), goalTapeHalfLength), pos);
     //線分
     VECTOR normLineSegment = VNorm(VSub(rightEdge,leftEdge));
     VECTOR leftEdgeAndCarBetween = VSub(carPos, leftEdge);
     VECTOR tempVec = VScale(normLineSegment, VDot(normLineSegment, leftEdgeAndCarBetween));
     checkPointDistance = VSize(VSub(tempVec, leftEdgeAndCarBetween));
-    if (VCross(normLineSegment, leftEdgeAndCarBetween).y > 0 && checkPointDistance < radius / 2)
+
+    if (VCross(normLineSegment, leftEdgeAndCarBetween).y > 0 && checkPointDistance < radius)
     {
         return true;
     }
@@ -115,19 +120,13 @@ float CheckPoint::GetCheckPointDistance()
 {
     return checkPointDistance;
 }
-;
-/// <summary>
-/// 初期化処理
-/// </summary>
-void CheckPoint::InitMember()
-{
-    tag = ObjectTag::goal;
-    position = cPParam.positionVec.front();
-    direction = cPParam.directionVec.front();
-    radius = goalRadius;
-    vecSize = cPParam.positionVec.size();
-}
 
+bool CheckPoint::HitCheckConflict(HitCheckExamineObjectInfo objInfo)
+{
+    objInfo.pos.y = 0;
+    HitChecker checker;
+    return checker.HitCheck(this,objInfo);
+}
 
 
 

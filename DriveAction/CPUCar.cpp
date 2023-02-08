@@ -30,24 +30,15 @@ CPUCar::~CPUCar()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param nadme="outsideHitFlag">コース外に出たか</param>
-void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, VECTOR pos, SoundPlayer* soundPlayer)
+void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo, SoundPlayer* soundPlayer)
 {
-    AutoDrive(deltaTime, outsideHitFlag, pos, soundPlayer);
-    printfDx("count%d\n", checkCount);
-    if (checkCount % 4 == 3)
-    {
-        carMode = CarMode::flying;
-        flyTime = maxFlyTime;
-    }
-    FlyUpdate(deltaTime);
-
+    AutoDrive(deltaTime, outsideHitFlag,itemInfo, soundPlayer);
 }
 
 
 void CPUCar::Init()
 {
     modelHandle = MV1LoadModel("data/model/Player/RedCar.mv1");
-    carMode = CarMode::normal;
 }
 
 

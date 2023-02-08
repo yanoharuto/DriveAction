@@ -52,12 +52,30 @@
     <Filter Include="ヘッダー ファイル\StructAndEnum">
       <UniqueIdentifier>{b2fbedbf-26c1-46e3-ba8e-9808f1d792fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\ConflictCheck">
+      <UniqueIdentifier>{23c088e0-5aaa-4786-ad3f-22dc6e6cbce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Item">
+      <UniqueIdentifier>{97863e50-3e6b-490c-b1a7-28a01d39d6c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Other\DataCreate">
+      <UniqueIdentifier>{beb78013-cb70-4f43-890e-89347d2a22e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Item">
+      <UniqueIdentifier>{d3456835-4762-4ee4-af44-83faa7c095e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ConflictCheck">
+      <UniqueIdentifier>{66dd1af6-8217-4128-a578-1ce41ea1a203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DataCreate">
+      <UniqueIdentifier>{d45e06d8-cfc2-46f7-9cd1-d890e6ad5d45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SkyDome.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="PlayerCar.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
     <ClCompile Include="Utility.h">
@@ -89,9 +107,6 @@
     </ClCompile>
     <ClCompile Include="CPUCar.cpp">
       <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="HitChecker.cpp">
-      <Filter>ソース ファイル\Other</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\Other</Filter>
@@ -147,9 +162,6 @@
     <ClCompile Include="VECTOR3Loader.cpp">
       <Filter>ソース ファイル\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="PostGoalStaging.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ScoreTime.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -174,9 +186,6 @@
     <ClCompile Include="GimmickObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ConflictProcesser.cpp">
-      <Filter>ソース ファイル\Other</Filter>
-    </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>ソース ファイル\Other</Filter>
     </ClCompile>
@@ -189,9 +198,6 @@
     <ClCompile Include="SoundPlayer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="AccelMeter.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="FadeInFadeOut.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -201,10 +207,55 @@
     <ClCompile Include="Rocket.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="ConflictProcesser.cpp">
+      <Filter>ソース ファイル\ConflictCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="HitChecker.cpp">
+      <Filter>ソース ファイル\ConflictCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="AccelMeter.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageObject.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Kite.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemBox.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemHolder.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Accelerator.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageImpact.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="PostGoalStaging.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
     <ClCompile Include="CreatePosAndDirData.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Other\DataCreate</Filter>
     </ClCompile>
     <ClCompile Include="VectorDataCreator.cpp">
+      <Filter>ソース ファイル\Other\DataCreate</Filter>
+    </ClCompile>
+    <ClCompile Include="FiringItemManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Racer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CPU.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -212,7 +263,7 @@
     <ClInclude Include="SkyDome.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="PlayerCar.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
     <ClInclude Include="UserInput.h">
@@ -329,9 +380,6 @@
     <ClInclude Include="ScoreTime.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="NeighborhoodInfo.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
@@ -356,9 +404,6 @@
     <ClInclude Include="HitCheckExamineObjectInfo.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
-    <ClInclude Include="ConflictProcesser.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="AccelerationFloor.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
@@ -380,47 +425,95 @@
     <ClInclude Include="ReverseDrivingCautionUI.h">
       <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerRelatedInfo.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SoundPlayer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundsGenerated.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="AccelMeter.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="InputDirection.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="FadeInFadeOut.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="FadeMode.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="SceneFlowBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ヘッダー.h">
+    <ClInclude Include="ItemArgumentCarInfo.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CpuCarMode.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Accelerator.h">
+      <Filter>ヘッダー ファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageImpact.h">
+      <Filter>ヘッダー ファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ヘッダー ファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBox.h">
+      <Filter>ヘッダー ファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemHolder.h">
+      <Filter>ヘッダー ファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Kite.h">
+      <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
     <ClInclude Include="Rocket.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
-    <ClInclude Include="HandleDirection.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="AccelMeter.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CpuCarMode.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemUseSituation.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemTag.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>ヘッダー ファイル\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeInFadeOut.h">
+      <Filter>ヘッダー ファイル\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="ConflictProcesser.h">
+      <Filter>ヘッダー ファイル\ConflictCheck</Filter>
     </ClInclude>
     <ClInclude Include="CreatePosAndDirData.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\DataCreate</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeMode.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="FiringItemManager.h">
+      <Filter>ヘッダー ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDirection.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="HandleDirection.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
     <ClInclude Include="VectorDataCreator.h">
+      <Filter>ヘッダー ファイル\DataCreate</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRelatedInfo.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemInfo.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Racer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CPU.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySceneCamaeraArgumentInfo.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

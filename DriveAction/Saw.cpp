@@ -11,7 +11,7 @@ Saw::Saw(VECTOR pos, int duplicateModelHandle)
     direction = {};
     int duplicateModel = MV1DuplicateModel(duplicateModelHandle);
     modelHandle = duplicateModel;
-    tag = ObjectTag::obstacle;
+    tag = ObjectTag::damageObject;
     MV1SetPosition(modelHandle,position);
     radius = setRadius;
 }
@@ -20,11 +20,7 @@ Saw::~Saw()
 {
 }
 
-void Saw::Update()
+void Saw::Update(const float deltaTime)
 {
 }
 
-void Saw::Draw()
-{
-    MV1DrawModel(modelHandle);
-}

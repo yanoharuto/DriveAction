@@ -1,38 +1,21 @@
 #pragma once
 #include <List>
 #include <string>
+#include "PlaySceneCamaeraArgumentInfo.h"
 #include "ConflictProcesser.h"
 #include "HitChecker.h"
 #include "SoundPlayer.h"
+#include "ItemHolder.h"
+#include "Racer.h"
+#include "Player.h"
 class CourceDataLoader;
-class Object;
-class CheckPoint;
-class Car;
 class CircuitTrack;
-/// <summary>
-/// 当たり判定で使う渡してほしい情報
-/// Actorに定義
-/// </summary>
+
 struct ConflictExamineResultInfo;
 struct PlayerRelatedInfo;
+
 /// <summary>
-/// 走ってる車の情報
-/// </summary>
-struct Racer
-{
-    int rank;
-    CheckPoint* checkPoint;
-    Car* car;
-    SoundPlayer* soundPlayer;
-};
-struct PlayerRacer
-{
-    int* rank;
-    CheckPoint* checkPoint;
-    Car* car;
-};
-/// <summary>
-/// 
+/// レーサーの順位操作に使う
 /// </summary>
 struct RacerRankInfo
 {
@@ -59,7 +42,7 @@ public:
     /// </summary>
     /// <param name="deltaTime">フレーム間の経過時間</param>
     /// <param name="circuit">走るコース</param>
-    void RacerUpdate(const float deltaTime, CircuitTrack* circuit);
+    void RacerUpdate(const float deltaTime, CircuitTrack* circuit, FiringItemManager* firingItemManager);
     /// <summary>
     /// 引数の物体にぶつかったか調べる
     /// </summary>
@@ -78,7 +61,7 @@ public:
     /// 一番最初に追加したオブジェクトを返す
     /// </summary>
     /// <returns></returns>
-    Object* GetPlayerCar() const;
+    PlaySceneCameraArgumentInfo GetPlayerCarPosDir();
     /// <summary>
     /// 車乗りたち同士でぶつかってないか調べる
     /// </summary>
@@ -88,20 +71,25 @@ public:
     /// </summary>
     /// <returns></returns>
     int GetPlayerGoalCount();
+
     /// <summary>
-    /// プレイヤーのランクを表示
+    /// プレイヤーの情報を渡す
     /// </summary>
     /// <returns></returns>
-    int GetPlayerRank();
     PlayerRelatedInfo GetPlayerRelatedInfo();
 private:
+    //レーサーの最大人数
     static const int maxRacerNum = 6;
+    //レーサーの数
     int racerNum = 0;
-    Racer racerInstanceArray[maxRacerNum];
-    //車乗り達のリスト
+    //レーサーの配列　
+   
+    //racerInstanceArrayを指しているリスト
     std::list<Racer*> racerList;
+    //レーサーの順位を更新するために必要なリスト
     std::list<RacerRankInfo> racerRankList;
     //当たってるかどうか調べる
     HitChecker hitChecker;
-    PlayerRacer player;
+    //プレイヤーの情報
+    Player* player;
 };

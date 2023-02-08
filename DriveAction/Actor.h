@@ -1,11 +1,11 @@
 #pragma once
 #include "Object.h"
 #include "ConflictExamineResultInfo.h"
+#include "HitCheckExamineObjectInfo.h"
 #include "SoundPlayer.h"
-/// <summary>
-/// 動くものは大体これ
-/// </summary>
-class Actor :
+#include "HitChecker.h"
+
+class Actor abstract:
     public Object
 {
 public:
@@ -24,8 +24,22 @@ public:
     /// <summary>
     /// 描画
     /// </summary>
-    virtual void Draw() =0;
-
+    virtual void Draw()
+    {
+        MV1DrawModel(modelHandle);
+    }
+    /// <summary>
+    /// 引数のオブジェクトとぶつかったか調べる
+    /// </summary>
+    /// <param name="deltaTime"></param>
+    /// <param name="conflictInfo"></param>
+    virtual bool HitCheckConflict (const HitCheckExamineObjectInfo examineObjInfo) 
+    {
+        HitChecker checker;
+        return  checker.HitCheck(this, examineObjInfo);
+    };
+    virtual void ConflictProccess() {};
+    virtual void ConflictProccess(float deltaTime, const ConflictExamineResultInfo conflictInfo) {};
     /// <summary>
     /// 速度所得
     // </summary>
@@ -34,6 +48,7 @@ public:
     {
         return velocity;
     }
+
 protected:
     //描画モデル
     int modelHandle;

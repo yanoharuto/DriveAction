@@ -15,21 +15,21 @@ public:
     /// <param name="objA">調べたいオブジェクトA<</param>
     /// <param name="objB">調べたいオブジェクトB</param>
     /// <returns>当たったらTrue</returns>
-    bool HitCheck(Object* const objA, Object* const objB);
+    static bool HitCheck(Object* const objA, Object* const objB);
     /// <summary>
     /// 当たったかどうか調べるよ
     /// </summary>
     /// <param name="objA">調べたいオブジェクトA<</param>
     /// <param name="objBInfo">調べたいオブジェクトB</param>
     /// <returns>当たったらTrue</returns>
-    bool HitCheck(Object* const objA, const HitCheckExamineObjectInfo objBInfo);
+    static bool HitCheck(Object* const objA, const HitCheckExamineObjectInfo objBInfo);
     /// <summary>
     /// 当たったかどうか調べるよ
     /// </summary>
     /// <param name="objAInfo">調べたいオブジェクトA<</param>
     /// <param name="objBInfo">調べたいオブジェクトB</param>
     /// <returns>当たったらTrue</returns>
-    bool HitCheck(const HitCheckExamineObjectInfo objAInfo, const HitCheckExamineObjectInfo objBInfo);
+    static bool HitCheck(const HitCheckExamineObjectInfo objAInfo, const HitCheckExamineObjectInfo objBInfo);
 private:
     /// <summary>
     /// 当たったかどうか調べるときの共通処理
@@ -37,6 +37,6 @@ private:
     /// <param name="objAInfo">調べたいオブジェクトA</param>
     /// <param name="objBInfo">調べたいオブジェクトB</param>
     /// <returns>当たったらTrue</returns>
-    bool HitCheckProcess(HitCheckExamineObjectInfo objAInfo, HitCheckExamineObjectInfo objBInfo);
+    static bool HitCheckProcess(HitCheckExamineObjectInfo objAInfo, HitCheckExamineObjectInfo objBInfo);
 };
 

@@ -5,19 +5,46 @@
 #include "ItemUseSituation.h"
 #include "Actor.h"
 #include "ItemInfo.h"
-class Item abstract:Actor
+/// <summary>
+/// アイテムの基底クラス
+/// </summary>
+class ItemBase abstract:Actor
 {
 public:
-    Item();
-    ~Item();
-    virtual void Update(float deltaTime) = 0;
-    virtual void ShowEffect() = 0;
+    /// <summary>
+    /// アイテムの基底クラス
+    /// </summary>
+    ItemBase();
+    virtual ~ItemBase();
+    /// <summary>
+    /// アイテムの更新
+    /// </summary>
+    /// <param name="deltaTime"></param>
+    /// <param name="carInfo"></param>
+    virtual void Update(float deltaTime,ItemArgumentCarInfo carInfo) = 0;
+    /// <summary>
+    /// 描画
+    /// </summary>
+    virtual void Draw();
+    /// <summary>
+    /// アイテムの効果発揮
+    /// </summary>
+    virtual void ShowEffect(ItemArgumentCarInfo carInfo);
+    /// <summary>
+    /// アイテムの情報
+    /// </summary>
+    /// <returns></returns>
     ItemInfo GetItemInfo();
 protected:
+    //アイテムの効果量
     float effecacyValue;
+    //アイテムの効果時間
     float effecacyTime = 0;
+    //アイテムの効果のクールタイム
     float coolTime = -1;
+    int modelHandle;
+    //アイテムを使っている状態かどうか
     ItemUseSituation useSituation;
+    //アイテムの種類を教えて
     ItemTag itemTag;
 };
-

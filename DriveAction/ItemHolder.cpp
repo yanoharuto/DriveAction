@@ -1,6 +1,7 @@
 #include "ItemHolder.h"
 #include "Kite.h"
 #include "Accelerator.h"
+#include "DamageImpactLauncer.h"
 #include "Utility.h"
 ItemHolder::ItemHolder()
 {
@@ -11,24 +12,26 @@ ItemHolder::~ItemHolder()
 {
     SAFE_DELETE(item);
 }
-
-void ItemHolder::Update(FiringItemManager* firingItemManager,ItemArgumentCarInfo carInfo,float deltaTime)
+/// <summary>
+/// 更新
+/// </summary>
+/// <param name="damageObjeGene"></param>
+/// <param name="carInfo"></param>
+/// <param name="deltaTime"></param>
+void ItemHolder::Update(DamageObjectGenerator* damageObjeGene,ItemArgumentCarInfo carInfo,float deltaTime)
 {
     if (item != nullptr)
     {
+        //アイテムの情報を所得
         ItemInfo itemInfo = item->GetItemInfo();
+        //アイテムの使用状況
         switch (itemInfo.itemSituation)
         {
-        case ItemUseSituation::nonUse:
-            break;
         case ItemUseSituation::Useing:
-            if (itemInfo.isFiriable)
-            {
-                firingItemManager->GenerateDamageObject(itemInfo.itemTag, carInfo);
-            }
-            item->Update(deltaTime);
+            //アイテムの効果を更新
+            item->Update(deltaTime,carInfo);
             break;
-        case ItemUseSituation::DoneUsing:
+        case ItemUseSituation::DoneUsing://アイテムを使い終わったら
             SAFE_DELETE(item);
             break;
         default:
@@ -37,14 +40,17 @@ void ItemHolder::Update(FiringItemManager* firingItemManager,ItemArgumentCarInfo
         
     }
 }
-
+/// <summary>
+/// アイテムを所得
+/// </summary>
+/// <param name="rank"></param>
 void ItemHolder::SelectItem(int rank)
 {
     if (item == nullptr)
     {
         if (rank == 1)
         {
-            item = new Accelerator();
+            item = new DamageImpactLauncher();
         }
         else
         {
@@ -52,12 +58,33 @@ void ItemHolder::SelectItem(int rank)
         }
     }
 }
-
-void ItemHolder::ShowItem()
+/// <summary>
+/// アイテムを使用
+/// </summary>
+void ItemHolder::UseItem(ItemArgumentCarInfo carInfo)
 {
-    item->ShowEffect();
+    if (item != nullptr)
+    {
+        item->ShowEffect(carInfo);
+    }
 }
-
+/// <summary>
+/// アイテムの描画
+/// </summary>
+void ItemHolder::ItemDraw()
+{
+    if (item != nullptr)
+    {
+        if (item->GetItemInfo().itemSituation == ItemUseSituation::Useing)
+        {
+            item->Draw();
+        }
+    }
+}
+/// <summary>
+/// アイテムの情報を渡す
+/// </summary>
+/// <returns>何もアイテムを持ってないならTagはnon</returns>
 ItemInfo ItemHolder::GetItemInfo()
 {
     if (item != nullptr)
@@ -66,6 +93,7 @@ ItemInfo ItemHolder::GetItemInfo()
     }
     else
     {
+        //何もアイテムを持ってないならTagはnon
         ItemInfo itemInfo = {};
         itemInfo.itemTag = non;
         return itemInfo;

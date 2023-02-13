@@ -4,7 +4,7 @@
 /// <summary>
 /// UI
 /// </summary>
-class UI
+class UI abstract
 {
 public:
     UI() { uiData = {}; };

@@ -10,7 +10,7 @@ public:
     Player();
     Player(CircuitData circuitData, VECTOR firstPos, VECTOR firstDir);
     ~Player();
-    void Update(float deltaTime, bool outsideHitFlag, FiringItemManager* firingItemManager)override;
+    void Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)override;
     PlayerRelatedInfo GetRelatedInfo();
     PlaySceneCameraArgumentInfo GetCameraArgumentInfo();
 private:

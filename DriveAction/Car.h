@@ -33,7 +33,7 @@ public:
 	/// 衝突処理
 	/// </summary>
 	/// <param name="conflictInfo">ぶつかったかオブジェクトの情報</param>
-	void ConflictProcess(float deltaTime, const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer);
+	void ConflictProccess(float deltaTime, const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -162,7 +162,9 @@ protected:
 	int conflictEffectResource = -1;
 	//外的要因で早くなった時のエフェクト
 	int accelerationEffectResource = -1;
+	//加速時のエフェクト
 	int accelerationPlayEffect = -1;
+	//デバッグ用
 	int count = 0;
 	//止まった時の効果音
 	const std::string breakeSEAddress = "data/sound/brake.mp3";
@@ -176,18 +178,20 @@ protected:
 	bool isGoalConflict;
 	//地面に降りているか
 	bool isOnGround;
+	//ダメージ
 	bool isDamage;
 
 	//タイヤ
 	Wheels* wheels;
+	//アイテムの効果
 	VECTOR itemEffecacyValue = {};
 	//目的地
-	VECTOR destinationPos;
+	VECTOR destinationPos = {};
 	//次の角度
-	VECTOR destinationDir;
+	VECTOR destinationDir = {};
 	//ぶつかった物体との方向
-	VECTOR conflictVec;
+	VECTOR conflictVec = {};
 	//タイヤに渡したい情報
-	WheelArgumentCarInfo wheelArgumentCarInfo;
+	WheelArgumentCarInfo wheelArgumentCarInfo = {};
 };
 

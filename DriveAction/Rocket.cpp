@@ -1,16 +1,18 @@
 #include "Rocket.h"
 #include "EffekseerForDXLib.h"
-Rocket::Rocket(ItemArgumentCarInfo carInfo, int modelResourceHandle)
+#include "AssetManager.h"
+Rocket::Rocket(ItemArgumentCarInfo carInfo)
 {
     position = carInfo.position;
-    position = VAdd(position, VScale(carInfo.direction,-20));
-    modelHandle = MV1DuplicateModel(modelResourceHandle);
-    MV1SetScale(modelHandle,VGet(setSize,setSize,setSize));
+    position = VAdd(position, VScale(carInfo.direction, -20));
+    modelHandle = MV1DuplicateModel(AssetManager::Get3DModelAssetHandle(rocketModelAddress));
+    MV1SetScale(modelHandle, VGet(setSize, setSize, setSize));
     tag = ObjectTag::damageObject;
     bouncePower = setBouncePower;
     radius = setRadius;
-    effectResource=LoadEffekseerEffect("data/effect/bomb.efkefc",1.0f);
+    effectResource = LoadEffekseerEffect("data/effect/bomb.efkefc", 1.0f);
     onGround = false;
+
 }
 
 Rocket::~Rocket()

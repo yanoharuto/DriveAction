@@ -54,7 +54,7 @@ private:
     //positionからこれだけ近かったらゴール
     const float goalTapeHalfLength = 70.0f;
     //次のチェックポイントまでの向きを出し始める範囲
-    const float goalRadius = 125.0f;
+    const float goalRadius = 55.0f;
     //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
     const float dirJugeLine = 0.8f;
     //チェックポイントのベクターを調べる回数

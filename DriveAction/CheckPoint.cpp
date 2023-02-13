@@ -72,7 +72,7 @@ ConflictExamineResultInfo CheckPoint::CheckPointUpdate(HitCheckExamineObjectInfo
         }
         else if (checkPointDistance < radius)
         {
-            conflictInfo.pos = position;
+            conflictInfo.pos = GetArgumentCountVector(cPParam.positionVec.begin(),( transitCheckPointCount+1) % vecSize);
             conflictInfo.dir = GetArgumentCountVector(cPParam.directionVec.begin(), (transitCheckPointCount + 1) % vecSize);
             conflictInfo.hitFlag = true;
             return conflictInfo;

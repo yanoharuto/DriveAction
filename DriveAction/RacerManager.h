@@ -10,7 +10,6 @@
 #include "Player.h"
 class CourceDataLoader;
 class CircuitTrack;
-
 struct ConflictExamineResultInfo;
 struct PlayerRelatedInfo;
 
@@ -42,7 +41,7 @@ public:
     /// </summary>
     /// <param name="deltaTime">フレーム間の経過時間</param>
     /// <param name="circuit">走るコース</param>
-    void RacerUpdate(const float deltaTime, CircuitTrack* circuit, FiringItemManager* firingItemManager);
+    void RacerUpdate(const float deltaTime, CircuitTrack* circuit, DamageObjectGenerator* damageObjGene);
     /// <summary>
     /// 引数の物体にぶつかったか調べる
     /// </summary>

@@ -5,39 +5,20 @@ FiringItemManager::FiringItemManager()
 {
 }
 
-FiringItemManager::FiringItemManager(ConflictProcesser* processer)
-{
-    const char* string = rocketModelAddress.c_str();
-    rocketModelHandle = MV1LoadModel(string);
-    conflictProcesser = processer;
-}
-
 FiringItemManager::~FiringItemManager()
 {
-    for (int i = 0; i < damageObjList.size(); i++)
+    for (auto ite = damageObjList.begin(); ite != damageObjList.end(); ite++)
     {
-        SAFE_DELETE(*damageObjList.end());
+        SAFE_DELETE(*ite);
     }
 }
 
-void FiringItemManager::GenerateDamageObject(ItemTag itemTag, ItemArgumentCarInfo carInfo)
+void FiringItemManager::AddDamageObject(DamageObject* damageObj)
 {
-    DamageObject* obj;
-    switch (itemTag)
-    {
-    case kite:
-        obj = new Rocket(carInfo,rocketModelHandle);
-        damageObjList.push_back(obj);
-        conflictProcesser->AddConflictObject(obj);
-        break;
-    case accelerator:
-        break;
-    default:
-        break;
-    }
+    damageObjList.push_back(damageObj);
 }
 
-void FiringItemManager::ConflictUpdate(CircuitTrack* circuitTrack)
+void FiringItemManager::CircuitTrackConflictProccess(CircuitTrack* circuitTrack)
 {
     for (auto objIte = damageObjList.begin(); objIte != damageObjList.end(); objIte++)
     {

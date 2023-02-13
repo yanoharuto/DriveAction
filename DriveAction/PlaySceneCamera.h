@@ -2,7 +2,6 @@
 #include "DxLib.h"
 #include "PlaySceneCamaeraArgumentInfo.h"
 //プレイヤークラスの前方宣言
-class Object;
 class PlaySceneCamera final
 {
 public:
@@ -10,10 +9,11 @@ public:
     ~PlaySceneCamera();
 
     void Update(PlaySceneCameraArgumentInfo argumentInfo);
-
+    void Update(float deltaTime);
 private:
     VECTOR position;
-    const float betweenPlayerY = 5.0f;
+    
+    const float betweenPlayerY = 11.0f;
     const float betweenPlayerX = 24.0f;
     const float betweenPlayerZ = 24.0f;
     const float setNearValue = 0.1f;

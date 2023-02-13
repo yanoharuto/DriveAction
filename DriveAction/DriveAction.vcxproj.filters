@@ -58,9 +58,6 @@
     <Filter Include="ソース ファイル\Item">
       <UniqueIdentifier>{97863e50-3e6b-490c-b1a7-28a01d39d6c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Other\DataCreate">
-      <UniqueIdentifier>{beb78013-cb70-4f43-890e-89347d2a22e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Item">
       <UniqueIdentifier>{d3456835-4762-4ee4-af44-83faa7c095e0}</UniqueIdentifier>
     </Filter>
@@ -69,6 +66,9 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\DataCreate">
       <UniqueIdentifier>{d45e06d8-cfc2-46f7-9cd1-d890e6ad5d45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\DataCreate">
+      <UniqueIdentifier>{beb78013-cb70-4f43-890e-89347d2a22e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -129,9 +129,6 @@
     <ClCompile Include="CheckPoint.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="StageSelect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="TitleSceeneFlow.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -162,9 +159,6 @@
     <ClCompile Include="VECTOR3Loader.cpp">
       <Filter>ソース ファイル\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreTime.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ResultSceneFlow.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -183,9 +177,6 @@
     <ClCompile Include="LapUI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="GimmickObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>ソース ファイル\Other</Filter>
     </ClCompile>
@@ -194,18 +185,6 @@
     </ClCompile>
     <ClCompile Include="ReverseDrivingCautionUI.cpp">
       <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundPlayer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FadeInFadeOut.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFlowBase.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Rocket.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="ConflictProcesser.cpp">
       <Filter>ソース ファイル\ConflictCheck</Filter>
@@ -234,17 +213,17 @@
     <ClCompile Include="Accelerator.cpp">
       <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
-    <ClCompile Include="DamageImpact.cpp">
+    <ClCompile Include="DamageImpactLauncer.cpp">
       <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
     <ClCompile Include="PostGoalStaging.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
     <ClCompile Include="CreatePosAndDirData.cpp">
-      <Filter>ソース ファイル\Other\DataCreate</Filter>
+      <Filter>ソース ファイル\DataCreate</Filter>
     </ClCompile>
     <ClCompile Include="VectorDataCreator.cpp">
-      <Filter>ソース ファイル\Other\DataCreate</Filter>
+      <Filter>ソース ファイル\DataCreate</Filter>
     </ClCompile>
     <ClCompile Include="FiringItemManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
@@ -257,6 +236,39 @@
     </ClCompile>
     <ClCompile Include="CPU.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageObjectGenerator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageImpact.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeInFadeOut.cpp">
+      <Filter>ソース ファイル\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="GimmickObject.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemUI.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Rocket.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>ソース ファイル\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelect.cpp">
+      <Filter>ソース ファイル\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFlowBase.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreTime.cpp">
+      <Filter>ソース ファイル\Other</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -440,7 +452,7 @@
     <ClInclude Include="Accelerator.h">
       <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
-    <ClInclude Include="DamageImpact.h">
+    <ClInclude Include="DamageImpactLauncer.h">
       <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
@@ -514,6 +526,18 @@
     </ClInclude>
     <ClInclude Include="PlaySceneCamaeraArgumentInfo.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageObjectGenerator.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageImpact.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

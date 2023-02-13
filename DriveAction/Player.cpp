@@ -15,27 +15,14 @@ Player::~Player()
 {
 }
 
-void Player::Update(float deltaTime, bool outsideHitFlag, FiringItemManager* firingItemManager)
+void Player::Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)
 {
-
-
     ItemInfo itemInfo = itemHolder->GetItemInfo();
-    car->Update(deltaTime, outsideHitFlag, itemInfo, soundPlayer);
+    CommonUpdate(deltaTime,outsideHitFlag,damageObjGene);
     int inputKey = GetJoypadInputState(DX_INPUT_KEY);
     if ((inputKey & PAD_INPUT_10 || itemInfo.itemSituation == ItemUseSituation::Useing) && itemInfo.itemTag != non)
     {
-        itemHolder->ShowItem();
-    }
-    itemHolder->Update(firingItemManager, car->GetItemArgumentInfo(), deltaTime);
-    HitCheckExamineObjectInfo racerHitCheckExamineInfo;
-    racerHitCheckExamineInfo.SetExamineInfo(*car);
-    //車がチェックポイントを通過したか調べる
-    ConflictExamineResultInfo conflictResultInfo;
-    conflictResultInfo = checkPoint->CheckPointUpdate(racerHitCheckExamineInfo);
-    if (conflictResultInfo.hitFlag)
-    {
-        //車に次の目的地を伝える
-        car->ConflictProcess(deltaTime, conflictResultInfo, soundPlayer);
+        itemHolder->UseItem(car->GetItemArgumentInfo());
     }
 }
 

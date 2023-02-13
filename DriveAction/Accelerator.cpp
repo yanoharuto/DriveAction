@@ -10,7 +10,7 @@ Accelerator::~Accelerator()
 {
 }
 
-void Accelerator::Update(float deltaTime)
+void Accelerator::Update(float deltaTime,ItemArgumentCarInfo carInfo)
 {
     if (useSituation == ItemUseSituation::Useing)
     {
@@ -20,13 +20,5 @@ void Accelerator::Update(float deltaTime)
         {
             useSituation = ItemUseSituation::DoneUsing;
         }
-    }
-}
-
-void Accelerator::ShowEffect()
-{
-    if (useSituation != ItemUseSituation::DoneUsing)
-    {
-        useSituation = ItemUseSituation::Useing;
     }
 }

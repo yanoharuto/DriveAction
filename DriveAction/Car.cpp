@@ -57,7 +57,7 @@ Car::~Car()
 /// </summary>
 /// <param name="deltaTime"></param>
 /// <param name="conflictInfo"></param>
-void Car::ConflictProcess(float deltaTime,const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer)
+void Car::ConflictProccess(float deltaTime,const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer)
 {
 	switch (conflictInfo.tag)
 	{
@@ -96,10 +96,13 @@ void Car::Draw()
 	MV1DrawModel(modelHandle);
 	wheels->Draw();
 }
-
+/// <summary>
+/// アイテムに渡したい情報を出す
+/// </summary>
+/// <returns></returns>
 ItemArgumentCarInfo Car::GetItemArgumentInfo()
 {
-	return {position,direction,velocity};
+	return { position,direction,velocity,radius };
 }
 
 /// <summary>
@@ -129,7 +132,11 @@ void Car::ConflictReaction(float deltaTime, const ConflictExamineResultInfo conf
 	position = VAdd(position, VScale(conflictVec,conflictInfo.radius));
 	conflictObjBouncePower = conflictInfo.bouncePower;
 }
-
+/// <summary>
+/// 車が攻撃を受けたら関数
+/// </summary>
+/// <param name="conflictObjPos">ぶつかったオブジェクトの位置</param>
+/// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
 void Car::DamageReaction(float deltaTime)
 {
 	damageReactionTime -= deltaTime;
@@ -207,10 +214,6 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo i
 {
 	
 	Down(deltaTime);
-	if (itemInfo.itemTag != non)
-	{
-		ItemArgumentCarInfo carInfo = { position,direction,velocity };
-	}
 	if (isDamage)
 	{
 		DamageReaction(deltaTime);
@@ -221,13 +224,21 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo i
 	}
 	VECTOR accelVec = {};
 	wheelArgumentCarInfo.inputDir = GetAutoDriveDirection();
+	//速さを所得
 	accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
+	//速度を更新
 	UpdateVelocity(VScale(accelVec, deltaTime));
+	//位置の更新
 	UpdateMV1Pos();
+	//回転とかを制御
 	ModelSetMatrix();
+	//タイヤに渡したい情報を出す
 	InitWheelArgumentCarInfo();
+	//タイヤの更新
 	wheels->WheelUpdate(wheelArgumentCarInfo);
+	//走行時の音を鳴らす
 	PlayDriveSound(wheelArgumentCarInfo.inputDir,soundPlayer);
+	//速さによってはじき返す力を増やす
 	bouncePower = setBouncePower + GetTotalAccelPowerPercent() / 100;
 }
 
@@ -239,6 +250,7 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo i
 InputInfo Car::GetAutoDriveDirection()
 {
 	InputInfo inputInfo;
+	//ダメージを食らってたら減速
 	if (isDamage)
 	{
 		inputInfo.isBreake = true;

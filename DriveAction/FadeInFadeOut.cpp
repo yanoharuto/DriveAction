@@ -45,8 +45,6 @@ void FadeInFadeOut::FadeInStart()
 {
 	colorValue = 0;
 	fadeMode = FadeMode::fadeInStart;
-
-
 }
 
 void FadeInFadeOut::FadeOut(float deltaTime)
@@ -63,7 +61,6 @@ void FadeInFadeOut::FadeOut(float deltaTime)
 		{
 			fadeMode = FadeMode::fadeOutEnd;
 		}
-
 		break;
 	case FadeMode::fadeOutEnd:
 		break;
@@ -82,6 +79,6 @@ void FadeInFadeOut::Draw()
 {
 	if (fadeMode != FadeMode::fadeInEnd)
 	{
-		DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GetColor(MAX1BYTEVALUE, MAX1BYTEVALUE, MAX1BYTEVALUE), true);
+		DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GetColor(colorValue, colorValue, colorValue), true);
 	}
 }

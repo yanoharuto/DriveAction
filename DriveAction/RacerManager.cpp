@@ -15,22 +15,21 @@
 RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
 {
     racerNum = cpuNum > maxRacerNum ? maxRacerNum : cpuNum;
-    //コースの情報とかを引数からもらう
-    CircuitData circuitData{ courceDataLoader->GetCheckPointPosList(),courceDataLoader->GetCheckPointDirList() };
     std::list<VECTOR> firstPosList = courceDataLoader->GetCarFirstPosList();
     //最初の一行は向く方向なので消す
     firstPosList.erase(firstPosList.begin());
     //ポジションのイテレーター
-    std::list<VECTOR>::iterator firstPosIte = firstPosList.begin();
+    auto firstPosIte = firstPosList.begin();
     //プレイヤーの初期化処理
     RacerRankInfo rankInfo{};
-
     Racer* newRacer;
+    //コースの情報とかを引数からもらう
     VECTOR firstDir = courceDataLoader->GetCarFirstDir();
+    CircuitData circuitData{ courceDataLoader->GetCheckPointPosList(),courceDataLoader->GetCheckPointDirList() };
+    //レーサーの数だけNewする
     for (int i = 0; i < racerNum + 1; i++)
     {
         firstPosIte++;
-
         if (i == 0)
         {
             player = new Player(circuitData, *firstPosIte, firstDir);
@@ -38,11 +37,10 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
         }
         else
         {
-
             newRacer = new CPU(circuitData, *firstPosIte, firstDir);
-
         }
         racerList.push_front(newRacer);
+        //ランク情報を追加
         rankInfo.checkPointP = newRacer->GetCheckPointer();
         rankInfo.rankP = newRacer->GetRankPointer();
         racerRankList.push_front(rankInfo);
@@ -62,7 +60,7 @@ RacerManager::~RacerManager()
 /// </summary>
 /// <param name="deltaTime">フレーム間の経過時間</param>
 /// <param name="circuit">走るコース</param>
-void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit, FiringItemManager* firingItemManager)
+void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit, DamageObjectGenerator* damageObj)
 {
     Racer* racer;
     bool hitFlag;
@@ -73,7 +71,7 @@ void RacerManager::RacerUpdate(const float deltaTime, CircuitTrack* circuit, Fir
         //周りに何があるか調べる
         hitFlag = circuit->GetOutsideHitFlag(racer->GetCarHitCheckExamineInfo());
         //車の更新　
-        racer->Update(deltaTime, hitFlag, firingItemManager);
+        racer->Update(deltaTime, hitFlag, damageObj);
     }
 }
 /// <summary>
@@ -105,22 +103,22 @@ void RacerManager::ArgumentConflictProcess(float deltaTime,Racer* obj)
 }
 void RacerManager::RacerRankUpdate()
 {
-    RacerRankInfo* swapRankInfo = nullptr;
     int transitCheckCount = 0;//チェックポイント通過回数
     int maxTransitCheckCount = 0;//チェックポイント最大通過回数
     float checkPointBetween = 0;//次のチェックポイントまでの距離距離
     float minCheckPointBetween = 0;//次のチェックポイントまでの現状の最短距離
+    int rank = 0;
     //ソート
     for (auto rankIte = racerRankList.begin(); rankIte != racerRankList.end(); rankIte++)
     {   
-        minCheckPointBetween = (*rankIte).checkPointP->GetCheckPointDistance();
-        maxTransitCheckCount = (*rankIte).checkPointP->GetTransitCheckPointCount();
-        swapRankInfo = nullptr;
+        minCheckPointBetween = (*rankIte).checkPointP->GetCheckPointDistance();//チェックポイントまでの差を出す
+        maxTransitCheckCount = (*rankIte).checkPointP->GetTransitCheckPointCount();//通過回数を出す
+        RacerRankInfo* swapRankInfo = nullptr;//↑二つの変数が更新されたら中身も更新
         for (auto rankIte2 = rankIte; rankIte2 != racerRankList.end(); rankIte2++)
         {
             transitCheckCount = (*rankIte2).checkPointP->GetTransitCheckPointCount();
             checkPointBetween = (*rankIte2).checkPointP->GetCheckPointDistance();
-            //チェックポイントがより近くて
+            //チェックポイントにより近くて
             if (checkPointBetween < minCheckPointBetween)
             {
                 //チェックポイントを通過した回数が多い人がより高順位
@@ -137,11 +135,7 @@ void RacerManager::RacerRankUpdate()
         {
             std::swap((*rankIte), *swapRankInfo);
         }
-    }
-    //順位更新
-    int rank = 0;
-    for (auto rankIte = racerRankList.begin(); rankIte != racerRankList.end(); rankIte++)
-    {
+        //順位更新
         *(*rankIte).rankP = ++rank;
     }
 }
@@ -176,7 +170,7 @@ void RacerManager::RacerConflictProcces(ConflictProcesser* conflictProcesser,Cir
 
 
 /// <summary>
-/// プレイヤーの情報を渡す
+/// プレイヤーのUIに必要な情報を渡す
 /// </summary>
 /// <returns></returns>
 PlayerRelatedInfo RacerManager::GetPlayerRelatedInfo()

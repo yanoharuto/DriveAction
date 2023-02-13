@@ -23,6 +23,6 @@ private:
     //丸鋸のmodelのアドレス
     const std::string obstacleModelAddress = "data/model/Saw/Saw.mv1";
     //アイテムボックスのアドレス
-    const std::string itemBoxModelAddress = "data/model/Item/Box.mv1";
+    const std::string itemBoxModelAddress = "data/model/Item/ItemBox/Box.mv1";
 };
 

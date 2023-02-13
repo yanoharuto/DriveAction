@@ -5,6 +5,9 @@
 #include "HitCheckExamineObjectInfo.h"
 #include "HitChecker.h"
 #include "Actor.h"
+/// <summary>
+/// “–‚½‚è”»’è‚ð“Z‚ß‚Ä‚·‚é‚½‚ß‚Ì“z
+/// </summary>
 class ConflictProcesser
 {
 public:

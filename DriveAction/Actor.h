@@ -35,10 +35,13 @@ public:
     /// <param name="conflictInfo"></param>
     virtual bool HitCheckConflict (const HitCheckExamineObjectInfo examineObjInfo) 
     {
-        HitChecker checker;
-        return  checker.HitCheck(this, examineObjInfo);
+        return  HitChecker::HitCheck(this, examineObjInfo);
     };
+    /// <summary>
+    /// è’ìÀèàóù
+    /// </summary>
     virtual void ConflictProccess() {};
+    virtual void ConflictProccess(const ConflictExamineResultInfo conflictInfo) {};
     virtual void ConflictProccess(float deltaTime, const ConflictExamineResultInfo conflictInfo) {};
     /// <summary>
     /// ë¨ìxèäìæ

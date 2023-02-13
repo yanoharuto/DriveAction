@@ -5,20 +5,43 @@
 #include "CircuitTrack.h"
 #include "ItemArgumentCarInfo.h"
 #include "ItemTag.h"
-#include "ConflictProcesser.h"
+/// <summary>
+/// 飛び道具の面倒を見る奴
+/// </summary>
 class FiringItemManager
 {
 public:
+
+    /// <summary>
+    /// 生成したときに追加する
+    /// </summary>
+    /// <param name="conflictProcesser"></param>
     FiringItemManager();
-    FiringItemManager(ConflictProcesser* conflictProcesser);
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
     ~FiringItemManager();
-    void GenerateDamageObject(ItemTag itemTag,ItemArgumentCarInfo carInfo);
-    void ConflictUpdate(CircuitTrack* conflictProccess);
+    /// <summary>
+    /// 投擲アイテムを追加
+    /// </summary>
+    /// <param name="itemTag"></param>
+    /// <param name="carInfo"></param>
+    void AddDamageObject(DamageObject* damageObj);
+    /// <summary>
+    /// 衝突
+    /// </summary>
+    /// <param name="conflictProccess"></param>
+    void CircuitTrackConflictProccess(CircuitTrack* conflictProccess);
+    /// <summary>
+    /// 更新
+    /// </summary>
+    /// <param name="deltaTime"></param>
     void Update(float deltaTime);
+    /// <summary>
+    /// 描画
+    /// </summary>
     void Draw();
 private:
+    //オブジェクトタグがDamageObjectになってるオブジェクトのリスト
     std::list<DamageObject*> damageObjList;
-    std::string rocketModelAddress = "data/model/Rocket/Rocket04_Grey.mv1";
-    int rocketModelHandle;
-    ConflictProcesser* conflictProcesser;
 };

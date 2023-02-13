@@ -7,7 +7,3 @@ DamageObject::DamageObject(ItemArgumentCarInfo carInfo)
 DamageObject::~DamageObject()
 {
 }
-
-void DamageObject::Update(float deltaTime)
-{
-}

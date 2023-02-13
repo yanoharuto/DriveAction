@@ -20,7 +20,9 @@ PlaySceeneFlow::PlaySceeneFlow()
 	conflictProcesser = new ConflictProcesser();
 	gimmickObjManager = new GimmickObjManager(conflictProcesser,courceDataLoader);
 	playerRelatedUI = new PlayerRelatedUI(maxLap);
-	firingManager = new FiringItemManager(conflictProcesser);
+	assetManager = new AssetManager();
+	firingManager = new FiringItemManager();
+	damageObjGene = new DamageObjectGenerator(conflictProcesser,firingManager);
 }
 
 PlaySceeneFlow::~PlaySceeneFlow()
@@ -38,6 +40,7 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(conflictProcesser);
 	SAFE_DELETE(playerRelatedUI);
 	SAFE_DELETE(soundPlayer);
+	SAFE_DELETE(assetManager);
 	SAFE_DELETE(firingManager);
 }
 
@@ -57,7 +60,7 @@ void PlaySceeneFlow::Update(float deltaTime)
 	case PlaySceeneProgress::countDown:
 		countDown->Update(deltaTime);
 		camera->Update(racerManager->GetPlayerCarPosDir());
-		racerManager->RacerUpdate(0, stageManager->GetCircuit(),firingManager);
+		racerManager->RacerUpdate(0, stageManager->GetCircuit(),damageObjGene);
 		//カウントダウンが終わったら
 		if (countDown->CountDownEnd())
 		{
@@ -69,12 +72,12 @@ void PlaySceeneFlow::Update(float deltaTime)
 	case PlaySceeneProgress::race:
 		raceTime += deltaTime;
 		//レーサーの処理
-		racerManager->RacerUpdate(deltaTime, stageManager->GetCircuit(),firingManager);
+		racerManager->RacerUpdate(deltaTime, stageManager->GetCircuit(),damageObjGene);
 		racerManager->RacerConflictProcces(conflictProcesser, stageManager->GetCircuit(), deltaTime);
 		racerManager->RacerRankUpdate();
 		//投擲の更新
 		firingManager->Update(deltaTime);
-		firingManager->ConflictUpdate(stageManager->GetCircuit());
+		firingManager->CircuitTrackConflictProccess(stageManager->GetCircuit());
 		//プレイヤーに渡す処理
 		playerRelatedInfo = racerManager->GetPlayerRelatedInfo();
 		playerRelatedInfo.time = raceTime;

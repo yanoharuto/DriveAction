@@ -1,22 +1,38 @@
 #include "Item.h"
 
-
-Item::Item()
+/// <summary>
+/// 使ってない状態にする
+/// </summary>
+ItemBase::ItemBase()
 {
     useSituation = ItemUseSituation::nonUse;
     effecacyValue = {};
     itemTag = non;
 }
 
-Item::~Item()
+ItemBase::~ItemBase()
 {
+    MV1DeleteModel(modelHandle);
 }
-
-void Item::ShowEffect()
+void ItemBase::Draw()
 {
+    MV1DrawModel(modelHandle);
 }
-
-ItemInfo Item::GetItemInfo()
+/// <summary>
+/// アイテムの効果発揮
+/// </summary>
+void ItemBase::ShowEffect(ItemArgumentCarInfo carInfo)
+{
+    if (useSituation != ItemUseSituation::DoneUsing)
+    {
+        useSituation = ItemUseSituation::Useing;
+    }
+}
+/// <summary>
+/// アイテムの情報を渡す
+/// </summary>
+/// <returns>アイテムの効果量、今使えるか、アイテムの種類、アイテムの使用状況</returns>
+ItemInfo ItemBase::GetItemInfo()
 {
     return {effecacyValue,coolTime < -0.1f,itemTag,useSituation};
 }

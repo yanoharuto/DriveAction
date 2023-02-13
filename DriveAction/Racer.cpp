@@ -23,26 +23,17 @@ Racer::~Racer()
     SAFE_DELETE(car);
 }
 
-void Racer::Update(float deltaTime, bool outsideHitFlag, FiringItemManager* firingItemManager)
+void Racer::Update(float deltaTime, bool outsideHitFlag,DamageObjectGenerator* damageObjGene)
 {
+    //プレイヤーと共通の処理
+    CommonUpdate(deltaTime,outsideHitFlag,damageObjGene);
     ItemInfo itemInfo = itemHolder->GetItemInfo();
-    car->Update(deltaTime, outsideHitFlag,itemInfo, soundPlayer);
-
+    //アイテムが使えるときは使う
     if (itemInfo.itemSituation != ItemUseSituation::DoneUsing && itemInfo.itemTag != non)
     {
-        itemHolder->ShowItem();
+        itemHolder->UseItem(car->GetItemArgumentInfo());
     }
-    itemHolder->Update(firingItemManager, car->GetItemArgumentInfo(), deltaTime);
-    HitCheckExamineObjectInfo racerHitCheckExamineInfo;
-    racerHitCheckExamineInfo.SetExamineInfo(*car);
-    //車がチェックポイントを通過したか調べる
-    ConflictExamineResultInfo conflictResultInfo;
-    conflictResultInfo = checkPoint->CheckPointUpdate(racerHitCheckExamineInfo);
-    if (conflictResultInfo.hitFlag)
-    {
-        //車に次の目的地を伝える
-        car->ConflictProcess(deltaTime, conflictResultInfo,soundPlayer);
-    }
+
 }
 
 bool Racer::HitCheck(HitCheckExamineObjectInfo objInfo)
@@ -59,6 +50,7 @@ bool Racer::HitCheck(HitCheckExamineObjectInfo objInfo)
 void Racer::Draw()
 {
     car->Draw();
+    itemHolder->ItemDraw();
 }
 
 void Racer::ConflictProcces(ConflictExamineResultInfo conflictResultInfo, float deltaTime)
@@ -69,7 +61,26 @@ void Racer::ConflictProcces(ConflictExamineResultInfo conflictResultInfo, float 
     }
     else
     {
-        car->ConflictProcess(deltaTime, conflictResultInfo,soundPlayer);
+        car->ConflictProccess(deltaTime, conflictResultInfo,soundPlayer);
+    }
+}
+
+void Racer::CommonUpdate(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)
+{
+    //車の更新
+    ItemInfo itemInfo = itemHolder->GetItemInfo();
+    car->Update(deltaTime, outsideHitFlag, itemInfo, soundPlayer);
+    //アイテムの更新
+    itemHolder->Update(damageObjGene, car->GetItemArgumentInfo(), deltaTime);
+    //車の当たり判定情報
+    HitCheckExamineObjectInfo racerHitCheckExamineInfo;
+    racerHitCheckExamineInfo.SetExamineInfo(*car);
+    //車がチェックポイントを通過したか調べる
+    ConflictExamineResultInfo conflictResultInfo = checkPoint->CheckPointUpdate(racerHitCheckExamineInfo);
+    if (conflictResultInfo.hitFlag)
+    {
+        //車に次の目的地を伝える
+        car->ConflictProccess(deltaTime, conflictResultInfo, soundPlayer);
     }
 }
 

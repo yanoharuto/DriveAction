@@ -8,6 +8,5 @@ public:
     DamageObject() {};
     DamageObject(ItemArgumentCarInfo carInfo);
     virtual ~DamageObject();
-    void Update(float deltaTime);
 };
 

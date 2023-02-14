@@ -96,7 +96,7 @@
     <ClCompile Include="CircuitTrack.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="PlaySceneCamera.cpp">
+    <ClCompile Include="RaceCamera.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
     <ClCompile Include="ImgUI.cpp">
@@ -267,7 +267,7 @@
     <ClCompile Include="SceneFlowBase.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreTime.cpp">
+    <ClCompile Include="ResultScore.cpp">
       <Filter>ソース ファイル\Other</Filter>
     </ClCompile>
   </ItemGroup>
@@ -323,7 +323,7 @@
     <ClInclude Include="UIManager.h">
       <Filter>ヘッダー ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="PlaySceneCamera.h">
+    <ClInclude Include="RaceCamera.h">
       <Filter>ヘッダー ファイル\Other</Filter>
     </ClInclude>
     <ClInclude Include="StringUI.h">
@@ -389,7 +389,7 @@
     <ClInclude Include="PostGoalStaging.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreTime.h">
+    <ClInclude Include="ResultScore.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="NeighborhoodInfo.h">

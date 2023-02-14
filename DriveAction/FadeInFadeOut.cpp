@@ -9,21 +9,23 @@ FadeInFadeOut::FadeInFadeOut()
 FadeInFadeOut::~FadeInFadeOut()
 {
 }
-
+/// <summary>
+/// フェードイン
+/// </summary>
+/// <param name="deltaTime"></param>
 void FadeInFadeOut::FadeIn(float deltaTime)
 {
-
 	switch (fadeMode)
 	{
 	case FadeMode::fadeInStart:
 
-		if (colorValue < MAX1BYTEVALUE)
+		if (fadeValue > 0)
 		{
-			colorValue += fadeSpeed * deltaTime;
+			fadeValue -= fadeSpeed * deltaTime;//α値と色のRGB減少
 		}
 		else
 		{
-			fadeMode = FadeMode::fadeInEnd;
+			fadeMode = FadeMode::fadeInEnd;//減少しきったらフェードイン終了
 		}
 		break;
 	case FadeMode::fadeInEnd:
@@ -33,33 +35,40 @@ void FadeInFadeOut::FadeIn(float deltaTime)
 		break;
 	}
 }
-
+/// <summary>
+/// フェードイン開始
+/// </summary>
+void FadeInFadeOut::FadeInStart()
+{
+	fadeValue = MAX1BYTEVALUE;
+	fadeMode = FadeMode::fadeInStart;
+}
+/// <summary>
+/// フェードアウト開始
+/// </summary>
 void FadeInFadeOut::FadeOutStart()
 {
-	colorValue = MAX1BYTEVALUE;
+	fadeValue = 0;
 	fadeMode = FadeMode::fadeOutStart;
 
 }
-
-void FadeInFadeOut::FadeInStart()
-{
-	colorValue = 0;
-	fadeMode = FadeMode::fadeInStart;
-}
-
+/// <summary>
+/// だんだん白くなる
+/// </summary>
+/// <param name="deltaTime"></param>
 void FadeInFadeOut::FadeOut(float deltaTime)
 {
 	switch (fadeMode)
 	{
 	case FadeMode::fadeOutStart:
 		
-		if (colorValue > 0)
+		if (fadeValue < MAX1BYTEVALUE)
 		{
-			colorValue -= fadeSpeed * deltaTime;
+			fadeValue += fadeSpeed * deltaTime;//α値と色のRGB増加
 		}
 		else
 		{
-			fadeMode = FadeMode::fadeOutEnd;
+			fadeMode = FadeMode::fadeOutEnd;//増加しきったらフェードアウト終了
 		}
 		break;
 	case FadeMode::fadeOutEnd:
@@ -69,16 +78,24 @@ void FadeInFadeOut::FadeOut(float deltaTime)
 		break;
 	}
 }
-
+/// <summary>
+/// フェードアウトフェードインの状況を返す
+/// </summary>
+/// <returns></returns>
 FadeMode FadeInFadeOut::GetFadeMode()
 {
     return fadeMode;
 }
-
+/// <summary>
+/// □でフェードインフェードアウトする
+/// </summary>
 void FadeInFadeOut::Draw()
 {
 	if (fadeMode != FadeMode::fadeInEnd)
 	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeValue);//α値をいじる
+		int colorValue = MAX1BYTEVALUE - fadeValue;
 		DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GetColor(colorValue, colorValue, colorValue), true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);//元に戻す
 	}
 }

@@ -1,6 +1,10 @@
 #include "Rocket.h"
 #include "EffekseerForDXLib.h"
 #include "AssetManager.h"
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="carInfo"></param>
 Rocket::Rocket(ItemArgumentCarInfo carInfo)
 {
     position = carInfo.position;
@@ -19,7 +23,10 @@ Rocket::~Rocket()
 {
     DeleteEffekseerEffect(effectResource);
 }
-
+/// <summary>
+/// 更新
+/// </summary>
+/// <param name="deltaTime"></param>
 void Rocket::Update(float deltaTime)
 {
     if (!onGround)
@@ -36,7 +43,9 @@ void Rocket::Update(float deltaTime)
         }
     }
 }
-
+/// <summary>
+/// 衝突後の処理
+/// </summary>
 void Rocket::ConflictProccess()
 {
     onGround = true;

@@ -5,14 +5,16 @@
 #include "SwitchUI.h"
 #include "ImgUI.h"
 #include "StringUI.h"
-class TitleSceeneFlow
+/// <summary>
+/// タイトルシーンの処理の流れ
+/// </summary>
+class TitleSceeneFlow :public SceneFlowBase
 {
 public:
     TitleSceeneFlow();
     ~TitleSceeneFlow();
-    void Update(float deltaTime);
-    void Draw();
-    bool GetIsProccessEnd();
+    void Update(float deltaTime) override;
+    void Draw() override;
 private:
     void InitMinimapData();
     void InitStageString();
@@ -23,5 +25,4 @@ private:
     ImgUI* miniMap;
     ImgUI* backGround;
     UIData uiData;
-    bool isProccessEnd;
 };

@@ -4,13 +4,13 @@
 #include "SoundPlayer.h"
 #include "PlaySceeneProgressEnum.h"
 #include "RacerManager.h"
-#include "PlaySceneCamera.h"
+#include "RaceCamera.h"
 #include "CourceDataLoader.h"
 #include "StageManager.h"
 #include "CountDown.h"
 #include "MiniMap.h"
 #include "PostGoalStaging.h"
-#include "ScoreTime.h"
+#include "ResultScore.h"
 #include "GimmickObjManager.h"
 #include "ConflictProcesser.h"
 #include "PlayerRelatedUI.h"
@@ -28,7 +28,7 @@ public:
     /// </summary>
     /// <returns></returns>
     PlaySceeneFlow();
-    ~PlaySceeneFlow();
+    ~PlaySceeneFlow()override;
     /// <summary>
     /// プレイシーンの更新
     /// </summary>
@@ -42,11 +42,11 @@ public:
 private:
     RacerManager* racerManager;//車乗りのマネージャー
     StageManager* stageManager;//ステージのマネージャー
-    PlaySceneCamera* camera;//カメラ
+    RaceCamera* camera;//カメラ
     CourceDataLoader* courceDataLoader;
     CountDown* countDown;
     MiniMap* miniMap;
-    ScoreTime* scoreTime;
+    ResultScore* scoreTime;
     PostGoalStaging* postGoalStaging;
     GimmickObjManager* gimmickObjManager;
     ConflictProcesser* conflictProcesser;
@@ -61,7 +61,7 @@ private:
     bool isSpaceInput = false;
     const int minimapX = 1080;
     const int minimapY = 450;
-    const int maxLap = 1;
+    const int maxLap = 0;
     const int racerNum = 3;
     float raceTime = 0;
     

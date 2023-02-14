@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include"Utility.h"
 Player::Player()
 {
 }
@@ -13,6 +13,10 @@ Player::Player(CircuitData circuitData, VECTOR firstPos, VECTOR firstDir)
 
 Player::~Player()
 {
+    SAFE_DELETE(checkPoint);
+    SAFE_DELETE(soundPlayer);
+    SAFE_DELETE(itemHolder);
+    SAFE_DELETE(car);
 }
 
 void Player::Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)
@@ -28,7 +32,7 @@ void Player::Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator*
 
 PlayerRelatedInfo Player::GetRelatedInfo()
 {
-    PlayerRelatedInfo info;
+    PlayerRelatedInfo info = {};
     info.accelPower = car->GetTotalAccelPowerPercent();
     info.carDirection = car->GetDir();
     info.itemTag = itemHolder->GetItemInfo().itemTag;
@@ -40,7 +44,7 @@ PlayerRelatedInfo Player::GetRelatedInfo()
 
 PlaySceneCameraArgumentInfo Player::GetCameraArgumentInfo()
 {
-    PlaySceneCameraArgumentInfo argumentInfo;
+    PlaySceneCameraArgumentInfo argumentInfo = {};
     argumentInfo.dir = playerCar->GetDir();
     argumentInfo.pos = playerCar->GetPos();
     argumentInfo.handleDir = playerCar->GetHandleDirection();

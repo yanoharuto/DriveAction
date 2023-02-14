@@ -8,7 +8,7 @@
 Car::Car()
 {
 	tag = ObjectTag::car;
-	radius = radiusValue;
+	radius = setRadius;
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	destinationPos = {};
@@ -25,7 +25,7 @@ Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,SoundPlaye
 	direction = firstDir;
 	tag = ObjectTag::car;
 	bouncePower = setBouncePower;
-	radius = radiusValue;
+	radius = setRadius;
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	destinationPos = firstDestinationPos;
@@ -67,7 +67,7 @@ void Car::ConflictProccess(float deltaTime,const ConflictExamineResultInfo confl
 		ConflictReaction(deltaTime,conflictInfo,soundPlayer);
 		break;
 	case ObjectTag::goal:
-		checkCount++;
+		
 		isGoalConflict = true;
 		destinationPos = conflictInfo.pos;
 		destinationDir = conflictInfo.dir;
@@ -340,16 +340,19 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime
 				accelPower = 0;
 			}
 		}
-		//外的要因で加速したときに少しずつ元に戻る
+		//加速床で加速したときに少しずつ元に戻る
 		if (forcePower > 0)
 		{
 			forcePower -= forcePower * defaultDecel * deltaTime;
 			forcePower = forcePower > 0 ? forcePower : 0;
-			
 		}
-
+		if (itemAddSpeed > 0)
+		{
+			itemAddSpeed -= itemAddSpeed * defaultDecel * deltaTime;
+			itemAddSpeed = itemAddSpeed > 0 ? itemAddSpeed : 0;
+		}
 	}
-	return VScale(direction, accelPower + forcePower);
+	return VScale(direction, accelPower + forcePower + itemAddSpeed);
 }
 /// <summary>
 /// 運転中になる音を再生する
@@ -394,6 +397,10 @@ void Car::InitWheelArgumentCarInfo()
 	wheelArgumentCarInfo.direction = direction;
 	wheelArgumentCarInfo.velocitySize = VSize(velocity);
 }
+/// <summary>
+/// 落下処理
+/// </summary>
+/// <param name="deltaTime"></param>
 void Car::Down(float deltaTime)
 {		//地面に降りれてないなら降りれるようにする
 	if (!isOnGround)
@@ -416,7 +423,7 @@ void Car::Down(float deltaTime)
 /// <returns></returns>
 float Car::GetTotalAccelPowerPercent()
 {
-	return (accelPower + forcePower) / (maxAccelSpeed + maxAddForcePower) * 100;
+	return (accelPower + forcePower + itemAddSpeed) / (maxAccelSpeed + maxAddForcePower) * 100;
 }
 
 /// <summary>
@@ -438,8 +445,7 @@ void Car::RecieveItemEffecacy(ItemInfo itemInfo,float deltaTime)
 				isOnGround = false;
 				break;
 			case accelerator:
-				forcePower +=  itemInfo.effecacyValue * deltaTime;
-				forcePower = forcePower > maxAddForcePower ? maxAddForcePower : forcePower;
+				itemAddSpeed += itemInfo.effecacyValue * deltaTime;
 				break;
 			}
 		}

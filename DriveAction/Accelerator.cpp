@@ -18,9 +18,10 @@ void Accelerator::Update(float deltaTime,ItemArgumentCarInfo carInfo)
     {
         effecacyValue += addEffecacyValue * deltaTime;
         effecacyTime -= deltaTime;
-        SetPosPlayingEffekseer3DEffect(playEffect, carInfo.position.x, carInfo.position.y, carInfo.position.z);
-        float rota = VDot(VGet(1, 0, 0), carInfo.direction);
-        SetRotationPlayingEffekseer3DEffect(playEffect, 0, acosf(rota), 0);
+        VECTOR pos = VAdd(carInfo.position, VScale(carInfo.direction, carInfo.radius));
+        SetPosPlayingEffekseer3DEffect(playEffect, pos.x, pos.y, pos.z);
+        float rota = VDot(VNorm(VGet(1, 0, 0)), VNorm(carInfo.direction));
+        //SetRotationPlayingEffekseer3DEffect(playEffect, 0, acosf(rota), 0);
         if (effecacyTime < 0)
         {
             StopEffekseer3DEffect(playEffect);
@@ -35,7 +36,7 @@ void Accelerator::Draw()
 
 void Accelerator::ShowEffect(ItemArgumentCarInfo carInfo)
 {
-    if (useSituation != ItemUseSituation::DoneUsing)
+    if (useSituation == ItemUseSituation::nonUse)
     {
         playEffect = IsEffekseer3DEffectPlaying(effectResource);
         SetPosPlayingEffekseer3DEffect(playEffect, carInfo.position.x, carInfo.position.y, carInfo.position.z);

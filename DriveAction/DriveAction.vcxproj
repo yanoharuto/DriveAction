@@ -196,7 +196,7 @@
     <ClCompile Include="PostGoalStaging.cpp" />
     <ClCompile Include="RacePrevProcess.cpp" />
     <ClCompile Include="ResultSceneFlow.cpp" />
-    <ClCompile Include="ScoreTime.cpp" />
+    <ClCompile Include="ResultScore.cpp" />
     <ClCompile Include="SwitchUI.cpp" />
     <ClCompile Include="VECTOR3Loader.cpp" />
     <ClCompile Include="ImgUI.cpp" />
@@ -210,7 +210,7 @@
     <ClCompile Include="VectorDataCreator.cpp" />
     <ClCompile Include="Wheels.cpp" />
     <ClCompile Include="HitChecker.cpp" />
-    <ClCompile Include="PlaySceneCamera.cpp" />
+    <ClCompile Include="RaceCamera.cpp" />
     <ClCompile Include="CircuitTrack.cpp" />
     <ClCompile Include="CheckPoint.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -282,7 +282,7 @@
     <ClInclude Include="PostGoalStaging.h" />
     <ClInclude Include="RacePrevProcess.h" />
     <ClInclude Include="ResultSceneFlow.h" />
-    <ClInclude Include="ScoreTime.h" />
+    <ClInclude Include="ResultScore.h" />
     <ClInclude Include="StageDataAddressStruct.h" />
     <ClInclude Include="SwitchUI.h" />
     <ClInclude Include="VECTOR3Loader.h" />
@@ -301,7 +301,7 @@
     <ClInclude Include="Wheels.h" />
     <ClInclude Include="HitChecker.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="PlaySceneCamera.h" />
+    <ClInclude Include="RaceCamera.h" />
     <ClInclude Include="CircuitTrack.h" />
     <ClInclude Include="CheckPoint.h" />
     <ClInclude Include="Timer.h" />

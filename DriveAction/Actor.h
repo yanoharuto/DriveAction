@@ -2,7 +2,6 @@
 #include "Object.h"
 #include "ConflictExamineResultInfo.h"
 #include "HitCheckExamineObjectInfo.h"
-#include "SoundPlayer.h"
 #include "HitChecker.h"
 
 class Actor abstract:

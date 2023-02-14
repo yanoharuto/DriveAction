@@ -17,7 +17,7 @@ AssetManager::~AssetManager()
 
 int AssetManager::Get3DModelAssetHandle(std::string assetAddress)
 {
-    if (!assetMap.contains(assetAddress))//まだロードしてないならロードする
+    //if (!assetMap.contains(assetAddress))//まだロードしてないならロードする
     {
         assetMap.insert(std::make_pair(assetAddress, MV1LoadModel(assetAddress.c_str())));
     }

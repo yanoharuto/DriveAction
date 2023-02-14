@@ -7,11 +7,7 @@ class ResultScene final:
 {
 public:
     ResultScene();
-    ~ResultScene()override;
-
-    SceneType Update() override;
-    void Draw() override;
+    ~ResultScene();
 private:
-    ResultSceneFlow* resultSceneFlow;
 };
 

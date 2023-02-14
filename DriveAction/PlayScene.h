@@ -7,10 +7,6 @@ class PlayScene final:
 {
 public:
     PlayScene();
-    ~PlayScene() override;
-
-    SceneType Update() override;
-    void Draw() override;
+    ~PlayScene() ;
 private:
-    PlaySceeneFlow* playSceneFlow;
 };

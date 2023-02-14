@@ -37,7 +37,7 @@ void TitleSceeneFlow::Update(float deltaTime)
     int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
     if (key & PAD_INPUT_10)
     {
-        isProccessEnd = true;
+        isEndProccess = true;
     }
 }
 
@@ -48,11 +48,6 @@ void TitleSceeneFlow::Draw()
     miniMap->DrawUI();
     switchUI->Draw();
 
-}
-
-bool TitleSceeneFlow::GetIsProccessEnd()
-{
-    return isProccessEnd;
 }
 
 void TitleSceeneFlow::InitMinimapData()

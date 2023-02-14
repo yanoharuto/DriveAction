@@ -7,12 +7,11 @@
 #include "SoundPlayer.h"
 PlaySceeneFlow::PlaySceeneFlow()
 {
-	soundPlayer = new SoundPlayer();
 	courceDataLoader = new CourceDataLoader();
 	nowProgress = PlaySceeneProgress::start;
 	stageManager = new StageManager(courceDataLoader);
 	racerManager = new RacerManager(racerNum,courceDataLoader);
-	camera = new PlaySceneCamera();
+	camera = new RaceCamera();
 	dataCreator = new CreatePosAndDirData();
 	countDown = new CountDown();
 	postGoalStaging = nullptr;
@@ -39,7 +38,6 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(conflictProcesser);
 	SAFE_DELETE(playerRelatedUI);
-	SAFE_DELETE(soundPlayer);
 	SAFE_DELETE(assetManager);
 	SAFE_DELETE(firingManager);
 }
@@ -100,7 +98,7 @@ void PlaySceeneFlow::Update(float deltaTime)
 			dataCreator->WritePosAndDir(cameraArgumentInfo.pos,cameraArgumentInfo.dir);
 			nowProgress = PlaySceeneProgress::playerGoal;
 			postGoalStaging = new PostGoalStaging();
-			scoreTime = new ScoreTime(raceTime);
+			scoreTime = new ResultScore(raceTime,playerRelatedInfo.rank);
 		}
 		break;
 	case PlaySceeneProgress::playerGoal:

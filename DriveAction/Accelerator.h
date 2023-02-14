@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "Item.h"
 /// <summary>
 /// ‰Á‘¬Œø‰Ê‚ÌƒAƒCƒeƒ€
@@ -22,7 +23,7 @@ public:
 private:
     int effectResource=-1;
     int playEffect = -1;
-    const std::string address = "data/effect/accelation.efkefc";
+    const std::string address = "data/effect/wind.efkefc";
     const float addEffecacyValue = 38.5f;
     const float setEffecacyTime = 1.8f;
 };

@@ -2,11 +2,11 @@
 #include "DxLib.h"
 #include "PlaySceneCamaeraArgumentInfo.h"
 //プレイヤークラスの前方宣言
-class PlaySceneCamera final
+class RaceCamera final
 {
 public:
-    PlaySceneCamera();
-    ~PlaySceneCamera();
+    RaceCamera();
+    ~RaceCamera();
 
     void Update(PlaySceneCameraArgumentInfo argumentInfo, float deltaTime);
     void Update(float deltaTime);

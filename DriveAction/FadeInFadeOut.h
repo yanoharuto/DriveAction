@@ -12,8 +12,8 @@ public:
     FadeMode GetFadeMode();
     void Draw();
 private:
-    float colorValue = 0;
-    const float fadeSpeed = 500.0f;
+    float fadeValue = 0;
+    const float fadeSpeed = 400.0f;
     FadeMode fadeMode;
 };
 

@@ -7,11 +7,8 @@ class TitleScene final :
 {
 public:
     TitleScene();
-    ~TitleScene()override;
-
-    SceneType Update() override;
-    void Draw() override;
+    ~TitleScene();
+    
 private:
-    TitleSceeneFlow* titleSceneFlow;
 };
 

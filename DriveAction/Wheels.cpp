@@ -42,11 +42,8 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 	//é‘Ç™ë¨Ç¢Ç∆ÇÊÇ≠âÒÇÈ
 	if (carInfo.velocitySize > 0)
 	{
-		wheelDriveSpeed = -carInfo.velocitySize * wheelDriveRotaPower;
-	}
-	else
-	{
-		wheelDriveSpeed = 0;
+		wheelDriveSpeed += -carInfo.velocitySize * wheelDriveRotaPower;
+		printfDx("%f\n", wheelDriveSpeed);
 	}
 	//É^ÉCÉÑÇåXÇØÇÈèàóù
 	if (carInfo.inputDir.handleDir == HandleDirection::right)
@@ -123,7 +120,6 @@ void Wheels::StartSmokeEffect(VECTOR pos)
 {
 	if (isStraightDash)
 	{
-
 		int playingEffectHandle = PlayEffekseer3DEffect(effectResourceHandle);
 		int effectSuccess = SetPosPlayingEffekseer3DEffect(playingEffectHandle, pos.x,pos.y,pos.z);
 	}

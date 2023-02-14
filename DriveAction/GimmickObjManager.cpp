@@ -40,12 +40,13 @@ GimmickObjManager::GimmickObjManager(ConflictProcesser* conflictProcesser,Cource
             }
             else
             {
-                addPos = VScale(VCross(dir, VGet(0, -1, 0)), i * 15);
+                addPos = VScale(VCross(VGet(0, 1, 0),dir), i * 15);
             }
             itemBox = new ItemBox(itemBoxModelResource, VAdd(pos,addPos), dir);
             conflictProcesser->AddConflictObject(itemBox);
             actorList.push_back(itemBox);
         }
+        dirIte++;
     }
     //ŠÛ‹˜
     sawModelResource = MV1LoadModel(obstacleModelAddress.c_str());

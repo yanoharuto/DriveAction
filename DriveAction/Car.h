@@ -8,6 +8,7 @@
 #include "NeighborhoodInfo.h"
 #include "InputDirection.h"
 #include "ItemInfo.h"
+#include "SoundPlayer.h"
 /// <summary>
 /// 車の加速とか減速とかするよ。どの向きに加速するかとかはwheelsからとってくるよ
 /// </summary>
@@ -111,9 +112,14 @@ protected:
 	/// タイヤに渡す情報の初期化
 	/// </summary>
 	void InitWheelArgumentCarInfo();
+	/// <summary>
+	/// 落下
+	/// </summary>
+	/// <param name="deltaTime"></param>
 	void Down(float deltaTime);
 	//チェックポイントに通過した回数
-	int checkCount = 0;
+
+	float itemAddSpeed = 0;
 	// 通常の加速.
 	const float accelAddSpeed = 38.4f;					
 	// 通常最高速度.
@@ -129,15 +135,17 @@ protected:
 	// ブレーキ時の減速.
 	const float breakDecel = 0.97f;				
 	// グリップの減速.
-	const float gripDecel = 0.54f;				
+	const float gripDecel = 0.24f;				
 	// グリップ力.
-	const float gripPower = 0.14f;				
+	const float gripPower = 0.08f;				
 	// 障害物にぶつかったときの減速率.
 	const float colideDecel = 0.2f;	  
 	//コースの外側に来た時の減速
 	const float outsideHitDecel = 0.28f;          
 	//車の幅
-	const float radiusValue = 3.8f;              
+	const float setRadius = 3.2f;
+	//車の高さ
+	const float carHeight = 3.2f;
 	//目的地に向かうときに曲がるか判断する
 	const float turnProccesAngularLine = 5.0f;  
 	//跳ね返り力の固定値
@@ -147,7 +155,7 @@ protected:
 	//最初のY座標
 	const float firstPosY = -4.0;
 	//速さ
-	float accelPower = 0;                        
+	float accelPower = 0;
 	//外的要因による速さ
 	float forcePower = 0;
 	//ぶつかった時の跳ね返り力
@@ -180,7 +188,6 @@ protected:
 	bool isOnGround;
 	//ダメージ
 	bool isDamage;
-
 	//タイヤ
 	Wheels* wheels;
 	//アイテムの効果
@@ -194,4 +201,3 @@ protected:
 	//タイヤに渡したい情報
 	WheelArgumentCarInfo wheelArgumentCarInfo = {};
 };
-

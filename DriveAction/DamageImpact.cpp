@@ -25,7 +25,6 @@ void DamageImpact::Update(float deltaTime)
     if (aliveTime > 0)
     {
         position = VAdd(position, VScale(velocity, deltaTime));
-        printfDx("%f\n",VSize(velocity));
         MV1SetPosition(modelHandle, position);
     }
     else

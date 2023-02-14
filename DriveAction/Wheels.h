@@ -90,7 +90,7 @@ private:
 	//右側タイヤの初期角度
 	const float firstRWheelRota = 180.0f;
 	//車の回転力
-	const float wheelDriveRotaPower = 30.0f;
+	const float wheelDriveRotaPower = 4.4f;
 	//タイヤが左右に傾く力
 	const float wheelCurvePower = 1.7f;
 	//この角度までタイヤは傾くよ

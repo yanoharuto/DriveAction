@@ -1,6 +1,6 @@
 #pragma once
+#include <string>
 #include "DamageObject.h"
-#include "ItemArgumentCarInfo.h"
 /// <summary>
 /// ”ò‚Ñ“¹‹ï
 /// </summary>

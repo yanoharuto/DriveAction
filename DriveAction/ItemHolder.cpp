@@ -1,8 +1,11 @@
+#include<iostream>
+#include<random>
 #include "ItemHolder.h"
 #include "Kite.h"
 #include "Accelerator.h"
 #include "DamageImpactLauncer.h"
 #include "Utility.h"
+
 ItemHolder::ItemHolder()
 {
     item = nullptr;
@@ -20,7 +23,12 @@ ItemHolder::~ItemHolder()
 /// <param name="deltaTime"></param>
 void ItemHolder::Update(DamageObjectGenerator* damageObjeGene,ItemArgumentCarInfo carInfo,float deltaTime)
 {
-    if (item != nullptr)
+    rouletteTime -= deltaTime;
+    if (rouletteTime < 0)
+    {
+        roulette = false;
+    }
+    if (item != nullptr && !roulette)
     {
         //アイテムの情報を所得
         ItemInfo itemInfo = item->GetItemInfo();
@@ -46,16 +54,27 @@ void ItemHolder::Update(DamageObjectGenerator* damageObjeGene,ItemArgumentCarInf
 /// <param name="rank"></param>
 void ItemHolder::SelectItem(int rank)
 {
-    if (item == nullptr)
+    if (!roulette && item == nullptr)
     {
-        if (rank == 1)
+        roulette = true;
+        rouletteTime = setRouletteTime;
+        std::random_device seed;
+        std::mt19937 engine(seed());
+        std::uniform_int_distribution<> dist{ 1, 3 };
+
+        switch (dist(engine))
         {
-            item = new DamageImpactLauncher();
-        }
-        else
-        {
+        case 1:
+            item = new Accelerator();
+            break;
+        case 2:
             item = new Kite();
+            break;
+        case 3:
+            item = new DamageImpactLauncher();
+            break;
         }
+
     }
 }
 /// <summary>
@@ -63,7 +82,7 @@ void ItemHolder::SelectItem(int rank)
 /// </summary>
 void ItemHolder::UseItem(ItemArgumentCarInfo carInfo)
 {
-    if (item != nullptr)
+    if (item != nullptr && !roulette)
     {
         item->ShowEffect(carInfo);
     }
@@ -73,7 +92,7 @@ void ItemHolder::UseItem(ItemArgumentCarInfo carInfo)
 /// </summary>
 void ItemHolder::ItemDraw()
 {
-    if (item != nullptr)
+    if (item != nullptr && !roulette)
     {
         if (item->GetItemInfo().itemSituation == ItemUseSituation::Useing)
         {
@@ -87,9 +106,15 @@ void ItemHolder::ItemDraw()
 /// <returns>何もアイテムを持ってないならTagはnon</returns>
 ItemInfo ItemHolder::GetItemInfo()
 {
-    if (item != nullptr)
+    if (item != nullptr && !roulette)
     {
         return item->GetItemInfo();
+    }
+    else if (roulette)
+    {
+        ItemInfo itemInfo = {};
+        itemInfo.itemTag = ItemTag::roulette;
+        return itemInfo;
     }
     else
     {

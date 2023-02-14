@@ -9,8 +9,9 @@ SoundPlayer::~SoundPlayer()
 {
     for (int i = 0; i < soundHandleMap.size(); i++)
     {
-        StopSoundMem((*soundHandleMap.begin()).second);
-        DeleteSoundMem((*soundHandleMap.begin()).second);
+        int success= StopSoundMem((*soundHandleMap.begin()).second);
+        success = DeleteSoundMem((*soundHandleMap.begin()).second);
+        success;
     }
 }
 
@@ -21,7 +22,7 @@ void SoundPlayer::SetListener(VECTOR pos, VECTOR front)
 
 void SoundPlayer::PlaySE(std::string soundFileName)
 {
-    if (soundHandleMap.contains(soundFileName))
+    //if (soundHandleMap.contains(soundFileName))
     {
         int handleKey = soundHandleMap[soundFileName];
 
@@ -33,7 +34,7 @@ void SoundPlayer::PlaySE(std::string soundFileName)
 void SoundPlayer::Play3DSE(std::string soundFileName)
 {
 
-    if (soundHandleMap.contains(soundFileName))
+    //if (soundHandleMap.contains(soundFileName))
     {
         int handleKey = soundHandleMap[soundFileName];
         PlaySoundMem(handleKey, DX_PLAYTYPE_BACK);
@@ -42,7 +43,7 @@ void SoundPlayer::Play3DSE(std::string soundFileName)
 
 void SoundPlayer::SetPosition3DSound(VECTOR pos, std::string soundFileName)
 {
-    if (soundHandleMap.contains(soundFileName))
+    //if (soundHandleMap.contains(soundFileName))
     {
         int handleKey = soundHandleMap[soundFileName];
         Set3DPositionSoundMem(pos, handleKey);
@@ -53,7 +54,7 @@ void SoundPlayer::SetPosition3DSound(VECTOR pos, std::string soundFileName)
 
 void SoundPlayer::PlayBGM(std::string soundFileName)
 {
-    if (soundHandleMap.contains(soundFileName))
+    //if (soundHandleMap.contains(soundFileName))
     {
         int handleKey = soundHandleMap[soundFileName];
 
@@ -65,7 +66,7 @@ void SoundPlayer::PlayBGM(std::string soundFileName)
 
 void SoundPlayer::StopSound(std::string soundFileName)
 {
-    if (soundHandleMap.contains(soundFileName))
+    //if (soundHandleMap.contains(soundFileName))
     {
         int handleKey = soundHandleMap[soundFileName];
         if (CheckSoundMem(handleKey)==1)
@@ -77,7 +78,7 @@ void SoundPlayer::StopSound(std::string soundFileName)
 
 void SoundPlayer::SetSoundVolume(int volumePal, std::string soundFileName)
 {
-    if (soundHandleMap.contains(soundFileName))
+    //if (soundHandleMap.contains(soundFileName))
     {
         int handleKey = soundHandleMap[soundFileName];
         if (volumePal != 0)
@@ -105,7 +106,7 @@ void SoundPlayer::Add3DSound(std::string soundFileName)
 
 void SoundPlayer::SetSoundRadius(int soundRadius, std::string soundFileName)
 {
-    if (soundHandleMap.contains(soundFileName))
+    //if (soundHandleMap.contains(soundFileName))
     {
         int handleKey = soundHandleMap[soundFileName];
         float radius = soundRadius;

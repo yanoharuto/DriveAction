@@ -57,7 +57,7 @@ void PlayerCar::Update(const float deltaTime, const bool outsideHitFlag,ItemInfo
 #ifdef _DEBUG
 	//printfDx("%f,%f\n", accelVec.x,accelVec.z);
 	//printfDx("position::%f,%f\n", position.x,position.z);
-	//printfDx("direction::%f,%f\n", direction.x,direction.z);
+	printfDx("direction::%f,%f\n", direction.x,direction.z);
 #endif
 }
 

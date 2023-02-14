@@ -1,17 +1,17 @@
-#include "PlaySceneCamera.h"
+#include "RaceCamera.h"
 #include "OriginalMath.h"
 
-PlaySceneCamera::PlaySceneCamera()
+RaceCamera::RaceCamera()
 {
     SetCameraNearFar(setNearValue, setFarValue);
     position = {};
 }
 
-PlaySceneCamera::~PlaySceneCamera()
+RaceCamera::~RaceCamera()
 {
 }
 
-void PlaySceneCamera::Update(PlaySceneCameraArgumentInfo argumentInfo,float deltaTime)
+void RaceCamera::Update(PlaySceneCameraArgumentInfo argumentInfo,float deltaTime)
 {
     //å¸Ç´ÇÃçXêV
     VECTOR tempDir = VScale(VSub(argumentInfo.dir, direction), cameraRotateSpeed * deltaTime);
@@ -28,6 +28,6 @@ void PlaySceneCamera::Update(PlaySceneCameraArgumentInfo argumentInfo,float delt
     
 }
 
-void PlaySceneCamera::Update(float deltaTime)
+void RaceCamera::Update(float deltaTime)
 {
 }

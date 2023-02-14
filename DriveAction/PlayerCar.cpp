@@ -61,6 +61,11 @@ void PlayerCar::Update(const float deltaTime, const bool outsideHitFlag,ItemInfo
 #endif
 }
 
+HandleDirection PlayerCar::GetHandleDirection()
+{
+	return wheelArgumentCarInfo.inputDir.handleDir;
+}
+
 void PlayerCar::Init()
 {
 	modelHandle = MV1LoadModel("data/model/Player/WhiteCar.mv1");

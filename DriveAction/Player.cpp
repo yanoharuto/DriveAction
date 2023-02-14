@@ -43,5 +43,6 @@ PlaySceneCameraArgumentInfo Player::GetCameraArgumentInfo()
     PlaySceneCameraArgumentInfo argumentInfo;
     argumentInfo.dir = playerCar->GetDir();
     argumentInfo.pos = playerCar->GetPos();
+    argumentInfo.handleDir = playerCar->GetHandleDirection();
     return argumentInfo;
 }

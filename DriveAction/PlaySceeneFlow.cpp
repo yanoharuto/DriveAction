@@ -59,7 +59,7 @@ void PlaySceeneFlow::Update(float deltaTime)
 		//カウントダウン
 	case PlaySceeneProgress::countDown:
 		countDown->Update(deltaTime);
-		camera->Update(racerManager->GetPlayerCarPosDir());
+		camera->Update(racerManager->GetPlayerCarPosDir(),deltaTime);
 		racerManager->RacerUpdate(0, stageManager->GetCircuit(),damageObjGene);
 		//カウントダウンが終わったら
 		if (countDown->CountDownEnd())
@@ -84,12 +84,13 @@ void PlaySceeneFlow::Update(float deltaTime)
 		playerRelatedUI->Update(playerRelatedInfo, deltaTime);
 		//カメラにプレイヤーの情報を渡す
 		cameraArgumentInfo = racerManager->GetPlayerCarPosDir();
+		//カメラの処理
+		camera->Update(cameraArgumentInfo, deltaTime);
 		//道順を書く
 		dataCreator->WriteWhereToTurn(cameraArgumentInfo.pos,cameraArgumentInfo.dir);
 		//ミニマップ
 		miniMap->Update(-cameraArgumentInfo.pos.x, cameraArgumentInfo.pos.z);
-		//カメラの処理
-		camera->Update(cameraArgumentInfo);
+		
 		/*if (key & PAD_INPUT_10)
 		{
 			dataCreator->WritePosAndDir(playerPos, racerManager->GetPlayerCar()->GetDir());

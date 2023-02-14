@@ -13,7 +13,7 @@ public:
     /// </summary>
     /// <param name="direction1"></param>
     /// <param name="direction2"></param>
-    /// <returns></returns>
+    /// <returns>ƒfƒOƒŠ[‚Å•Ô‚·</returns>
     float GetDegreeMisalignment(VECTOR direction1, VECTOR direction2)
     {
         float destinationDir = 0;

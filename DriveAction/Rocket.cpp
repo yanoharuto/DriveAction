@@ -1,6 +1,7 @@
 #include "Rocket.h"
-#include "EffekseerForDXLib.h"
+#include "EffectManager.h"
 #include "AssetManager.h"
+#include "EffekseerForDXLib.h"
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -14,14 +15,13 @@ Rocket::Rocket(ItemArgumentCarInfo carInfo)
     tag = ObjectTag::damageObject;
     bouncePower = setBouncePower;
     radius = setRadius;
-    effectResource = LoadEffekseerEffect("data/effect/bomb.efkefc", 1.0f);
+    EffectManager::LoadEffectManager(effectAddress, 1.0f);
     onGround = false;
 
 }
 
 Rocket::~Rocket()
 {
-    DeleteEffekseerEffect(effectResource);
 }
 /// <summary>
 /// 更新
@@ -49,6 +49,6 @@ void Rocket::Update(float deltaTime)
 void Rocket::ConflictProccess()
 {
     onGround = true;
-    playEffect = PlayEffekseer3DEffect(effectResource);
+    playEffect = EffectManager::GetPlayEffect3D(effectAddress);
     SetPosPlayingEffekseer3DEffect(playEffect, position.x, position.y, position.z);
 }

@@ -164,6 +164,7 @@
     <ClCompile Include="DamageImpact.cpp" />
     <ClCompile Include="DamageImpactLauncer.cpp" />
     <ClCompile Include="DamageObject.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="FiringItemManager.cpp" />
     <ClCompile Include="DamageObjectGenerator.cpp" />
     <ClCompile Include="ItemHolder.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="DamageImpact.h" />
     <ClInclude Include="DamageImpactLauncer.h" />
     <ClInclude Include="DamageObject.h" />
+    <ClInclude Include="EffectManager.h" />
     <ClInclude Include="FiringItemManager.h" />
     <ClInclude Include="DamageObjectGenerator.h" />
     <ClInclude Include="ItemHolder.h" />

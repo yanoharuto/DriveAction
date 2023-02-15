@@ -11,8 +11,8 @@ CPUCar::CPUCar()
 {
     Init();
 }
-CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos,SoundPlayer* soundPlayer)
-    :Car(firstPos,firstDir, destinationPos,soundPlayer)
+CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos)
+    :Car(firstPos,firstDir, destinationPos)
 {
     Init();
 }
@@ -30,9 +30,9 @@ CPUCar::~CPUCar()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param nadme="outsideHitFlag">コース外に出たか</param>
-void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo, SoundPlayer* soundPlayer)
+void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo)
 {
-    AutoDrive(deltaTime, outsideHitFlag,itemInfo, soundPlayer);
+    AutoDrive(deltaTime, outsideHitFlag,itemInfo);
 }
 
 

@@ -28,12 +28,12 @@ public:
 private:
     //背景のアドレス
     const std::string resultBackImgAddress = "data/result/resultGraph.png";
-    //背景のハンドル
-    int backGraphHandle;
+    
     //スコアのUI
     StringUI* scoreUI;
     StringUI* rankUI;
     //スペースキーの催促
     SwitchUI* switchUI;
+    ImgUI* backGround;
 };
 

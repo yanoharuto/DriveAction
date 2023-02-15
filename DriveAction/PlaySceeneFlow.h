@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "EffectManager.h"
 #include "CreatePosAndDirData.h"
 #include "SceneFlowBase.h"
 #include "SoundPlayer.h"
@@ -51,7 +52,7 @@ private:
     GimmickObjManager* gimmickObjManager;
     ConflictProcesser* conflictProcesser;
     PlayerRelatedUI* playerRelatedUI;
-    SoundPlayer* soundPlayer;
+    EffectManager* effectManager;
     CreatePosAndDirData* dataCreator;
     FiringItemManager* firingManager;
     DamageObjectGenerator* damageObjGene;
@@ -59,9 +60,8 @@ private:
     PlaySceeneProgress nowProgress;//今何の処理を行うか決める変数
     int countUINum;
     bool isSpaceInput = false;
-    const int minimapX = 1080;
-    const int minimapY = 450;
-    const int maxLap = 0;
+    
+    const int maxLap = 1;
     const int racerNum = 3;
     float raceTime = 0;
     

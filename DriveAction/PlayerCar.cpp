@@ -12,10 +12,10 @@ PlayerCar::PlayerCar()
 	Init();
 }
 
-PlayerCar::PlayerCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos,SoundPlayer* soundPlayer)
-	:Car(firstPos,firstDir,destinationPos,soundPlayer)
+PlayerCar::PlayerCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos)
+	:Car(firstPos,firstDir,destinationPos)
 {
-	soundPlayer->SetListener(position,VAdd(position,direction));
+	SoundPlayer::SetListener(position,VAdd(position,direction));
 	Init();
 }
 
@@ -32,7 +32,7 @@ PlayerCar::~PlayerCar()
 /// <summary>
 /// 更新
 /// </summary>
-void PlayerCar::Update(const float deltaTime, const bool outsideHitFlag,ItemInfo item,SoundPlayer* soundPlayer)
+void PlayerCar::Update(const float deltaTime, const bool outsideHitFlag,ItemInfo item)
 {
 
 	if (isDamage)
@@ -50,14 +50,14 @@ void PlayerCar::Update(const float deltaTime, const bool outsideHitFlag,ItemInfo
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	InitWheelArgumentCarInfo();
-	PlayDriveSound(wheelArgumentCarInfo.inputDir,soundPlayer);
+	PlayDriveSound(wheelArgumentCarInfo.inputDir);
 	// タイヤの処理
 	wheels->WheelUpdate(wheelArgumentCarInfo);
-	soundPlayer->SetListener(position, VAdd(position, direction));
+	SoundPlayer::SetListener(position, VAdd(position, direction));
 #ifdef _DEBUG
 	//printfDx("%f,%f\n", accelVec.x,accelVec.z);
 	//printfDx("position::%f,%f\n", position.x,position.z);
-	printfDx("direction::%f,%f\n", direction.x,direction.z);
+	//printfDx("direction::%f,%f\n", direction.x,direction.z);
 #endif
 }
 

@@ -26,6 +26,7 @@ public:
 private:
     //ロケットのモデルのアドレス
     std::string rocketModelAddress = "data/model/Item/Rocket/Rocket04_Grey.mv1";
+    std::string effectAddress = "data/effect/bomb.efkefc";
     //落下速度
     float fallingSpeed = 24.5f;
     //はじき返す力
@@ -36,8 +37,6 @@ private:
     const float setSize = 1.000f;
     //半径
     const float setRadius = 3.25f;
-    //エフェクトのリソース
-    int effectResource = -1;
     //動いているエフェクト
     int playEffect = -1;
     //地面に触れているか

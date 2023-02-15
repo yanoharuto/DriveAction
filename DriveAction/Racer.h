@@ -75,8 +75,6 @@ protected:
     CheckPoint* checkPoint;
     //ŽÔ
     Car* car;
-    //‰¹
-    SoundPlayer* soundPlayer;
     //ƒAƒCƒeƒ€‚ðŽæ‚Á‚Ä‚«‚Ä•Û‘¶‚·‚é
     ItemHolder* itemHolder;
 };

@@ -43,7 +43,6 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 	if (carInfo.velocitySize > 0)
 	{
 		wheelDriveSpeed += -carInfo.velocitySize * wheelDriveRotaPower;
-		printfDx("%f\n", wheelDriveSpeed);
 	}
 	//ƒ^ƒCƒ„‚ğŒX‚¯‚éˆ—
 	if (carInfo.inputDir.handleDir == HandleDirection::right)

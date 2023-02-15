@@ -4,7 +4,7 @@
 #include "Utility.h"
 #include "ConflictExamineResultInfo.h"
 #include "EffekseerForDXLib.h"
-
+#include "EffectManager.h"
 Car::Car()
 {
 	tag = ObjectTag::car;
@@ -13,12 +13,10 @@ Car::Car()
 	ModelSetMatrix();
 	destinationPos = {};
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
-	smokeEffectResource = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
-	conflictEffectResource = LoadEffekseerEffect("data/effect/conflict.efkefc", 5.0f);
 
 }
 
-Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,SoundPlayer* soundPlayer)
+Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos)
 {
 	position = firstPos;
 	position.y = firstPosY;
@@ -30,26 +28,23 @@ Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,SoundPlaye
 	ModelSetMatrix();
 	destinationPos = firstDestinationPos;
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
-	smokeEffectResource = LoadEffekseerEffect("data/effect/smoke.efkefc", 1.0f);
-	conflictEffectResource = LoadEffekseerEffect("data/effect/conflict.efkefc", 1.0f);
-	accelerationEffectResource = LoadEffekseerEffect("data/effect/accelation.efkefc", 30.0f);
 
-	soundPlayer->Add3DSound(drivingSEAddress);
-
-	soundPlayer->Add3DSound(carClashSEAddress);
-
-	soundPlayer->Add3DSound(carHornSEAddress);
+	EffectManager::LoadEffectManager(smokeEffectResource,1.0f);
+	EffectManager::LoadEffectManager(conflictEffectResource,1.0f);
+	EffectManager::LoadEffectManager(accelerationEffectResource,30.0f);
+	SoundPlayer::Load3DSound(drivingSEAddress);
+	SoundPlayer::Load3DSound(carClashSEAddress);
+	SoundPlayer::Load3DSound(carHornSEAddress);
 	
-	soundPlayer->Add3DSound(drivingSEAddress);
 	
 }
 
 Car::~Car()
 {
 	MV1DeleteModel(modelHandle);
-	DeleteEffekseerEffect(smokeEffectResource);
-	DeleteEffekseerEffect(conflictEffectResource);
-	DeleteEffekseerEffect(accelerationEffectResource);
+	SoundPlayer::StopSound(drivingSEAddress);
+	SoundPlayer::StopSound(carClashSEAddress);
+	SoundPlayer::StopSound(carHornSEAddress);
 	SAFE_DELETE(wheels);
 }
 /// <summary>
@@ -57,14 +52,14 @@ Car::~Car()
 /// </summary>
 /// <param name="deltaTime"></param>
 /// <param name="conflictInfo"></param>
-void Car::ConflictProccess(float deltaTime,const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer)
+void Car::ConflictProccess(float deltaTime,const ConflictExamineResultInfo conflictInfo)
 {
 	switch (conflictInfo.tag)
 	{
 	case ObjectTag::car:
 	case ObjectTag::stage:
 	case ObjectTag::obstacle:
-		ConflictReaction(deltaTime,conflictInfo,soundPlayer);
+		ConflictReaction(deltaTime,conflictInfo);
 		break;
 	case ObjectTag::goal:
 		
@@ -84,7 +79,7 @@ void Car::ConflictProccess(float deltaTime,const ConflictExamineResultInfo confl
 		damageReactionTime = setDamageReactionTime;
 		accelPower = 0;
 		forcePower = 0;
-		ConflictReaction(deltaTime, conflictInfo, soundPlayer);
+		ConflictReaction(deltaTime, conflictInfo);
 		break;
 	default:
 		break;
@@ -110,19 +105,19 @@ ItemArgumentCarInfo Car::GetItemArgumentInfo()
 /// </summary>
 /// <param name="conflictObjPos"></param>
 /// <param name="conflictObjRad"></param>
-void Car::ConflictReaction(float deltaTime, const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer)
+void Car::ConflictReaction(float deltaTime, const ConflictExamineResultInfo conflictInfo)
 {
-	soundPlayer->SetSoundVolume(MAX1BYTEVALUE, carClashSEAddress);
-	soundPlayer->SetSoundRadius(MAX1BYTEVALUE, carClashSEAddress);
-	soundPlayer->SetPosition3DSound(position, carClashSEAddress);
-	soundPlayer->Play3DSE(carClashSEAddress);
+	SoundPlayer::SetSoundVolume(MAX1BYTEVALUE, carClashSEAddress);
+	SoundPlayer::SetSoundRadius(MAX1BYTEVALUE, carClashSEAddress);
+	SoundPlayer::SetPosition3DSound(position, carClashSEAddress);
+	SoundPlayer::Play3DSE(carClashSEAddress);
 
-	soundPlayer->SetSoundVolume(MAX1BYTEVALUE, carHornSEAddress);
-	soundPlayer->SetSoundRadius(MAX1BYTEVALUE, carHornSEAddress);
-	soundPlayer->SetPosition3DSound(position, carHornSEAddress);
-	soundPlayer->Play3DSE(carHornSEAddress);
+	SoundPlayer::SetSoundVolume(MAX1BYTEVALUE, carHornSEAddress);
+	SoundPlayer::SetSoundRadius(MAX1BYTEVALUE, carHornSEAddress);
+	SoundPlayer::SetPosition3DSound(position, carHornSEAddress);
+	SoundPlayer::Play3DSE(carHornSEAddress);
 	//衝突エフェクト
-	int playingEffect = PlayEffekseer3DEffect(conflictEffectResource);
+	int playingEffect = EffectManager::GetPlayEffect3D(conflictEffectResource);
 	SetPosPlayingEffekseer3DEffect(playingEffect, position.x, position.y, position.z);
 	//衝突処理
 	accelPower -= accelPower * colideDecel;
@@ -161,6 +156,7 @@ void Car::UpdateVelocity(const VECTOR accelVec)
 	// ベロシティ加速計算.
 	// 上下方向にいかないようにベロシティを整える.
 	velocity = VGet(velocity.x, 0, velocity.z);	
+	
 }
 /// <summary>
 /// modelの描画場所を更新
@@ -194,11 +190,12 @@ void Car::ModelSetMatrix()
 	if (isDamage)
 	{
 		rota = damageReactionTime / setDamageReactionTime * 100;
-		rota *= 120.0f;
-
+		rota *= 75.0f;
+		
 	}
 	// 向きに合わせて回転.
 	MV1SetRotationZYAxis(modelHandle, direction, VGet(0.0f, 1.0f, 0.0f), 0.0f);
+
 	// モデルに向いてほしい方向に回転.
 	MATRIX tmpMat = MV1GetMatrix(modelHandle);
 	MATRIX rotYMat = MGetRotY((180.0f+rota) * RAGE);
@@ -210,9 +207,9 @@ void Car::ModelSetMatrix()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param name="outsideHitFlag">コース外に出たか</param>
-void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo, SoundPlayer* soundPlayer)
+void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo)
 {
-	
+	//落下
 	Down(deltaTime);
 	if (isDamage)
 	{
@@ -236,8 +233,6 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo i
 	InitWheelArgumentCarInfo();
 	//タイヤの更新
 	wheels->WheelUpdate(wheelArgumentCarInfo);
-	//走行時の音を鳴らす
-	PlayDriveSound(wheelArgumentCarInfo.inputDir,soundPlayer);
 	//速さによってはじき返す力を増やす
 	bouncePower = setBouncePower + GetTotalAccelPowerPercent() / 100;
 }
@@ -264,7 +259,7 @@ InputInfo Car::GetAutoDriveDirection()
 	//目的地までの距離
 	VECTOR tempVec = destinationDir; 
 	VECTOR between = VSub(VGet(destinationPos.x, 0, destinationPos.z), VGet(position.x, 0, position.z));
-	if (VSize(between) > 450)
+	if (VSize(between) > 200)
 	{
 		tempVec = between;
 	}
@@ -285,11 +280,14 @@ InputInfo Car::GetAutoDriveDirection()
 		{
 			inputInfo.handleDir = HandleDirection::left;
 		}
-
+		if (angular > breakeProccesAngularLine)//結構曲がる必要がある場所ならブレーキ
+		{
+			inputInfo.isBreake = true;
+		}
 	}
 	else
 	{
-
+		//曲がらなくていいならまっすぐに
 		inputInfo.handleDir = HandleDirection::straight;
 	}
 	
@@ -299,8 +297,7 @@ InputInfo Car::GetAutoDriveDirection()
 
 VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime)
 {
-	
-	if (!inputDir.nonInput)
+	if (!inputDir.nonInput && !inputDir.isBreake)
 	{
 		// 加速処理.
 		accelPower = accelPower > maxAccelSpeed ? maxAccelSpeed : accelPower + accelAddSpeed * deltaTime;
@@ -326,30 +323,33 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime
 		if (inputDir.isBreake)
 		{
 			accelPower -= accelPower * breakDecel * deltaTime;
+
 			if (accelPower < stopAccelLine)
 			{
 				accelPower = 0;
 			}
 		}
-		//入力が何もなかったら
-		else if (inputDir.nonInput)
+		else
 		{
-			accelPower -= accelPower * defaultDecel * deltaTime;
-			if (accelPower < stopAccelLine)
+			//入力が何もなかったら
+			if (inputDir.nonInput)
 			{
-				accelPower = 0;
+				accelPower -= accelPower * defaultDecel * deltaTime;
+				if (accelPower < stopAccelLine)
+				{
+					accelPower = 0;
+				}
 			}
-		}
-		//加速床で加速したときに少しずつ元に戻る
-		if (forcePower > 0)
-		{
-			forcePower -= forcePower * defaultDecel * deltaTime;
-			forcePower = forcePower > 0 ? forcePower : 0;
-		}
-		if (itemAddSpeed > 0)
-		{
-			itemAddSpeed -= itemAddSpeed * defaultDecel * deltaTime;
-			itemAddSpeed = itemAddSpeed > 0 ? itemAddSpeed : 0;
+			if (forcePower > 0)
+			{
+				forcePower -= forcePower * defaultDecel * deltaTime;
+				forcePower = forcePower > 0 ? forcePower : 0;
+			}
+			if (itemAddSpeed > 0)
+			{
+				itemAddSpeed -= itemAddSpeed * defaultDecel * deltaTime;
+				itemAddSpeed = itemAddSpeed > 0 ? itemAddSpeed : 0;
+			}
 		}
 	}
 	return VScale(direction, accelPower + forcePower + itemAddSpeed);
@@ -359,32 +359,31 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime
 /// </summary>
 /// <param name="inputDir"></param>
 /// <param name="soundPlayer"></param>
-void Car::PlayDriveSound(InputInfo inputDir, SoundPlayer* soundPlayer)
+void Car::PlayDriveSound(InputInfo inputDir )
 {
 	if (inputDir.isBreake)
-	{
-		soundPlayer->StopSound(drivingSEAddress);		
-		soundPlayer->SetPosition3DSound(position, breakeSEAddress);
-		if (!soundPlayer->IsPlaySound(breakeSEAddress))
+	{		
+		SoundPlayer::SetPosition3DSound(position, breakeSEAddress);
+		if (!SoundPlayer::IsPlaySound(breakeSEAddress))
 		{
-			soundPlayer->SetSoundRadius(MAX1BYTEVALUE, breakeSEAddress);
-			soundPlayer->SetSoundVolume(MAX1BYTEVALUE, breakeSEAddress);
-			soundPlayer->Play3DSE(breakeSEAddress);
+			SoundPlayer::SetSoundRadius(MAX1BYTEVALUE, breakeSEAddress);
+			SoundPlayer::SetSoundVolume(MAX1BYTEVALUE, breakeSEAddress);
+			SoundPlayer::Play3DSE(breakeSEAddress);
 		}
 	}
-	else if (!inputDir.nonInput)
+	else if(inputDir.nonInput)
 	{
-		soundPlayer->SetPosition3DSound(position, drivingSEAddress);
-		if (!soundPlayer->IsPlaySound(drivingSEAddress))
-		{
-			soundPlayer->SetSoundRadius(MAX1BYTEVALUE, drivingSEAddress);
-			soundPlayer->SetSoundVolume(MAX1BYTEVALUE, drivingSEAddress);
-			soundPlayer->Play3DSE(drivingSEAddress);
-		}
+		SoundPlayer::StopSound(drivingSEAddress);
 	}
 	else
 	{
-		soundPlayer->StopSound(drivingSEAddress);
+		SoundPlayer::SetPosition3DSound(position, drivingSEAddress);
+		if (!SoundPlayer::IsPlaySound(drivingSEAddress))
+		{
+			SoundPlayer::SetSoundRadius(MAX1BYTEVALUE, drivingSEAddress);
+			SoundPlayer::SetSoundVolume(MAX1BYTEVALUE, drivingSEAddress);
+			SoundPlayer::Play3DSE(drivingSEAddress);
+		}
 	}
 }
 

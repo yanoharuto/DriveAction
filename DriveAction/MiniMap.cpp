@@ -2,21 +2,18 @@
 #include "UIManager.h"
 #include "ImgUI.h"
 #include "PointUI.h"
-#include "Utility.h"
-MiniMap::MiniMap(float mapPosX,float mapPosY,std::string mapGraphAddress)
-{
 
-    minimapX = mapPosX;
-    minimapY = mapPosY;
+MiniMap::MiniMap(std::string mapGraphAddress)
+{
     UIData uiData;
-    uiData.x = mapPosX;
-    uiData.y = mapPosY;
+    uiData.x = minimapX;
+    uiData.y = minimapY;
     uiData.dataHandle = LoadGraph(mapGraphAddress.c_str(), true);
     miniMap = new ImgUI(mapSize, uiData);
     pointUI = new PointUI(playerColor, uiData, markerRadius);
     GetGraphSize(uiData.dataHandle,&minimapWidth, &minimapHeight);
-    markerBetweenScaleX = static_cast<float>(minimapWidth / 2) / minimapEdgeX * mapSize;
-    markerBetweenScaleZ = static_cast<float>(minimapHeight / 2) / minimapEdgeZ * mapSize;
+    markerSpeedX = static_cast<float>(minimapWidth / 2) / minimapEdgeX * mapSize;
+    markerSpeedZ = static_cast<float>(minimapHeight / 2) / minimapEdgeZ * mapSize;
 }
 
 MiniMap::~MiniMap()
@@ -27,8 +24,8 @@ MiniMap::~MiniMap()
 
 void MiniMap::Update(float playerPosX, float playerPosY)
 {
-    float x = minimapX + (playerPosX - mapStartPosX) * markerBetweenScaleX ;
-    float y = minimapY + (playerPosY - mapStartPosZ) * markerBetweenScaleZ ;
+    float x = minimapX + (playerPosX - mapStartPosX) * markerSpeedX ;
+    float y = minimapY + (playerPosY - mapStartPosZ) * markerSpeedZ ;
     pointUI->SetXY(x, y);
 }
 

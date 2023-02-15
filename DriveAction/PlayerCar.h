@@ -12,13 +12,13 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	PlayerCar();
-	PlayerCar(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos,SoundPlayer* soundPlayer);
+	PlayerCar(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos);
 	///デストラクタ
     ~PlayerCar();
     /// <summary>
     /// 更新（移動処理）
     /// </summary>
-	void Update(const float deltaTime, const bool outsideHitFlag,ItemInfo itemInfo,SoundPlayer* soundPlayer) override;
+	void Update(const float deltaTime, const bool outsideHitFlag,ItemInfo itemInfo) override;
 	HandleDirection GetHandleDirection();
 private:
 	void Init();

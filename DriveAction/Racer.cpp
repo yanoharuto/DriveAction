@@ -10,7 +10,6 @@ Racer::Racer()
 Racer::Racer(CircuitData circuitData)
 {
     checkPoint = new CheckPoint(circuitData);
-    soundPlayer = new SoundPlayer();
     itemHolder = new ItemHolder();
     rank = 0;
 }
@@ -18,7 +17,6 @@ Racer::Racer(CircuitData circuitData)
 Racer::~Racer()
 {
     SAFE_DELETE(checkPoint);
-    SAFE_DELETE(soundPlayer);
     SAFE_DELETE(itemHolder);
     SAFE_DELETE(car);
 }
@@ -61,7 +59,7 @@ void Racer::ConflictProcces(ConflictExamineResultInfo conflictResultInfo, float 
     }
     else
     {
-        car->ConflictProccess(deltaTime, conflictResultInfo,soundPlayer);
+        car->ConflictProccess(deltaTime, conflictResultInfo);
     }
 }
 
@@ -69,7 +67,7 @@ void Racer::CommonUpdate(float deltaTime, bool outsideHitFlag, DamageObjectGener
 {
     //車の更新
     ItemInfo itemInfo = itemHolder->GetItemInfo();
-    car->Update(deltaTime, outsideHitFlag, itemInfo, soundPlayer);
+    car->Update(deltaTime, outsideHitFlag, itemInfo);
     //アイテムの更新
     itemHolder->Update(damageObjGene, car->GetItemArgumentInfo(), deltaTime);
     //車の当たり判定情報
@@ -80,7 +78,7 @@ void Racer::CommonUpdate(float deltaTime, bool outsideHitFlag, DamageObjectGener
     if (conflictResultInfo.hitFlag)
     {
         //車に次の目的地を伝える
-        car->ConflictProccess(deltaTime, conflictResultInfo, soundPlayer);
+        car->ConflictProccess(deltaTime, conflictResultInfo);
     }
 }
 

@@ -7,16 +7,12 @@ Player::Player()
 Player::Player(CircuitData circuitData, VECTOR firstPos, VECTOR firstDir)
     :Racer(circuitData)
 {
-    playerCar = new PlayerCar(firstPos,firstDir,checkPoint->GetPos(), soundPlayer);
+    playerCar = new PlayerCar(firstPos,firstDir,checkPoint->GetPos());
     SetCarPointer(playerCar);
 }
 
 Player::~Player()
 {
-    SAFE_DELETE(checkPoint);
-    SAFE_DELETE(soundPlayer);
-    SAFE_DELETE(itemHolder);
-    SAFE_DELETE(car);
 }
 
 void Player::Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)

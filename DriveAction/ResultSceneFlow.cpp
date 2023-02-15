@@ -9,29 +9,29 @@
 
 ResultSceneFlow::ResultSceneFlow()
 {
-    backGraphHandle = LoadGraph(resultBackImgAddress.c_str());
+
     UIData scoreUIData = {};
     
     scoreUIData.x = SCREEN_WIDTH / 2;
     scoreUIData.y = SCREEN_HEIGHT / 2;
-    scoreUIData.dataHandle=CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
+    scoreUIData.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
     scoreUI = new StringUI(GetColor(200,200,100),scoreUIData);
     scoreUI->UpdateString(std::to_string(ResultScore::GetScoreTime()) + "秒でクリア");
+    scoreUIData.dataHandle = LoadGraph(resultBackImgAddress.c_str());
+    backGround = new ImgUI(1.0f,scoreUIData);
     switchUI = new SwitchUI();
     scoreUIData.y -= SCREEN_HEIGHT / 7;
     rankUI = new StringUI(GetColor(200,200,100), scoreUIData);
-    rankUI->UpdateString(std::to_string(ResultScore::GetPlayerRank())+"位！");
+    rankUI->UpdateString(std::to_string(ResultScore::GetPlayerRank()) + "位！");
+    
 }
 
 ResultSceneFlow::~ResultSceneFlow()
 {
-    if (backGraphHandle != -1)
-    {
-        DeleteGraph(backGraphHandle);
-    }
     SAFE_DELETE(switchUI);
     SAFE_DELETE(scoreUI);
     SAFE_DELETE(rankUI);
+    SAFE_DELETE(backGround);
 }
 
 void ResultSceneFlow::Update(float deltaTime)
@@ -46,7 +46,7 @@ void ResultSceneFlow::Update(float deltaTime)
 
 void ResultSceneFlow::Draw()
 {
-    DrawGraph(0, 0, backGraphHandle, false);
+    backGround->DrawUI();
     scoreUI->DrawLeftAlignedString();
     rankUI->DrawRightAlignedString();
     switchUI->Draw();

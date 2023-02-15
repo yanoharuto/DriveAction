@@ -24,17 +24,17 @@ public:
 	/// <param name="firstDir"></param>
 	/// <param name="destinationPos"></param>
 	/// <param name="soundPlayer"></param>
-	Car(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos,SoundPlayer* soundPlayer);
+	Car(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos);
     virtual ~Car();
 	/// <summary>
     /// 更新（移動処理）
     /// </summary>
-	virtual void Update(const float deltaTime, const bool outsideHitFlag,ItemInfo itemInfo,SoundPlayer* soundPlayer){};
+	virtual void Update(const float deltaTime, const bool outsideHitFlag,ItemInfo itemInfo){};
 	/// <summary>
 	/// 衝突処理
 	/// </summary>
 	/// <param name="conflictInfo">ぶつかったかオブジェクトの情報</param>
-	void ConflictProccess(float deltaTime, const ConflictExamineResultInfo conflictInfo, SoundPlayer* soundPlayer);
+	void ConflictProccess(float deltaTime, const ConflictExamineResultInfo conflictInfo);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -61,7 +61,7 @@ protected:
 	/// </summary>
 	/// <param name="conflictObjPos">ぶつかったオブジェクトの位置</param>
 	/// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
-	void ConflictReaction(float deltaTime, const ConflictExamineResultInfo conflictInfo,SoundPlayer* soundPlayer);
+	void ConflictReaction(float deltaTime, const ConflictExamineResultInfo conflictInfo);
 	/// <summary>
 	/// 車が攻撃を受けたら関数
 	/// </summary>
@@ -87,7 +87,7 @@ protected:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	/// <param name="outsideHitFlag"></param>
-	void AutoDrive(const float deltaTime, const bool outsideHitFlag ,ItemInfo itemInfo,SoundPlayer* soundPlayer);
+	void AutoDrive(const float deltaTime, const bool outsideHitFlag ,ItemInfo itemInfo);
 	/// <summary>
 	/// 運転方向を返す
 	/// </summary>
@@ -107,7 +107,7 @@ protected:
 	/// </summary>
 	/// <param name="inputDir"></param>
 	/// <param name="soundPlayer"></param>
-	void PlayDriveSound(InputInfo inputDir, SoundPlayer* soundPlayer);
+	void PlayDriveSound(InputInfo inputDir);
 	/// <summary>
 	/// タイヤに渡す情報の初期化
 	/// </summary>
@@ -117,8 +117,7 @@ protected:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	void Down(float deltaTime);
-	//チェックポイントに通過した回数
-
+	//アイテムで加速したときの速さ
 	float itemAddSpeed = 0;
 	// 通常の加速.
 	const float accelAddSpeed = 38.4f;					
@@ -129,15 +128,15 @@ protected:
 	//外的要因の速さ
 	const float addAccelForce = 8.0f;
 	//これ以下の速度になってたらaccelPowerを0にするよ
-	const float stopAccelLine = 5.0f;
+	const float stopAccelLine = 1.0f;
 	// なにもしない時の減速.
 	const float defaultDecel = 0.2f;			
 	// ブレーキ時の減速.
 	const float breakDecel = 0.97f;				
 	// グリップの減速.
-	const float gripDecel = 0.24f;				
+	const float gripDecel = 0.205f;
 	// グリップ力.
-	const float gripPower = 0.08f;				
+	const float gripPower = 0.1f;				
 	// 障害物にぶつかったときの減速率.
 	const float colideDecel = 0.2f;	  
 	//コースの外側に来た時の減速
@@ -147,7 +146,8 @@ protected:
 	//車の高さ
 	const float carHeight = 3.2f;
 	//目的地に向かうときに曲がるか判断する
-	const float turnProccesAngularLine = 5.0f;  
+	const float turnProccesAngularLine = 5.0f; 
+	const float breakeProccesAngularLine = 27.0f;
 	//跳ね返り力の固定値
 	const float setBouncePower = 1.0f;
 	//降りる速度
@@ -158,22 +158,23 @@ protected:
 	float accelPower = 0;
 	//外的要因による速さ
 	float forcePower = 0;
+	//衝突回数とかが多い時に使う
+	float penaltyCount = 0;
+	//
+	const float penaltyLine = 2.0f;
 	//ぶつかった時の跳ね返り力
 	float conflictObjBouncePower;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;
 	//ダメージを受けた時の操作不可能時間の合計
-	const float setDamageReactionTime = 1.2f;
+	const float setDamageReactionTime = 0.8f;
 	//煙のエフェクト
-	int smokeEffectResource = -1;
+	const std::string smokeEffectResource = "data/effect/smoke.efkefc";
 	//ぶつかった時のエフェクト
-	int conflictEffectResource = -1;
+	const std::string conflictEffectResource = "data/effect/conflict.efkefc";
 	//外的要因で早くなった時のエフェクト
-	int accelerationEffectResource = -1;
-	//加速時のエフェクト
-	int accelerationPlayEffect = -1;
-	//デバッグ用
-	int count = 0;
+	const std::string accelerationEffectResource = "data/effect/accelation.efkefc";
+	
 	//止まった時の効果音
 	const std::string breakeSEAddress = "data/sound/brake.mp3";
 	//ぶつかった時の効果音

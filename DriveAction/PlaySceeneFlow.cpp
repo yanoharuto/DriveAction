@@ -5,6 +5,7 @@
 #include "ImgUI.h"
 #include "StringUI.h"
 #include "SoundPlayer.h"
+
 PlaySceeneFlow::PlaySceeneFlow()
 {
 	courceDataLoader = new CourceDataLoader();
@@ -15,13 +16,14 @@ PlaySceeneFlow::PlaySceeneFlow()
 	dataCreator = new CreatePosAndDirData();
 	countDown = new CountDown();
 	postGoalStaging = nullptr;
-	miniMap = new MiniMap(minimapX,minimapY, courceDataLoader->GetMiniMapImgAddress());
+	miniMap = new MiniMap(courceDataLoader->GetMiniMapImgAddress());
 	conflictProcesser = new ConflictProcesser();
 	gimmickObjManager = new GimmickObjManager(conflictProcesser,courceDataLoader);
 	playerRelatedUI = new PlayerRelatedUI(maxLap);
 	assetManager = new AssetManager();
 	firingManager = new FiringItemManager();
 	damageObjGene = new DamageObjectGenerator(conflictProcesser,firingManager);
+	effectManager = new EffectManager();
 }
 
 PlaySceeneFlow::~PlaySceeneFlow()
@@ -40,6 +42,7 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(playerRelatedUI);
 	SAFE_DELETE(assetManager);
 	SAFE_DELETE(firingManager);
+	SAFE_DELETE(effectManager);
 }
 
 void PlaySceeneFlow::Update(float deltaTime)

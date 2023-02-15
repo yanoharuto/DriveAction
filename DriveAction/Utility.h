@@ -8,8 +8,8 @@
 //エラーウィンドウ
 #define ERROR_MSG(str){MessageBox(NULL,TEXT(str),TEXT("Error"),MB_OK|MB_ICONERROR);}
 
-#define SCREEN_WIDTH 1240
+#define SCREEN_WIDTH 1920
 
-#define SCREEN_HEIGHT 780
+#define SCREEN_HEIGHT 1080
 
 #define MAX1BYTEVALUE 255

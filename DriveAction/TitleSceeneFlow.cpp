@@ -17,6 +17,7 @@ TitleSceeneFlow::TitleSceeneFlow()
     uiData.x = SCREEN_WIDTH/2;
     uiData.y = SCREEN_HEIGHT / 2;
     uiData.dataHandle = LoadGraph("data/title/titleBackGround.jpg");
+
     backGround = new ImgUI(1,uiData);
 }
 

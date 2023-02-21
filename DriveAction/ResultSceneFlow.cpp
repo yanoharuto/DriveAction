@@ -10,20 +10,29 @@
 ResultSceneFlow::ResultSceneFlow()
 {
 
-    UIData scoreUIData = {};
+    UIData uidata = {};
     
-    scoreUIData.x = SCREEN_WIDTH / 2;
-    scoreUIData.y = SCREEN_HEIGHT / 2;
-    scoreUIData.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
-    scoreUI = new StringUI(GetColor(200,200,100),scoreUIData);
+    uidata.x = SCREEN_WIDTH / 2;
+    uidata.y = SCREEN_HEIGHT / 2;
+    
+    //背景
+    uidata.dataHandle = LoadGraph(resultBackImgAddress.c_str());
+    backGround = new ImgUI(2.0f, uidata);
+
+    //タイム
+    uidata.x = SCREEN_WIDTH / 20 * 8;
+    uidata.dataHandle = CreateFontToHandle("BIZ UDゴシック", 64, 3, DX_FONTTYPE_NORMAL);
+    scoreUI = new StringUI(GetColor(200,200,100),uidata);
     scoreUI->UpdateString(std::to_string(ResultScore::GetScoreTime()) + "秒でクリア");
-    scoreUIData.dataHandle = LoadGraph(resultBackImgAddress.c_str());
-    backGround = new ImgUI(1.0f,scoreUIData);
-    switchUI = new SwitchUI();
-    scoreUIData.y -= SCREEN_HEIGHT / 7;
-    rankUI = new StringUI(GetColor(200,200,100), scoreUIData);
+
+    //順位
+    uidata.dataHandle = CreateFontToHandle("BIZ UDゴシック", 96, 3, DX_FONTTYPE_NORMAL);
+    uidata.y = SCREEN_HEIGHT / 20 * 8;
+    uidata.x = SCREEN_WIDTH / 20 * 8;
+    rankUI = new StringUI(GetColor(200,200,100), uidata);
     rankUI->UpdateString(std::to_string(ResultScore::GetPlayerRank()) + "位！");
-    
+
+    switchUI = new SwitchUI();
 }
 
 ResultSceneFlow::~ResultSceneFlow()

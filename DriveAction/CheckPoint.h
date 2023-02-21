@@ -34,6 +34,9 @@ public:
     /// <param name="carPos"></param>
     /// <returns></returns>
     bool IsTransitCheckPointCar(VECTOR pos,VECTOR dir,VECTOR carPos);
+    VECTOR GetLastPos();
+    VECTOR GetLastDir();
+    VECTOR GetNextCheckLineNorm();
     /// <summary>
     /// ゴールした回数を返す
     /// </summary>
@@ -48,7 +51,6 @@ public:
     float GetCheckPointDistance();
     bool HitCheckConflict(HitCheckExamineObjectInfo objInfo) override;
 private:
-
     //サーキットのデータ
     CircuitData cPParam;
     //positionからこれだけ近かったらゴール
@@ -58,7 +60,7 @@ private:
     //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
     const float dirJugeLine = 0.8f;
     //チェックポイントのベクターを調べる回数
-    const int checkPointExamineCount = 4;
+    const int checkPointExamineCount = 15;
     //通過した回数
     int transitCheckPointCount = 0;
     //ゴールした回数

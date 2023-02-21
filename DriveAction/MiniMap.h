@@ -7,9 +7,7 @@
 class MiniMap
 {
 public:
-    MiniMap( std::string mapGraphAddress);
-    MiniMap() {
-    };
+    MiniMap();
     ~MiniMap();
     void Update(float playerPosX, float playerPosY);
     void Draw();
@@ -26,11 +24,13 @@ private:
     const float minimapEdgeX = 1350;
     const float minimapEdgeZ = 1350;
     int mapUINum = 0;
-    int minimapX = SCREEN_WIDTH / 15 * 13;
-    int minimapY = SCREEN_HEIGHT / 2;
+    int minimapX = SCREEN_WIDTH / 20 * 17;
+    int minimapY = SCREEN_HEIGHT / 20 * 9.5f;
     int minimapWidth = 0;
     int minimapHeight = 0;
-    
+
+    //ミニマップの画像のアドレス
+    const std::string miniMapAddress = "/Asset/CircuitMap.png";
     const float markerRadius = 15.0f;
     ImgUI* miniMap;
     PointUI* pointUI;

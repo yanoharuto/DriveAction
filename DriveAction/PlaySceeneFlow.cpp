@@ -8,6 +8,7 @@
 
 PlaySceeneFlow::PlaySceeneFlow()
 {
+	SoundPlayer::LoadSound(clapSE);
 	courceDataLoader = new CourceDataLoader();
 	nowProgress = PlaySceeneProgress::start;
 	stageManager = new StageManager(courceDataLoader);
@@ -16,7 +17,7 @@ PlaySceeneFlow::PlaySceeneFlow()
 	dataCreator = new CreatePosAndDirData();
 	countDown = new CountDown();
 	postGoalStaging = nullptr;
-	miniMap = new MiniMap(courceDataLoader->GetMiniMapImgAddress());
+	miniMap = new MiniMap(courceDataLoader->GetStageDataGenericAddress());
 	conflictProcesser = new ConflictProcesser();
 	gimmickObjManager = new GimmickObjManager(conflictProcesser,courceDataLoader);
 	playerRelatedUI = new PlayerRelatedUI(maxLap);
@@ -87,25 +88,30 @@ void PlaySceeneFlow::Update(float deltaTime)
 		cameraArgumentInfo = racerManager->GetPlayerCarPosDir();
 		//カメラの処理
 		camera->Update(cameraArgumentInfo, deltaTime);
-		//道順を書く
-		dataCreator->WriteWhereToTurn(cameraArgumentInfo.pos,cameraArgumentInfo.dir);
 		//ミニマップ
 		miniMap->Update(-cameraArgumentInfo.pos.x, cameraArgumentInfo.pos.z);
 		
-		/*if (key & PAD_INPUT_10)
-		{
-			dataCreator->WritePosAndDir(playerPos, racerManager->GetPlayerCar()->GetDir());
-		}*/
 		if (playerRelatedInfo.lap == maxLap)//レース終了
 		{
-			dataCreator->WritePosAndDir(cameraArgumentInfo.pos,cameraArgumentInfo.dir);
 			nowProgress = PlaySceeneProgress::playerGoal;
 			postGoalStaging = new PostGoalStaging();
 			scoreTime = new ResultScore(raceTime,playerRelatedInfo.rank);
+			SoundPlayer::Play2DSE(clapSE);
 		}
 		break;
 	case PlaySceeneProgress::playerGoal:
-		
+		//レーサーの処理
+		racerManager->RacerUpdate(deltaTime, stageManager->GetCircuit(), damageObjGene);
+		racerManager->RacerConflictProcces(conflictProcesser, stageManager->GetCircuit(), deltaTime);
+		racerManager->RacerRankUpdate();
+		//投擲の更新
+		firingManager->Update(deltaTime);
+		firingManager->CircuitTrackConflictProccess(stageManager->GetCircuit());
+		//カメラにプレイヤーの情報を渡す
+		cameraArgumentInfo = racerManager->GetPlayerCarPosDir();
+		//カメラの処理
+		camera->Update(cameraArgumentInfo, deltaTime);
+
 		if (postGoalStaging->Update(deltaTime))
 		{
 			nowProgress = PlaySceeneProgress::end;

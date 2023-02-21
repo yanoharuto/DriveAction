@@ -28,7 +28,8 @@ void ItemHolder::Update(DamageObjectGenerator* damageObjeGene,ItemArgumentCarInf
     {
         roulette = false;
     }
-    if (item != nullptr && !roulette)
+
+    if (item != nullptr && !roulette) 
     {
         //ƒAƒCƒeƒ€‚Ìî•ñ‚ðŠ“¾
         ItemInfo itemInfo = item->GetItemInfo();
@@ -60,18 +61,18 @@ void ItemHolder::SelectItem(int rank)
         rouletteTime = setRouletteTime;
         std::random_device seed;
         std::mt19937 engine(seed());
-        std::uniform_int_distribution<> dist{ 1, 3 };
-
+        std::uniform_int_distribution<> dist{1,rank };
         switch (dist(engine))
         {
         case 1:
-            item = new Accelerator();
+            item = new DamageImpactLauncher();
             break;
         case 2:
-            item = new Kite();
+            item = new Accelerator();
             break;
         case 3:
-            item = new DamageImpactLauncher();
+        case 4:
+            item = new Kite();
             break;
         }
 

@@ -10,10 +10,10 @@ LapUI::LapUI(int maxLap)
 {
     maxLapString = std::to_string(maxLap);
     UIData data = {};
-    data.x = SCREEN_WIDTH / 15;
-    data.y = SCREEN_HEIGHT / 24;
+    data.x = SCREEN_WIDTH / 20 * 14.5f;
+    data.y = SCREEN_HEIGHT / 20 * 2.5f;
     data.dataHandle = CreateFontToHandle("BIZ UDÉSÉVÉbÉN", 64, 3, DX_FONTTYPE_NORMAL);
-    lap = new StringUI(GetColor(255, 255, 255), data);
+    lap = new StringUI(GetColor(40, 40, 40), data);
 }
 
 LapUI::~LapUI()

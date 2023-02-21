@@ -53,7 +53,7 @@ ConflictExamineResultInfo CheckPoint::CheckPointUpdate(HitCheckExamineObjectInfo
         count = count > vecSize ? vecSize : count;
         VECTOR pos = GetArgumentCountVector(cPParam.positionVec.begin(), count);
         VECTOR dir = GetArgumentCountVector(cPParam.directionVec.begin(), count);
-        //通過したときは外積のYがプラスになる
+        //通過したか判定する
         if (IsTransitCheckPointCar(pos, dir, carPos))
         {
             //チェックポイント通過回数加算
@@ -84,21 +84,41 @@ ConflictExamineResultInfo CheckPoint::CheckPointUpdate(HitCheckExamineObjectInfo
 
 bool CheckPoint::IsTransitCheckPointCar(VECTOR pos, VECTOR dir, VECTOR carPos)
 {
-    //startPosからendPosまでの間を通過処理
+    
     VECTOR rightEdge = VAdd(VScale(VCross(dir, VGet(0, 1, 0)), goalTapeHalfLength), pos);
     VECTOR leftEdge = VAdd(VScale(VCross(dir, VGet(0, -1, 0)), goalTapeHalfLength), pos);
-    //線分
+    //右端と左端を繋げ単位化
     VECTOR normLineSegment = VNorm(VSub(rightEdge,leftEdge));
+    //左端から車までの距離
     VECTOR leftEdgeAndCarBetween = VSub(carPos, leftEdge);
+    //チェックポイントまでの距離を更新
     VECTOR tempVec = VScale(normLineSegment, VDot(normLineSegment, leftEdgeAndCarBetween));
     checkPointDistance = VSize(VSub(tempVec, leftEdgeAndCarBetween));
-
+    //通過したら外積のYが0より大きくなる。ある程度近寄っている必要もある
     if (VCross(normLineSegment, leftEdgeAndCarBetween).y > 0 && checkPointDistance < radius)
     {
         return true;
     }
     return false;
 }
+
+VECTOR CheckPoint::GetLastPos()
+{
+    return GetArgumentCountVector(cPParam.positionVec.begin(), transitCheckPointCount - 1);
+}
+
+VECTOR CheckPoint::GetLastDir()
+{
+    return GetArgumentCountVector(cPParam.directionVec.begin(), transitCheckPointCount - 1);
+}
+
+VECTOR CheckPoint::GetNextCheckLineNorm()
+{
+    VECTOR rightEdge = VAdd(VScale(VCross(direction, VGet(0, 1, 0)), goalTapeHalfLength), position);
+    VECTOR leftEdge = VAdd(VScale(VCross(direction, VGet(0, -1, 0)), goalTapeHalfLength), position);
+    return VNorm(VSub(rightEdge, leftEdge));
+}
+
 
 /// <summary>
 /// ゴールした回数を返す

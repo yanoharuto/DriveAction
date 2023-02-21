@@ -1,15 +1,18 @@
 #include "Accelerator.h"
+#include "OriginalMath.h"
 #include "EffekseerForDXLib.h"
+#include "EffectManager.h"
 Accelerator::Accelerator()
 {
     effecacyTime = setEffecacyTime;
     itemTag = ItemTag::accelerator;
-    effectResource = LoadEffekseerEffect(address.c_str(), 30.0f);
+    EffectManager::LoadEffectManager(effectAddress, 30.0f);
 }
 
 Accelerator::~Accelerator()
 {
-    DeleteEffekseerEffect(effectResource);
+    StopEffekseer3DEffect(playEffect);
+    DeleteEffekseerEffect(playEffect);
 }
 
 void Accelerator::Update(float deltaTime,ItemArgumentCarInfo carInfo)
@@ -21,10 +24,9 @@ void Accelerator::Update(float deltaTime,ItemArgumentCarInfo carInfo)
         VECTOR pos = VAdd(carInfo.position, VScale(carInfo.direction, carInfo.radius));
         SetPosPlayingEffekseer3DEffect(playEffect, pos.x, pos.y, pos.z);
         float rota = VDot(VNorm(VGet(1, 0, 0)), VNorm(carInfo.direction));
-        //SetRotationPlayingEffekseer3DEffect(playEffect, 0, acosf(rota), 0);
+        SetRotationPlayingEffekseer3DEffect(playEffect, 0, acosf(rota) * RAGE, 0);
         if (effecacyTime < 0)
         {
-            StopEffekseer3DEffect(playEffect);
             useSituation = ItemUseSituation::DoneUsing;
         }
     }
@@ -38,7 +40,7 @@ void Accelerator::ShowEffect(ItemArgumentCarInfo carInfo)
 {
     if (useSituation == ItemUseSituation::nonUse)
     {
-        playEffect = IsEffekseer3DEffectPlaying(effectResource);
+        playEffect = EffectManager::GetPlayEffect3D(effectAddress);
         SetPosPlayingEffekseer3DEffect(playEffect, carInfo.position.x, carInfo.position.y, carInfo.position.z);
         useSituation = ItemUseSituation::Useing;
     }

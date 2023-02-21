@@ -65,11 +65,7 @@ public:
     /// 車乗りたち同士でぶつかってないか調べる
     /// </summary>
     void RacerConflictProcces(ConflictProcesser* conflictProcesser, CircuitTrack* circuit, float deltaTime);
-    /// <summary>
-    /// プレイヤーのゴールした回数を返す
-    /// </summary>
-    /// <returns></returns>
-    int GetPlayerGoalCount();
+    
 
     /// <summary>
     /// プレイヤーの情報を渡す
@@ -90,5 +86,5 @@ private:
     //当たってるかどうか調べる
     HitChecker hitChecker;
     //プレイヤーの情報
-    Player* player;
+    Player* player=nullptr;
 };

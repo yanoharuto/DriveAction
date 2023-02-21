@@ -6,21 +6,20 @@
 #include "ResultScene.h"
 #include "Utility.h"
 #include "UserInput.h"
-
+#include "Broom.h"
 SceneBase* MakeScene(SceneType _NowSceneType);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	ChangeWindowMode(true);
-	//描画先を裏画面に変更する。
-	SetDrawScreen(DX_SCREEN_BACK);
 
 	// DirectX11を使用するようにする。(DirectX9も可、一部機能不可)
 	// Effekseerを使用するには必ず設定する。
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
-	int width = SCREEN_WIDTH;
-	int height = SCREEN_HEIGHT;
-	// 画面モードのセット.
-	SetGraphMode(width, height, 16);
+
+	// 画面の解像度と色ビット深度を設定
+	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32);
+
+
 	// １メートルに相当する値を設定する
 	Set3DSoundOneMetre(16.0f);
 	if (DxLib_Init() == -1)		// ＤＸライブラリ初期化処理
@@ -43,7 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SceneBase* scene = new TitleScene;
 
 	UserInput* userInput = new UserInput;
-
+	Broom* broom = new Broom;
 	//ゲームループ エスケープキーを押したら終了
 	while (ProcessMessage() == 0 && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
@@ -71,7 +70,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//直前のシーンを記録
 		prevSceneType = nowSceneType;
 	}
-
+	SAFE_DELETE(broom);
+	SAFE_DELETE(scene);
 	Effect_Finalize();
 
 	DxLib_End();				// ＤＸライブラリ使用の終了処理

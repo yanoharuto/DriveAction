@@ -2,6 +2,7 @@
 #include "EffectManager.h"
 #include "AssetManager.h"
 #include "EffekseerForDXLib.h"
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -22,6 +23,8 @@ Rocket::Rocket(ItemArgumentCarInfo carInfo)
 
 Rocket::~Rocket()
 {
+    MV1DeleteModel(modelHandle);
+    DeleteEffekseerEffect(playEffect);
 }
 /// <summary>
 /// 更新

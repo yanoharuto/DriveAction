@@ -25,8 +25,8 @@ public:
     void ConflictProccess()override;
 private:
     //ロケットのモデルのアドレス
-    std::string rocketModelAddress = "data/model/Item/Rocket/Rocket04_Grey.mv1";
-    std::string effectAddress = "data/effect/bomb.efkefc";
+    const std::string rocketModelAddress = "data/model/Item/Rocket/Rocket04_Grey.mv1";
+    const std::string effectAddress = "bomb.efkefc";
     //落下速度
     float fallingSpeed = 24.5f;
     //はじき返す力

@@ -1,5 +1,7 @@
 #include "ResultScore.h"
 #include"Timer.h"
+#include <math.h>
+#include <iomanip>
 static float scoreTime = 0.0f;
 static int playerRank = 0.0f;
 ResultScore::ResultScore()
@@ -8,7 +10,7 @@ ResultScore::ResultScore()
 
 ResultScore::ResultScore(float timer, int rank)
 {
-    scoreTime = timer;
+    scoreTime = round(timer * 100) / 100;
     playerRank = rank;
 }
 

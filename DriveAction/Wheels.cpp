@@ -1,15 +1,31 @@
 #include "Wheels.h"
 #include "EffekseerForDXLib.h"
 #include <math.h>
+#include "EffectManager.h"
+#include "OriginalMath.h"
+#include "AssetManager.h"
+//左側タイヤの初期角度
+static const float firstLWheelRota = 0.0f;
+//右側タイヤの初期角度
+static const float firstRWheelRota = 180.0f;
+//車の回転力
+static const float wheelDriveRotaPower = 4.4f;
+//タイヤが左右に傾く力
+static const float wheelCurvePower = 1.7f;
+//この角度までタイヤは傾くよ
+static const float maxWheelRotaY = 45.5f;
+//進行方向に影響するまでに必要なタイヤの角度
+static const float rotaCalculationLine = 1.2f;
+
 Wheels::Wheels(const WheelArgumentCarInfo InitInfo)
 {
-	modelHandle= MV1LoadModel("data/model/Player/Wheel.MV1");
+	modelHandle= AssetManager::Get3DModelAssetHandle(wheelAddress);
 	carInfo = InitInfo;
 	InitWheel(lFWheel, modelHandle, VGet(-fWheelPos.x, fWheelPos.y, -fWheelPos.z), firstLWheelRota);
 	InitWheel(lBWheel, modelHandle, VGet(bWheelPos.x, fWheelPos.y, -fWheelPos.z), firstLWheelRota);
 	InitWheel(rBWheel, modelHandle, VGet(bWheelPos.x, fWheelPos.y, fWheelPos.z), firstRWheelRota);
 	InitWheel(rFWheel, modelHandle, VGet(-fWheelPos.x, fWheelPos.y, fWheelPos.z), firstRWheelRota);
-	effectResourceHandle = LoadEffekseerEffect("data/effect/smoke.efkefc", 0.4f);
+	EffectManager::LoadEffectManager(smokeAddress, 0.4f);
 }
 
 Wheels::~Wheels()
@@ -19,8 +35,7 @@ Wheels::~Wheels()
 	MV1DeleteModel(rFWheel.modelHandle);
 	MV1DeleteModel(lBWheel.modelHandle);
 	MV1DeleteModel(rBWheel.modelHandle);
-	// エフェクトリソースを削除する。(Effekseer終了時に破棄されるので削除しなくてもいい)
-	DeleteEffekseerEffect(effectResourceHandle);
+	StopEffekseer3DEffect(playEffect);
 }
 
 void Wheels::Draw()
@@ -50,7 +65,7 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 		wheelEffectPos.x = lBWheel.matrix.m[3][0];
 		wheelEffectPos.y = lBWheel.matrix.m[3][1];
 		wheelEffectPos.z = lBWheel.matrix.m[3][2];
-		StartSmokeEffect(wheelEffectPos);
+		SmokeEffectUpdate(wheelEffectPos);
 		
 		isStraightDash = false;
 		if (wheelDriveRota < maxWheelRotaY)
@@ -69,7 +84,7 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 		wheelEffectPos.x = rBWheel.matrix.m[3][0];
 		wheelEffectPos.y = rBWheel.matrix.m[3][1];
 		wheelEffectPos.z = rBWheel.matrix.m[3][2];
-		StartSmokeEffect(wheelEffectPos);
+		SmokeEffectUpdate(wheelEffectPos);
 		
 		isStraightDash = false;
 		if (wheelDriveRota > -maxWheelRotaY)
@@ -115,13 +130,14 @@ float Wheels::GetMoveDirTheta(const float velocitySize)
 /// 煙のエフェクトが出る
 /// </summary>
 /// <param name="pos"></param>
-void Wheels::StartSmokeEffect(VECTOR pos)
+void Wheels::SmokeEffectUpdate(VECTOR pos)
 {
 	if (isStraightDash)
 	{
-		int playingEffectHandle = PlayEffekseer3DEffect(effectResourceHandle);
-		int effectSuccess = SetPosPlayingEffekseer3DEffect(playingEffectHandle, pos.x,pos.y,pos.z);
+		playEffect = EffectManager::GetPlayEffect3D(smokeAddress);
+		SetPosPlayingEffekseer3DEffect(playEffect, pos.x, pos.y, pos.z);
 	}
+	
 }
 void Wheels::AllSetWheelMatrix()
 {
@@ -145,11 +161,11 @@ float Wheels::GetRotationRadius(const float firstWheelRota)
 	if (fabsf(wheelDriveRota) > rotaCalculationLine)
 	{
 		//タイヤの角度をタンジェントに
-		float rota = tan(static_cast<double> (fabsf(wheelDriveRota)) * rage);
+		float rota = tan(static_cast<double> (fabsf(wheelDriveRota)) * RAGE);
 		//回転半径を出す
 		float radius = (fWheelPos.x + bWheelPos.x) / rota;
 		//車の向きに後ろタイヤをY軸分回転させる
-		VECTOR bWDir = VTransform(carInfo.direction, MGetRotY((firstWheelRota) * rage));
+		VECTOR bWDir = VTransform(carInfo.direction, MGetRotY((firstWheelRota) * RAGE));
 		//後ろタイヤの横向きを出す
 		bWDir = VNorm(VCross(bWDir, VGet(0, 1, 0)));
 		//回転半径の中心座標を出す
@@ -186,7 +202,7 @@ void Wheels::SetWheelMatrix(Wheel& wheel, const float rotaX, const float rotaY)
 	//タイヤの位置を車の向きに合わせる
 	MATRIX wheelPos = MMult(carInfo.matrix, MGetTranslate(WheelGetPos(wheel)));
 
-	MATRIX wheelRota = MMult(MGetRotX(rotaX * rage), MGetRotY(rotaY * rage));
+	MATRIX wheelRota = MMult(MGetRotX(rotaX * RAGE), MGetRotY(rotaY * RAGE));
 	wheel.matrix = MMult(wheelRota, wheelPos);
 	MV1SetMatrix(wheel.modelHandle, wheel.matrix);
 }
@@ -204,6 +220,6 @@ void Wheels::InitWheel(Wheel& wheel, int DuplicateSourceModel, VECTOR pos, float
 	VECTOR wheelPos = WheelGetPos(wheel);
 	MATRIX bodyMat = MV1GetMatrix(DuplicateSourceModel);
 
-	wheel.matrix = MMult(MGetRotY(rota * rage), MMult(bodyMat, MGetTranslate(wheelPos)));
+	wheel.matrix = MMult(MGetRotY(rota * RAGE), MMult(bodyMat, MGetTranslate(wheelPos)));
 	MV1SetMatrix(wheel.modelHandle, wheel.matrix);
 }

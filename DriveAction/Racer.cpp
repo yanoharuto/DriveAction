@@ -5,11 +5,6 @@
 #include"Utility.h"
 Racer::Racer()
 {
-}
-
-Racer::Racer(CircuitData circuitData)
-{
-    checkPoint = new CheckPoint(circuitData);
     itemHolder = new ItemHolder();
     rank = 0;
 }
@@ -65,9 +60,6 @@ void Racer::ConflictProcces(ConflictExamineResultInfo conflictResultInfo, float 
 
 void Racer::CommonUpdate(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)
 {
-    //車の更新
-    ItemInfo itemInfo = itemHolder->GetItemInfo();
-    car->Update(deltaTime, outsideHitFlag, itemInfo);
     //アイテムの更新
     itemHolder->Update(damageObjGene, car->GetItemArgumentInfo(), deltaTime);
     //車の当たり判定情報
@@ -80,11 +72,34 @@ void Racer::CommonUpdate(float deltaTime, bool outsideHitFlag, DamageObjectGener
         //車に次の目的地を伝える
         car->ConflictProccess(deltaTime, conflictResultInfo);
     }
+    //コース外に出たら
+    if (outsideHitFlag)
+    {
+        //コース外に出た時間を追加
+        courceOutCount += deltaTime;
+        if (courceOutCount > courceOutMaxCount)
+        {
+            car->CourceOutProccess(checkPoint->GetLastPos(),checkPoint->GetLastDir());
+            courceOutCount = 0.0f;
+        }
+    }
+    else
+    {
+        //コースから出ていなかったらコースアウト時間を減らす
+        courceOutCount = courceOutCount > 0.001f ? courceOutCount - deltaTime : 0.0f;
+    }
 }
 
 void Racer::SetCarPointer(Car* newCar)
 {
     car = newCar;
+}
+
+VECTOR Racer::GetFirstDir()
+{
+    VECTOR normLineSegment = checkPoint->GetNextCheckLineNorm();
+    VECTOR normBetween = VNorm(VSub(checkPoint->GetPos(),car->GetPos()));
+    return ;
 }
 
 HitCheckExamineObjectInfo Racer::GetCarHitCheckExamineInfo()

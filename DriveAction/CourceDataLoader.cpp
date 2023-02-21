@@ -4,6 +4,22 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+//共通のアドレス
+std::string genericAddress;
+//車の初期位置リストを読み取る
+VECTOR3Loader* firstCarPosLoader;
+//チェックポイントの位置リストを読み取る
+VECTOR3Loader* checkPointPosLoader;
+//チェックポイントの方向リストを読み取る
+VECTOR3Loader* checkPointDirLoader;
+//加速床の位置リストを読み取る
+VECTOR3Loader* accelFloorPosLoader;
+//加速床の向きリストを読み取る
+VECTOR3Loader* accelFloorDirLoader;
+//障害物の位置リストを読み取る
+VECTOR3Loader* obstraclePosLoader;
+VECTOR3Loader* itemDirLoader;
+VECTOR3Loader* itemPosLoader;
 /// <summary>
 /// コース情報
 /// </summary>
@@ -35,28 +51,9 @@ CourceDataLoader::~CourceDataLoader()
 /// コースのミニマップ
 /// </summary>
 /// <returns></returns>
-const std::string CourceDataLoader::GetMiniMapImgAddress()
+const std::string CourceDataLoader::GetStageDataGenericAddress()
 {
-    std::string chara = genericAddress + miniMapAddress;
-    return chara;
-}
-/// <summary>
-/// コースの外側のアドレス
-/// </summary>
-/// <returns></returns>
-const std::string CourceDataLoader::GetOutsideAddress()
-{
-    std::string chara = genericAddress + outsideAddress;
-    return chara;
-}
-/// <summary>
-/// コースのmodelのアドレス
-/// </summary>
-/// <returns></returns>
-const std::string CourceDataLoader::GetCourceAddress()
-{
-    std::string chara = genericAddress + courceAddress;
-    return chara;
+    return genericAddress;
 }
 
 /// <summary>
@@ -67,14 +64,6 @@ const std::list<VECTOR> CourceDataLoader::GetCarFirstPosList()
 {
     std::list<VECTOR> firstPosList = firstCarPosLoader->GetVectorList();
     return firstPosList;
-}
-/// <summary>
-/// 車の初期方向
-/// </summary>
-/// <returns></returns>
-const VECTOR CourceDataLoader::GetCarFirstDir()
-{
-    return *firstCarPosLoader->GetVectorList().begin();
 }
 /// <summary>
 /// チェックポイントの位置リスト

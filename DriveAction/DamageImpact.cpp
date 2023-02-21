@@ -1,5 +1,8 @@
 #include "DamageImpact.h"
 #include "AssetManager.h"
+
+
+
 DamageImpact::DamageImpact()
 {
 }
@@ -8,7 +11,7 @@ DamageImpact::DamageImpact(ItemArgumentCarInfo carInfo)
 {
     radius = setRadius;
     direction = carInfo.direction;
-    position = VAdd(carInfo.position, VScale(direction, carInfo.radius + setRadius + VSize(carInfo.velocity)));
+    position = VAdd(carInfo.position, VScale(direction,setCarBetween + carInfo.radius + setRadius + VSize(carInfo.velocity)));
     modelHandle = AssetManager::Get3DModelAssetHandle(assetAddress);
     velocity = VScale(direction, speed);
     aliveTime = setAliveTime;
@@ -17,6 +20,7 @@ DamageImpact::DamageImpact(ItemArgumentCarInfo carInfo)
 
 DamageImpact::~DamageImpact()
 {
+    
 }
 
 void DamageImpact::Update(float deltaTime)

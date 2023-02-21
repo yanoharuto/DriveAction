@@ -91,7 +91,8 @@ void SoundPlayer::SetSoundVolume(int volumePal, std::string soundFileName)
 
 void SoundPlayer::LoadSound(std::string soundFile)
 {
-    const char* soundFileChar = soundFile.c_str();
+    std::string soundFileName = "data/sound/" + soundFile;
+    const char* soundFileChar = soundFileName.c_str();
     int loadSoundHandleNum = LoadSoundMem(soundFileChar);
 
     soundHandleMap.insert(std::make_pair(soundFile,loadSoundHandleNum));

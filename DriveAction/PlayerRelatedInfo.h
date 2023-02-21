@@ -20,4 +20,6 @@ struct  PlayerRelatedInfo
     float time;
     //‘¬“x
     float accelPower;
+    //Å‘å‘¬“x‚É‘Î‚·‚éŒ»İ‚Ì‘¬“x‚ÌŠ„‡
+    float accelPowerParcent;
 };

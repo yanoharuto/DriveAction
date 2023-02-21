@@ -17,7 +17,11 @@ private:
     LapUI* lapUI;
     StringUI* rankUI;
     StringUI* timeUI;
+    StringUI* halfUI;
     ItemUI* itemUI;
+    ImgUI* descriptionUI;
     ReverseDrivingCautionUI* reverseDrivingCautionUI;
     AccelMeter* accelMeter;
+    const int fadeValue = 85;
+    const float eraseLength = 4;
 };

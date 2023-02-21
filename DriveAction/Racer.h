@@ -13,7 +13,6 @@ class Racer abstract
 {
 public:
     Racer();
-    Racer(CircuitData circuitData);
     virtual ~Racer();
     /// <summary>
     /// 車を走らせたりアイテムを使ったりする
@@ -69,6 +68,9 @@ protected:
     /// </summary>
     /// <param name="car"></param>
     void SetCarPointer(Car* car);
+    VECTOR GetFirstDir();
+    float courceOutCount = 0;
+    const float courceOutMaxCount = 120.0f;
     //順位
     int rank;
     //通ってきたチェックポイント

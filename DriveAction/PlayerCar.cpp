@@ -9,14 +9,12 @@
 /// <returns></returns>
 PlayerCar::PlayerCar()
 {
-	Init();
 }
 
-PlayerCar::PlayerCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos)
-	:Car(firstPos,firstDir,destinationPos)
+PlayerCar::PlayerCar(VECTOR firstPos, VECTOR firstDir, VECTOR destinationPos, int duplicateModelHandle)
+	:Car(firstPos,firstDir,destinationPos,duplicateModelHandle)
 {
 	SoundPlayer::SetListener(position,VAdd(position,direction));
-	Init();
 }
 
 /// <summary>
@@ -64,11 +62,6 @@ void PlayerCar::Update(const float deltaTime, const bool outsideHitFlag,ItemInfo
 HandleDirection PlayerCar::GetHandleDirection()
 {
 	return wheelArgumentCarInfo.inputDir.handleDir;
-}
-
-void PlayerCar::Init()
-{
-	modelHandle = MV1LoadModel("data/model/Player/WhiteCar.mv1");
 }
 
 void PlayerCar::SetInputDir()

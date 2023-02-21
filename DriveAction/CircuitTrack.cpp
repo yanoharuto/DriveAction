@@ -1,14 +1,17 @@
-#include "CircuitTrack.h"
 #include <math.h>
+#include "CircuitTrack.h"
+#include "CourceDataLoader.h"
+#include "AssetManager.h"
 /// <summary>
 /// 初期化
 /// </summary>
 /// <param name="player">プレイヤーの幅を取る</param>
 /// <returns></returns>
-CircuitTrack::CircuitTrack(std::string courceModelAdress, std::string outsideModelAdress)
+CircuitTrack::CircuitTrack()
 {
-    courceModelHandle = MV1LoadModel(courceModelAdress.c_str());
-    outsideModelHandle = MV1LoadModel(outsideModelAdress.c_str());
+    std::string genericAddress = CourceDataLoader::GetStageDataGenericAddress();
+    courceModelHandle = AssetManager::Get3DModelAssetHandle(genericAddress + courceAddress);
+    outsideModelHandle = AssetManager::Get3DModelAssetHandle(genericAddress + outsideAddress);
     MV1SetPosition(outsideModelHandle, outsideModelPosition);    //若干コースの外側を下げる
     //大きさ変更
     VECTOR scale = VGet(courceModelScaleValue, courceModelScaleValue, courceModelScaleValue);
@@ -20,6 +23,7 @@ CircuitTrack::CircuitTrack(std::string courceModelAdress, std::string outsideMod
     tag = ObjectTag::stage;
     bouncePower = setBouncePower;
 }
+
 /// <summary>
 /// modelの解放　コリジョンも消える
 /// </summary>
@@ -51,7 +55,7 @@ bool CircuitTrack::HitCheckConflict(const HitCheckExamineObjectInfo examineObjIn
     return GetCourceConflictInfo(examineObjInfo).hitFlag;
 }
 /// <summary>
-/// コースの壁にぶつかってるか調べる
+/// コースの壁や地面にぶつかってるか調べる
 /// </summary>
 /// <param name="Actor">ぶつかってるか調べたいもの</param>
 /// <returns>ぶつかってたらTrue</returns>
@@ -66,7 +70,6 @@ ConflictExamineResultInfo  CircuitTrack::GetCourceConflictInfo(HitCheckExamineOb
         conflictInfo.bouncePower = bouncePower;
         return conflictInfo;
     }
-  
     return { false,tag,{},radius };
 }
 
@@ -102,7 +105,7 @@ ConflictExamineResultInfo CircuitTrack::GetSphereConflictModelInfo(int modelHand
 {
     DxLib::MV1_COLL_RESULT_POLY_DIM polyInfo = MV1CollCheck_Sphere(modelHandle, -1, examineInfo.pos, examineInfo.radius);
     ConflictExamineResultInfo conflictPos = {};
-    if (polyInfo.HitNum!=0)
+    if (polyInfo.HitNum != 0)
     {
         conflictPos.hitFlag = true;
         conflictPos.pos = polyInfo.Dim[0].HitPosition;

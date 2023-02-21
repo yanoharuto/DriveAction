@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	PlayerCar();
-	PlayerCar(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos);
+	PlayerCar(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos, int duplicateModelHandle);
 	///デストラクタ
     ~PlayerCar();
     /// <summary>
@@ -21,6 +21,5 @@ public:
 	void Update(const float deltaTime, const bool outsideHitFlag,ItemInfo itemInfo) override;
 	HandleDirection GetHandleDirection();
 private:
-	void Init();
 	void SetInputDir();
 };

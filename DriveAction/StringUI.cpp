@@ -32,11 +32,10 @@ void StringUI::DrawRightAlignedString()
 
 void StringUI::DrawLeftAlignedString()
 {
-    DrawFormatStringToHandle(uiData.x, uiData.y, color, uiData.dataHandle,"%-s", string.c_str());
+    DrawFormatStringToHandle(uiData.x, uiData.y, color, uiData.dataHandle,"%-s",string.c_str());
 }
 
 void StringUI::UpdateString(std::string updateString)
 {
     string = updateString;
-
 }

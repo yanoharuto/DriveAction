@@ -15,14 +15,7 @@ public:
     /// <summary>
     /// 初期化
     /// </summary>
-    /// <param name="courceModelAdress"></param>
-    /// <param name="outsideModelAdress"></param>
-    /// <returns></returns>
-    CircuitTrack(std::string courceModelAdress,std::string outsideModelAdress);
-    CircuitTrack() {
-        courceModelHandle = -1;
-        outsideModelHandle = -1;
-    };
+    CircuitTrack();
     ///modelをデリート
     ~CircuitTrack();
     /// <summary>
@@ -31,6 +24,7 @@ public:
     /// <param name="actor">外側にいるか調べたいもの</param>
     /// <returns>コースの外側にいるならTrue</returns>
     bool GetOutsideHitFlag(HitCheckExamineObjectInfo info) const;
+
     bool HitCheckConflict(const HitCheckExamineObjectInfo examineObjInfo);
     /// <summary>
     /// コースの壁にぶつかってるか調べる
@@ -66,6 +60,9 @@ private:
     int outsideModelHandle;
     //コースの外側のmodelのポジション
     const VECTOR outsideModelPosition = { 0,-8,0 };
-
+    //コースのモデル
+    const std::string courceAddress = "/Asset/RaceCircuit.mv1";
+    //コースの外側のモデル
+    const std::string outsideAddress = "/Asset/CircuitOutside.mv1";
 };
 

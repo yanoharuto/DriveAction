@@ -55,7 +55,7 @@ void TitleSceeneFlow::InitMinimapData()
 {
     uiData.x = SCREEN_WIDTH / 16 * 11;
     uiData.y = SCREEN_HEIGHT / 7 * 3;
-    std::string chara = courceDataLoader->GetMiniMapImgAddress();
+    std::string chara = courceDataLoader->GetStageDataGenericAddress();
     uiData.dataHandle = LoadGraph(chara.c_str(),false);
 }
 

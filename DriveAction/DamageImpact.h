@@ -26,6 +26,7 @@ public:
 private:
     //¶‘¶ŠÔ
     float aliveTime = 0;
+    float setCarBetween = 15.0f;
     //Å‘å¶‘¶ŠÔ
     const float setAliveTime = 12.0f;
     //ˆÚ“®‘¬“x

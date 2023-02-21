@@ -4,11 +4,13 @@ Player::Player()
 {
 }
 
-Player::Player(CircuitData circuitData, VECTOR firstPos, VECTOR firstDir)
-    :Racer(circuitData)
+Player::Player(VECTOR firstPos, int duplicateModel)
+    :Racer()
 {
-    playerCar = new PlayerCar(firstPos,firstDir,checkPoint->GetPos());
+    VECTOR firstDir;
+    playerCar = new PlayerCar(firstPos,firstDir,checkPoint->GetPos(),duplicateModel);
     SetCarPointer(playerCar);
+    SoundPlayer::LoadSound(rouletteSE);
 }
 
 Player::~Player()
@@ -18,18 +20,38 @@ Player::~Player()
 void Player::Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)
 {
     ItemInfo itemInfo = itemHolder->GetItemInfo();
+    if (checkPoint->GetGoalCount() == 2)
+    {
+        car->AutoDrive(deltaTime, outsideHitFlag, itemInfo); 
+    }
+    else
+    {
+        car->Update(deltaTime, outsideHitFlag, itemInfo);
+    }
     CommonUpdate(deltaTime,outsideHitFlag,damageObjGene);
     int inputKey = GetJoypadInputState(DX_INPUT_KEY);
     if ((inputKey & PAD_INPUT_10 || itemInfo.itemSituation == ItemUseSituation::Useing) && itemInfo.itemTag != non)
     {
         itemHolder->UseItem(car->GetItemArgumentInfo());
     }
+    else if (itemInfo.itemTag == roulette)
+    {
+        if (!SoundPlayer::IsPlaySound(rouletteSE))
+        {
+            SoundPlayer::Play2DSE(rouletteSE);
+        }
+    }
+    else
+    {
+        SoundPlayer::StopSound(rouletteSE);
+    }
 }
 
 PlayerRelatedInfo Player::GetRelatedInfo()
 {
     PlayerRelatedInfo info = {};
-    info.accelPower = car->GetTotalAccelPowerPercent();
+    info.accelPower = car->GetTotalAccelPower();
+    info.accelPowerParcent = car->GetTotalAccelPowerPercent();
     info.carDirection = car->GetDir();
     info.itemTag = itemHolder->GetItemInfo().itemTag;
     info.lap = checkPoint->GetGoalCount();

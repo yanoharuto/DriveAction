@@ -9,12 +9,10 @@
 /// <returns></returns>
 CPUCar::CPUCar()
 {
-    Init();
 }
-CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos)
-    :Car(firstPos,firstDir, destinationPos)
+CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos, int duplicateModelHandle)
+    :Car(firstPos,firstDir, destinationPos, duplicateModelHandle)
 {
-    Init();
 }
 /// <summary>
 /// modelとタイヤの後始末
@@ -34,11 +32,3 @@ void CPUCar::Update(const float deltaTime, const bool outsideHitFlag, ItemInfo i
 {
     AutoDrive(deltaTime, outsideHitFlag,itemInfo);
 }
-
-
-void CPUCar::Init()
-{
-    modelHandle = MV1LoadModel("data/model/Player/RedCar.mv1");
-}
-
-

@@ -2,13 +2,14 @@
 #include "UIManager.h"
 #include "ImgUI.h"
 #include "PointUI.h"
+#include "CourceDataLoader.h"
 
-MiniMap::MiniMap(std::string mapGraphAddress)
+MiniMap::MiniMap()
 {
     UIData uiData;
     uiData.x = minimapX;
     uiData.y = minimapY;
-    uiData.dataHandle = LoadGraph(mapGraphAddress.c_str(), true);
+    uiData.dataHandle = LoadGraph((CourceDataLoader::GetStageDataGenericAddress() + miniMapAddress).c_str(), true);
     miniMap = new ImgUI(mapSize, uiData);
     pointUI = new PointUI(playerColor, uiData, markerRadius);
     GetGraphSize(uiData.dataHandle,&minimapWidth, &minimapHeight);

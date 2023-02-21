@@ -11,7 +11,7 @@ public:
     void Update(ItemTag itemTag);
     void DrawUI()override;
 private:
-    int itemUIFrameGraphH;
+    int itemUIFrameGraphH = -1;
     std::unordered_map<ItemTag,int> itemImgMap;
     const std::string accelation = "data/Accelation.png";
     const std::string hatena = "data/Hatena.png";

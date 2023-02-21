@@ -17,7 +17,7 @@ public:
     /// <param name="circuitData"></param>
     /// <param name="firstPos"></param>
     /// <param name="firstDir"></param>
-    Player(CircuitData circuitData, VECTOR firstPos, VECTOR firstDir);
+    Player(VECTOR firstPos, int duplicateModel);
     ~Player();
     /// <summary>
     /// プレイヤーの更新処理
@@ -38,5 +38,6 @@ public:
     PlaySceneCameraArgumentInfo GetCameraArgumentInfo();
 private:
     PlayerCar* playerCar = nullptr;
+    std::string rouletteSE = "rourette.mp3";
 };
 

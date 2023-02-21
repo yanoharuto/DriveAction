@@ -24,7 +24,7 @@ public:
 	/// <param name="firstDir"></param>
 	/// <param name="destinationPos"></param>
 	/// <param name="soundPlayer"></param>
-	Car(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos);
+	Car(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos,int duplicateModelHandle);
     virtual ~Car();
 	/// <summary>
     /// 更新（移動処理）
@@ -49,6 +49,18 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	float GetTotalAccelPowerPercent();
+	/// <summary>
+	/// 今の速度
+	/// </summary>
+	/// <returns></returns>
+	float GetTotalAccelPower();
+	/// <summary>
+	/// 自動運転
+	/// </summary>
+	/// <param name="deltaTime"></param>
+	/// <param name="outsideHitFlag"></param>
+	void AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo);
+	void CourceOutProccess(VECTOR lastCheckPos, VECTOR lastCheckDir);
 protected:
 	/// <summary>
 	/// アイテムの効果を受け取る
@@ -83,12 +95,6 @@ protected:
 	/// </summary>
 	void ModelSetMatrix();
 	/// <summary>
-	/// 自動運転
-	/// </summary>
-	/// <param name="deltaTime"></param>
-	/// <param name="outsideHitFlag"></param>
-	void AutoDrive(const float deltaTime, const bool outsideHitFlag ,ItemInfo itemInfo);
-	/// <summary>
 	/// 運転方向を返す
 	/// </summary>
 	/// <returns></returns>
@@ -117,86 +123,34 @@ protected:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	void Down(float deltaTime);
-	//アイテムで加速したときの速さ
-	float itemAddSpeed = 0;
-	// 通常の加速.
-	const float accelAddSpeed = 38.4f;					
-	// 通常最高速度.
-	const float maxAccelSpeed = 230.0f;					
-	//外的要因の速さの最高速度
-	const float maxAddForcePower = 100.0f;
-	//外的要因の速さ
-	const float addAccelForce = 8.0f;
-	//これ以下の速度になってたらaccelPowerを0にするよ
-	const float stopAccelLine = 1.0f;
-	// なにもしない時の減速.
-	const float defaultDecel = 0.2f;			
-	// ブレーキ時の減速.
-	const float breakDecel = 0.97f;				
-	// グリップの減速.
-	const float gripDecel = 0.205f;
-	// グリップ力.
-	const float gripPower = 0.1f;				
-	// 障害物にぶつかったときの減速率.
-	const float colideDecel = 0.2f;	  
-	//コースの外側に来た時の減速
-	const float outsideHitDecel = 0.28f;          
-	//車の幅
-	const float setRadius = 3.2f;
-	//車の高さ
-	const float carHeight = 3.2f;
-	//目的地に向かうときに曲がるか判断する
-	const float turnProccesAngularLine = 5.0f; 
-	const float breakeProccesAngularLine = 27.0f;
-	//跳ね返り力の固定値
-	const float setBouncePower = 1.0f;
-	//降りる速度
-	const float downSpeed = 10.8f;
-	//最初のY座標
-	const float firstPosY = -4.0;
+
 	//速さ
 	float accelPower = 0;
 	//外的要因による速さ
 	float forcePower = 0;
-	//衝突回数とかが多い時に使う
-	float penaltyCount = 0;
-	//
-	const float penaltyLine = 2.0f;
 	//ぶつかった時の跳ね返り力
 	float conflictObjBouncePower;
+	int brekeCount = 0;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;
-	//ダメージを受けた時の操作不可能時間の合計
-	const float setDamageReactionTime = 0.8f;
-	//煙のエフェクト
-	const std::string smokeEffectResource = "data/effect/smoke.efkefc";
-	//ぶつかった時のエフェクト
-	const std::string conflictEffectResource = "data/effect/conflict.efkefc";
-	//外的要因で早くなった時のエフェクト
-	const std::string accelerationEffectResource = "data/effect/accelation.efkefc";
-	
-	//止まった時の効果音
-	const std::string breakeSEAddress = "data/sound/brake.mp3";
-	//ぶつかった時の効果音
-	const std::string carClashSEAddress = "data/sound/carClash.mp3";
-	//クラクションの効果音
-	const std::string carHornSEAddress = "data/sound/carHorn.mp3";
-	//運転中の効果音
-	const std::string drivingSEAddress = "data/sound/driving1.mp3";
 	//チェックポイントに当たってるか
-	bool isGoalConflict;
+	bool isGoalConflict = false;
 	//地面に降りているか
-	bool isOnGround;
+	bool isOnGround = true;
 	//ダメージ
-	bool isDamage;
+	bool isDamage = false;
+	//コースアウト処理中か
+	bool isCourceOutProccessing = false;
 	//タイヤ
 	Wheels* wheels;
-	//アイテムの効果
-	VECTOR itemEffecacyValue = {};
 	//目的地
 	VECTOR destinationPos = {};
+	//コースアウトしたときの目的地
+	VECTOR prevDestinationPos = {};
 	//次の角度
 	VECTOR destinationDir = {};
+	//コースアウトしたときに向かなければいけない方向
+	VECTOR prevDestinationDir = {};
 	//ぶつかった物体との方向
 	VECTOR conflictVec = {};
 	//タイヤに渡したい情報

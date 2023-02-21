@@ -60,9 +60,8 @@ private:
     PlaySceeneProgress nowProgress;//今何の処理を行うか決める変数
     int countUINum;
     bool isSpaceInput = false;
-    
-    const int maxLap = 1;
+    const int maxLap = 2;
     const int racerNum = 3;
+    const std::string clapSE = "clap.mp3";
     float raceTime = 0;
-    
 };

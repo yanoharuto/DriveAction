@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "InputDirection.h"
 #include "HandleDirection.h"
-
+#include <string>
 /// <summary>
 /// タイヤ一つ一つが持っている情報
 /// </summary>
@@ -53,7 +53,7 @@ private:
 	/// 煙のエフェクトが出る
 	/// </summary>
 	/// <param name="pos"></param>
-	void StartSmokeEffect(VECTOR pos);
+	void SmokeEffectUpdate(VECTOR pos);
 	/// <summary>
 	/// 全てのタイヤのマトリックスをセットする
 	/// </summary>
@@ -84,28 +84,16 @@ private:
 	/// <param name="_Pos">車から見た位置</param>
 	/// <param name="_Rota">回転角</param>
 	void InitWheel(Wheel& wheel, int DuplicateSourceModel, VECTOR pos, float rota);
-
-	//左側タイヤの初期角度
-	const float firstLWheelRota = 0.0f;	
-	//右側タイヤの初期角度
-	const float firstRWheelRota = 180.0f;
-	//車の回転力
-	const float wheelDriveRotaPower = 4.4f;
-	//タイヤが左右に傾く力
-	const float wheelCurvePower = 1.7f;
-	//この角度までタイヤは傾くよ
-	const float maxWheelRotaY = 45.5f;
-	//進行方向に影響するまでに必要なタイヤの角度
-	const float rotaCalculationLine = 1.2f;
-	const float rage = static_cast<float>(DX_PI / 180.0f);
+	int playEffect=-1;
 	//車の回転速度
 	float wheelDriveSpeed = 0.0f;
 	//車の左右への傾き
 	float wheelDriveRota = 0.0f;
-	//煙のエフェクト
-	int effectResourceHandle = -1;
 	//まっすぐ進んでいるかどうか
 	bool isStraightDash;
+	std::string smokeAddress = "smoke.efkefc";
+	std::string wheelAddress = "data/model/Player/Wheel.MV1";
+
 	//タイヤのモデルハンドル
 	int modelHandle;
 	//左前方タイヤ

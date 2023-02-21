@@ -6,8 +6,10 @@ class CPU :
 {
 public:
     CPU();
-    CPU(CircuitData circuitData, VECTOR firstPos, VECTOR firstDir);
+    CPU(VECTOR firstPos, int duplicateModel);
     ~CPU();
+    void Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObj)override;
+    
 private:
     CPUCar* cpuCar = nullptr;
 };

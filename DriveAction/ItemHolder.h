@@ -39,6 +39,6 @@ public:
 private:
     ItemBase* item;
     float rouletteTime = -1;
-    const float setRouletteTime = 2.5f;
+    const float setRouletteTime = 2.35f;
     bool roulette = false;
 };

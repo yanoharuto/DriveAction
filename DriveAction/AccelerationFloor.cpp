@@ -1,6 +1,7 @@
 ﻿#include "AccelerationFloor.h"
 #include "EffekseerForDXLib.h"
 #include "OriginalMath.h"
+#include "EffectManager.h"
 AccelerationFloor::AccelerationFloor()
 {
 
@@ -12,8 +13,8 @@ AccelerationFloor::AccelerationFloor(VECTOR pos, VECTOR dir)
     direction = dir;
     tag = ObjectTag::acelerationFloor;
     radius = setRadius;
-    effekseerModelHandle = LoadEffekseerEffect("data/effect/accelationFloor.efkefc",setScale);
-    playingEffect = PlayEffekseer3DEffect(effekseerModelHandle);
+    EffectManager::LoadEffectManager("accelationFloor.efkefc", setScale);
+    playingEffect = EffectManager::GetPlayEffect3D("accelationFloor.efkefc");
     OriginalMath math;
     float degreeY = dir.y;
     degreeY *= RAGE;
@@ -23,8 +24,6 @@ AccelerationFloor::AccelerationFloor(VECTOR pos, VECTOR dir)
 
 AccelerationFloor::~AccelerationFloor()
 {
-    // エフェクトリソースを削除する。(Effekseer終了時に破棄されるので削除しなくてもいい)
-    DeleteEffekseerEffect(effekseerModelHandle);
 }
 
 void AccelerationFloor::Update(const float deltaTime)

@@ -45,7 +45,6 @@ RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
         rankInfo.rankP = newRacer->GetRankPointer();
         racerRankList.push_front(rankInfo);
     }
-
 }
 //デストラクタ
 RacerManager::~RacerManager()
@@ -167,6 +166,7 @@ void RacerManager::RacerConflictProcces(ConflictProcesser* conflictProcesser,Cir
 
     }
 }
+
 
 
 /// <summary>

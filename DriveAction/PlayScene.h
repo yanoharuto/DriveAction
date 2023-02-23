@@ -1,12 +1,13 @@
 #pragma once
 #include "SceneBase.h"
-class PlaySceeneFlow;
-
+/// <summary>
+/// ƒŒ[ƒX‚ğ‚·‚é‚æ
+/// </summary>
 class PlayScene final:
     public SceneBase
 {
 public:
     PlayScene();
-    ~PlayScene() ;
+    ~PlayScene();
 private:
 };

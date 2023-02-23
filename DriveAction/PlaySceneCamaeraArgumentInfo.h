@@ -8,5 +8,4 @@ struct  PlaySceneCameraArgumentInfo
 {
     VECTOR pos;
     VECTOR dir;
-    HandleDirection handleDir;
 };

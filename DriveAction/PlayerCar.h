@@ -19,7 +19,6 @@ public:
     /// 更新（移動処理）
     /// </summary>
 	void Update(const float deltaTime, const bool outsideHitFlag,ItemInfo itemInfo) override;
-	HandleDirection GetHandleDirection();
 private:
 	void SetInputDir();
 };

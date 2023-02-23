@@ -25,5 +25,6 @@ private:
     unsigned int goalMarkerUIColor = GetColor(200, 200, 0);
     SwitchUI* switchUI;
     StringUI* stringUI;
+    const std::string clapSE = "clap.mp3";
 };
 

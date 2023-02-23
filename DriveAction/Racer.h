@@ -68,9 +68,8 @@ protected:
     /// </summary>
     /// <param name="car"></param>
     void SetCarPointer(Car* car);
-    VECTOR GetFirstDir();
     float courceOutCount = 0;
-    const float courceOutMaxCount = 120.0f;
+    bool reverse = false;
     //順位
     int rank;
     //通ってきたチェックポイント

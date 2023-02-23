@@ -4,6 +4,7 @@
 #include "CheckPoint.h"
 #include "PlayerCar.h"
 #include "Utility.h"
+#include "RacerGenerater.h"
 #include "CircuitTrack.h"
 #include "CourceDataLoader.h"
 #include "PlayerRelatedInfo.h"
@@ -15,36 +16,20 @@
 RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
 {
     racerNum = cpuNum > maxRacerNum ? maxRacerNum : cpuNum;
-    std::list<VECTOR> firstPosList = courceDataLoader->GetCarFirstPosList();
-    //最初の一行は向く方向なので消す
-    firstPosList.erase(firstPosList.begin());
-    //ポジションのイテレーター
-    auto firstPosIte = firstPosList.begin();
+    RacerGenerater* racerGenerater=new RacerGenerater();
+    racerGenerater->CreateRacers(racerNum, &racerList, &player);
+
     //プレイヤーの初期化処理
     RacerRankInfo rankInfo{};
-    Racer* newRacer;
-    //コースの情報とかを引数からもらう
-    VECTOR firstDir = courceDataLoader->GetCarFirstDir();
-    CircuitData circuitData{ courceDataLoader->GetCheckPointPosList(),courceDataLoader->GetCheckPointDirList() };
-    //レーサーの数だけNewする
-    for (int i = 0; i < racerNum + 1; i++)
+   
+    for (auto i = racerList.begin(); i != racerList.end(); i++)
     {
-        firstPosIte++;
-        if (i == 0)
-        {
-            player = new Player(circuitData, *firstPosIte, firstDir);
-            newRacer = player;
-        }
-        else
-        {
-            newRacer = new CPU(circuitData, *firstPosIte, firstDir);
-        }
-        racerList.push_front(newRacer);
         //ランク情報を追加
-        rankInfo.checkPointP = newRacer->GetCheckPointer();
-        rankInfo.rankP = newRacer->GetRankPointer();
+        rankInfo.checkPointP = (*i)->GetCheckPointer();
+        rankInfo.rankP = (*i)->GetRankPointer();
         racerRankList.push_front(rankInfo);
     }
+    SAFE_DELETE(racerGenerater);
 }
 //デストラクタ
 RacerManager::~RacerManager()
@@ -197,4 +182,3 @@ PlaySceneCameraArgumentInfo RacerManager::GetPlayerCarPosDir()
 {
     return player->GetCameraArgumentInfo();
 }
-

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "ConflictExamineResultInfo.h"
-#include "CircuitDataStruct.h"
+
 #include "HitCheckExamineObjectInfo.h"
 #include "Actor.h"
 /// <summary>
@@ -12,13 +12,6 @@ class CheckPoint final:
 {
 public:
     CheckPoint();
-
-    /// <summary>
-    /// コース情報複製用
-    /// </summary>
-    /// <param name="checkPointParam"></param>
-    /// <returns></returns>
-    CheckPoint(const CircuitData circuitData);
     //デストラクタ
     ~CheckPoint();
     /// <summary>
@@ -36,7 +29,7 @@ public:
     bool IsTransitCheckPointCar(VECTOR pos,VECTOR dir,VECTOR carPos);
     VECTOR GetLastPos();
     VECTOR GetLastDir();
-    VECTOR GetNextCheckLineNorm();
+
     /// <summary>
     /// ゴールした回数を返す
     /// </summary>
@@ -51,18 +44,8 @@ public:
     float GetCheckPointDistance();
     bool HitCheckConflict(HitCheckExamineObjectInfo objInfo) override;
 private:
-    //サーキットのデータ
-    CircuitData cPParam;
-    //positionからこれだけ近かったらゴール
-    const float goalTapeHalfLength = 70.0f;
-    //次のチェックポイントまでの向きを出し始める範囲
-    const float goalRadius = 55.0f;
-    //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
-    const float dirJugeLine = 0.8f;
-    //チェックポイントのベクターを調べる回数
-    const int checkPointExamineCount = 15;
     //通過した回数
-    int transitCheckPointCount = 0;
+    int transitCount = 0;
     //ゴールした回数
     int goalCount = 0;
     //ベクター配列のサイズ

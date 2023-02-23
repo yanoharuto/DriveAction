@@ -11,11 +11,13 @@ public:
     GimmickObjManager();
     GimmickObjManager(ConflictProcesser* conflictProcesser ,CourceDataLoader* courceDataLoader);
     ~GimmickObjManager();
-    void Updatee(float deltaTime);
+    void Update(float deltaTime);
     void Draw();
 private:
 
     std::list<Actor*> actorList;
+    int itemBoxNum = 6;
+    const int itemBoxBetween = 25;
     //丸鋸のモデル
     int sawModelResource;
     //アイテムボックスのモデル

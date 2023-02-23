@@ -6,8 +6,10 @@
 #include "ResultScene.h"
 #include "Utility.h"
 #include "UserInput.h"
-#include "Broom.h"
+//しーんを作るのに必要
 SceneBase* MakeScene(SceneType _NowSceneType);
+//ひとつ前のシーン
+SceneType prevSceneType = SceneType::TITLE;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	ChangeWindowMode(true);
@@ -34,15 +36,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	//ChangeWindowMode(TRUE);
-	//ひとつ前のシーン
-	SceneType prevSceneType = SceneType::TITLE;
+	
 	//今のシーン
 	SceneType nowSceneType = SceneType::TITLE;
 	//シーンを生成
 	SceneBase* scene = new TitleScene;
 
 	UserInput* userInput = new UserInput;
-	Broom* broom = new Broom;
 	//ゲームループ エスケープキーを押したら終了
 	while (ProcessMessage() == 0 && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
@@ -70,7 +70,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//直前のシーンを記録
 		prevSceneType = nowSceneType;
 	}
-	SAFE_DELETE(broom);
+	SAFE_DELETE(userInput);
 	SAFE_DELETE(scene);
 	Effect_Finalize();
 
@@ -88,6 +88,9 @@ SceneBase* MakeScene(SceneType _NowSceneType)
 	SceneBase* retScene = nullptr;
 	switch (_NowSceneType)
 	{
+	case SceneType::RELOAD:
+		retScene = MakeScene(prevSceneType);
+		break;
 	case SceneType::TITLE:
 		retScene = new TitleScene;
 		break;

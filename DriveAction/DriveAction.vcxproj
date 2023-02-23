@@ -176,6 +176,7 @@
     <ClCompile Include="ItemUI.cpp" />
     <ClCompile Include="Kite.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RaceMenu.cpp" />
     <ClCompile Include="Racer.cpp" />
     <ClCompile Include="RacerGenerater.cpp" />
     <ClCompile Include="Rocket.cpp" />
@@ -233,11 +234,13 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Broom.h" />
+    <ClInclude Include="CarModelEnum.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="DamageImpact.h" />
     <ClInclude Include="DamageImpactLauncer.h" />
     <ClInclude Include="DamageObject.h" />
     <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="EnumToString.h" />
     <ClInclude Include="FiringItemManager.h" />
     <ClInclude Include="DamageObjectGenerator.h" />
     <ClInclude Include="ItemHolder.h" />
@@ -257,10 +260,13 @@
     <ClInclude Include="Kite.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlaySceneCamaeraArgumentInfo.h" />
+    <ClInclude Include="RaceMenu.h" />
     <ClInclude Include="Racer.h" />
     <ClInclude Include="RacerGenerater.h" />
     <ClInclude Include="Rocket.h" />
+    <ClInclude Include="Rule.h" />
     <ClInclude Include="SceneFlowBase.h" />
+    <ClInclude Include="SceneType.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="ConflictExamineResultInfo.h" />
     <ClInclude Include="Car.h" />

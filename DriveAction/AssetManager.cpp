@@ -14,8 +14,12 @@ AssetManager::~AssetManager()
     }
     assetMap.clear();
 }
-
-int AssetManager::Get3DModelAssetHandle(std::string assetAddress)
+/// <summary>
+/// 複製したモデルを渡す
+/// </summary>
+/// <param name="assetAddress"></param>
+/// <returns></returns>
+int AssetManager::GetDuplicate3DModelAssetHandle(std::string assetAddress)
 {
     if (!assetMap.contains(assetAddress))//まだロードしてないならロードする
     {

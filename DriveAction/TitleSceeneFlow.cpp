@@ -39,6 +39,7 @@ void TitleSceeneFlow::Update(float deltaTime)
     if (key & PAD_INPUT_10)
     {
         isEndProccess = true;
+        nextSceneType = SceneType::PLAY;
     }
 }
 

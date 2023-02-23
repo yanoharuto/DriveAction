@@ -32,36 +32,15 @@ PlayerCar::~PlayerCar()
 /// </summary>
 void PlayerCar::Update(const float deltaTime, const bool outsideHitFlag,ItemInfo item)
 {
-
-	if (isDamage)
-	{
-		DamageReaction(deltaTime);
-	}
-	else
-	{
-		RecieveItemEffecacy(item, deltaTime);
-	}
 	SetInputDir();
-	Down(deltaTime);
-	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
-	UpdateVelocity(VScale(accelVec, deltaTime));
-	UpdateMV1Pos();
-	ModelSetMatrix();
-	InitWheelArgumentCarInfo();
+	CommonUpdate(deltaTime, outsideHitFlag, item);
 	PlayDriveSound(wheelArgumentCarInfo.inputDir);
-	// ƒ^ƒCƒ„‚Ìˆ—
-	wheels->WheelUpdate(wheelArgumentCarInfo);
 	SoundPlayer::SetListener(position, VAdd(position, direction));
 #ifdef _DEBUG
 	//printfDx("%f,%f\n", accelVec.x,accelVec.z);
 	//printfDx("position::%f,%f\n", position.x,position.z);
 	//printfDx("direction::%f,%f\n", direction.x,direction.z);
 #endif
-}
-
-HandleDirection PlayerCar::GetHandleDirection()
-{
-	return wheelArgumentCarInfo.inputDir.handleDir;
 }
 
 void PlayerCar::SetInputDir()

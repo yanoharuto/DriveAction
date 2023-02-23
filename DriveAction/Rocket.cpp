@@ -11,7 +11,7 @@ Rocket::Rocket(ItemArgumentCarInfo carInfo)
 {
     position = carInfo.position;
     position = VAdd(position, VScale(carInfo.direction, -20));
-    modelHandle = MV1DuplicateModel(AssetManager::Get3DModelAssetHandle(rocketModelAddress));
+    modelHandle = MV1DuplicateModel(AssetManager::GetDuplicate3DModelAssetHandle(rocketModelAddress));
     MV1SetScale(modelHandle, VGet(setSize, setSize, setSize));
     tag = ObjectTag::damageObject;
     bouncePower = setBouncePower;

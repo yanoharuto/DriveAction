@@ -8,7 +8,6 @@ PlayScene::PlayScene()
     :SceneBase(SceneType::PLAY)
 {
     sceneFlow = new PlaySceeneFlow();
-    nextSceneType = SceneType::RESULT;
     fadeInFadeOut->FadeInStart();
 }
 

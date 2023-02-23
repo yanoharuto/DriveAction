@@ -19,7 +19,7 @@ static const float rotaCalculationLine = 1.2f;
 
 Wheels::Wheels(const WheelArgumentCarInfo InitInfo)
 {
-	modelHandle= AssetManager::Get3DModelAssetHandle(wheelAddress);
+	modelHandle= AssetManager::GetDuplicate3DModelAssetHandle(wheelAddress);
 	carInfo = InitInfo;
 	InitWheel(lFWheel, modelHandle, VGet(-fWheelPos.x, fWheelPos.y, -fWheelPos.z), firstLWheelRota);
 	InitWheel(lBWheel, modelHandle, VGet(bWheelPos.x, fWheelPos.y, -fWheelPos.z), firstLWheelRota);

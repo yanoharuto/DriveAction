@@ -14,7 +14,7 @@ public:
     /// </summary>
     /// <param name="assetAddress"></param>
     /// <returns></returns>
-    static int Get3DModelAssetHandle(std::string assetAddress);
+    static int GetDuplicate3DModelAssetHandle(std::string assetAddress);
 private :
 };
 

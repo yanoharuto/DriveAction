@@ -60,8 +60,10 @@ public:
 	/// <param name="deltaTime"></param>
 	/// <param name="outsideHitFlag"></param>
 	void AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo);
-	void CourceOutProccess(VECTOR lastCheckPos, VECTOR lastCheckDir);
+
+	void SetCourceOutProccess(VECTOR lastCheckPos, VECTOR lastCheckDir);
 protected:
+	void CommonUpdate(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo);
 	/// <summary>
 	/// アイテムの効果を受け取る
 	/// </summary>
@@ -123,14 +125,15 @@ protected:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	void Down(float deltaTime);
-
+	void CourceOutProccess(float deltaTime);
 	//速さ
 	float accelPower = 0;
 	//外的要因による速さ
 	float forcePower = 0;
 	//ぶつかった時の跳ね返り力
 	float conflictObjBouncePower;
-	int brekeCount = 0;
+
+	float courceOutProccessTime = 0.0f;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;
 	//チェックポイントに当たってるか

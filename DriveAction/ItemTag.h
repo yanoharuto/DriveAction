@@ -4,9 +4,9 @@
 /// </summary>
 enum ItemTag
 {
-    kite,//空を飛ぶ
-    attack,//投擲アイテム
-    accelerator,//加速効果
-    non,//何も持ってない
-    roulette//ルーレット
+    kite=0,//空を飛ぶ
+    attack=1,//投擲アイテム
+    accelerator=2,//加速効果
+    roulette=3,//ルーレット
+    non=4//何も持ってない
 };

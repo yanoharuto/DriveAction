@@ -6,8 +6,8 @@ Kite::Kite()
 {
 	effecacyTime = setEffecacyTime;
 	itemTag = kite;
-	modelHandle = AssetManager::Get3DModelAssetHandle(modelAddress);
-	leftRocketModelHandle = AssetManager::Get3DModelAssetHandle(modelAddress);
+	modelHandle = AssetManager::GetDuplicate3DModelAssetHandle(modelAddress);
+	leftRocketModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(modelAddress);
 	MV1SetScale(modelHandle, VGet(0.1f, 0.1f, 0.1f));
 	MV1SetScale(leftRocketModelHandle, VGet(0.1f, 0.1f, 0.1f));
 }

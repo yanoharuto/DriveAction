@@ -14,7 +14,7 @@ public:
     /// <param name="direction1"></param>
     /// <param name="direction2"></param>
     /// <returns>ÉfÉOÉäÅ[Ç≈ï‘Ç∑</returns>
-    float GetDegreeMisalignment(VECTOR direction1, VECTOR direction2)
+    static float GetDegreeMisalignment(VECTOR direction1, VECTOR direction2)
     {
         float destinationDir = 0;
         destinationDir = VDot(direction1, direction2) / (VSize(direction2) * VSize(direction1));

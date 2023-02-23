@@ -5,23 +5,23 @@
 #include "ImgUI.h"
 #include "StringUI.h"
 #include "SoundPlayer.h"
-
+#include "Rule.h"
 PlaySceeneFlow::PlaySceeneFlow()
 {
-	SoundPlayer::LoadSound(clapSE);
+	menu = new  RaceMenu();
 	courceDataLoader = new CourceDataLoader();
 	nowProgress = PlaySceeneProgress::start;
 	stageManager = new StageManager(courceDataLoader);
-	racerManager = new RacerManager(racerNum,courceDataLoader);
+	racerManager = new RacerManager(RACER_NUM,courceDataLoader);
 	camera = new RaceCamera();
 	dataCreator = new CreatePosAndDirData();
 	countDown = new CountDown();
 	postGoalStaging = nullptr;
-	miniMap = new MiniMap(courceDataLoader->GetStageDataGenericAddress());
+	miniMap = new MiniMap();
 	conflictProcesser = new ConflictProcesser();
 	gimmickObjManager = new GimmickObjManager(conflictProcesser,courceDataLoader);
-	playerRelatedUI = new PlayerRelatedUI(maxLap);
-	assetManager = new AssetManager();
+	playerRelatedUI = new PlayerRelatedUI(MAX_LAP);
+	modelManager = new AssetManager();
 	firingManager = new FiringItemManager();
 	damageObjGene = new DamageObjectGenerator(conflictProcesser,firingManager);
 	effectManager = new EffectManager();
@@ -29,6 +29,7 @@ PlaySceeneFlow::PlaySceeneFlow()
 
 PlaySceeneFlow::~PlaySceeneFlow()
 {
+	SAFE_DELETE(menu);
 	SAFE_DELETE(racerManager);
 	SAFE_DELETE(stageManager);
 	SAFE_DELETE(camera);
@@ -37,11 +38,11 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(miniMap);
 	SAFE_DELETE(postGoalStaging);
-	SAFE_DELETE(scoreTime);
+	SAFE_DELETE(score);
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(conflictProcesser);
 	SAFE_DELETE(playerRelatedUI);
-	SAFE_DELETE(assetManager);
+	SAFE_DELETE(modelManager);
 	SAFE_DELETE(firingManager);
 	SAFE_DELETE(effectManager);
 }
@@ -51,7 +52,7 @@ void PlaySceeneFlow::Update(float deltaTime)
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	PlaySceneCameraArgumentInfo cameraArgumentInfo;
 	PlayerRelatedInfo playerRelatedInfo = {};
-	gimmickObjManager->Updatee(deltaTime);
+	gimmickObjManager->Update(deltaTime);
 	switch (nowProgress)
 	{
 		//スタート処理
@@ -91,12 +92,12 @@ void PlaySceeneFlow::Update(float deltaTime)
 		//ミニマップ
 		miniMap->Update(-cameraArgumentInfo.pos.x, cameraArgumentInfo.pos.z);
 		
-		if (playerRelatedInfo.lap == maxLap)//レース終了
+		if (playerRelatedInfo.lap == MAX_LAP)//レース終了
 		{
 			nowProgress = PlaySceeneProgress::playerGoal;
 			postGoalStaging = new PostGoalStaging();
-			scoreTime = new ResultScore(raceTime,playerRelatedInfo.rank);
-			SoundPlayer::Play2DSE(clapSE);
+			score = new ResultScore(raceTime,playerRelatedInfo.rank);
+			
 		}
 		break;
 	case PlaySceeneProgress::playerGoal:
@@ -118,6 +119,7 @@ void PlaySceeneFlow::Update(float deltaTime)
 		}
 		break;
 	case PlaySceeneProgress::end:
+		nextSceneType = SceneType::RESULT;
 		isEndProccess = true;
 		break;
 	default:

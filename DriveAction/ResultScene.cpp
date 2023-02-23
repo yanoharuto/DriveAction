@@ -4,7 +4,6 @@
 ResultScene::ResultScene()
     :SceneBase(SceneType::RESULT)
 {
-    nextSceneType = SceneType::TITLE;
     sceneFlow = new ResultSceneFlow();
     fadeInFadeOut->FadeInStart();
 }

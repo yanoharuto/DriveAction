@@ -4,7 +4,7 @@
 TitleScene::TitleScene()
     :SceneBase(SceneType::TITLE)
 {
-    nextSceneType = SceneType::PLAY;
+
     sceneFlow = new TitleSceeneFlow();
     fadeInFadeOut->FadeInStart();
 }

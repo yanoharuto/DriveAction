@@ -3,12 +3,7 @@
 #include "Timer.h"
 #include "Utility.h"
 #include "SceneFlowBase.h"
-enum class SceneType
-{
-    TITLE,
-    PLAY,
-    RESULT
-};
+#include "SceneType.h"
 
 class SceneBase abstract
 {
@@ -32,7 +27,7 @@ public:
     /// シーンの更新
     /// </summary>
     /// <returns></returns>
-    SceneType Update()
+    virtual SceneType Update()
     {
         timer->Update();
         switch (fadeInFadeOut->GetFadeMode())
@@ -53,7 +48,7 @@ public:
             fadeInFadeOut->FadeOut(timer->GetDeltaTime());
             break;
         case FadeMode::fadeOutEnd://フェードアウトが終わったら次のシーン
-            return nextSceneType;
+            return sceneFlow->GetNextSceneType();
             break;
         default:
             break;
@@ -71,8 +66,6 @@ public:
 protected:
     //このシーンの種類
     SceneType nowSceneType;
-    //次のシーンの種類
-    SceneType nextSceneType;
     //フェードインフェードアウト
     FadeInFadeOut* fadeInFadeOut;
     //シーンの処理の流れ

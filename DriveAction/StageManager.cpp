@@ -9,7 +9,7 @@ StageManager::StageManager()
 
 StageManager::StageManager(CourceDataLoader* courceDataLoader)
 {
-    circuit = new CircuitTrack(courceDataLoader->GetCourceAddress(),courceDataLoader->GetOutsideAddress());
+    circuit = new CircuitTrack();
     skyDome = new SkyDome();
 }
 

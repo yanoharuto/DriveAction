@@ -10,8 +10,8 @@
 CircuitTrack::CircuitTrack()
 {
     std::string genericAddress = CourceDataLoader::GetStageDataGenericAddress();
-    courceModelHandle = AssetManager::Get3DModelAssetHandle(genericAddress + courceAddress);
-    outsideModelHandle = AssetManager::Get3DModelAssetHandle(genericAddress + outsideAddress);
+    courceModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(genericAddress + courceAddress);
+    outsideModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(genericAddress + outsideAddress);
     MV1SetPosition(outsideModelHandle, outsideModelPosition);    //若干コースの外側を下げる
     //大きさ変更
     VECTOR scale = VGet(courceModelScaleValue, courceModelScaleValue, courceModelScaleValue);

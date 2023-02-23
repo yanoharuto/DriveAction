@@ -79,5 +79,4 @@ private:
     const std::string itemBoxDirAddress = "/ItemDir.txt";
     //アイテムボックスの場所
     const std::string itemBoxPosAddress = "/ItemPos.txt";
-
 };

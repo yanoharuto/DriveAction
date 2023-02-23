@@ -20,7 +20,7 @@ PlayerRelatedUI::PlayerRelatedUI(const int maxLap)
     uiData.y = SCREEN_HEIGHT / 20 * 4.0f;
     timeUI = new StringUI(GetColor(40,40,40), uiData);
     accelMeter = new AccelMeter();
-    uiData.x = SCREEN_WIDTH / 2;
+    uiData.x = SCREEN_WIDTH / 20 * 2.8f;
     uiData.y = SCREEN_HEIGHT / 20 * 3;
     itemUI = new ItemUI(uiData);
     uiData.x = SCREEN_WIDTH / 20 * 2;
@@ -41,7 +41,7 @@ PlayerRelatedUI::~PlayerRelatedUI()
 
 void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo,float deltaTime)
 {
-    reverseDrivingCautionUI->Update(relatedInfo.carDirection,relatedInfo.nextCheckPointDirection,deltaTime);
+    reverseDrivingCautionUI->Update(relatedInfo.reverse,deltaTime);
     rankUI->UpdateString("Rank::" + std::to_string(relatedInfo.rank));
     lapUI->Update(relatedInfo.lap + 1);
     

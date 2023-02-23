@@ -1,13 +1,14 @@
 #include "ReverseDrivingCautionUI.h"
 #include "UIDataStruct.h"
 #include "Utility.h"
+#include "SoundPlayer.h"
 ReverseDrivingCautionUI::ReverseDrivingCautionUI()
 {
     data.x = SCREEN_WIDTH / 2;
-    data.y = SCREEN_HEIGHT / 7;
+    data.y = SCREEN_HEIGHT / 20 * -1.0f;
     data.dataHandle = LoadGraph(returnGraphAddress.c_str(), false);
     returnGraphUI = new ImgUI(graphSize,data);
-
+    SoundPlayer::LoadSound(returnSoundAddress);
     time = limitedTime;
 }
 
@@ -17,16 +18,22 @@ ReverseDrivingCautionUI::~ReverseDrivingCautionUI()
     DeleteGraph(data.dataHandle);
 }
 
-void ReverseDrivingCautionUI::Update(VECTOR carDir, VECTOR checkPointDir, float deltaTime)
+void ReverseDrivingCautionUI::Update(bool reverse, float deltaTime)
 {
-    float dot = VDot(carDir, checkPointDir);
-    if (dot <= -0.5)
+    if (reverse)
     {
         time -= deltaTime;
+        if (time < 0 && !SoundPlayer::IsPlaySound(returnSoundAddress))
+        {
+            SoundPlayer::Play2DSE(returnSoundAddress);
+            data.y -= deltaTime;
+            returnGraphUI->SetXY(data.x,data.y);
+        }
     }
     else
     {
         time = limitedTime;
+        SoundPlayer::StopSound(returnSoundAddress);
     }
 }
 

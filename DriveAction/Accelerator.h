@@ -24,6 +24,6 @@ private:
     int effectResource=-1;
     int playEffect = -1;
     const std::string effectAddress = "wind.efkefc";
-    const float addEffecacyValue = 38.5f;
+    const float addEffecacyValue = 62.5f;
     const float setEffecacyTime = 1.8f;
 };

@@ -1,5 +1,6 @@
 #include "PostGoalStaging.h"
 #include "Utility.h"
+#include "SoundPlayer.h"
 PostGoalStaging::PostGoalStaging()
 {
     x = 0.0f;
@@ -10,7 +11,9 @@ PostGoalStaging::PostGoalStaging()
     goalMarkerUI.y = y;
     goalMarkerUI.dataHandle = CreateFontToHandle("BIZ UDÉSÉVÉbÉN", 122, 3, DX_FONTTYPE_NORMAL);
     stringUI = new StringUI(goalMarkerUIColor, goalMarkerUI, "Goal!!!");
-    switchUI = new SwitchUI();
+    switchUI = new SwitchUI(); 
+    SoundPlayer::LoadSound(clapSE);
+    SoundPlayer::Play2DSE(clapSE);
 }
 
 

@@ -10,10 +10,8 @@ struct  PlayerRelatedInfo
     int lap;
     //‡ˆÊ
     int rank;
-    //Ô‚ÌŒü‚«
-    VECTOR carDirection;
-    //Ô‚ÌŸ‚ÉŒü‚©‚¤êŠ‚ÌŒü‚«
-    VECTOR nextCheckPointDirection;
+    //Ô‚ª‹t‘–‚µ‚Ä‚¢‚½‚ç
+    bool reverse;
     //‚Á‚Ä‚¢‚éƒAƒCƒeƒ€
     ItemTag itemTag;
     //ŠÔ

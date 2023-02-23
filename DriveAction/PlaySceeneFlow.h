@@ -18,6 +18,7 @@
 #include "FiringItemManager.h"
 #include "DamageObjectGenerator.h"
 #include "AssetManager.h"
+#include "RaceMenu.h"
 /// <summary>
 /// どういう順番で処理を行うか決める
 /// </summary>
@@ -41,27 +42,44 @@ public:
     void Draw() override;
 
 private:
-    RacerManager* racerManager;//車乗りのマネージャー
-    StageManager* stageManager;//ステージのマネージャー
-    RaceCamera* camera;//カメラ
+    //車乗りのマネージャー
+    RacerManager* racerManager;
+    //ステージのマネージャー
+    StageManager* stageManager;
+    //カメラ
+    RaceCamera* camera;
+    //コースの情報を読み取って
     CourceDataLoader* courceDataLoader;
+    //レース前のカウントダウン
     CountDown* countDown;
+    //ミニマップ
     MiniMap* miniMap;
-    ResultScore* scoreTime;
+    //スコア
+    ResultScore* score;
+    //ゴール後の処理
     PostGoalStaging* postGoalStaging;
+    //ギミックの処理担当
     GimmickObjManager* gimmickObjManager;
+    //当たり判定処理
     ConflictProcesser* conflictProcesser;
+    //プレイヤー周りのUI
     PlayerRelatedUI* playerRelatedUI;
+    //エフェクト
     EffectManager* effectManager;
+    //コースの情報を作る　デバッグ用
     CreatePosAndDirData* dataCreator;
+    //発射アイテムのマネージャー
     FiringItemManager* firingManager;
+    //ダメージ判定のあるオブジェクトの生成
     DamageObjectGenerator* damageObjGene;
-    AssetManager* assetManager;
-    PlaySceeneProgress nowProgress;//今何の処理を行うか決める変数
-    int countUINum;
+    //modelの管理
+    AssetManager* modelManager;
+    //途中でやめたり一時停止をする
+    RaceMenu* menu;
+    //今何の処理を行うか決める変数
+    PlaySceeneProgress nowProgress;
+    
     bool isSpaceInput = false;
-    const int maxLap = 2;
-    const int racerNum = 3;
-    const std::string clapSE = "clap.mp3";
+
     float raceTime = 0;
 };

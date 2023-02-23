@@ -29,20 +29,13 @@ GimmickObjManager::GimmickObjManager(ConflictProcesser* conflictProcesser,Cource
     {
         VECTOR pos = *posIte;
         VECTOR dir = *dirIte;
-        
-        for (int i = 0; i < 4; i++)
+        pos = VAdd(pos, VScale(VCross(dir, VGet(0, 1, 0)), itemBoxNum / 2 * itemBoxBetween));
+        for (int i = 0; i < itemBoxNum; i++)
         {
             ItemBox* itemBox;
             VECTOR addPos;
-            if (i % 2 == 1)
-            {
-                addPos = VScale(VCross(dir, VGet(0, 1, 0)), i * 15);
-            }
-            else
-            {
-                addPos = VScale(VCross(VGet(0, 1, 0),dir), i * 15);
-            }
-            itemBox = new ItemBox(itemBoxModelResource, VAdd(pos,addPos), dir);
+            pos = VAdd(pos, VScale(VCross(VGet(0, 1, 0), dir), itemBoxBetween));
+            itemBox = new ItemBox(itemBoxModelResource, pos, dir);
             conflictProcesser->AddConflictObject(itemBox);
             actorList.push_back(itemBox);
         }
@@ -71,7 +64,7 @@ GimmickObjManager::~GimmickObjManager()
     MV1DeleteModel(itemBoxModelResource);
 }
 
-void GimmickObjManager::Updatee(float deltaTime)
+void GimmickObjManager::Update(float deltaTime)
 {
     for (auto objIte = actorList.begin(); objIte != actorList.end(); objIte++)
     {

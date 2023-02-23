@@ -5,21 +5,21 @@
 #include <fstream>
 #include <string>
 //共通のアドレス
-std::string genericAddress;
+static std::string genericAddress;
 //車の初期位置リストを読み取る
-VECTOR3Loader* firstCarPosLoader;
+static VECTOR3Loader* firstCarPosLoader;
 //チェックポイントの位置リストを読み取る
-VECTOR3Loader* checkPointPosLoader;
+static VECTOR3Loader* checkPointPosLoader;
 //チェックポイントの方向リストを読み取る
-VECTOR3Loader* checkPointDirLoader;
+static VECTOR3Loader* checkPointDirLoader;
 //加速床の位置リストを読み取る
-VECTOR3Loader* accelFloorPosLoader;
+static VECTOR3Loader* accelFloorPosLoader;
 //加速床の向きリストを読み取る
-VECTOR3Loader* accelFloorDirLoader;
+static VECTOR3Loader* accelFloorDirLoader;
 //障害物の位置リストを読み取る
-VECTOR3Loader* obstraclePosLoader;
-VECTOR3Loader* itemDirLoader;
-VECTOR3Loader* itemPosLoader;
+static VECTOR3Loader* obstraclePosLoader;
+static VECTOR3Loader* itemDirLoader;
+static VECTOR3Loader* itemPosLoader;
 /// <summary>
 /// コース情報
 /// </summary>

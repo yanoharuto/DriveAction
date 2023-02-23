@@ -21,10 +21,13 @@ void Accelerator::Update(float deltaTime,ItemArgumentCarInfo carInfo)
     {
         effecacyValue += addEffecacyValue * deltaTime;
         effecacyTime -= deltaTime;
+        //エフェクトの位置変更
         VECTOR pos = VAdd(carInfo.position, VScale(carInfo.direction, carInfo.radius));
         SetPosPlayingEffekseer3DEffect(playEffect, pos.x, pos.y, pos.z);
+        //車の向きに合わせる
         float rota = VDot(VNorm(VGet(1, 0, 0)), VNorm(carInfo.direction));
         SetRotationPlayingEffekseer3DEffect(playEffect, 0, acosf(rota) * RAGE, 0);
+        //加速し終わったら
         if (effecacyTime < 0)
         {
             useSituation = ItemUseSituation::DoneUsing;

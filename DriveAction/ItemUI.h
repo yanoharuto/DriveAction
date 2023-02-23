@@ -8,11 +8,13 @@ class ItemUI :public UI
 public:
     ItemUI() {};
     ItemUI(UIData data);
+    ~ItemUI();
     void Update(ItemTag itemTag);
     void DrawUI()override;
 private:
     int itemUIFrameGraphH = -1;
-    std::unordered_map<ItemTag,int> itemImgMap;
+    const float graphSize = 0.9f;
+    int itemImgMap[4];
     const std::string accelation = "data/Accelation.png";
     const std::string hatena = "data/Hatena.png";
     const std::string rocket = "data/Rocket.png";

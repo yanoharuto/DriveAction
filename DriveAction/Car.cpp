@@ -5,7 +5,8 @@
 #include "ConflictExamineResultInfo.h"
 #include "EffekseerForDXLib.h"
 #include "EffectManager.h"
-
+//車のモデルの大きさ
+static const float carModelSize = 0.175f;
 //加速量
 static const float accelAddSpeed = 38.4f;
 // 通常最高速度.
@@ -29,7 +30,7 @@ static const float colideDecel = 0.2f;
 //コースの外側に来た時の減速
 static const float outsideHitDecel = 0.28f;
 //車の幅
-static const float setRadius = 3.2f;
+static const float setRadius = 3.8f;
 //車の高さ
 static const float carHeight = 3.2f;
 //目的地に向かうときに曲がるか判断する
@@ -43,7 +44,7 @@ static const float downSpeed = 10.8f;
 //最初のY座標
 static const float firstPosY = -4.0;
 //コースアウトから元のコースに戻るまでにかかる時間
-static const float courceOutProccessTime = 2.5f;
+static const float setCourceOutProccessTime = 2.5f;
 //ダメージを受けた時の操作不可能時間の合計
 static const float setDamageReactionTime = 0.8f;
 static const float autoDriveValue = 180.0f;
@@ -79,6 +80,7 @@ Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,int duplic
 	tag = ObjectTag::car;
 	bouncePower = setBouncePower;
 	radius = setRadius;
+	MV1SetScale(modelHandle, VGet(carModelSize,carModelSize,carModelSize));
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	destinationPos = firstDestinationPos;
@@ -109,35 +111,38 @@ Car::~Car()
 /// <param name="conflictInfo"></param>
 void Car::ConflictProccess(float deltaTime,const ConflictExamineResultInfo conflictInfo)
 {
-	switch (conflictInfo.tag)
+	if (!isCourceOutProccessing)
 	{
-	case ObjectTag::car:
-	case ObjectTag::stage:
-	case ObjectTag::obstacle:
-		ConflictReaction(deltaTime,conflictInfo);
-		break;
-	case ObjectTag::goal:
-		
-		isGoalConflict = true;
-		destinationPos = conflictInfo.pos;
-		destinationDir = conflictInfo.dir;
-		break;
-	case ObjectTag::acelerationFloor: 
-		forcePower += addAccelForce * deltaTime;
-		forcePower = forcePower > maxAddForcePower ? maxAddForcePower : forcePower;
-		break;
-	case ObjectTag::itemBox:
+		switch (conflictInfo.tag)
+		{
+		case ObjectTag::car:
+		case ObjectTag::stage:
+		case ObjectTag::obstacle:
+			ConflictReaction(deltaTime, conflictInfo);
+			break;
+		case ObjectTag::goal:
 
-		break;
-	case ObjectTag::damageObject:
-		isDamage = true;
-		damageReactionTime = setDamageReactionTime;
-		accelPower = 0;
-		forcePower = 0;
-		ConflictReaction(deltaTime, conflictInfo);
-		break;
-	default:
-		break;
+			isGoalConflict = true;
+			destinationPos = conflictInfo.pos;
+			destinationDir = conflictInfo.dir;
+			break;
+		case ObjectTag::acelerationFloor:
+			forcePower += addAccelForce * deltaTime;
+			forcePower = forcePower > maxAddForcePower ? maxAddForcePower : forcePower;
+			break;
+		case ObjectTag::itemBox:
+
+			break;
+		case ObjectTag::damageObject:
+			isDamage = true;
+			damageReactionTime = setDamageReactionTime;
+			accelPower = 0;
+			forcePower = 0;
+			ConflictReaction(deltaTime, conflictInfo);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -264,22 +269,47 @@ void Car::ModelSetMatrix()
 /// <param name="outsideHitFlag">コース外に出たか</param>
 void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo)
 {
-	//落下
-	Down(deltaTime);
-	if (isDamage)
+	wheelArgumentCarInfo.inputDir = GetAutoDriveDirection();
+	CommonUpdate(deltaTime, outsideHitFlag, itemInfo);
+}
+
+void Car::SetCourceOutProccess(VECTOR lastCheckPos, VECTOR lastCheckDir)
+{
+	if (!isCourceOutProccessing)
 	{
-		DamageReaction(deltaTime);
+		prevDestinationPos = lastCheckPos;
+		prevDestinationDir = lastCheckDir;
+		isCourceOutProccessing = true;
+		courceOutProccessTime = setCourceOutProccessTime;
+		velocity = lastCheckDir;
+	}
+}
+void Car::CommonUpdate(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo)
+{
+
+	if (isCourceOutProccessing)
+	{
+		CourceOutProccess(deltaTime);
 	}
 	else
 	{
-		RecieveItemEffecacy(itemInfo, deltaTime);
+		//落下
+		Down(deltaTime);
+		if (isDamage)
+		{
+			DamageReaction(deltaTime);
+		}
+		else
+		{
+			RecieveItemEffecacy(itemInfo, deltaTime);
+		}
+		//速さを所得
+		VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
+		//速度を更新
+		UpdateVelocity(VScale(accelVec, deltaTime));
+		//速さによってはじき返す力を増やす
+		bouncePower = setBouncePower + GetTotalAccelPowerPercent() / 100;
 	}
-	VECTOR accelVec = {};
-	wheelArgumentCarInfo.inputDir = GetAutoDriveDirection();
-	//速さを所得
-	accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, outsideHitFlag, deltaTime);
-	//速度を更新
-	UpdateVelocity(VScale(accelVec, deltaTime));
 	//位置の更新
 	UpdateMV1Pos();
 	//回転とかを制御
@@ -288,16 +318,6 @@ void Car::AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo i
 	InitWheelArgumentCarInfo();
 	//タイヤの更新
 	wheels->WheelUpdate(wheelArgumentCarInfo);
-	//速さによってはじき返す力を増やす
-	bouncePower = setBouncePower + GetTotalAccelPowerPercent() / 100;
-}
-
-void Car::CourceOutProccess(VECTOR lastCheckPos, VECTOR lastCheckDir)
-{
-	
-	isCourceOutProccessing = true;
-	prevDestinationPos = lastCheckPos;
-	prevDestinationDir = lastCheckDir;
 }
 /// <summary>
 /// ハンドルの向きを出す
@@ -419,7 +439,7 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime
 /// <param name="soundPlayer"></param>
 void Car::PlayDriveSound(InputInfo inputDir )
 {
-	if (inputDir.isBreake)
+	if (inputDir.isBreake)//ブレーキ
 	{		
 		SoundPlayer::SetPosition3DSound(position, breakeSEAddress);
 		if (!SoundPlayer::IsPlaySound(breakeSEAddress))
@@ -429,11 +449,11 @@ void Car::PlayDriveSound(InputInfo inputDir )
 			SoundPlayer::Play3DSE(breakeSEAddress);
 		}
 	}
-	else if(inputDir.nonInput)
+	else if(inputDir.nonInput)//何も入力してなかったら走行音が無くなる
 	{
 		SoundPlayer::StopSound(drivingSEAddress);
 	}
-	else
+	else//走行音
 	{
 		SoundPlayer::SetPosition3DSound(position, drivingSEAddress);
 		if (!SoundPlayer::IsPlaySound(drivingSEAddress))
@@ -472,6 +492,22 @@ void Car::Down(float deltaTime)
 			position.y = firstPosY;
 			isOnGround = true;
 		}
+	}
+}
+void Car::CourceOutProccess(float deltaTime)
+{
+	if (courceOutProccessTime > 0)
+	{
+		courceOutProccessTime -= deltaTime;
+		float larp = 1.0f - (courceOutProccessTime / setCourceOutProccessTime);
+		VECTOR addPos = VScale(VSub(prevDestinationPos, position), larp);
+		position = VAdd(addPos, position);		
+		position.y = 3.0f;
+		isOnGround = false;
+	}
+	else
+	{
+		isCourceOutProccessing = false;
 	}
 }
 /// <summary>

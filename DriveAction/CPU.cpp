@@ -7,7 +7,7 @@ CPU::CPU()
 
 CPU::CPU(VECTOR firstPos,int duplicateModel)
 {
-    cpuCar = new CPUCar(firstPos, checkPoint->GetPos(),duplicateModel);
+    cpuCar = new CPUCar(firstPos,checkPoint->GetDir(), checkPoint->GetPos(), duplicateModel);
     SetCarPointer(cpuCar);
 }
 

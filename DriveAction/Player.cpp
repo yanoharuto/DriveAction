@@ -7,8 +7,7 @@ Player::Player()
 Player::Player(VECTOR firstPos, int duplicateModel)
     :Racer()
 {
-    VECTOR firstDir;
-    playerCar = new PlayerCar(firstPos,firstDir,checkPoint->GetPos(),duplicateModel);
+    playerCar = new PlayerCar(firstPos,checkPoint->GetDir(), checkPoint->GetPos(), duplicateModel);
     SetCarPointer(playerCar);
     SoundPlayer::LoadSound(rouletteSE);
 }
@@ -52,11 +51,11 @@ PlayerRelatedInfo Player::GetRelatedInfo()
     PlayerRelatedInfo info = {};
     info.accelPower = car->GetTotalAccelPower();
     info.accelPowerParcent = car->GetTotalAccelPowerPercent();
-    info.carDirection = car->GetDir();
+    info.reverse = reverse;
     info.itemTag = itemHolder->GetItemInfo().itemTag;
     info.lap = checkPoint->GetGoalCount();
     info.rank = rank;
-    info.nextCheckPointDirection = checkPoint->GetDir();
+    
     return info;
 }
 
@@ -65,6 +64,5 @@ PlaySceneCameraArgumentInfo Player::GetCameraArgumentInfo()
     PlaySceneCameraArgumentInfo argumentInfo = {};
     argumentInfo.dir = playerCar->GetDir();
     argumentInfo.pos = playerCar->GetPos();
-    argumentInfo.handleDir = playerCar->GetHandleDirection();
     return argumentInfo;
 }

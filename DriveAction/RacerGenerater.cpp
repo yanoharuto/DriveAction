@@ -1,32 +1,39 @@
+#include <string>
 #include "RacerGenerater.h"
-#include "Player.h"
 #include "CPU.h"
 #include "CourceDataLoader.h"
-RacerGenerater::RacerGenerater(int racerNum)
+#include "EnumToString.h"
+#include "AssetManager.h"
+RacerGenerater::RacerGenerater()
+{
+    carModelAddress[0] = "BlueBull.mv1";
+    carModelAddress[1] = "IceBlades.mv1";
+    carModelAddress[2] = "PrototypeZero.mv1";
+    carModelAddress[3] = "Rocker.mv1";
+    carModelAddress[4] = "Tanker.mv1";
+}
+void RacerGenerater::CreateRacers(int racerNum, std::list<Racer*>* racerList, Player** player)
 {
     std::list<VECTOR> firstPosList = CourceDataLoader::GetCarFirstPosList();
-    //最初の一行は向く方向なので消す
-    firstPosList.erase(firstPosList.begin());
     //ポジションのイテレーター
     auto firstPosIte = firstPosList.begin();
-    Racer* newRacer;
+    
     //レーサーの数だけNewする
+    Racer* newRacer;
     for (int i = 0; i < racerNum + 1; i++)
     {
         firstPosIte++;
+        std::string modelAddress = "data/model/Player/" + carModelAddress[i % CAR_MODEL_ENUM_SIZE];
         if (i == 0)
         {
-            newRacer = new Player(*firstPosIte);
+            (*player) = new Player(*firstPosIte,AssetManager::GetDuplicate3DModelAssetHandle(modelAddress));
+            newRacer =(*player);
         }
         else
         {
-            newRacer = new CPU(*firstPosIte);
+            newRacer = new CPU(*firstPosIte,AssetManager::GetDuplicate3DModelAssetHandle(modelAddress));
         }
-        racerList.push_front(newRacer);
+        (*racerList).push_front(newRacer);
     }
 }
 
-std::list<Racer*> RacerGenerater::GetRacerList()
-{
-    return racerList;
-}

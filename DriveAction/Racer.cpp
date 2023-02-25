@@ -79,7 +79,7 @@ void Racer::CommonUpdate(float deltaTime, bool outsideHitFlag, DamageObjectGener
     if (outsideHitFlag)
     {
         //コース外に出た時間を追加
-        courceOutCount += deltaTime;
+        //courceOutCount += deltaTime;
         if (courceOutCount > courceOutMaxCount)
         {
             car->SetCourceOutProccess(checkPoint->GetLastPos(),checkPoint->GetLastDir());
@@ -89,7 +89,7 @@ void Racer::CommonUpdate(float deltaTime, bool outsideHitFlag, DamageObjectGener
     else if (VDot(car->GetDir(), checkPoint->GetDir()) <= -0.5f)
     {
         //コース外に出た時間を追加
-        courceOutCount += deltaTime;
+        //courceOutCount += deltaTime;
         if (courceOutCount > courceOutMaxCount)
         {
             car->SetCourceOutProccess(checkPoint->GetLastPos(), checkPoint->GetLastDir());

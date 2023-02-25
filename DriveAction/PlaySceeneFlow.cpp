@@ -14,13 +14,9 @@ PlaySceeneFlow::PlaySceeneFlow()
 	stageManager = new StageManager(courceDataLoader);
 	racerManager = new RacerManager(RACER_NUM,courceDataLoader);
 	camera = new RaceCamera();
-	dataCreator = new CreatePosAndDirData();
-	countDown = new CountDown();
+	
 	postGoalStaging = nullptr;
-	miniMap = new MiniMap();
 	conflictProcesser = new ConflictProcesser();
-	gimmickObjManager = new GimmickObjManager(conflictProcesser,courceDataLoader);
-	playerRelatedUI = new PlayerRelatedUI(MAX_LAP);
 	modelManager = new AssetManager();
 	firingManager = new FiringItemManager();
 	damageObjGene = new DamageObjectGenerator(conflictProcesser,firingManager);
@@ -33,15 +29,12 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(racerManager);
 	SAFE_DELETE(stageManager);
 	SAFE_DELETE(camera);
-	SAFE_DELETE(dataCreator);
-	SAFE_DELETE(countDown);
+
 	SAFE_DELETE(courceDataLoader);
-	SAFE_DELETE(miniMap);
 	SAFE_DELETE(postGoalStaging);
 	SAFE_DELETE(score);
 	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(conflictProcesser);
-	SAFE_DELETE(playerRelatedUI);
 	SAFE_DELETE(modelManager);
 	SAFE_DELETE(firingManager);
 	SAFE_DELETE(effectManager);
@@ -52,7 +45,6 @@ void PlaySceeneFlow::Update(float deltaTime)
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	PlaySceneCameraArgumentInfo cameraArgumentInfo;
 	PlayerRelatedInfo playerRelatedInfo = {};
-	gimmickObjManager->Update(deltaTime);
 	switch (nowProgress)
 	{
 		//スタート処理
@@ -61,15 +53,10 @@ void PlaySceeneFlow::Update(float deltaTime)
 		break;
 		//カウントダウン
 	case PlaySceeneProgress::countDown:
-		countDown->Update(deltaTime);
 		camera->Update(racerManager->GetPlayerCarPosDir(),deltaTime);
 		racerManager->RacerUpdate(0, stageManager->GetCircuit(),damageObjGene);
-		//カウントダウンが終わったら
-		if (countDown->CountDownEnd())
-		{
-			SAFE_DELETE(countDown);
 			nowProgress = PlaySceeneProgress::race;
-		}
+		
 		break;
 		//レース
 	case PlaySceeneProgress::race:
@@ -84,13 +71,10 @@ void PlaySceeneFlow::Update(float deltaTime)
 		//プレイヤーに渡す処理
 		playerRelatedInfo = racerManager->GetPlayerRelatedInfo();
 		playerRelatedInfo.time = raceTime;
-		playerRelatedUI->Update(playerRelatedInfo, deltaTime);
 		//カメラにプレイヤーの情報を渡す
 		cameraArgumentInfo = racerManager->GetPlayerCarPosDir();
 		//カメラの処理
 		camera->Update(cameraArgumentInfo, deltaTime);
-		//ミニマップ
-		miniMap->Update(-cameraArgumentInfo.pos.x, cameraArgumentInfo.pos.z);
 		
 		if (playerRelatedInfo.lap == MAX_LAP)//レース終了
 		{
@@ -135,18 +119,14 @@ void PlaySceeneFlow::Draw()
 {	
 	stageManager->Draw();
 	racerManager->Draw();
-	gimmickObjManager->Draw();
 	firingManager->Draw();
 	switch (nowProgress)
 	{
 	case PlaySceeneProgress::start:
 		break;
 	case PlaySceeneProgress::countDown:
-		countDown->DrawUI();
 		break;
 	case PlaySceeneProgress::race:
-		miniMap->Draw();
-		playerRelatedUI->Draw();
 		break;
 	case PlaySceeneProgress::playerGoal:
 		postGoalStaging->Draw();

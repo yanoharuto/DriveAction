@@ -1,8 +1,9 @@
+#include <math.h>
+#include "EffekseerForDXLib.h"
+#include "UserInput.h"
 #include "PlayerCar.h"
 #include "Wheels.h"
 #include "Utility.h"	
-#include <math.h>
-#include "EffekseerForDXLib.h"
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -11,8 +12,8 @@ PlayerCar::PlayerCar()
 {
 }
 
-PlayerCar::PlayerCar(VECTOR firstPos, VECTOR firstDir, VECTOR destinationPos, int duplicateModelHandle)
-	:Car(firstPos,firstDir,destinationPos,duplicateModelHandle)
+PlayerCar::PlayerCar(CarParamater carParam, int duplicateModelHandle)
+	:Car(carParam,duplicateModelHandle)
 {
 	SoundPlayer::SetListener(position,VAdd(position,direction));
 }
@@ -38,28 +39,27 @@ void PlayerCar::Update(const float deltaTime, const bool outsideHitFlag,ItemInfo
 	SoundPlayer::SetListener(position, VAdd(position, direction));
 #ifdef _DEBUG
 	//printfDx("%f,%f\n", accelVec.x,accelVec.z);
-	//printfDx("position::%f,%f\n", position.x,position.z);
+	printfDx("position::%f,%f\n", position.x,position.z);
 	//printfDx("direction::%f,%f\n", direction.x,direction.z);
 #endif
 }
 
 void PlayerCar::SetInputDir()
 {
-	int inputKey = GetJoypadInputState(DX_INPUT_KEY);
 
 	wheelArgumentCarInfo.inputDir.isBreake = false;
 	wheelArgumentCarInfo.inputDir.nonInput = false;
 	//右か左か押してたら
-	if (inputKey & PAD_INPUT_RIGHT)
+	if (UserInput::GetInputState(Right)==Hold)
 	{
 		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::right;
 
 	}
-	else if (inputKey & PAD_INPUT_LEFT)
+	else if (UserInput::GetInputState(Left) == Hold)
 	{
 		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::left;
 	}
-	else if (inputKey & PAD_INPUT_UP)
+	else if (UserInput::GetInputState(Up) == Hold)
 	{
 		wheelArgumentCarInfo.inputDir.handleDir = HandleDirection::straight;
 	}
@@ -69,7 +69,7 @@ void PlayerCar::SetInputDir()
 		wheelArgumentCarInfo.inputDir.isBreake = false;
 		wheelArgumentCarInfo.inputDir.nonInput = true;
 	}
-	if (inputKey & PAD_INPUT_DOWN)
+	if (UserInput::GetInputState(KeyInputKind::Down) == Hold)
 	{
 		wheelArgumentCarInfo.inputDir.isBreake = true;
 		wheelArgumentCarInfo.inputDir.nonInput = false;

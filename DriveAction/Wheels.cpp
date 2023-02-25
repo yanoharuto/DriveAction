@@ -40,10 +40,6 @@ Wheels::~Wheels()
 
 void Wheels::Draw()
 {
-	MV1DrawModel(lBWheel.modelHandle);
-	MV1DrawModel(lFWheel.modelHandle);
-	MV1DrawModel(rFWheel.modelHandle);
-	MV1DrawModel(rBWheel.modelHandle);
 }
 
 /// <summary>

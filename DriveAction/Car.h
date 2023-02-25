@@ -5,7 +5,7 @@
 #include "Actor.h"
 #include "Wheels.h"
 #include "CarNeighborhoodExamineInfo.h"
-#include "NeighborhoodInfo.h"
+#include "CarParamater.h"
 #include "InputDirection.h"
 #include "ItemInfo.h"
 #include "SoundPlayer.h"
@@ -24,7 +24,7 @@ public:
 	/// <param name="firstDir"></param>
 	/// <param name="destinationPos"></param>
 	/// <param name="soundPlayer"></param>
-	Car(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos,int duplicateModelHandle);
+	Car(CarParamater param,int duplicateModelHandle);
     virtual ~Car();
 	/// <summary>
     /// 更新（移動処理）
@@ -34,7 +34,7 @@ public:
 	/// 衝突処理
 	/// </summary>
 	/// <param name="conflictInfo">ぶつかったかオブジェクトの情報</param>
-	void ConflictProccess(float deltaTime, const ConflictExamineResultInfo conflictInfo);
+	virtual void ConflictProccess(float deltaTime, const ConflictExamineResultInfo conflictInfo);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -60,7 +60,11 @@ public:
 	/// <param name="deltaTime"></param>
 	/// <param name="outsideHitFlag"></param>
 	void AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo);
-
+	/// <summary>
+	/// コースアウトしてたらコースに戻す
+	/// </summary>
+	/// <param name="lastCheckPos"></param>
+	/// <param name="lastCheckDir"></param>
 	void SetCourceOutProccess(VECTOR lastCheckPos, VECTOR lastCheckDir);
 protected:
 	void CommonUpdate(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo);
@@ -125,14 +129,26 @@ protected:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	void Down(float deltaTime);
+	/// <summary>
+	/// コースアウトしたときの処理
+	/// </summary>
+	/// <param name="deltaTime"></param>
 	void CourceOutProccess(float deltaTime);
+	//加速量
+	float accelAddSpeed = 178.4f;
+	// 通常最高速度.
+	float maxAccelSpeed = 830.0f;
+	//外的要因の速さの最高速度
+	float maxAddForcePower = 100.0f;
 	//速さ
 	float accelPower = 0;
 	//外的要因による速さ
 	float forcePower = 0;
+	//跳ね返り力の固定値
+	float setBouncePower = 1.0f;
 	//ぶつかった時の跳ね返り力
 	float conflictObjBouncePower;
-
+	//コースアウトしたときの処理
 	float courceOutProccessTime = 0.0f;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;

@@ -37,6 +37,6 @@ private:
     //最大高度
 	const float maxHeight = 13.0f;
     //３Dmodelのアドレス
-    const std::string modelAddress = "data/model/Item/Rocket/Rocket06_Green.mv1";
+    const std::string modelAddress = "Item/Rocket/Rocket06_Green.mv1";
     int leftRocketModelHandle;
 };

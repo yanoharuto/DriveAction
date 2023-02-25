@@ -16,5 +16,6 @@ public:
     /// <returns></returns>
     static int GetDuplicate3DModelAssetHandle(std::string assetAddress);
 private :
+    
 };
 

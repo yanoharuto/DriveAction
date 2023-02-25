@@ -5,6 +5,8 @@
 #include "HitCheckExamineObjectInfo.h"
 #include "NeighborhoodInfo.h"
 #include "CarNeighborhoodExamineInfo.h"
+#define  COURCE_GENERATE_NUM 5
+struct StageModel;
 /// <summary>
 /// コース
 /// </summary>
@@ -32,37 +34,42 @@ public:
     /// <param name="Actor">ぶつかってるか調べたいもの</param>
     /// <returns>ぶつかってたらTrue</returns>
     ConflictExamineResultInfo GetCourceConflictInfo(HitCheckExamineObjectInfo info) const;
-    NeighborhoodInfo GetOutsideExamineInfo(HitCheckExamineObjectInfo examineInfo) const;
     /// <summary>
     /// コースのモデルを描画
     /// </summary>
     void Draw();
-
+    void Update(VECTOR playerPos);
 private:
+   
     ConflictExamineResultInfo GetSphereConflictModelInfo(int modelHandle,HitCheckExamineObjectInfo examineInfo) const;
+   
+    //次に生成するステージの位置
+    VECTOR nextGeneratePos = {};
+    //最初のポジションの位置
+    const VECTOR firstPos = { -150.0f,0.0f,0.0f };
     //コリジョンのYの分割数
     const int setupYDivNum = 8;
     //コースの大きさ
-    const float courceModelScaleValue = 0.15f;
-    //コースの外側の大きさ
-    const float outsideModelScaleValue = 0.15f;
-    //コースの位置探索に使う線分の始点
-    const float sY = 0;
-    //コースの位置探索に使う線分の終点
-    const float eY = -11;
+    const float modelScaleHandle = 0.35f;
     //はじき返す力
     const float setBouncePower = 1.0f;
     //コースの赤白の奴の大きさ
     const float gurdRadius = 3.5f;
-    //コースのmodel
-    int courceModelHandle;
-    //コースの外側のmodel
-    int outsideModelHandle;
+
     //コースの外側のmodelのポジション
     const VECTOR outsideModelPosition = { 0,-8,0 };
-    //コースのモデル
-    const std::string courceAddress = "/Asset/RaceCircuit.mv1";
-    //コースの外側のモデル
-    const std::string outsideAddress = "/Asset/CircuitOutside.mv1";
+    //ステージのmodelのファイルのパス
+    const std::string stageFilePass = "Stage/";
+    const std::string courceFilePass = "Obstracle.mv1";
+    const std::string obstracleFilePass = "Rail.mv1";
+    const std::string floorFilePass = "Floor.mv1";
+    //コースのモデルの数
+    const int courceModelNum = 2;
+    //コースのパターンの数
+    const int courcePatternNum = 3;
+    //次に出すmodelのエイリアス
+    int random = 1;
+    int obstracleModelHandle;
+    int courceModelHandle;
+    int floorModelHandle;
 };
-

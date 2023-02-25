@@ -23,7 +23,7 @@ void RacerGenerater::CreateRacers(int racerNum, std::list<Racer*>* racerList, Pl
     for (int i = 0; i < racerNum + 1; i++)
     {
         firstPosIte++;
-        std::string modelAddress = "data/model/Player/" + carModelAddress[i % CAR_MODEL_ENUM_SIZE];
+        std::string modelAddress = "Player/" + carModelAddress[i % CAR_MODEL_ENUM_SIZE];
         if (i == 0)
         {
             (*player) = new Player(*firstPosIte,AssetManager::GetDuplicate3DModelAssetHandle(modelAddress));

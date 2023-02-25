@@ -282,6 +282,12 @@
     <ClCompile Include="RaceMenu.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Cource.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SkyDome.h">
@@ -560,9 +566,6 @@
     <ClInclude Include="RacerGenerater.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CarModelEnum.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="EnumToString.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -574,6 +577,18 @@
     </ClInclude>
     <ClInclude Include="Rule.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Cource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CarModelEnum.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="CarParamater.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

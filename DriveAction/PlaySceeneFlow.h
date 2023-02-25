@@ -50,24 +50,15 @@ private:
     RaceCamera* camera;
     //コースの情報を読み取って
     CourceDataLoader* courceDataLoader;
-    //レース前のカウントダウン
-    CountDown* countDown;
-    //ミニマップ
-    MiniMap* miniMap;
     //スコア
     ResultScore* score;
     //ゴール後の処理
     PostGoalStaging* postGoalStaging;
-    //ギミックの処理担当
-    GimmickObjManager* gimmickObjManager;
+
     //当たり判定処理
     ConflictProcesser* conflictProcesser;
-    //プレイヤー周りのUI
-    PlayerRelatedUI* playerRelatedUI;
     //エフェクト
     EffectManager* effectManager;
-    //コースの情報を作る　デバッグ用
-    CreatePosAndDirData* dataCreator;
     //発射アイテムのマネージャー
     FiringItemManager* firingManager;
     //ダメージ判定のあるオブジェクトの生成

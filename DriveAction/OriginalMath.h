@@ -1,6 +1,7 @@
 #pragma once
 #include "DxLib.h"
 #include <math.h>
+#include<random>
 #define RAGE  static_cast<float>(DX_PI / 180.0f) //ƒ‰ƒWƒAƒ“
 
 class OriginalMath
@@ -20,5 +21,12 @@ public:
         destinationDir = VDot(direction1, direction2) / (VSize(direction2) * VSize(direction1));
         destinationDir = acosf(destinationDir) / RAGE;
         return destinationDir;
+    }
+    static int GetRandom(int min,int max)
+    {
+        std::random_device seed;
+        std::mt19937 engine(seed());
+        std::uniform_int_distribution<> dist{ min,max };
+        return dist(engine);
     }
 };

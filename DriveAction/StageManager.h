@@ -19,11 +19,9 @@ public:
     ~StageManager();
 
     CircuitTrack* GetCircuit()const;
-    std::string GetCheckPoint()const;
     void Draw()const;
 
 private:
     CircuitTrack* circuit;
     SkyDome* skyDome;
-    std::string checkPointAddres;
 };

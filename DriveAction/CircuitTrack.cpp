@@ -2,6 +2,8 @@
 #include "CircuitTrack.h"
 #include "CourceDataLoader.h"
 #include "AssetManager.h"
+#include "OriginalMath.h"
+
 /// <summary>
 /// 初期化
 /// </summary>
@@ -9,19 +11,15 @@
 /// <returns></returns>
 CircuitTrack::CircuitTrack()
 {
-    std::string genericAddress = CourceDataLoader::GetStageDataGenericAddress();
-    courceModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(genericAddress + courceAddress);
-    outsideModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(genericAddress + outsideAddress);
-    MV1SetPosition(outsideModelHandle, outsideModelPosition);    //若干コースの外側を下げる
-    //大きさ変更
-    VECTOR scale = VGet(courceModelScaleValue, courceModelScaleValue, courceModelScaleValue);
-    MV1SetScale(courceModelHandle, scale);
-    scale = VGet(outsideModelScaleValue, outsideModelScaleValue, outsideModelScaleValue);
-    MV1SetScale(outsideModelHandle, scale);
+    nextGeneratePos = firstPos;
     //防壁の半径
     radius = gurdRadius;
     tag = ObjectTag::stage;
     bouncePower = setBouncePower;
+    courceModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(stageFilePass + courceFilePass);
+    obstracleModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(stageFilePass + obstracleFilePass);
+    floorModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(stageFilePass + floorFilePass);
+    MV1SetPosition(floorModelHandle, VGet(0, 0.0f, 0.0f));
 }
 
 /// <summary>
@@ -31,7 +29,8 @@ CircuitTrack::CircuitTrack()
 CircuitTrack::~CircuitTrack()
 {
     MV1DeleteModel(courceModelHandle);
-    MV1DeleteModel(outsideModelHandle);
+    MV1DeleteModel(obstracleModelHandle);
+    MV1DeleteModel(floorModelHandle);
 }
 /// <summary>
 /// コースの外側に当たってるか調べる
@@ -40,15 +39,7 @@ CircuitTrack::~CircuitTrack()
 /// <returns>コースの外側にいるならTrue</returns>
 bool CircuitTrack::GetOutsideHitFlag(HitCheckExamineObjectInfo info)const
 {
-    //線分の始まりと終わりを作る
-    //ｘとｚ座標を取ってくる
-    VECTOR startPos = info.pos;
-    startPos.y = sY;
-    VECTOR endPos = info.pos;
-    endPos.y = eY;
-    //外側にいるか調べる
-    DxLib::MV1_COLL_RESULT_POLY polyInfo = MV1CollCheck_Line(outsideModelHandle, -1, startPos, endPos);
-    return polyInfo.HitFlag;
+    return GetSphereConflictModelInfo(obstracleModelHandle, info).hitFlag;
 }
 bool CircuitTrack::HitCheckConflict(const HitCheckExamineObjectInfo examineObjInfo)
 {
@@ -61,7 +52,7 @@ bool CircuitTrack::HitCheckConflict(const HitCheckExamineObjectInfo examineObjIn
 /// <returns>ぶつかってたらTrue</returns>
 ConflictExamineResultInfo  CircuitTrack::GetCourceConflictInfo(HitCheckExamineObjectInfo info) const
 {
-    ConflictExamineResultInfo conflictInfo = GetSphereConflictModelInfo(courceModelHandle,info);
+    ConflictExamineResultInfo conflictInfo = GetSphereConflictModelInfo(obstracleModelHandle, info);
     //当たってる時
     if (conflictInfo.hitFlag)
     {
@@ -74,26 +65,16 @@ ConflictExamineResultInfo  CircuitTrack::GetCourceConflictInfo(HitCheckExamineOb
 }
 
 /// <summary>
-/// 引数の範囲に何かあるか調べるよ
-/// </summary>
-/// <param name="examineInfo"></param>
-/// <returns></returns>
-NeighborhoodInfo CircuitTrack::GetOutsideExamineInfo(HitCheckExamineObjectInfo examineInfo) const
-{
-    NeighborhoodInfo returnValueInfo;
-    returnValueInfo.outside = GetSphereConflictModelInfo(outsideModelHandle,examineInfo);
-    HitCheckExamineObjectInfo examineInfo2 = examineInfo;
-    examineInfo2.pos.y = outsideModelPosition.y;
-    returnValueInfo.obstacle = GetSphereConflictModelInfo(courceModelHandle, examineInfo2);
-    return returnValueInfo;
-}
-
-/// <summary>
 /// コースのモデルを描画
 /// </summary>
 void CircuitTrack::Draw()
 {
     MV1DrawModel(courceModelHandle);
+    MV1DrawModel(obstracleModelHandle);
+    MV1DrawModel(floorModelHandle);
+}
+void CircuitTrack::Update(VECTOR playerPos)
+{
 }
 /// <summary>
 /// MV1CollCheck_Sphereを使ってモデルハンドルが射程内か調べるよ
@@ -114,3 +95,4 @@ ConflictExamineResultInfo CircuitTrack::GetSphereConflictModelInfo(int modelHand
     }
     return conflictPos;
 }
+

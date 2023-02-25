@@ -39,5 +39,6 @@ public:
 private:
     PlayerCar* playerCar = nullptr;
     std::string rouletteSE = "rourette.mp3";
+    float setHP = 100;
 };
 

@@ -10,9 +10,10 @@
 CPUCar::CPUCar()
 {
 }
-CPUCar::CPUCar(VECTOR firstPos, VECTOR firstDir,VECTOR destinationPos, int duplicateModelHandle)
-    :Car(firstPos,firstDir, destinationPos, duplicateModelHandle)
+CPUCar::CPUCar(CarParamater carParam, VECTOR destinaTionPos, int duplicateModelHandle)
+    :Car(carParam, duplicateModelHandle)
 {
+    destinationPos = destinaTionPos;
 }
 /// <summary>
 /// modelとタイヤの後始末

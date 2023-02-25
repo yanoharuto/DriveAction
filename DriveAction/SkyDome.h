@@ -20,5 +20,6 @@ public:
 
 private:
     int modelHandle;
+    float setSize = 4.0f;
 };
 

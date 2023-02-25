@@ -24,10 +24,6 @@ CircuitTrack* StageManager::GetCircuit() const
     return circuit;
 }
 
-std::string StageManager::GetCheckPoint() const
-{
-    return checkPointAddres;
-}
 
 void StageManager::Draw() const
 {

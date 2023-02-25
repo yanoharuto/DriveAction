@@ -78,5 +78,6 @@ protected:
     Car* car;
     //ƒAƒCƒeƒ€‚ğæ‚Á‚Ä‚«‚Ä•Û‘¶‚·‚é
     ItemHolder* itemHolder;
+    float hp = 0;
 };
 

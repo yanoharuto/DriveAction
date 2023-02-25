@@ -9,7 +9,7 @@ class CPUCar :
 {
 public:
     CPUCar();
-    CPUCar(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos, int duplicateModelHandle);
+    CPUCar(CarParamater carParam,VECTOR destinaTionPos, int duplicateModelHandle);
     ~CPUCar();
     void Update(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo)override;
 };

@@ -35,7 +35,7 @@ void CountDown::Update(float deltaTime)
 	case 3:
 		if (!countStart)
 		{
-			SoundPlayer::Play2DSE(countDownSE);
+		//	SoundPlayer::Play2DSE(countDownSE);
 			countStart = true;
 		}
 		color = lightColor1;

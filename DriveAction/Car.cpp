@@ -5,16 +5,7 @@
 #include "ConflictExamineResultInfo.h"
 #include "EffekseerForDXLib.h"
 #include "EffectManager.h"
-//車のモデルの大きさ
-static const float carModelSize = 0.175f;
-//加速量
-static const float accelAddSpeed = 38.4f;
-// 通常最高速度.
-static const float maxAccelSpeed = 230.0f;
-//外的要因の速さの最高速度
-static const float maxAddForcePower = 100.0f;
-//外的要因の速さ
-static const float addAccelForce = 8.0f;
+
 //これ以下の速度になってたらaccelPowerを0にするよ
 static const float stopAccelLine = 1.0f;
 // なにもしない時の減速.
@@ -29,25 +20,21 @@ static const float gripPower = 0.1f;
 static const float colideDecel = 0.2f;
 //コースの外側に来た時の減速
 static const float outsideHitDecel = 0.28f;
-//車の幅
-static const float setRadius = 3.8f;
+
 //車の高さ
 static const float carHeight = 3.2f;
 //目的地に向かうときに曲がるか判断する
 static const float turnProccesAngularLine = 5.0f;
 //ブレーキをしなければいけないライン
-static const float breakeProccesAngularLine = 25.0f;
-//跳ね返り力の固定値
-static const float setBouncePower = 1.0f;
+static const float breakeProccesAngularLine = 25.0f; 
 //降りる速度
 static const float downSpeed = 10.8f;
 //最初のY座標
-static const float firstPosY = -4.0;
+static const float firstPosY = 50.0f;
 //コースアウトから元のコースに戻るまでにかかる時間
 static const float setCourceOutProccessTime = 2.5f;
 //ダメージを受けた時の操作不可能時間の合計
 static const float setDamageReactionTime = 0.8f;
-static const float autoDriveValue = 180.0f;
 //煙のエフェクト
 static const std::string smokeEffectResource = "smoke.efkefc";
 //ぶつかった時のエフェクト
@@ -63,7 +50,6 @@ static const std::string drivingSEAddress = "driving1.mp3";
 Car::Car()
 {
 	tag = ObjectTag::car;
-	radius = setRadius;
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	destinationPos = {};
@@ -71,29 +57,27 @@ Car::Car()
 
 }
 
-Car::Car(VECTOR firstPos, VECTOR firstDir, VECTOR firstDestinationPos,int duplicateModelHandle)
+Car::Car(CarParamater param, int duplicateModelHandle)
 {
 	modelHandle = duplicateModelHandle;
-	position = firstPos;
+	position = param.firstPos;
 	position.y = firstPosY;
-	direction = firstDir;
+	direction = param.firstDir;
 	tag = ObjectTag::car;
 	bouncePower = setBouncePower;
-	radius = setRadius;
-	MV1SetScale(modelHandle, VGet(carModelSize,carModelSize,carModelSize));
+	radius = param.setRadius;
+	accelAddSpeed = param.addSpeed;
+	maxAccelSpeed = param.maxSpeed;
 	UpdateMV1Pos();
 	ModelSetMatrix();
-	destinationPos = firstDestinationPos;
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 
-	EffectManager::LoadEffectManager(smokeEffectResource,1.0f);
-	EffectManager::LoadEffectManager(conflictEffectResource,1.0f);
-	
+	EffectManager::LoadEffectManager(smokeEffectResource, 1.0f);
+	EffectManager::LoadEffectManager(conflictEffectResource, 1.0f);
+
 	SoundPlayer::Load3DSound(drivingSEAddress);
 	SoundPlayer::Load3DSound(carClashSEAddress);
 	SoundPlayer::Load3DSound(carHornSEAddress);
-	
-	
 }
 
 Car::~Car()
@@ -127,7 +111,6 @@ void Car::ConflictProccess(float deltaTime,const ConflictExamineResultInfo confl
 			destinationDir = conflictInfo.dir;
 			break;
 		case ObjectTag::acelerationFloor:
-			forcePower += addAccelForce * deltaTime;
 			forcePower = forcePower > maxAddForcePower ? maxAddForcePower : forcePower;
 			break;
 		case ObjectTag::itemBox:
@@ -338,16 +321,10 @@ InputInfo Car::GetAutoDriveDirection()
 	inputInfo.nonInput = false;
 	
 	//目的地までの距離
-	VECTOR tempVec = destinationDir; 
-	VECTOR between = VSub(VGet(destinationPos.x, 0, destinationPos.z), VGet(position.x, 0, position.z));
-	if (VSize(between) > autoDriveValue)
-	{
-		tempVec = between;
-	}
-	OriginalMath math;
-
-	float angular = math.GetDegreeMisalignment(direction, tempVec);
-
+	VECTOR tempVec = VSub(VGet(destinationPos.x, 0, destinationPos.z), VGet(position.x, 0, position.z));
+	//目的地までの角度差
+	float angular = OriginalMath::GetDegreeMisalignment(direction, tempVec);
+	//角度の差によって曲がるか決める
 	if (angular > turnProccesAngularLine)
 	{
 		//車の向いてる方向と目的地までの方向の外積を出して
@@ -401,7 +378,7 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime
 		{
 			accelPower -= accelPower * outsideHitDecel * deltaTime;
 		}
-		//ブレーキしていたら
+		//ブレーキしていたら減速
 		if (inputDir.isBreake)
 		{
 			accelPower -= accelPower * breakDecel * deltaTime;

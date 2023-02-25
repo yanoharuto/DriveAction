@@ -1,5 +1,7 @@
 #include "Player.h"
 #include"Utility.h"
+#include "Rule.h"
+#include "UserInput.h"
 Player::Player()
 {
 }
@@ -7,9 +9,10 @@ Player::Player()
 Player::Player(VECTOR firstPos, int duplicateModel)
     :Racer()
 {
-    playerCar = new PlayerCar(firstPos,checkPoint->GetDir(), checkPoint->GetPos(), duplicateModel);
+    playerCar = new PlayerCar(, duplicateModel);
     SetCarPointer(playerCar);
     SoundPlayer::LoadSound(rouletteSE);
+    hp = setHP;
 }
 
 Player::~Player()
@@ -19,17 +22,12 @@ Player::~Player()
 void Player::Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)
 {
     ItemInfo itemInfo = itemHolder->GetItemInfo();
-    if (checkPoint->GetGoalCount() == 2)
-    {
-        car->AutoDrive(deltaTime, outsideHitFlag, itemInfo); 
-    }
-    else
-    {
+    
         car->Update(deltaTime, outsideHitFlag, itemInfo);
-    }
+    
     CommonUpdate(deltaTime,outsideHitFlag,damageObjGene);
-    int inputKey = GetJoypadInputState(DX_INPUT_KEY);
-    if ((inputKey & PAD_INPUT_10 || itemInfo.itemSituation == ItemUseSituation::Useing) && itemInfo.itemTag != non)
+    
+    if ((UserInput::GetInputState(Space)==Push|| itemInfo.itemSituation == ItemUseSituation::Useing) && itemInfo.itemTag != non)
     {
         itemHolder->UseItem(car->GetItemArgumentInfo());
     }

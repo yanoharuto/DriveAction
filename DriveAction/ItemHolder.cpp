@@ -1,5 +1,5 @@
 #include<iostream>
-#include<random>
+#include "OriginalMath.h"
 #include "ItemHolder.h"
 #include "Kite.h"
 #include "Accelerator.h"
@@ -59,10 +59,7 @@ void ItemHolder::SelectItem(int rank)
     {
         roulette = true;
         rouletteTime = setRouletteTime;
-        std::random_device seed;
-        std::mt19937 engine(seed());
-        std::uniform_int_distribution<> dist{1,rank };
-        switch (dist(engine))
+        switch (OriginalMath::GetRandom(1,rank))
         {
         case 1:
             item = new DamageImpactLauncher();

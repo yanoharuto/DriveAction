@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	PlayerCar();
-	PlayerCar(VECTOR firstPos,VECTOR firstDir,VECTOR destinationPos, int duplicateModelHandle);
+	PlayerCar(CarParamater carParam, int duplicateModelHandle);
 	///デストラクタ
     ~PlayerCar();
     /// <summary>

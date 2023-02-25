@@ -34,6 +34,6 @@ private:
     //当たり判定
     const float setRadius = 2.5f;
     //アセットのアドレス
-    const std::string assetAddress = "data/model/Item/SpikeBall/SpikeBall.mv1";
+    const std::string assetAddress = "Item/SpikeBall/SpikeBall.mv1";
 };
 

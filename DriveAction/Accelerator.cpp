@@ -5,7 +5,7 @@
 Accelerator::Accelerator()
 {
     effecacyTime = setEffecacyTime;
-    itemTag = ItemTag::accelerator;
+    itemTag = ItemTag::bomber;
     EffectManager::LoadEffectManager(effectAddress, 30.0f);
 }
 

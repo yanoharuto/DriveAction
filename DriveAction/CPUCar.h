@@ -1,6 +1,6 @@
 #pragma once
 #include "Car.h"
-
+#include "AssetManager.h"
 /// <summary>
 /// Ž©“®‰^“]‚ÌŽÔ
 /// </summary>
@@ -9,8 +9,10 @@ class CPUCar :
 {
 public:
     CPUCar();
-    CPUCar(CarParamater carParam,VECTOR destinaTionPos, int duplicateModelHandle);
+    CPUCar(VECTOR firstPos,VECTOR destinaTionPos);
     ~CPUCar();
-    void Update(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo)override;
+    void Update(const float deltaTime, VECTOR destinationPos, ItemInfo itemInfo)override;
+private:
+    const float firstPosY = 60.0f;
 };
 

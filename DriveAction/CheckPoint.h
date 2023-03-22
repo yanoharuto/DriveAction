@@ -7,50 +7,45 @@
 /// <summary>
 /// プレイヤーが何回ゴールしたか数える
 /// </summary>
-class CheckPoint final:
-    public Actor
+class CheckPoint final
 {
 public:
     CheckPoint();
     //デストラクタ
     ~CheckPoint();
     /// <summary>
-    /// プレイヤーがぶつかったら次の行き先を設定する
+    /// チェックポイントを通過したか調べる
     /// </summary>
     /// <param name="carInfo">ぶつかったか調べる車</param>
-    ConflictExamineResultInfo CheckPointUpdate(const HitCheckExamineObjectInfo carInfo);
-    /// <summary>
-    /// チェックポイントに車が通過したか判定する
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <param name="dir"></param>
-    /// <param name="carPos"></param>
-    /// <returns></returns>
-    bool IsTransitCheckPointCar(VECTOR pos,VECTOR dir,VECTOR carPos);
-    VECTOR GetLastPos();
-    VECTOR GetLastDir();
-
-    /// <summary>
-    /// ゴールした回数を返す
-    /// </summary>
-    /// <returns></returns>
-    int GetGoalCount();
-    //チェックポイントに通過した回数を返す
-    int GetTransitCheckPointCount();
+    bool IsTransitCheckPoint(int transitCount, const HitCheckExamineObjectInfo carInfo);
     /// <summary>
     /// チェックポイントまでの差を出す
     /// </summary>
     /// <returns>チェックポイントまでの差</returns>
-    float GetCheckPointDistance();
-    bool HitCheckConflict(HitCheckExamineObjectInfo objInfo) override;
+    float GetCheckPointDistance(int transitCount,VECTOR objPos);
+    /// <summary>
+    /// 通過回数は何回ゴールしたことなのか返す
+    /// </summary>
+    /// <param name="transitCount"></param>
+    /// <returns></returns>
+    int GetGoalCount(int transitCount);
+    VECTOR GetCheckPointPos(int transitCount);
+    VECTOR GetCheckPointDir(int transitCount);
 private:
-    //通過した回数
-    int transitCount = 0;
-    //ゴールした回数
-    int goalCount = 0;
+    /// <summary>
+/// チェックポイントに車が通過したか判定する
+/// </summary>
+/// <param name="pos"></param>
+/// <param name="dir"></param>
+/// <param name="carPos"></param>
+/// <returns></returns>
+    bool IsTransitCheckPointCar(VECTOR pos, VECTOR dir, VECTOR carPos);
+
     //ベクター配列のサイズ
     int vecSize = 0;
-    //チェックポイントまでの差
-    float checkPointDistance;
+    //ゴールまでの道のりテキスト
+    const std::string checkPointPosAddress = "/CourcePos.txt";
+    //ゴールまでの道のりテキスト
+    const std::string checkPointDirAddress = "/CourceDir.txt";
 };
 

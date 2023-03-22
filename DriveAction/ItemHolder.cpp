@@ -1,7 +1,6 @@
 #include<iostream>
 #include "OriginalMath.h"
 #include "ItemHolder.h"
-#include "Kite.h"
 #include "Accelerator.h"
 #include "DamageImpactLauncer.h"
 #include "Utility.h"
@@ -21,14 +20,13 @@ ItemHolder::~ItemHolder()
 /// <param name="damageObjeGene"></param>
 /// <param name="carInfo"></param>
 /// <param name="deltaTime"></param>
-void ItemHolder::Update(DamageObjectGenerator* damageObjeGene,ItemArgumentCarInfo carInfo,float deltaTime)
+void ItemHolder::Update(ItemArgumentCarInfo carInfo,float deltaTime)
 {
     rouletteTime -= deltaTime;
     if (rouletteTime < 0)
     {
         roulette = false;
     }
-
     if (item != nullptr && !roulette) 
     {
         //アイテムの情報を所得
@@ -67,10 +65,6 @@ void ItemHolder::SelectItem(int rank)
         case 2:
             item = new Accelerator();
             break;
-        case 3:
-        case 4:
-            item = new Kite();
-            break;
         }
 
     }
@@ -104,11 +98,12 @@ void ItemHolder::ItemDraw()
 /// <returns>何もアイテムを持ってないならTagはnon</returns>
 ItemInfo ItemHolder::GetItemInfo()
 {
+    //ルーレットが終わって使える状態
     if (item != nullptr && !roulette)
     {
         return item->GetItemInfo();
     }
-    else if (roulette)
+    else if (roulette)//ルーレット中
     {
         ItemInfo itemInfo = {};
         itemInfo.itemTag = ItemTag::roulette;

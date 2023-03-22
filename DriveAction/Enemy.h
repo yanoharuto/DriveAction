@@ -5,7 +5,7 @@ class Enemy :
 {
 public:
 
-    Enemy(CarParamater carParam, int duplicateModelHandle);;
+    Enemy(CarInfomation carParam, int duplicateModelHandle);
     ~Enemy();
     virtual void Update(const float deltaTime, VECTOR playerPos, ItemInfo itemInfo);
     virtual void Draw();

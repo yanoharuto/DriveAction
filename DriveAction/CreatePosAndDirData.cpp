@@ -15,8 +15,8 @@ CreatePosAndDirData::~CreatePosAndDirData()
 
 void CreatePosAndDirData::WriteWhereToTurn(VECTOR pos, VECTOR dir)
 {
-    OriginalMath math;
-    float angular = math.GetDegreeMisalignment(prevVec, dir);
+
+    float angular = OriginalMath::GetDegreeMisalignment(prevVec, dir);
     //‹È‚ª‚Á‚Ä‚¢‚éêŠ‚ð‹L˜^‚·‚é
     if (angular > turnProccesLine)
     {

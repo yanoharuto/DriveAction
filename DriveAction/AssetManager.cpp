@@ -1,8 +1,9 @@
 #include "AssetManager.h"
 #include "DxLib.h"
-static const std::string genericAddress = "data/model/";
+#include "Utility.h"
+const std::string AssetManager::genericAddress = "data/model/";
 //modelのアドレスを貰うとモデルハンドルを返す
-static std::map<std::string, int> assetMap;
+std::map<std::string, int> AssetManager::assetMap;
 AssetManager::AssetManager()
 {
 }
@@ -27,5 +28,5 @@ int AssetManager::GetDuplicate3DModelAssetHandle(std::string assetAddress)
         std::string str = genericAddress + assetAddress;
         assetMap.insert(std::make_pair(assetAddress, MV1LoadModel(str.c_str())));
     }
-    return MV1DuplicateModel(assetMap[assetAddress]);
+    return assetMap[assetAddress];
 }

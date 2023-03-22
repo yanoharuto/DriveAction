@@ -12,7 +12,6 @@ ItemBase::ItemBase()
 
 ItemBase::~ItemBase()
 {
-    MV1DeleteModel(modelHandle);
 }
 void ItemBase::Draw()
 {

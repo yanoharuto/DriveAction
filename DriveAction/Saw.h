@@ -21,12 +21,6 @@ public:
     /// </summary>
     /// <param name="deltaTime"></param>
     void Update(const float deltaTime) override;
-    /// <summary>
-    /// ˆø”‚Ì•¨‘Ì‚É“–‚½‚Á‚Ä‚é‚©•Ô‚·
-    /// </summary>
-    /// <param name="examineObjInfo"></param>
-    /// <returns></returns>
-    bool HitCheckConflict(const HitCheckExamineObjectInfo examineObjInfo)override;
 private:
     //‰ñ“]—Ê
     const float addRotate = 22.0f;

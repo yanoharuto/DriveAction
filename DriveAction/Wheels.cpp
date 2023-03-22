@@ -25,7 +25,6 @@ Wheels::Wheels(const WheelArgumentCarInfo InitInfo)
 	InitWheel(lBWheel, modelHandle, VGet(bWheelPos.x, fWheelPos.y, -fWheelPos.z), firstLWheelRota);
 	InitWheel(rBWheel, modelHandle, VGet(bWheelPos.x, fWheelPos.y, fWheelPos.z), firstRWheelRota);
 	InitWheel(rFWheel, modelHandle, VGet(-fWheelPos.x, fWheelPos.y, fWheelPos.z), firstRWheelRota);
-	EffectManager::LoadEffectManager(smokeAddress, 0.4f);
 }
 
 Wheels::~Wheels()
@@ -57,12 +56,7 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 	}
 	//É^ÉCÉÑÇåXÇØÇÈèàóù
 	if (carInfo.inputDir.handleDir == HandleDirection::right)
-	{
-		wheelEffectPos.x = lBWheel.matrix.m[3][0];
-		wheelEffectPos.y = lBWheel.matrix.m[3][1];
-		wheelEffectPos.z = lBWheel.matrix.m[3][2];
-		SmokeEffectUpdate(wheelEffectPos);
-		
+	{		
 		isStraightDash = false;
 		if (wheelDriveRota < maxWheelRotaY)
 		{
@@ -75,13 +69,7 @@ void Wheels::WheelUpdate(const WheelArgumentCarInfo info)
 
 	}
 	else if (carInfo.inputDir.handleDir == HandleDirection::left)
-	{
-
-		wheelEffectPos.x = rBWheel.matrix.m[3][0];
-		wheelEffectPos.y = rBWheel.matrix.m[3][1];
-		wheelEffectPos.z = rBWheel.matrix.m[3][2];
-		SmokeEffectUpdate(wheelEffectPos);
-		
+	{		
 		isStraightDash = false;
 		if (wheelDriveRota > -maxWheelRotaY)
 		{

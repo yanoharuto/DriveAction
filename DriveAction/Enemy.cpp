@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-Enemy::Enemy(VECTOR firstPos, VECTOR firstDir, VECTOR destinationPos, int duplicateModelHandle)
+Enemy::Enemy(CarInfomation carParam, int duplicateModelHandle)
 {
     MV1SetScale(modelHandle, {scale,scale,scale});
 }

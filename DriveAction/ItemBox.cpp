@@ -41,20 +41,7 @@ void ItemBox::Update(const float deltaTime)
     MV1SetScale(modelHandle, VGet(scale, scale, scale));
 }
 
-bool ItemBox::HitCheckConflict(const HitCheckExamineObjectInfo examineObjInfo)
-{
-    if (recoveryTime < 0)
-    {
-        HitChecker checker;
-        return  checker.HitCheck(this, examineObjInfo);
-    }
-    else
-    {
-        return false;
-    }
-}
-
-void ItemBox::ConflictProccess()
+void ItemBox::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
 {
     recoveryTime = setRecoveryTime;
     scale = 0;

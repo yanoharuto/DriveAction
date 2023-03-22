@@ -34,18 +34,4 @@ void Saw::Update(const float deltaTime)
     MATRIX matY = MGetRotY(rotate);
     MV1SetRotationMatrix(modelHandle, matY);
 }
-/// <summary>
-/// ˆø”‚Ì•¨‘Ì‚É“–‚½‚Á‚Ä‚é‚©•Ô‚·
-/// </summary>
-/// <param name="examineObjInfo"></param>
-/// <returns></returns>
-bool Saw::HitCheckConflict(const HitCheckExamineObjectInfo examineObjInfo)
-{
-    float absfY = fabsf(position.y - examineObjInfo.pos.y);
-    if (absfY < thickness)
-    {
-        return HitChecker::HitCheck(this, examineObjInfo);
-    }
-    return false;
-}
 

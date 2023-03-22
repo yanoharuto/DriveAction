@@ -1,28 +1,40 @@
 #include "CPU.h"
 #include "Utility.h"
-
+#include "DirectionOfTravelGenerator.h"
+#include "Utility.h"
+#include "FlyShipKind.h"
 CPU::CPU()
 {
 }
 
-CPU::CPU(VECTOR firstPos,int duplicateModel)
+CPU::CPU(VECTOR firstPos)
 {
-    cpuCar = new CPUCar(firstPos,checkPoint->GetDir(), checkPoint->GetPos(), duplicateModel);
+    cpuCar = new CPUCar(firstPos, VGet(1.0f,0,0));
     SetCarPointer(cpuCar);
+    itemCoolTime = setItemCoolTime;
+
 }
 
 CPU::~CPU()
 {
 }
 
-void CPU::Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObj)
+void CPU::Update(float deltaTime)
 {
-    //車の更新
+    itemCoolTime -= deltaTime;
+
     ItemInfo itemInfo = itemHolder->GetItemInfo();
-    car->Update(deltaTime, outsideHitFlag, itemInfo);
-    CommonUpdate(deltaTime, outsideHitFlag, damageObj);
-    if (itemInfo.itemSituation == ItemUseSituation::nonUse && itemInfo.itemTag != non)
+
+    ItemArgumentCarInfo itemArgumentCarInfo;
+    itemArgumentCarInfo.SetCarInfo(car);
+    itemHolder->Update(itemArgumentCarInfo, deltaTime);
+    //車の更新
+    car->Update(deltaTime, checkPoint->GetCheckPointPos(transitCPCount), itemInfo);
+    if (checkPoint->IsTransitCheckPoint(transitCPCount, car->GetHitCheckExamineInfo()))
     {
-        itemHolder->UseItem(car->GetItemArgumentInfo());
+        transitCPCount++;
     }
+    //次のチェックポイントの更新
+    HitCheckExamineObjectInfo carInfo;
+    carInfo.SetExamineInfo(car);
 }

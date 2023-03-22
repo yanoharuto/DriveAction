@@ -1,6 +1,5 @@
 #pragma once
 #include "Item.h"
-#include "ConflictProcesser.h"
 #include "DamageObjectGenerator.h"
 /// <summary>
 /// アイテムを生成して使えるようにする
@@ -16,7 +15,7 @@ public:
     /// <param name="damageObjeGene"></param>
     /// <param name="carInfo"></param>
     /// <param name="deltaTime"></param>
-    void Update(DamageObjectGenerator* damageObjeGene,ItemArgumentCarInfo carInfo,float deltaTime);
+    void Update(ItemArgumentCarInfo carInfo,float deltaTime);
     /// <summary>
     /// アイテムを所得
     /// </summary>

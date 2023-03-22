@@ -8,8 +8,8 @@ public:
     ItemBox(int modelResourceHandle,VECTOR pos, VECTOR dir);
     ~ItemBox();
     void Update(const float deltaTime)override;
-    bool HitCheckConflict(const HitCheckExamineObjectInfo examineObjInfo)override;
-    void ConflictProccess()override;
+
+    void ConflictProccess(const ConflictExamineResultInfo conflictInfo)override;
 private:
     float scale = 0;
     float recoveryTime = 0;

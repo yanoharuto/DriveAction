@@ -1,4 +1,5 @@
 #pragma once
 
 #define MAX_LAP 2
-#define RACER_NUM  1
+#define CPU_RACER_NUM  0
+#define MAX_GAME_TIME  50.0f

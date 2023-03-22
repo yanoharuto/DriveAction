@@ -1,46 +1,38 @@
 #include "Player.h"
-#include"Utility.h"
+#include "Utility.h"
 #include "Rule.h"
 #include "UserInput.h"
 Player::Player()
 {
 }
 
-Player::Player(VECTOR firstPos, int duplicateModel)
+Player::Player(VECTOR firstPos)
     :Racer()
 {
-    playerCar = new PlayerCar(, duplicateModel);
-    SetCarPointer(playerCar);
+    car = new PlayerCar(firstPos);
+    SetCarPointer(car);
     SoundPlayer::LoadSound(rouletteSE);
-    hp = setHP;
 }
 
 Player::~Player()
 {
+    
 }
 
-void Player::Update(float deltaTime, bool outsideHitFlag, DamageObjectGenerator* damageObjGene)
+void Player::Update(float deltaTime)
 {
     ItemInfo itemInfo = itemHolder->GetItemInfo();
     
-        car->Update(deltaTime, outsideHitFlag, itemInfo);
-    
-    CommonUpdate(deltaTime,outsideHitFlag,damageObjGene);
-    
-    if ((UserInput::GetInputState(Space)==Push|| itemInfo.itemSituation == ItemUseSituation::Useing) && itemInfo.itemTag != non)
+    car->Update(deltaTime, {0,0,0}, itemInfo);
+    if (checkPoint->IsTransitCheckPoint(transitCPCount, car->GetHitCheckExamineInfo()))
     {
-        itemHolder->UseItem(car->GetItemArgumentInfo());
+        transitCPCount++;
     }
-    else if (itemInfo.itemTag == roulette)
+    if ((UserInput::GetInputState(Space) == Push || itemInfo.itemSituation == ItemUseSituation::Useing) && itemInfo.itemTag != non)
     {
-        if (!SoundPlayer::IsPlaySound(rouletteSE))
-        {
-            SoundPlayer::Play2DSE(rouletteSE);
-        }
-    }
-    else
-    {
-        SoundPlayer::StopSound(rouletteSE);
+        ItemArgumentCarInfo itemArgumentInfo;
+        itemArgumentInfo.SetCarInfo(car);
+        itemHolder->UseItem(itemArgumentInfo);
     }
 }
 
@@ -49,18 +41,18 @@ PlayerRelatedInfo Player::GetRelatedInfo()
     PlayerRelatedInfo info = {};
     info.accelPower = car->GetTotalAccelPower();
     info.accelPowerParcent = car->GetTotalAccelPowerPercent();
-    info.reverse = reverse;
+    info.reverseDrive = reverse;
     info.itemTag = itemHolder->GetItemInfo().itemTag;
-    info.lap = checkPoint->GetGoalCount();
+    info.lap = checkPoint->GetGoalCount(transitCPCount);
+    info.transitCount = transitCPCount;
     info.rank = rank;
-    
+    info.HP = hp;
+    info.objInfo = car->GetCarPosAndDir();
+    info.isAlive = car->GetAliveFlag();
     return info;
 }
 
-PlaySceneCameraArgumentInfo Player::GetCameraArgumentInfo()
+ObjInfo Player::GetPlayerPosAndDir()
 {
-    PlaySceneCameraArgumentInfo argumentInfo = {};
-    argumentInfo.dir = playerCar->GetDir();
-    argumentInfo.pos = playerCar->GetPos();
-    return argumentInfo;
+    return car->GetCarPosAndDir();
 }

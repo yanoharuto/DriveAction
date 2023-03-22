@@ -18,9 +18,9 @@ HitChecker::~HitChecker()
 bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 {
     HitCheckExamineObjectInfo aInfo;
-    aInfo.SetExamineInfo(*objA);
+    aInfo.SetExamineInfo(objA);
     HitCheckExamineObjectInfo bInfo;
-    bInfo.SetExamineInfo(*objB);
+    bInfo.SetExamineInfo(objB);
     return HitCheckProcess(aInfo, bInfo);
 }
 /// <summary>
@@ -32,7 +32,7 @@ bool HitChecker::HitCheck(Object* const objA, Object* const objB)
 bool HitChecker::HitCheck(Object* const objA, const HitCheckExamineObjectInfo objBInfo)
 {
     HitCheckExamineObjectInfo aInfo;
-    aInfo.SetExamineInfo(*objA);
+    aInfo.SetExamineInfo(objA);
     return HitCheckProcess(aInfo, objBInfo);
 }
 /// <summary>

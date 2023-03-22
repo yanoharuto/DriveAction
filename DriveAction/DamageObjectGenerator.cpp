@@ -1,19 +1,12 @@
 #include "DamageObjectGenerator.h"
 #include "Rocket.h"
 #include "DamageImpact.h"
-static ConflictProcesser* conflictProccer;
-static FiringItemManager* firingItemManager;
+#include "RotatingLasers.h"
+#include "FiringItemManager.h"
 DamageObjectGenerator::DamageObjectGenerator()
 {    
-    conflictProccer = nullptr;
-    firingItemManager = nullptr;
-}
-DamageObjectGenerator::DamageObjectGenerator(ConflictProcesser* conflictPro, FiringItemManager* firingItemMana)
-{
-    conflictProccer = conflictPro;
-    firingItemManager = firingItemMana;
-}
 
+}
 DamageObjectGenerator::~DamageObjectGenerator()
 {
 }
@@ -22,24 +15,22 @@ DamageObjectGenerator::~DamageObjectGenerator()
 /// </summary>
 /// <param name="itemTag"></param>
 /// <param name="carInfo"></param>
-void DamageObjectGenerator::GenerateDamageObject(ItemTag itemTag, ItemArgumentCarInfo carInfo)
+Actor* DamageObjectGenerator::GenerateDamageObject(ItemTag itemTag, ItemArgumentCarInfo carInfo,FiringObjOwner* owner)
 {
-    DamageObject* obj = nullptr;
+    Actor* obj = nullptr;
 
     switch (itemTag)
     {
-    case kite:
+    case bomber:
         obj = new Rocket(carInfo);
         break;
-    case accelerator:
-        break;
-    case attack:
-        obj = new DamageImpact(carInfo);
+    case ufo:
+        obj = new RotatingLasers(owner);
         break;
     default:
+        obj = new DamageImpact(carInfo);
         break;
     }
-    
-    firingItemManager->AddDamageObject(obj);
-    conflictProccer->AddConflictObject(obj);
+    FiringItemManager::AddFiringObject(obj);
+    return obj;
 }

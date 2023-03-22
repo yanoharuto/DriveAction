@@ -7,8 +7,6 @@
 class OriginalMath
 {
 public:
-    OriginalMath() {};
-    ~OriginalMath() {};
     /// <summary>
     /// ‘æˆêˆø”‚Æ‘æ“ñˆø”‚ÌŠp“x‚Ì‚¸‚ê‚ğo‚·
     /// </summary>
@@ -22,11 +20,19 @@ public:
         destinationDir = acosf(destinationDir) / RAGE;
         return destinationDir;
     }
-    static int GetRandom(int min,int max)
+    static int GetRandom(int min, int max)
     {
         std::random_device seed;
         std::mt19937 engine(seed());
         std::uniform_int_distribution<> dist{ min,max };
         return dist(engine);
+    }
+    static VECTOR GetYRotateVector(VECTOR rotateVector, float degree)
+    {
+        float rage = degree * RAGE;
+        VECTOR addVec = degree > 0 ? VGet(0, 1, 0) : VGet(0, -1, 0);
+        addVec = VScale(VNorm(VCross(rotateVector, addVec)), rage);
+        rotateVector = VAdd(rotateVector, addVec);
+        return rotateVector;
     }
 };

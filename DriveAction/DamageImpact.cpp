@@ -29,7 +29,7 @@ void DamageImpact::Update(float deltaTime)
     if (aliveTime > 0)
     {
         position = VAdd(position, VScale(velocity, deltaTime));
-        MV1SetPosition(modelHandle, position);
+        UpdateMV1Pos();
     }
     else
     {
@@ -37,7 +37,7 @@ void DamageImpact::Update(float deltaTime)
     }
 }
 
-void DamageImpact::ConflictProccess()
+void DamageImpact::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
 {
     aliveFlag = false;
 }

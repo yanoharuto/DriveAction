@@ -12,6 +12,7 @@ SceneBase* MakeScene(SceneType _NowSceneType);
 SceneType prevSceneType = SceneType::TITLE;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+
 	ChangeWindowMode(true);
 
 	// DirectX11を使用するようにする。(DirectX9も可、一部機能不可)
@@ -20,6 +21,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// 画面の解像度と色ビット深度を設定
 	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32);
+	SetZBufferBitDepth(24);
 
 
 	// １メートルに相当する値を設定する
@@ -35,14 +37,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return -1;
 	}
 
-	//ChangeWindowMode(TRUE);
-	
+	// 描画先を裏画面に変更
+	SetDrawScreen(DX_SCREEN_BACK);
 	//今のシーン
 	SceneType nowSceneType = SceneType::TITLE;
 	//シーンを生成
 	SceneBase* scene = new TitleScene;
 
 	UserInput* userInput = new UserInput;
+
 	//ゲームループ エスケープキーを押したら終了
 	while (ProcessMessage() == 0 && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
@@ -50,16 +53,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #ifdef _DEBUG
 		clsDx(); // printfDx の結果をリセットするための関数.
 #endif	// ここでDEBUG用の処理を終了.
+		
 		//更新
-	
+		userInput->Update();
 		nowSceneType = scene->Update();
 		Effect_Update();
-		userInput->Update();
-		ClearDrawScreen();//画面を初期化する
+
+		//画面を初期化する
+		ClearDrawScreen();
+
 		scene->Draw();//描画
 		Effect_Draw();
-		ScreenFlip();//裏画面の内容を表画面に反映させる
-
+		//裏画面の内容を表画面に反映させる
+		ScreenFlip();
 		//Updateで次のシーンに更新したなら
 		if (nowSceneType != prevSceneType)
 		{
@@ -70,6 +76,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//直前のシーンを記録
 		prevSceneType = nowSceneType;
 	}
+	
 	SAFE_DELETE(userInput);
 	SAFE_DELETE(scene);
 	Effect_Finalize();

@@ -7,10 +7,11 @@
 struct HitCheckExamineObjectInfo
 {
     VECTOR pos = {};//ƒ|ƒWƒVƒ‡ƒ“
+    VECTOR velocity = {};//ˆÚ“®—Ê
     float radius = 0;//”¼Œa
-    void SetExamineInfo(Object obj)
+    void SetExamineInfo(Object* obj)
     {
-        pos = obj.GetPos();
-        radius = obj.GetRadius();
+        pos = obj->GetPos();
+        radius = obj->GetRadius();
     }
 };

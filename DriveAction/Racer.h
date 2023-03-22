@@ -20,7 +20,7 @@ public:
     /// <param name="deltaTime"></param>
     /// <param name="outsideHitFlag"></param>
     /// <param name="damageObj"></param>
-    virtual void Update(float deltaTime,bool outsideHitFlag,DamageObjectGenerator* damageObj);
+    virtual void Update(float deltaTime);
     /// <summary>
     /// このレーサーの車に引数のオブジェクトがぶつかっているか調べる
     /// </summary>
@@ -32,21 +32,11 @@ public:
     /// </summary>
     void Draw();
     /// <summary>
-    /// 衝突処理
-    /// </summary>
-    /// <param name="conflictResultInfo"></param>
-    /// <param name="deltaTime"></param>
-    void ConflictProcces(ConflictExamineResultInfo conflictResultInfo,float deltaTime);
-    /// <summary>
     /// 当たり判定を調べるために必要な情報
     /// </summary>
     /// <returns></returns>
     HitCheckExamineObjectInfo GetCarHitCheckExamineInfo();
-    /// <summary>
-    /// 当たった場合返す情報
-    /// </summary>
-    /// <returns></returns>
-    ConflictExamineResultInfo GetConflictExamineResultInfo();
+
     /// <summary>
     /// ランク
     /// </summary>
@@ -55,20 +45,16 @@ public:
     /// チェックポイントを返す
     /// </summary>
     CheckPoint* GetCheckPointer();
+
 protected:
-    /// <summary>
-    /// 共通処理
-    /// </summary>
-    /// <param name="deltaTime"></param>
-    /// <param name="outsideHitFlag"></param>
-    /// <param name="damageObj"></param>
-    void CommonUpdate(float deltaTime, bool outsideHitFlag,DamageObjectGenerator* damageObj);
     /// <summary>
     /// インストラクタで呼ぶ
     /// </summary>
     /// <param name="car"></param>
     void SetCarPointer(Car* car);
-    float courceOutCount = 0;
+
+    int transitCPCount = 0;
+
     bool reverse = false;
     //順位
     int rank;

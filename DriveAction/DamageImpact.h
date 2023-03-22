@@ -22,7 +22,7 @@ public:
     /// <summary>
     /// ‰½‚©‚É“–‚½‚Á‚½‚ç‰ó‚ê‚é
     /// </summary>
-    void ConflictProccess() override;
+    void ConflictProccess(const ConflictExamineResultInfo conflictInfo) override;
 private:
     //¶‘¶ŠÔ
     float aliveTime = 0;

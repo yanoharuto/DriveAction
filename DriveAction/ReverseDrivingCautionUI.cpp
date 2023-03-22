@@ -5,7 +5,7 @@
 ReverseDrivingCautionUI::ReverseDrivingCautionUI()
 {
     data.x = SCREEN_WIDTH / 2;
-    data.y = SCREEN_HEIGHT / 20 * -1.0f;
+    data.y = UI_SCREEN_HEIGHT * -1.0f;
     data.dataHandle = LoadGraph(returnGraphAddress.c_str(), false);
     returnGraphUI = new ImgUI(graphSize,data);
     SoundPlayer::LoadSound(returnSoundAddress);

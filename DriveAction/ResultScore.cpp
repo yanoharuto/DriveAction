@@ -1,5 +1,4 @@
 #include "ResultScore.h"
-#include"Timer.h"
 #include <math.h>
 #include <iomanip>
 static float scoreTime = 0.0f;

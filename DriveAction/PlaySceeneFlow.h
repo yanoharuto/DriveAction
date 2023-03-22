@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "EffectManager.h"
+#include "FlyShipManager.h"
 #include "CreatePosAndDirData.h"
 #include "SceneFlowBase.h"
 #include "SoundPlayer.h"
@@ -12,13 +13,14 @@
 #include "MiniMap.h"
 #include "PostGoalStaging.h"
 #include "ResultScore.h"
-#include "GimmickObjManager.h"
-#include "ConflictProcesser.h"
+#include "ConflictManager.h"
 #include "PlayerRelatedUI.h"
 #include "FiringItemManager.h"
 #include "DamageObjectGenerator.h"
 #include "AssetManager.h"
+#include "PlayerRelatedUI.h"
 #include "RaceMenu.h"
+#include "ShadowMap.h"
 /// <summary>
 /// どういう順番で処理を行うか決める
 /// </summary>
@@ -42,8 +44,7 @@ public:
     void Draw() override;
 
 private:
-    //車乗りのマネージャー
-    RacerManager* racerManager;
+
     //ステージのマネージャー
     StageManager* stageManager;
     //カメラ
@@ -54,23 +55,24 @@ private:
     ResultScore* score;
     //ゴール後の処理
     PostGoalStaging* postGoalStaging;
-
+    PlayerRelatedUI* playerUI;
+    //デバッグ用
+    CreatePosAndDirData* vecDataCreateor;
     //当たり判定処理
-    ConflictProcesser* conflictProcesser;
+    ConflictManager* conflictManager;
     //エフェクト
     EffectManager* effectManager;
     //発射アイテムのマネージャー
     FiringItemManager* firingManager;
-    //ダメージ判定のあるオブジェクトの生成
-    DamageObjectGenerator* damageObjGene;
     //modelの管理
     AssetManager* modelManager;
     //途中でやめたり一時停止をする
     RaceMenu* menu;
     //今何の処理を行うか決める変数
     PlaySceeneProgress nowProgress;
-    
+    RacerManager* racerManager;
+    FlyShipManager* flyShipManager;
+    ShadowMap* shadowMap;
     bool isSpaceInput = false;
-
     float raceTime = 0;
 };

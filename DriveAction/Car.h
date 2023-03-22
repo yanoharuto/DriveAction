@@ -8,7 +8,9 @@
 #include "CarParamater.h"
 #include "InputDirection.h"
 #include "ItemInfo.h"
-#include "SoundPlayer.h"
+#include "AutoDriveInfo.h"
+#include "HitCheckExamineObjectInfo.h"
+#include "ObjPosAndDir.h"
 /// <summary>
 /// 車の加速とか減速とかするよ。どの向きに加速するかとかはwheelsからとってくるよ
 /// </summary>
@@ -24,26 +26,17 @@ public:
 	/// <param name="firstDir"></param>
 	/// <param name="destinationPos"></param>
 	/// <param name="soundPlayer"></param>
-	Car(CarParamater param,int duplicateModelHandle);
+	Car(CarInfomation param);
     virtual ~Car();
 	/// <summary>
     /// 更新（移動処理）
     /// </summary>
-	virtual void Update(const float deltaTime, const bool outsideHitFlag,ItemInfo itemInfo){};
+	virtual void Update(const float deltaTime, VECTOR destinationPos,ItemInfo itemInfo){};
 	/// <summary>
 	/// 衝突処理
 	/// </summary>
 	/// <param name="conflictInfo">ぶつかったかオブジェクトの情報</param>
-	virtual void ConflictProccess(float deltaTime, const ConflictExamineResultInfo conflictInfo);
-	/// <summary>
-	/// 描画
-	/// </summary>
-	virtual void Draw();
-	/// <summary>
-	/// アイテムに渡したい情報を出す
-	/// </summary>
-	/// <returns></returns>
-	ItemArgumentCarInfo GetItemArgumentInfo();
+	virtual void ConflictProccess(ConflictExamineResultInfo conflictInfo)override;
 	/// <summary>
 	/// 今の速度は最大速度の何割なのか所得出来る
 	/// </summary>
@@ -59,15 +52,16 @@ public:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	/// <param name="outsideHitFlag"></param>
-	void AutoDrive(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo);
+	void AutoDrive(const float deltaTime, VECTOR destinationPos, ItemInfo itemInfo);
 	/// <summary>
-	/// コースアウトしてたらコースに戻す
-	/// </summary>
-	/// <param name="lastCheckPos"></param>
-	/// <param name="lastCheckDir"></param>
-	void SetCourceOutProccess(VECTOR lastCheckPos, VECTOR lastCheckDir);
+    /// カメラに渡したい情報を返す
+    /// </summary>
+	/// <returns></returns>
+	ObjInfo GetCarPosAndDir();
+	HitCheckExamineObjectInfo GetHitCheckExamineInfo() override;
+
 protected:
-	void CommonUpdate(const float deltaTime, const bool outsideHitFlag, ItemInfo itemInfo);
+	void CommonUpdate(const float deltaTime, VECTOR destinationPos, ItemInfo itemInfo);
 	/// <summary>
 	/// アイテムの効果を受け取る
 	/// </summary>
@@ -79,13 +73,19 @@ protected:
 	/// </summary>
 	/// <param name="conflictObjPos">ぶつかったオブジェクトの位置</param>
 	/// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
-	void ConflictReaction(float deltaTime, const ConflictExamineResultInfo conflictInfo);
+	virtual void ConflictReaction(const ConflictExamineResultInfo conflictInfo);
+	/// <summary>
+	/// 車がダメージ判定のある物体にぶつかった時の関数
+	/// </summary>
+	/// <param name="deltaTime"></param>
+	/// <param name="conflictInfo"></param>
+	virtual void DamageReaction(const ConflictExamineResultInfo conflictInfo);
 	/// <summary>
 	/// 車が攻撃を受けたら関数
 	/// </summary>
 	/// <param name="conflictObjPos">ぶつかったオブジェクトの位置</param>
 	/// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
-	void DamageReaction(float deltaTime);
+	virtual void PostDamageProccess(float deltaTime);
 	/// <summary>
 	/// 進む方向と速さを更新する
 	/// </summary>
@@ -95,11 +95,11 @@ protected:
 	/// <summary>
 	/// modelの描画場所を更新
 	/// </summary>
-	void UpdateMV1Pos();
+	void UpdateMV1Pos() override;
 	/// <summary>
 	/// 車を回転させる
 	/// </summary>
-	void ModelSetMatrix();
+	void ModelSetMatrix() override;
 	/// <summary>
 	/// 運転方向を返す
 	/// </summary>
@@ -113,7 +113,7 @@ protected:
 	/// <param name="deltaTime">経過時間</param>
 	/// <param name="soundPlayer">音を出すやつ</param>
 	/// <returns>進む量</returns>
-	VECTOR GetAccelVec(InputInfo inputDir, bool outsideHitFlag, float deltaTime);
+	VECTOR GetAccelVec(InputInfo inputDir, float deltaTime);
 	/// <summary>
 	/// 運転中になる音を再生する
 	/// </summary>
@@ -129,41 +129,67 @@ protected:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	void Down(float deltaTime);
-	/// <summary>
-	/// コースアウトしたときの処理
-	/// </summary>
-	/// <param name="deltaTime"></param>
-	void CourceOutProccess(float deltaTime);
-	//加速量
-	float accelAddSpeed = 178.4f;
-	// 通常最高速度.
-	float maxAccelSpeed = 830.0f;
-	//外的要因の速さの最高速度
-	float maxAddForcePower = 100.0f;
+	//車のパラメーター
+	CarInfomation carParam;
+
+	int playEffect=-1;
+	const float twistZRotaSpeed = 1.7f * RAGE;
+	const float twistZMaxRota = 27.0f * RAGE;
+	//縦に回転する
+	float twistZRota = 0.0f;
 	//速さ
 	float accelPower = 0;
-	//外的要因による速さ
-	float forcePower = 0;
 	//跳ね返り力の固定値
 	float setBouncePower = 1.0f;
+	//最初のY座標
+	float firstPosY = 0;
 	//ぶつかった時の跳ね返り力
-	float conflictObjBouncePower;
-	//コースアウトしたときの処理
-	float courceOutProccessTime = 0.0f;
+	float conflictBouncePower = -1;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;
+	//modelのおおきさ
+	float modelSize = 1.0f;
+	//目的地に向かうときに曲がるか判断する
+	float turnProccesAngularLine = 5.0f;
 	//チェックポイントに当たってるか
 	bool isGoalConflict = false;
 	//地面に降りているか
 	bool isOnGround = true;
 	//ダメージ
 	bool isDamage = false;
-	//コースアウト処理中か
-	bool isCourceOutProccessing = false;
+	//これ以下の速度になってたらaccelPowerを0にするよ
+	static const float stopAccelLine;
+	// なにもしない時の減速.
+	static const float defaultDecel;
+	// ブレーキ時の減速.
+	static const float breakDecel;
+	// グリップの減速.
+	static const float gripDecel;
+	// 障害物にぶつかったときの減速率.
+	static const float colideDecel;
+	//降りる速度
+	static const float fallSpeed;
+	//ダメージを受けた時の操作不可能時間の合計
+	static const float setDamageReactionTime;
+	//煙のエフェクト
+	static const std::string smokeEffectResource;
+	//ぶつかった時のエフェクト
+	static const std::string conflictEffectResource;
+	//風のエフェクト
+	static const std::string windEffectResource;
+	//止まった時の効果音
+	static const std::string breakeSEAddress;
+	//ぶつかった時の効果音
+	static const std::string carClashSEAddress;
+	//クラクションの効果音
+	static const std::string carHornSEAddress;
+	//運転中の効果音
+	static const std::string drivingSEAddress;
+
 	//タイヤ
 	Wheels* wheels;
 	//目的地
-	VECTOR destinationPos = {};
+	VECTOR destinationPosition = {};
 	//コースアウトしたときの目的地
 	VECTOR prevDestinationPos = {};
 	//次の角度
@@ -171,7 +197,10 @@ protected:
 	//コースアウトしたときに向かなければいけない方向
 	VECTOR prevDestinationDir = {};
 	//ぶつかった物体との方向
-	VECTOR conflictVec = {};
+	VECTOR collVec = {};
+	//ひとつ前のポジション
+	VECTOR prevPos = {};
 	//タイヤに渡したい情報
 	WheelArgumentCarInfo wheelArgumentCarInfo = {};
+	AutoDriveInfo autoDriveP = {};
 };

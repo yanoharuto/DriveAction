@@ -30,7 +30,6 @@ private:
     const std::string resultBackImgAddress = "data/result/resultGraph.png";
     
     //スコアのUI
-    StringUI* scoreUI;
     StringUI* rankUI;
     //スペースキーの催促
     SwitchUI* switchUI;

@@ -1,13 +1,15 @@
 #pragma once
 #include <List>
 #include <string>
-#include "PlaySceneCamaeraArgumentInfo.h"
-#include "ConflictProcesser.h"
+#include "ObjPosAndDir.h"
+#include "ConflictManager.h"
 #include "HitChecker.h"
 #include "SoundPlayer.h"
 #include "ItemHolder.h"
 #include "Racer.h"
 #include "Player.h"
+#include "DirectionOfTravelGenerator.h"
+#include "PlayerInformationCenter.h"
 class CourceDataLoader;
 class CircuitTrack;
 struct ConflictExamineResultInfo;
@@ -41,16 +43,8 @@ public:
     /// </summary>
     /// <param name="deltaTime">フレーム間の経過時間</param>
     /// <param name="circuit">走るコース</param>
-    void RacerUpdate(const float deltaTime, CircuitTrack* circuit, DamageObjectGenerator* damageObjGene);
-    /// <summary>
-    /// 引数の物体にぶつかったか調べる
-    /// </summary>
-    /// <param name="obj"></param>
-    void ArgumentConflictProcess(float deltaTime,Racer* obj);
-    /// <summary>
-    /// レーサーたちの順位の更新
-    /// </summary>
-    void RacerRankUpdate();
+    void RacerUpdate(const float deltaTime);
+
     /// <summary>
     /// 描画
     /// </summary>
@@ -60,24 +54,18 @@ public:
     /// 一番最初に追加したオブジェクトを返す
     /// </summary>
     /// <returns></returns>
-    PlaySceneCameraArgumentInfo GetPlayerCarPosDir();
-    /// <summary>
-    /// 車乗りたち同士でぶつかってないか調べる
-    /// </summary>
-    void RacerConflictProcces(ConflictProcesser* conflictProcesser, CircuitTrack* circuit, float deltaTime);
-    
+    ObjInfo GetPlayerCarPosDir();
 
     /// <summary>
     /// プレイヤーの情報を渡す
     /// </summary>
     /// <returns></returns>
-    PlayerRelatedInfo GetPlayerRelatedInfo();
+    PlayerInformationCenter* GetPlayerRelatedInfo();
 private:
     //レーサーの最大人数
     static const int maxRacerNum = 6;
     //レーサーの数
     int racerNum = 0;
-    //レーサーの配列　
    
     //racerInstanceArrayを指しているリスト
     std::list<Racer*> racerList;
@@ -86,5 +74,7 @@ private:
     //当たってるかどうか調べる
     HitChecker hitChecker;
     //プレイヤーの情報
-    Player* player=nullptr;
+    Player* player = nullptr;
+    //
+    PlayerInformationCenter* playerInfoCenter;
 };

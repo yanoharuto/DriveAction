@@ -1,14 +1,13 @@
 #pragma once
 #include <string>
 #include "Racer.h"
-#include "Player.h"
-#include "CarModelEnum.h"
+#include "PlayerInformationCenter.h"
 class RacerGenerater
 {
 public:
     RacerGenerater();
-    void CreateRacers(int racerNum, std::list<Racer*>* racerList,Player** player);
+    void CreateRacers(int racerNum, std::list<Racer*>* racerList,Player** player,PlayerInformationCenter* infoCenter);
 private:
-    std::string carModelAddress[CAR_MODEL_ENUM_SIZE];
+    const std::string firstPosAddress = "/firstPosition.txt";
 };
 

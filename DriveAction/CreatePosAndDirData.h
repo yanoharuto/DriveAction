@@ -32,7 +32,7 @@ private:
     //êŠ‹L˜^ŒW
     VectorDataCreator* posDataCreator;
     //ÅŒã‚É‹È‚ª‚Á‚½‚Ì•ûŒü
-    VECTOR prevVec = {-0.999753,0.00000,-0.022217};
+    VECTOR prevVec = {1.0f,0.00000f,0.0f};
     //‹È‚ª‚Á‚½”»’è‚Åg‚¤
     const float turnProccesLine = 4.5f;
 };

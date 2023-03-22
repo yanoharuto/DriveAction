@@ -5,11 +5,11 @@
 AccelMeter::AccelMeter()
 {
     LoadDivGraph(timerFont.c_str(), TIMER_FONT_NUM, TIMER_FONT_NUM, 1, timerFontLoadSize, 100, timerGraphHandle);
-    uiData.x = SCREEN_WIDTH / 20 * 17.0f;
-    uiData.y = SCREEN_HEIGHT / 20 * 16.0f;
+    uiData.x = UI_SCREEN_WIDTH * 17.0f;
+    uiData.y = UI_SCREEN_HEIGHT * 16.0f;
     uiData.dataHandle = LoadGraph(speedMeterAddress.c_str());
-    allowPngData.x = SCREEN_WIDTH / 20 * 18.5f;
-    allowPngData.y = SCREEN_HEIGHT / 20 * 16;
+    allowPngData.x = UI_SCREEN_WIDTH * 18.5f;
+    allowPngData.y = UI_SCREEN_HEIGHT * 16;
     allowPngData.dataHandle = LoadGraph(meterAllowAddress.c_str());
     
     allowRota = 0;

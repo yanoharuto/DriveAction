@@ -1,6 +1,6 @@
 #pragma once
 #include "FadeInFadeOut.h"
-#include "Timer.h"
+#include "Clock.h"
 #include "Utility.h"
 #include "SceneFlowBase.h"
 #include "SceneType.h"
@@ -12,7 +12,7 @@ public:
     {
         nowSceneType = _SceneType;
         fadeInFadeOut = new FadeInFadeOut();
-        timer = new Timer();
+        timer = new Clock();
     }
     /// <summary>
     /// デストラクタ
@@ -29,7 +29,6 @@ public:
     /// <returns></returns>
     virtual SceneType Update()
     {
-        timer->Update();
         switch (fadeInFadeOut->GetFadeMode())
         {
         case FadeMode::fadeInStart:
@@ -53,6 +52,7 @@ public:
         default:
             break;
         }
+        timer->Update();
         return nowSceneType;
     };
     /// <summary>
@@ -71,5 +71,5 @@ protected:
     //シーンの処理の流れ
     SceneFlowBase* sceneFlow;
     //タイマー
-    Timer* timer;
+    Clock* timer;
 };

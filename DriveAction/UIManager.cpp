@@ -30,10 +30,7 @@ void UIManager::Update(int index, int x, int y)
 
 void UIManager::DrawUI()
 {
-    for (int i = 0; i < uiVec.size(); i++)
-    {
-        uiVec[i]->DrawUI();
-    }
+
 }
 
 
@@ -45,10 +42,7 @@ void UIManager::DeleteArgumentUI(int uiNum)
 
 void UIManager::DeleteAllUI()
 {
-    for (int i = 0; i < uiVec.size(); i++)
-    {
-        DeleteArgumentUI(i);
-    }
+
 }
 
 

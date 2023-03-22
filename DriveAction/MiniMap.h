@@ -24,8 +24,8 @@ private:
     const float minimapEdgeX = 1350;
     const float minimapEdgeZ = 1350;
     int mapUINum = 0;
-    int minimapX = SCREEN_WIDTH / 20 * 17;
-    int minimapY = SCREEN_HEIGHT / 20 * 9.5f;
+    int minimapX = UI_SCREEN_WIDTH * 17;
+    int minimapY = UI_SCREEN_HEIGHT * 9.5f;
     int minimapWidth = 0;
     int minimapHeight = 0;
 

@@ -15,7 +15,6 @@ AccelerationFloor::AccelerationFloor(VECTOR pos, VECTOR dir)
     radius = setRadius;
     EffectManager::LoadEffectManager("accelationFloor.efkefc", setScale);
     playingEffect = EffectManager::GetPlayEffect3D("accelationFloor.efkefc");
-    OriginalMath math;
     float degreeY = dir.y;
     degreeY *= RAGE;
     SetRotationPlayingEffekseer3DEffect(playingEffect, 0,degreeY,0);

@@ -42,6 +42,7 @@ protected:
     float effecacyTime = 0;
     //アイテムの効果のクールタイム
     float coolTime = -1;
+    //
     int modelHandle;
     //アイテムを使っている状態かどうか
     ItemUseSituation useSituation;

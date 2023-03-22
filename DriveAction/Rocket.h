@@ -1,10 +1,10 @@
 #pragma once
 #include<string>
-#include "DamageObject.h"
+#include "Actor.h"
 #include "ItemArgumentCarInfo.h"
 #include "DxLib.h"
-
-class Rocket final :public DamageObject
+#include "SphereCollider.h"
+class Rocket final :public Actor
 {
 public:
     Rocket() {};
@@ -22,24 +22,32 @@ public:
     /// <summary>
     /// 衝突後の処理
     /// </summary>
-    void ConflictProccess()override;
+    void ConflictProccess(ConflictExamineResultInfo resultInfo)override;
 private:
     //ロケットのモデルのアドレス
-    const std::string rocketModelAddress = "Item/Rocket/Rocket04_Grey.mv1";
-    const std::string effectAddress = "bomb.efkefc";
+    static const std::string rocketModelAddress;
+    //エフェクトのmodelのアドレス
+    static const std::string effectAddress;
+    //最初の落下速度
+    static const float setFallingSpeed;
     //落下速度
-    float fallingSpeed = 24.5f;
+    float fallingSpeed = setFallingSpeed;
     //はじき返す力
-    float setBouncePower = 4.25f;
+    static const float setBouncePower;
     //重力
-    const float gravityPower = 0.9f;
+    static const float gravityPower;
     //ロケットのサイズ
-    const float setSize = 1.000f;
-    //半径
-    const float setRadius = 3.25f;
+    static const float setModelSize;
+    //エフェクトのサイズ
+    static const float setEffectSize;
+    //当たり判定の大きさ
+    static const float setRadius;
+    //燃えた時の当たり判定の大きさ
+    static const float setBurnRadius;
     //動いているエフェクト
     int playEffect = -1;
     //地面に触れているか
     bool onGround = false;
+    //当たり判定
+    SphereCollider* collider = nullptr;
 };
-

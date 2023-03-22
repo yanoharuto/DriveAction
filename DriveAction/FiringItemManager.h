@@ -1,10 +1,7 @@
 #pragma once
 #include <list>
-#include <string>
-#include "DamageObject.h"
 #include "CircuitTrack.h"
-#include "ItemArgumentCarInfo.h"
-#include "ItemTag.h"
+#include "DamageObjectGenerator.h"
 /// <summary>
 /// 飛び道具の面倒を見る奴
 /// </summary>
@@ -26,12 +23,7 @@ public:
     /// </summary>
     /// <param name="itemTag"></param>
     /// <param name="carInfo"></param>
-    void AddDamageObject(DamageObject* damageObj);
-    /// <summary>
-    /// 衝突
-    /// </summary>
-    /// <param name="conflictProccess"></param>
-    void CircuitTrackConflictProccess(CircuitTrack* conflictProccess);
+    static void AddFiringObject(Actor* damageObj);
     /// <summary>
     /// 更新
     /// </summary>
@@ -42,6 +34,8 @@ public:
     /// </summary>
     void Draw();
 private:
+    DamageObjectGenerator* damageObjGenerator;
+
     //オブジェクトタグがDamageObjectになってるオブジェクトのリスト
-    std::list<DamageObject*> damageObjList;
+    static std::list<Actor*> damageObjList;
 };

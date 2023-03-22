@@ -165,9 +165,6 @@
     <ClCompile Include="SwitchUI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="GimmickObjManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="AccelerationFloor.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
@@ -186,7 +183,7 @@
     <ClCompile Include="ReverseDrivingCautionUI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ConflictProcesser.cpp">
+    <ClCompile Include="ConflictManager.cpp">
       <Filter>ソース ファイル\ConflictCheck</Filter>
     </ClCompile>
     <ClCompile Include="HitChecker.cpp">
@@ -197,9 +194,6 @@
     </ClCompile>
     <ClCompile Include="DamageObject.cpp">
       <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Kite.cpp">
-      <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>ソース ファイル\Item</Filter>
@@ -286,6 +280,57 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionOfTravelGenerator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyShip.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyShipInitializer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatingLasers.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserFlyShip.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="BomberFlyShip.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInformationCenter.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Clock.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyShipManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ArgumentConflictResultInfo.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ConflictProccesor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshCollider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelUpdater.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="FiringObjOwner.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -425,9 +470,6 @@
     <ClInclude Include="OriginalMath.h">
       <Filter>ヘッダー ファイル\Other</Filter>
     </ClInclude>
-    <ClInclude Include="GimmickObjManager.h">
-      <Filter>ヘッダー ファイル\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Saw.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
@@ -482,9 +524,6 @@
     <ClInclude Include="ItemHolder.h">
       <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
-    <ClInclude Include="Kite.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Rocket.h">
       <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
@@ -506,7 +545,7 @@
     <ClInclude Include="FadeInFadeOut.h">
       <Filter>ヘッダー ファイル\Other</Filter>
     </ClInclude>
-    <ClInclude Include="ConflictProcesser.h">
+    <ClInclude Include="ConflictManager.h">
       <Filter>ヘッダー ファイル\ConflictCheck</Filter>
     </ClInclude>
     <ClInclude Include="CreatePosAndDirData.h">
@@ -542,7 +581,7 @@
     <ClInclude Include="CPU.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PlaySceneCamaeraArgumentInfo.h">
+    <ClInclude Include="ObjPosAndDir.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
     <ClInclude Include="AssetManager.h">
@@ -589,6 +628,66 @@
     </ClInclude>
     <ClInclude Include="CarParamater.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionOfTravelGenerator.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoDriveInfo.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyShip.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyShipInitializer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyShipKind.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyShipArgumentInfo.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RotatingLasers.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="LaserFlyShip.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BomberFlyShip.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInformationCenter.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Clock.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyShipManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ArgumentConflictResultInfo.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ConflictProccesor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshCollider.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelUpdater.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMap.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="FiringObjOwner.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

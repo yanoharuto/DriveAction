@@ -9,8 +9,8 @@ struct ConflictExamineResultInfo
 {
     bool hitFlag = false;//当たり判定で当たったか
     ObjectTag tag = ObjectTag::obstacle;//オブジェクトのタグ
-    VECTOR pos = {};//当たったオブジェクトのポジション
-    VECTOR dir = {};//向いてる方向
+    VECTOR bounceVec = {};
+    VECTOR pos = {};
     float radius = 0;//半径
     float bouncePower;//反発力
     /// <summary>
@@ -18,12 +18,9 @@ struct ConflictExamineResultInfo
     /// </summary>
     /// <param name="hit">当たり判定で当たったか</param>
     /// <param name="obj">作りたい情報のオブジェクト</param>
-    void SetObjInfo(bool hit,Object* const obj)
+    void SetObjInfo(Object* const obj)
     {
-        hitFlag = hit;
         tag = obj->GetTag();
-        pos = obj->GetPos();
-        dir = obj->GetDir();
         radius = obj->GetRadius();
         bouncePower = obj->GetBouncePower();
     }

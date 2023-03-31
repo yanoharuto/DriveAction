@@ -1,17 +1,20 @@
 #include "MeshCollider.h"
 #include "ConflictManager.h"
-MeshCollider::MeshCollider(int setModelHandle, ConflictExamineResultInfo setResultInfo)
+MeshCollider::MeshCollider(int setModelHandle, ObjectTag setTag)
 {
     modelHandle = setModelHandle;
-    tag = setResultInfo.tag;
-    bouncePower = setResultInfo.bouncePower;
+    tag = setTag;
     ConflictManager::AddConflictObjInfo(this);
 }
 
 MeshCollider::~MeshCollider()
 {
 }
-
+/// <summary>
+/// 当たり判定を返す
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
 ConflictExamineResultInfo MeshCollider::HitCheck(HitCheckExamineObjectInfo examinInfo)
 {
     return GetSphereConflictModelInfo(examinInfo);
@@ -27,12 +30,14 @@ ConflictExamineResultInfo MeshCollider::HitCheck(HitCheckExamineObjectInfo exami
 ConflictExamineResultInfo MeshCollider::GetSphereConflictModelInfo(HitCheckExamineObjectInfo examineInfo) 
 {
     DxLib::MV1_COLL_RESULT_POLY_DIM polyDimInfo = MV1CollCheck_Sphere(modelHandle, -1, examineInfo.pos, examineInfo.radius);
+    //はじかれ先のポジション
     VECTOR bounceVec = {};
+    //はじかれ先のポジション
     VECTOR nowPos = examineInfo.pos;
     bool hitFlag = false;
+    //当たったかどうか
     ConflictExamineResultInfo resultInfo;
     resultInfo.tag = tag;
-    resultInfo.bouncePower = bouncePower;
     //modelにぶつかっているか
     if (polyDimInfo.HitNum != 0)
     {
@@ -46,7 +51,7 @@ ConflictExamineResultInfo MeshCollider::GetSphereConflictModelInfo(HitCheckExami
                 MV1_COLL_RESULT_POLY polyInfo = polyDimInfo.Dim[i];//ポリゴンの頂点情報
                 float a = -VDot(VNorm(examineInfo.velocity), polyInfo.Normal);//法線からはじかれる大きさを出す
                 //はじかれるベクトル
-                bounceVec = VSub(examineInfo.velocity, VScale(polyInfo.Normal, a));
+                bounceVec = VSub(examineInfo.velocity, VScale(polyInfo.Normal, 2 * a));
                 //はじかれ先のポジション
                 nowPos = VAdd(nowPos, bounceVec);
             }
@@ -57,22 +62,30 @@ ConflictExamineResultInfo MeshCollider::GetSphereConflictModelInfo(HitCheckExami
             hitFlag = polyDimInfo.HitNum != 0;
         }
         //最終的にBouncePower分吹き飛ばす
-        resultInfo.hitFlag = true;
-        resultInfo.bounceVec = VScale(VNorm(VSub(examineInfo.pos, nowPos)), resultInfo.bouncePower);
+        resultInfo.hit = HitSituation::Enter;
+        resultInfo.bounceVec = VScale(VNorm(VSub(examineInfo.pos, nowPos)),20);
         resultInfo.pos = nowPos;
         //後処理
         MV1CollResultPolyDimTerminate(polyDimInfo);
         return  resultInfo;
     }
+    //当たってない場合
+    resultInfo.hit = HitSituation::NotHit;
     MV1CollResultPolyDimTerminate(polyDimInfo);
     return resultInfo;
 }
-
+/// <summary>
+/// meshなので位置とかは教えれない
+/// </summary>
+/// <returns></returns>
 HitCheckExamineObjectInfo MeshCollider::GetHitExamineCheckInfo()
 {
     return { {},{},0};
 }
-
-void MeshCollider::ConflictProccess(ConflictExamineResultInfo resultInfo)
+/// <summary>
+/// 当たった場合の反応
+/// </summary>
+/// <param name="resultInfo"></param>
+void MeshCollider::ConflictProccess(std::list<ConflictExamineResultInfo> resultInfo)
 {
 }

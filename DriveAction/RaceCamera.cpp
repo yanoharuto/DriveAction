@@ -11,11 +11,11 @@ RaceCamera::~RaceCamera()
 {
 }
 
-void RaceCamera::Update(ObjInfo argumentInfo,float deltaTime)
+void RaceCamera::Update(ObjInfo argumentInfo)
 {
     //向きの更新
-    VECTOR tempDir = VScale(VSub(argumentInfo.dir, direction), cameraRotateSpeed * deltaTime);
-    direction = VAdd(direction, tempDir);
+    VECTOR tempDir = VScale(VSub(argumentInfo.dir, direction), cameraRotateSpeed);
+    direction = VNorm(VAdd(direction, tempDir));
     //カメラの位置の更新
     position = argumentInfo.pos;
     position.y += betweenPlayerY * argumentInfo.modelSize;
@@ -28,6 +28,6 @@ void RaceCamera::Update(ObjInfo argumentInfo,float deltaTime)
     
 }
 
-void RaceCamera::Update(float deltaTime)
+void RaceCamera::Update()
 {
 }

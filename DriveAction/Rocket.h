@@ -4,6 +4,9 @@
 #include "ItemArgumentCarInfo.h"
 #include "DxLib.h"
 #include "SphereCollider.h"
+/// <summary>
+/// 上から下に落とす爆弾
+/// </summary>
 class Rocket final :public Actor
 {
 public:
@@ -18,16 +21,16 @@ public:
     /// 更新
     /// </summary>
     /// <param name="deltaTime"></param>
-    void Update(float deltaTime)override;
+    void Update()override;
     /// <summary>
     /// 衝突後の処理
     /// </summary>
     void ConflictProccess(ConflictExamineResultInfo resultInfo)override;
 private:
     //ロケットのモデルのアドレス
-    static const std::string rocketModelAddress;
+    static const std::string rocketModelPass;
     //エフェクトのmodelのアドレス
-    static const std::string effectAddress;
+    static const std::string effectPass;
     //最初の落下速度
     static const float setFallingSpeed;
     //落下速度
@@ -45,7 +48,7 @@ private:
     //燃えた時の当たり判定の大きさ
     static const float setBurnRadius;
     //動いているエフェクト
-    int playEffect = -1;
+    int burnEffect = -1;
     //地面に触れているか
     bool onGround = false;
     //当たり判定

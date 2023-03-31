@@ -1,7 +1,7 @@
 #pragma once
 struct  UIData
 {
-    int x;
-    int y;
+    float x;
+    float y;
     int dataHandle;
 };

@@ -1,29 +1,46 @@
 #include "PlayerRelatedUI.h"
 #include "Utility.h"
+#include "MiniMap.h"
+#include "OriginalMath.h"
+#include "UserInput.h"
 
-PlayerRelatedUI::PlayerRelatedUI()
+PlayerRelatedUI::PlayerRelatedUI(Timer* setTimer, int setFirstCoinNum)
 {
-    UIData uiData;
-    uiData.dataHandle = CreateFontToHandle("BIZ UDÉSÉVÉbÉN", 102, 3, DX_FONTTYPE_NORMAL);
-    uiData.x = UI_SCREEN_WIDTH * 14.0f;
-    uiData.y = UI_SCREEN_HEIGHT * 4.0f;
-    timeUI = new StringUI(GetColor(200, 200, 40), uiData);
+    timerUI = new TimerUI(drawTimerX, drawTimerY, fontSize, setTimer);
+    minimapUI = new MiniMap();
+    manualData.dataHandle = LoadGraph(manualPass.c_str());
+    firstCoinNum = setFirstCoinNum;
+    numUI = new NumUI();
+    slashHandle = LoadGraph(slash.c_str());
+
 }
 
 
 PlayerRelatedUI::~PlayerRelatedUI()
 {
-    SAFE_DELETE(timeUI);
+    DeleteGraph(manualData.dataHandle);
+    SAFE_DELETE(timerUI);
 }
 
-void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo,float deltaTime)
+void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo, std::list<VECTOR> setCoinPosList)
 {
-    std::string str = std::to_string(relatedInfo.scoreTime);
-    str.erase(str.size() - eraseLength, eraseLength);
-    timeUI->UpdateString("Time::" + str);
+    minimapUI->Update(relatedInfo.objInfo,setCoinPosList);
+    nowGetCoinNum = relatedInfo.hitCoinCount;
 }
 
 void PlayerRelatedUI::Draw()
 {
-    timeUI->DrawLeftAlignedString();
+    DrawGraph(manualData.x, manualData.y, manualData.dataHandle,true);
+    
+    int x = numUI->Draw(coinUIDrawX, coinUIDrawY, nowGetCoinNum, fontSize);
+    x += numUI->GetNumWidthSize() * fontSize;
+    DrawRotaGraph(x, coinUIDrawY, fontSize, 0, slashHandle, true);
+    x += numUI->GetNumWidthSize() * fontSize;
+    numUI->Draw(x , coinUIDrawY, firstCoinNum, fontSize);
+    
+    timerUI->Draw();
+    if (UserInput::GetInputState(Space) == Hold)
+    {
+        minimapUI->Draw();
+    }
 }

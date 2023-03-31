@@ -13,11 +13,11 @@ public:
     /// <summary>
     /// modelをロードして複製できるようにする
     /// </summary>
-    /// <param name="assetAddress"></param>
+    /// <param name="assetPass"></param>
     /// <returns></returns>
-    static int GetDuplicate3DModelAssetHandle(std::string assetAddress);
+    static int GetDuplicate3DModelAssetHandle(std::string assetPass);
 private :
-    static const std::string genericAddress;
+    static const std::string genericPass;
     //modelのアドレスを貰うとモデルハンドルを返す
     static std::map<std::string, int> assetMap;
 };

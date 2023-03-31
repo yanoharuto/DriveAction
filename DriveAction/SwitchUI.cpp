@@ -12,12 +12,12 @@ SwitchUI::SwitchUI()
     spaceKeyUI.x = x - 50;
     spaceKeyUI.y = y;
     spaceKeyUI.dataHandle = CreateFontToHandle("BIZ UDゴシック", bigPleaseSpaceKeySize, 3, DX_FONTTYPE_NORMAL);
-    smallUI = new StringUI(smallPleaseSpaceKeyUIColor, spaceKeyUI, pleaseSpaceKeyUIString);
+    smallUI = new StringUI(smalleUIColor, spaceKeyUI, pleaseSpaceKeyUIString);
 
 
     x += bigPleaseSpaceKeySize - smallPleaseSpaceKeySize;
     spaceKeyUI.dataHandle = CreateFontToHandle("BIZ UDゴシック", smallPleaseSpaceKeySize, 3, DX_FONTTYPE_NORMAL);
-    bigUI = new StringUI(bigPleaseSpaceKeyUIColor, spaceKeyUI, pleaseSpaceKeyUIString);
+    bigUI = new StringUI(bigUIColor, spaceKeyUI, pleaseSpaceKeyUIString);
 
 }
 
@@ -27,9 +27,9 @@ SwitchUI::~SwitchUI()
     SAFE_DELETE(smallUI);
 }
 
-void SwitchUI::Update(float deltaTime)
+void SwitchUI::Update()
 {
-    time += deltaTime;
+    time += DELTATIME;
     
 }
 

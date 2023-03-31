@@ -3,7 +3,7 @@
 /// <summary>
 /// ステージのデータのアドレス
 /// </summary>
-struct StageDataAddress
+struct StageDataPass
 {
 
 };

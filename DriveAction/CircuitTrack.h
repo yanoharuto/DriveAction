@@ -23,19 +23,11 @@ public:
     /// </summary>
     void Draw();
 private:
-    ConflictExamineResultInfo resultInfo = { false,ObjectTag::stage,{},{},0.0f,15.0f };
-    //コースの大きさ
-    const float modelScaleHandle = 0.35f;
     
-    //障害物の幅
-    const float setRadius = 3.5f;
-
     //コースの外側のmodelのポジション
     const VECTOR outsideModelPosition = { 0,-200,0 };
     //ステージのmodelのファイルのパス
     const std::string stageFilePass = "Stage/";
-    //レール
-    const std::string courceFilePass = "Rail.mv1";
     //障害物
     const std::string obstracleFilePass = "Obstracle.mv1";
     //地面
@@ -49,11 +41,11 @@ private:
     
     //障害物モデルハンドル
     int obstracleModelHandle;
-    //コース
-    int courceModelHandle;
+
     //地面
     int floorModelHandle;
+    //壁の当たり判定
     MeshCollider* obstracleCollider;
-    MeshCollider* courceCollider;
+    //地面の当たり判定
     MeshCollider* floorCollider;
 };

@@ -7,7 +7,7 @@ RacerGenerater::RacerGenerater()
 }
 void RacerGenerater::CreateRacers(int racerNum, std::list<Racer*>* racerList, Player** player, PlayerInformationCenter* infoCenter)
 {
-    std::list<VECTOR> firstPosList = CourceDataLoader::GetVECTORData(firstPosAddress);
+    std::list<VECTOR> firstPosList = CourceDataLoader::GetVECTORData(firstPosPass);
     //ポジションのイテレーター
     auto firstPosIte = firstPosList.begin();
     

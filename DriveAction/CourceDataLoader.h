@@ -19,11 +19,11 @@ public:
     /// コースのミニマップ
     /// </summary>
     /// <returns></returns>
-    static const std::string GetStageDataGenericAddress();
-    static std::list<VECTOR> GetVECTORData(std::string address);
+    static const std::string GetStageDataGenericPass();
+    static std::list<VECTOR> GetVECTORData(std::string Pass);
 private:
     //データの置き場所
-    const std::string prevAddress = "data/stageData/";
+    const std::string prevPass = "data/stageData/";
     //共通のアドレス
-    static std::string genericAddress;
+    static std::string genericPass;
 };

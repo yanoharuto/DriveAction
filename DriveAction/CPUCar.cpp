@@ -42,7 +42,5 @@ CPUCar::~CPUCar()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param nadme="outsideHitFlag">コース外に出たか</param>
-void CPUCar::Update(const float deltaTime,VECTOR destinationPos, ItemInfo itemInfo)
-{
-    AutoDrive(deltaTime,destinationPos ,itemInfo);
-}
+void CPUCar::Update()
+{}

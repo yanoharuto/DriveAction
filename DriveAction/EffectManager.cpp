@@ -16,26 +16,31 @@ EffectManager::~EffectManager()
     effectMap.clear();
 }
 
-void EffectManager::LoadEffectManager(std::string address,float size)
+void EffectManager::LoadEffectManager(std::string Pass,float size)
 {
-    if (!effectMap.contains(address))
+    if (!effectMap.contains(Pass))
     {
-        std::string effectAddress = "data/effect/" + address;
-        effectMap.insert(std::make_pair(address, LoadEffekseerEffect(effectAddress.c_str(), size)));
+        std::string effectPass = "data/effect/" + Pass;
+        effectMap.insert(std::make_pair(Pass, LoadEffekseerEffect(effectPass.c_str(), size)));
     }
 }
 
-int EffectManager::GetPlayEffect3D(std::string address)
+int EffectManager::GetPlayEffect3D(std::string Pass)
 {
-    return PlayEffekseer3DEffect(effectMap[address.c_str()]);
+    int handle = -1;
+    if (effectMap.contains(Pass))
+    {
+        handle = PlayEffekseer3DEffect(effectMap[Pass.c_str()]);
+    }
+    return handle;
 }
 
-int EffectManager::GetPlayEffect2D(std::string address)
+int EffectManager::GetPlayEffect2D(std::string Pass)
 {
-    return PlayEffekseer3DEffect(effectMap[address.c_str()]);
+    return PlayEffekseer3DEffect(effectMap[Pass.c_str()]);
 }
 
-bool EffectManager::IsPlayEffect(std::string address)
+bool EffectManager::IsPlayEffect(std::string Pass)
 {
-    return IsEffekseer3DEffectPlaying(effectMap[address.c_str()]);
+    return IsEffekseer3DEffectPlaying(effectMap[Pass.c_str()]);
 }

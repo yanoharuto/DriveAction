@@ -20,15 +20,18 @@ public:
     /// <summary>
     /// çXêV
     /// </summary>
-    virtual void Update(const float deltaTime) {};
+    virtual void Update() {};
     /// <summary>
     /// ï`âÊ
     /// </summary>
     virtual void Draw()
     {
-        ModelSetMatrix();
-        UpdateMV1Pos();
-        MV1DrawModel(modelHandle);
+        if (modelHandle != - 1)
+        {
+            ModelSetMatrix();
+            UpdateMV1Pos();
+            MV1DrawModel(modelHandle);
+        }
     }
     
     /// <summary>

@@ -1,31 +1,31 @@
 #include "DataAddresLoader.h"
 #include <iostream>
 #include <fstream>
-DataAddressLoader::DataAddressLoader()
+DataPassLoader::DataPassLoader()
 {
 }
 
-DataAddressLoader::DataAddressLoader(std::string fileName)
+DataPassLoader::DataPassLoader(std::string fileName)
 {
     LoadAddres(fileName);
 }
 
-DataAddressLoader::~DataAddressLoader()
+DataPassLoader::~DataPassLoader()
 {
 }
 
-std::list<std::string>::iterator DataAddressLoader::GetBeginIterator()
+std::list<std::string>::iterator DataPassLoader::GetBeginIterator()
 {
     return stringList.begin();
 }
 
-std::list<std::string>::iterator DataAddressLoader::GetEndIterator()
+std::list<std::string>::iterator DataPassLoader::GetEndIterator()
 {
     
     return stringList.end();
 }
 
-void DataAddressLoader::LoadAddres(std::string fileName)
+void DataPassLoader::LoadAddres(std::string fileName)
 {
     std::ifstream ifs(fileName);
     if (!ifs)

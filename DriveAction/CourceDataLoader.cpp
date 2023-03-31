@@ -5,14 +5,14 @@
 #include <fstream>
 #include <string>
 //共通のアドレス
-std::string CourceDataLoader::genericAddress;
+std::string CourceDataLoader::genericPass;
 
 /// <summary>
 /// コース情報
 /// </summary>
 CourceDataLoader::CourceDataLoader()
 {
-    genericAddress = prevAddress + StageSelect::GetLoadeStageName();
+    genericPass = prevPass + StageSelect::GetLoadeStageName();
 }
 CourceDataLoader::~CourceDataLoader()
 {
@@ -21,14 +21,14 @@ CourceDataLoader::~CourceDataLoader()
 /// 
 /// </summary>
 /// <returns></returns>
-const std::string CourceDataLoader::GetStageDataGenericAddress()
+const std::string CourceDataLoader::GetStageDataGenericPass()
 {
-    return genericAddress;
+    return genericPass;
 }
 
-std::list<VECTOR> CourceDataLoader::GetVECTORData(std::string address)
+std::list<VECTOR> CourceDataLoader::GetVECTORData(std::string Pass)
 {
-    VECTOR3Loader* loader = new VECTOR3Loader(genericAddress + address);
+    VECTOR3Loader* loader = new VECTOR3Loader(genericPass + Pass);
     std::list<VECTOR> list = loader->GetVectorList();
     SAFE_DELETE(loader);
     return list;

@@ -2,11 +2,13 @@
 #include "OriginalMath.h"
 #include "EffekseerForDXLib.h"
 #include "EffectManager.h"
+#include "Utility.h"
 Accelerator::Accelerator()
 {
     effecacyTime = setEffecacyTime;
     itemTag = ItemTag::bomber;
-    EffectManager::LoadEffectManager(effectAddress, 30.0f);
+    EffectManager::LoadEffectManager(effectPass, 30.0f);
+
 }
 
 Accelerator::~Accelerator()
@@ -15,12 +17,12 @@ Accelerator::~Accelerator()
     DeleteEffekseerEffect(playEffect);
 }
 
-void Accelerator::Update(float deltaTime,ItemArgumentCarInfo carInfo)
+void Accelerator::Update(ItemArgumentCarInfo carInfo)
 {
     if (useSituation == ItemUseSituation::Useing)
     {
-        effecacyValue += addEffecacyValue * deltaTime;
-        effecacyTime -= deltaTime;
+        effecacyValue += addEffecacyValue;
+        effecacyTime -= DELTATIME;
         //エフェクトの位置変更
         VECTOR pos = VAdd(carInfo.position, VScale(carInfo.direction, carInfo.radius));
         SetPosPlayingEffekseer3DEffect(playEffect, pos.x, pos.y, pos.z);
@@ -43,7 +45,7 @@ void Accelerator::ShowEffect(ItemArgumentCarInfo carInfo)
 {
     if (useSituation == ItemUseSituation::nonUse)
     {
-        playEffect = EffectManager::GetPlayEffect3D(effectAddress);
+        playEffect = EffectManager::GetPlayEffect3D(effectPass);
         SetPosPlayingEffekseer3DEffect(playEffect, carInfo.position.x, carInfo.position.y, carInfo.position.z);
         useSituation = ItemUseSituation::Useing;
     }

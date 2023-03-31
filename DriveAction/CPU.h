@@ -9,9 +9,8 @@ public:
     CPU();
     CPU(VECTOR firstPos);
     ~CPU();
-    void Update(float deltaTime)override;
+    void Update()override;
 private:
-    CPUCar* cpuCar = nullptr;
     const float setItemCoolTime = 10.0f;
     float itemCoolTime = 0;
 };

@@ -19,7 +19,7 @@ public:
     /// <summary>
     /// XV
     /// </summary>
-    void Update(const float deltaTime) override;
+    void Update() override;
     /// <summary>
     /// •`‰æ
     /// </summary>

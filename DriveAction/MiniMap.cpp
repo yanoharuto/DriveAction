@@ -6,32 +6,47 @@
 
 MiniMap::MiniMap()
 {
-    UIData uiData;
-    uiData.x = minimapX;
-    uiData.y = minimapY;
-    uiData.dataHandle = LoadGraph((CourceDataLoader::GetStageDataGenericAddress() + miniMapAddress).c_str(), true);
-    miniMap = new ImgUI(mapSize, uiData);
-    pointUI = new PointUI(playerColor, uiData, markerRadius);
-    GetGraphSize(uiData.dataHandle,&minimapWidth, &minimapHeight);
-    markerSpeedX = static_cast<float>(minimapWidth / 2) / minimapEdgeX * mapSize;
-    markerSpeedZ = static_cast<float>(minimapHeight / 2) / minimapEdgeZ * mapSize;
+    icon.x = miniMapUpLeftX + mapRength;
+    icon.y = miniMapUpLeftY + mapRength;
+    miniMap.dataHandle = LoadGraph(miniMapPass.c_str(), true);
+    
+    GetGraphSize(miniMap.dataHandle,&mapGraphWidth, &mapGraphHeight);
+
+
 }
 
 MiniMap::~MiniMap()
 {
-    SAFE_DELETE(miniMap);
-    SAFE_DELETE(pointUI);
 }
 
-void MiniMap::Update(float playerPosX, float playerPosY)
+void MiniMap::Update(ObjInfo objInfo, std::list<VECTOR> setCoinPosList)
 {
-    float x = minimapX + (playerPosX - mapStartPosX) * markerSpeedX ;
-    float y = minimapY + (playerPosY - mapStartPosZ) * markerSpeedZ ;
-    pointUI->SetXY(x, y);
+    VECTOR pos = ConvertPosition(objInfo.pos);
+    miniMap.x = pos.x;
+    miniMap.y = pos.y;
+    coinPosList.clear();
+    for (auto ite = setCoinPosList.begin(); ite != setCoinPosList.end(); ite++)
+    {
+        pos = ConvertPosition((*ite));
+        coinPosList.push_back(pos);
+    }
 }
 
 void MiniMap::Draw()
 {
-    miniMap->DrawUI();
-    pointUI->DrawUI();
+    DrawRotaGraph(icon.x,icon.y,1,0,miniMap.dataHandle,false);
+    DrawCircle(miniMap.x, miniMap.y, iconSize ,playerColor, 1, 1);
+    for (auto ite = coinPosList.begin(); ite != coinPosList.end(); ite++)
+    {
+        DrawCircle((*ite).x, (*ite).y, iconSize, coinColor, 1, 1);
+    }
+}
+
+VECTOR MiniMap::ConvertPosition(VECTOR pos)
+{
+    VECTOR data;
+    data.x = -pos.x * (mapGraphWidth / 2) / 6000 + miniMapFrontX ;
+
+    data.y = pos.z * (mapGraphHeight / 2) / 6000 + miniMapFrontY;
+    return data;
 }

@@ -1,5 +1,6 @@
 #include "Timer.h"
 #include "DxLib.h"
+#include "Utility.h"
 Timer::Timer()
 {
 
@@ -15,9 +16,9 @@ Timer::~Timer()
 {
 }
 
-void Timer::Update(float deltaTime)
+void Timer::Update()
 {
-    elapsedTime -= deltaTime;
+    elapsedTime -= DELTATIME;
 }
 
 void Timer::Init()
@@ -28,4 +29,9 @@ void Timer::Init()
 bool Timer::IsOverLimitTime()
 {
     return 0 > elapsedTime;
+}
+
+float Timer::GetLimitTime()
+{
+    return elapsedTime;
 }

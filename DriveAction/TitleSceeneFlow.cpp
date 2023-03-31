@@ -9,32 +9,38 @@ TitleSceeneFlow::TitleSceeneFlow()
 {
     stageSelect = new StageSelect();  
     courceDataLoader = new CourceDataLoader();
-    InitMinimapData();
-    miniMap = new ImgUI(1.0f,uiData);
-    InitStageString();
-    stringUI = new StringUI(GetColor(0,0,255),uiData);
     switchUI = new SwitchUI();
-    uiData.x = SCREEN_WIDTH/2;
+    uiData.x = SCREEN_WIDTH / 2;
     uiData.y = SCREEN_HEIGHT / 2;
-    uiData.dataHandle = LoadGraph("data/title/titleBackGround.jpg");
-
-    backGround = new ImgUI(1,uiData);
+    uiData.dataHandle = LoadGraph("data/title/MachRider.png");
+    titleLogo = new ImgUI(logoSize,uiData);
+    stageManager = new StageManager();
+    SetCameraNearFar(setNearValue, setFarValue);
+    SoundPlayer::LoadSound(BGMPass);
 }
 
 TitleSceeneFlow::~TitleSceeneFlow()
 {
-    SAFE_DELETE(backGround);
-    SAFE_DELETE(miniMap);
-    SAFE_DELETE(stringUI);
+    SAFE_DELETE(titleLogo);
+    SAFE_DELETE(stageManager);
     SAFE_DELETE(stageSelect);
     SAFE_DELETE(switchUI);
+    SoundPlayer::StopAllSound();
 }
 
-void TitleSceeneFlow::Update(float deltaTime)
+void TitleSceeneFlow::Update()
 {
+    if (!SoundPlayer::IsPlaySound(BGMPass))
+    {
+        SoundPlayer::Play2DSE(BGMPass);
+    }
+    //スカイドームを回転
+    stageManager->Update();
+
     std::string string = stageSelect->GetLoadeStageName();
-    stringUI->UpdateString(string);
-    switchUI->Update(deltaTime);
+    //スペースキーの催促
+    switchUI->Update();
+
     int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
     if (key & PAD_INPUT_10)
     {
@@ -45,24 +51,7 @@ void TitleSceeneFlow::Update(float deltaTime)
 
 void TitleSceeneFlow::Draw()
 {  
-    backGround->DrawUI();
-    stringUI->DrawRightAlignedString();
-    miniMap->DrawUI();
+    stageManager->Draw();
     switchUI->Draw();
-
-}
-
-void TitleSceeneFlow::InitMinimapData()
-{
-    uiData.x = SCREEN_WIDTH / 16 * 11;
-    uiData.y = SCREEN_HEIGHT / 7 * 3;
-    std::string chara = courceDataLoader->GetStageDataGenericAddress();
-    uiData.dataHandle = LoadGraph(chara.c_str(),false);
-}
-
-void TitleSceeneFlow::InitStageString()
-{
-    uiData.x = SCREEN_WIDTH / 4 * 1;
-    uiData.y = SCREEN_HEIGHT / 5 * 3;
-    uiData.dataHandle = CreateFontToHandle("OCRB",64,3,DX_FONTTYPE_NORMAL);
+    titleLogo->DrawUI();
 }

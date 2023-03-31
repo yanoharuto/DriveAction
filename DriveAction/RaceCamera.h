@@ -8,15 +8,15 @@ public:
     RaceCamera();
     ~RaceCamera();
 
-    void Update(ObjInfo argumentInfo, float deltaTime);
-    void Update(float deltaTime);
+    void Update(ObjInfo argumentInfo);
+    void Update();
 private:
     //カメラの位置
     VECTOR position = {};
     //カメラの向き
     VECTOR direction = {};
     //プレイヤーまでの距離Y
-    const float betweenPlayerY = -10.0f;
+    const float betweenPlayerY = 50.0f;
     //プレイヤーまでの距離X
     const float betweenPlayerX = 370.0f;
     //プレイヤーまでの距離Z
@@ -28,6 +28,6 @@ private:
     //カメラの狙う先までの距離の大きさ
     const float aimBetween = 30.0f;
     //カメラが車の方に向く速度
-    const float cameraRotateSpeed = 3.2f;
+    const float cameraRotateSpeed = 0.043f;
 };
 

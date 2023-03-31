@@ -3,7 +3,7 @@
 static std::string fileAddres;
 StageSelect::StageSelect()
 {
-    dataLoader = new DataAddressLoader(allStageAddresFile);
+    dataLoader = new DataPassLoader(allStageAddresFile);
     fileNameIte = dataLoader->GetBeginIterator();
     fileAddres = *fileNameIte;
     fileNameIte++;

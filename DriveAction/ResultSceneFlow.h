@@ -20,14 +20,14 @@ public:
     /// 更新
     /// </summary>
     /// <param name="deltaTime"></param>
-    void Update(float deltaTime)override;
+    void Update()override;
     /// <summary>
     /// 描画
     /// </summary>
     void Draw()override;
 private:
     //背景のアドレス
-    const std::string resultBackImgAddress = "data/result/resultGraph.png";
+    const std::string resultBackImgPass = "data/result/resultGraph.png";
     
     //スコアのUI
     StringUI* rankUI;

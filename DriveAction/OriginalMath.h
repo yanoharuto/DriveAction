@@ -20,6 +20,12 @@ public:
         destinationDir = acosf(destinationDir) / RAGE;
         return destinationDir;
     }
+    /// <summary>
+    /// ランダムな値を返す
+    /// </summary>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
     static int GetRandom(int min, int max)
     {
         std::random_device seed;
@@ -27,6 +33,12 @@ public:
         std::uniform_int_distribution<> dist{ min,max };
         return dist(engine);
     }
+    /// <summary>
+    /// 引数の度数だけ曲がったベクトルを返す
+    /// </summary>
+    /// <param name="rotateVector"></param>
+    /// <param name="degree"></param>
+    /// <returns></returns>
     static VECTOR GetYRotateVector(VECTOR rotateVector, float degree)
     {
         float rage = degree * RAGE;
@@ -34,5 +46,20 @@ public:
         addVec = VScale(VNorm(VCross(rotateVector, addVec)), rage);
         rotateVector = VAdd(rotateVector, addVec);
         return rotateVector;
+    }
+    /// <summary>
+    /// 桁数を返す
+    /// </summary>
+    /// <param name="num"></param>
+    /// <returns></returns>
+    static int GetDigits(int num)
+    {
+        int digits = 0;
+        while (num!=0)
+        {
+            num /= 10;
+            digits++;
+        }
+        return digits;
     }
 };

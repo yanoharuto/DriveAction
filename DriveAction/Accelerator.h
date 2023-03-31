@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Item.h"
+
 /// <summary>
 /// ‰Á‘¬Œø‰Ê‚ÌƒAƒCƒeƒ€
 /// </summary>
@@ -16,14 +17,14 @@ public:
     /// </summary>
     /// <param name="deltaTime"></param>
     /// <param name="carInfo"></param>
-    void Update(float deltaTime,ItemArgumentCarInfo carInfo)override;
+    void Update(ItemArgumentCarInfo carInfo)override;
     void Draw();
     void ShowEffect(ItemArgumentCarInfo carInfo)override;
     
 private:
     int effectResource=-1;
     int playEffect = -1;
-    const std::string effectAddress = "wind.efkefc";
+    const std::string effectPass = "wind.efkefc";
     const float addEffecacyValue = 62.5f;
     const float setEffecacyTime = 1.8f;
 };

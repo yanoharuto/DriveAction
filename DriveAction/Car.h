@@ -11,6 +11,7 @@
 #include "AutoDriveInfo.h"
 #include "HitCheckExamineObjectInfo.h"
 #include "ObjPosAndDir.h"
+#include "Timer.h"
 /// <summary>
 /// 車の加速とか減速とかするよ。どの向きに加速するかとかはwheelsからとってくるよ
 /// </summary>
@@ -31,7 +32,7 @@ public:
 	/// <summary>
     /// 更新（移動処理）
     /// </summary>
-	virtual void Update(const float deltaTime, VECTOR destinationPos,ItemInfo itemInfo){};
+	virtual void Update(){};
 	/// <summary>
 	/// 衝突処理
 	/// </summary>
@@ -52,22 +53,31 @@ public:
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	/// <param name="outsideHitFlag"></param>
-	void AutoDrive(const float deltaTime, VECTOR destinationPos, ItemInfo itemInfo);
+	void AutoDrive();
 	/// <summary>
-    /// カメラに渡したい情報を返す
+    /// カメラ等に渡したい情報を返す
     /// </summary>
 	/// <returns></returns>
 	ObjInfo GetCarPosAndDir();
-	HitCheckExamineObjectInfo GetHitCheckExamineInfo() override;
-
-protected:
-	void CommonUpdate(const float deltaTime, VECTOR destinationPos, ItemInfo itemInfo);
 	/// <summary>
-	/// アイテムの効果を受け取る
+	/// 移動する前のポジションを渡す
 	/// </summary>
-	/// <param name="item"></param>
+	/// <returns></returns>
+	HitCheckExamineObjectInfo GetHitCheckExamineInfo() override;
+	/// <summary>
+	/// 落下
+	/// </summary>
 	/// <param name="deltaTime"></param>
-	void RecieveItemEffecacy(ItemInfo itemInfo, float deltaTime);
+	void UpDown();
+protected:
+	/// <summary>
+	/// 共通更新
+	/// </summary>
+	/// <param name="deltaTime"></param>
+	/// <param name="destinationPos"></param>
+	/// <param name="itemInfo"></param>
+	void CommonUpdate();
+
 	/// <summary>
 	/// 車がぶつかった時の関数
 	/// </summary>
@@ -81,11 +91,11 @@ protected:
 	/// <param name="conflictInfo"></param>
 	virtual void DamageReaction(const ConflictExamineResultInfo conflictInfo);
 	/// <summary>
-	/// 車が攻撃を受けたら関数
+	/// 主に車が攻撃を受けた後に無敵時間を解除する関数
 	/// </summary>
 	/// <param name="conflictObjPos">ぶつかったオブジェクトの位置</param>
 	/// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
-	virtual void PostDamageProccess(float deltaTime);
+	virtual void PostDamageProccess();
 	/// <summary>
 	/// 進む方向と速さを更新する
 	/// </summary>
@@ -101,11 +111,6 @@ protected:
 	/// </summary>
 	void ModelSetMatrix() override;
 	/// <summary>
-	/// 運転方向を返す
-	/// </summary>
-	/// <returns></returns>
-	InputInfo GetAutoDriveDirection();
-	/// <summary>
 	/// このフレームの間に進む量を出す
 	/// </summary>
 	/// <param name="handleDir">入力された方向</param>
@@ -113,7 +118,7 @@ protected:
 	/// <param name="deltaTime">経過時間</param>
 	/// <param name="soundPlayer">音を出すやつ</param>
 	/// <returns>進む量</returns>
-	VECTOR GetAccelVec(InputInfo inputDir, float deltaTime);
+	VECTOR GetAccelVec(InputInfo inputDir);
 	/// <summary>
 	/// 運転中になる音を再生する
 	/// </summary>
@@ -121,30 +126,41 @@ protected:
 	/// <param name="soundPlayer"></param>
 	void PlayDriveSound(InputInfo inputDir);
 	/// <summary>
+	/// ぶつかった時の効果音を鳴らす
+	/// </summary>
+	void PlayConflictSound();
+	/// <summary>
+	/// ぶつかった時のエフェクトを出す
+	/// </summary>
+	void PlayConflictEffect();
+	/// <summary>
 	/// タイヤに渡す情報の初期化
 	/// </summary>
 	void InitWheelArgumentCarInfo();
-	/// <summary>
-	/// 落下
-	/// </summary>
-	/// <param name="deltaTime"></param>
-	void Down(float deltaTime);
+
 	//車のパラメーター
 	CarInfomation carParam;
 
-	int playEffect=-1;
+	//走っているときに出るエフェクト
+	int runEffect = -1;
+	//ぶつかった時に出てくるエフェクト
+	int conflictEffect = -1;
+	//曲がったりするときに傾く速度
 	const float twistZRotaSpeed = 1.7f * RAGE;
+	//最大傾き度
 	const float twistZMaxRota = 27.0f * RAGE;
 	//縦に回転する
 	float twistZRota = 0.0f;
 	//速さ
 	float accelPower = 0;
-	//跳ね返り力の固定値
-	float setBouncePower = 1.0f;
 	//最初のY座標
 	float firstPosY = 0;
-	//ぶつかった時の跳ね返り力
-	float conflictBouncePower = -1;
+	//コサインに使う
+	float cosValue = 0;
+	//cosValueに毎回足す
+	float cosAddValue = 0.05f;
+	//上下に動く速度
+	float updownSpeed = 2.0f;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;
 	//modelのおおきさ
@@ -178,24 +194,17 @@ protected:
 	//風のエフェクト
 	static const std::string windEffectResource;
 	//止まった時の効果音
-	static const std::string breakeSEAddress;
+	static const std::string breakeSEPass;
 	//ぶつかった時の効果音
-	static const std::string carClashSEAddress;
+	static const std::string carClashSEPass;
 	//クラクションの効果音
-	static const std::string carHornSEAddress;
+	static const std::string carHornSEPass;
 	//運転中の効果音
-	static const std::string drivingSEAddress;
-
+	static const std::string drivingSEPass;
+	//ダメージを受けた後の無敵時間
+	Timer* damageCoolTimer;
 	//タイヤ
 	Wheels* wheels;
-	//目的地
-	VECTOR destinationPosition = {};
-	//コースアウトしたときの目的地
-	VECTOR prevDestinationPos = {};
-	//次の角度
-	VECTOR destinationDir = {};
-	//コースアウトしたときに向かなければいけない方向
-	VECTOR prevDestinationDir = {};
 	//ぶつかった物体との方向
 	VECTOR collVec = {};
 	//ひとつ前のポジション

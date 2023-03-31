@@ -44,8 +44,8 @@ private:
     //ベクター配列のサイズ
     int vecSize = 0;
     //ゴールまでの道のりテキスト
-    const std::string checkPointPosAddress = "/CourcePos.txt";
+    const std::string checkPointPosPass = "/CourcePos.txt";
     //ゴールまでの道のりテキスト
-    const std::string checkPointDirAddress = "/CourceDir.txt";
+    const std::string checkPointDirPass = "/CourceDir.txt";
 };
 

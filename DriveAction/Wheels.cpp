@@ -19,7 +19,7 @@ static const float rotaCalculationLine = 1.2f;
 
 Wheels::Wheels(const WheelArgumentCarInfo InitInfo)
 {
-	modelHandle= AssetManager::GetDuplicate3DModelAssetHandle(wheelAddress);
+	modelHandle= AssetManager::GetDuplicate3DModelAssetHandle(wheelPass);
 	carInfo = InitInfo;
 	InitWheel(lFWheel, modelHandle, VGet(-fWheelPos.x, fWheelPos.y, -fWheelPos.z), firstLWheelRota);
 	InitWheel(lBWheel, modelHandle, VGet(bWheelPos.x, fWheelPos.y, -fWheelPos.z), firstLWheelRota);
@@ -118,7 +118,7 @@ void Wheels::SmokeEffectUpdate(VECTOR pos)
 {
 	if (isStraightDash)
 	{
-		playEffect = EffectManager::GetPlayEffect3D(smokeAddress);
+		playEffect = EffectManager::GetPlayEffect3D(smokePass);
 		SetPosPlayingEffekseer3DEffect(playEffect, pos.x, pos.y, pos.z);
 	}
 	
@@ -145,7 +145,7 @@ float Wheels::GetRotationRadius(const float firstWheelRota)
 	if (fabsf(wheelDriveRota) > rotaCalculationLine)
 	{
 		//タイヤの角度をタンジェントに
-		float rota = tan(static_cast<double> (fabsf(wheelDriveRota)) * RAGE);
+		float rota = tan(static_cast<float> (fabsf(wheelDriveRota)) * RAGE);
 		//回転半径を出す
 		float radius = (fWheelPos.x + bWheelPos.x) / rota;
 		//車の向きに後ろタイヤをY軸分回転させる

@@ -11,8 +11,9 @@ public:
     CPUCar();
     CPUCar(VECTOR firstPos,VECTOR destinaTionPos);
     ~CPUCar();
-    void Update(const float deltaTime, VECTOR destinationPos, ItemInfo itemInfo)override;
+    void Update()override;
 private:
     const float firstPosY = 60.0f;
+    VECTOR destinationPosition;
 };
 

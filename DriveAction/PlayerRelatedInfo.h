@@ -14,9 +14,11 @@ struct  PlayerRelatedInfo
     //チェックポイント通過した回数
     int transitCount;
     //当たった回数
-    int HP;
+    int damageObjHitCount;
+    //コインを回収した回数
+    int hitCoinCount;
     //車が逆走していたら
-    bool reverseDrive;
+    bool isReverseDrive;
     //死んでいるか
     bool isAlive;
     //持っているアイテム

@@ -1,8 +1,10 @@
 #include "DamageObjectGenerator.h"
 #include "Rocket.h"
-#include "DamageImpact.h"
-#include "RotatingLasers.h"
+
+#include "LittleRadiusLaser.h"
+#include "BigRadiusLaser.h"
 #include "FiringItemManager.h"
+
 DamageObjectGenerator::DamageObjectGenerator()
 {    
 
@@ -25,10 +27,12 @@ Actor* DamageObjectGenerator::GenerateDamageObject(ItemTag itemTag, ItemArgument
         obj = new Rocket(carInfo);
         break;
     case ufo:
-        obj = new RotatingLasers(owner);
+        obj = new LittleRadiusLaser(owner);
+        break;
+    case laser:
+        obj = new BigRadiusLaser(owner);
         break;
     default:
-        obj = new DamageImpact(carInfo);
         break;
     }
     FiringItemManager::AddFiringObject(obj);

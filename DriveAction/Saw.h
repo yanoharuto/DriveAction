@@ -20,7 +20,7 @@ public:
     /// ‰ñ“]‚³‚¹‚é
     /// </summary>
     /// <param name="deltaTime"></param>
-    void Update(const float deltaTime) override;
+    void Update() override;
 private:
     //‰ñ“]—Ê
     const float addRotate = 22.0f;

@@ -8,15 +8,15 @@
 #include "DirectionOfTravelGenerator.h"
 #include "SoundPlayer.h"
 //これ以下の速度になってたらaccelPowerを0にするよ
-const float Car:: stopAccelLine = 40.0f;
+const float Car:: stopAccelLine = 0.01f;
 // なにもしない時の減速.
 const float Car::defaultDecel = 0.78f;
 // ブレーキ時の減速.
-const float Car:: breakDecel = 0.3895f;
+const float Car:: breakDecel = 0.006f;
 // グリップの減速.
-const float Car:: gripDecel = 0.205f;
+const float Car:: gripDecel = 0.08f;
 // 障害物にぶつかったときの減速率.
-const float Car:: colideDecel = 0.68f;
+const float Car:: colideDecel = 0.88f;
 //降りる速度
 const float Car:: fallSpeed = 10.8f;
 //ダメージを受けた時の操作不可能時間の合計
@@ -24,22 +24,22 @@ const float Car:: setDamageReactionTime = 0.5f;
 //煙のエフェクト
 const std::string Car:: smokeEffectResource = "smoke.efkefc";
 //ぶつかった時のエフェクト
-const std::string Car:: conflictEffectResource = "conflict.efkefc";
+const std::string Car::conflictEffectResource = "conflict.efkefc";
+//走っているときのエフェクト
 const std::string Car:: windEffectResource = "sandWind.efkefc";
 //止まった時の効果音
-const std::string Car:: breakeSEAddress = "brake.mp3";
+const std::string Car:: breakeSEPass = "brake.mp3";
 //ぶつかった時の効果音
-const std::string Car:: carClashSEAddress = "carClash.mp3";
+const std::string Car:: carClashSEPass = "carClash.mp3";
 //クラクションの効果音
-const std::string Car:: carHornSEAddress = "carHorn.mp3";
+const std::string Car:: carHornSEPass = "carHorn.mp3";
 //運転中の効果音
-const std::string Car:: drivingSEAddress = "driving1.mp3";
+const std::string Car:: drivingSEPass = "driving1.mp3";
 Car::Car()
 {
 	tag = ObjectTag::car;
 	UpdateMV1Pos();
 	ModelSetMatrix();
-	destinationPosition = {};
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 
 }
@@ -49,8 +49,6 @@ Car::Car(CarInfomation param)
 	turnProccesAngularLine = param.turnAngularLine;
 	modelSize = param.modelSize;
 	tag = ObjectTag::car;
-	setBouncePower = param.bouncePower;
-	bouncePower = setBouncePower;
 	carParam.gripPower = param.gripPower;
 	radius = param.setRadius;
 	carParam.addSpeed = param.addSpeed;
@@ -60,18 +58,19 @@ Car::Car(CarInfomation param)
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 
 	EffectManager::LoadEffectManager(smokeEffectResource, 1.0f);
-	EffectManager::LoadEffectManager(conflictEffectResource, 1.0f);
+	EffectManager::LoadEffectManager(conflictEffectResource, 10.0f);
 	EffectManager::LoadEffectManager(windEffectResource, 10.0f);
-	SoundPlayer::Load3DSound(drivingSEAddress);
-	SoundPlayer::Load3DSound(carClashSEAddress);
-	SoundPlayer::Load3DSound(carHornSEAddress);
+	SoundPlayer::LoadSound(drivingSEPass);
+
+	SoundPlayer::LoadSound(carClashSEPass);
+	SoundPlayer::LoadSound(carHornSEPass);
 }
 
 Car::~Car()
 {
-	SoundPlayer::StopSound(drivingSEAddress);
-	SoundPlayer::StopSound(carClashSEAddress);
-	SoundPlayer::StopSound(carHornSEAddress);
+	SoundPlayer::StopSound(drivingSEPass);
+	SoundPlayer::StopSound(carClashSEPass);
+	SoundPlayer::StopSound(carHornSEPass);
 	SAFE_DELETE(wheels);
 }
 /// <summary>
@@ -89,10 +88,6 @@ void Car::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
 		ConflictReaction(conflictInfo);
 		break;
 	case ObjectTag::acelerationFloor:
-		
-		break;
-	case ObjectTag::itemBox:
-
 		break;
 	case ObjectTag::damageObject:
 		DamageReaction(conflictInfo);
@@ -110,17 +105,9 @@ void Car::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
 /// <param name="conflictObjRad"></param>
 void Car::ConflictReaction(const ConflictExamineResultInfo conflictInfo)
 {
-	SoundPlayer::SetSoundVolume(MAX1BYTEVALUE, carClashSEAddress);
-	SoundPlayer::SetSoundRadius(MAX1BYTEVALUE, carClashSEAddress);
-	SoundPlayer::SetPosition3DSound(position, carClashSEAddress);
-	SoundPlayer::Play3DSE(carClashSEAddress);
-	SoundPlayer::SetSoundVolume(MAX1BYTEVALUE, carHornSEAddress);
-	SoundPlayer::SetSoundRadius(MAX1BYTEVALUE, carHornSEAddress);
-	SoundPlayer::SetPosition3DSound(position, carHornSEAddress);
-	SoundPlayer::Play3DSE(carHornSEAddress);
-	//衝突エフェクト
-	int playingEffect = EffectManager::GetPlayEffect3D(conflictEffectResource);
-	SetPosPlayingEffekseer3DEffect(playingEffect, position.x, position.y, position.z);
+
+	PlayConflictSound();
+	PlayConflictEffect();
 
 	collVec = conflictInfo.bounceVec;
 	collVec.y = 0;
@@ -132,28 +119,41 @@ void Car::ConflictReaction(const ConflictExamineResultInfo conflictInfo)
 	position.y = firstPosY;
 	MV1SetPosition(modelHandle, position);
 }
+/// <summary>
+/// 車がダメージ判定のある物体にぶつかった時の関数
+/// </summary>
+/// <param name="deltaTime"></param>
+/// <param name="conflictInfo"></param>
 void Car::DamageReaction(const ConflictExamineResultInfo conflictInfo)
 {
-	isDamage = true;
-	damageReactionTime = setDamageReactionTime;
-	accelPower = 0;
-	ConflictReaction(conflictInfo);
+	//無敵時間終了していたらダメージ
+	if (damageCoolTimer->IsOverLimitTime())
+	{
+		isDamage = true;
+		damageReactionTime = setDamageReactionTime;
+		//無敵時間セット
+		damageCoolTimer->Init();
+		twistZRota = 0.0f;
+		PlayConflictSound();
+		PlayConflictEffect();
+	}
 }
 /// <summary>
-/// 車がダメージを受けてたら
+/// 車がダメージを受けた後に走る処理
 /// </summary>
 /// <param name="conflictObjPos">ぶつかったオブジェクトの位置</param>
 /// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
-void Car::PostDamageProccess(float deltaTime)
+void Car::PostDamageProccess()
 {
 	if (isDamage)
 	{
-		damageReactionTime -= deltaTime;
+		damageReactionTime -= DELTATIME;
 		if (damageReactionTime < 0)
 		{
 			isDamage = false;
 		}
 	}
+	damageCoolTimer->Update();
 }
 
 /// <summary>
@@ -215,10 +215,9 @@ void Car::ModelSetMatrix()
 /// </summary>
 /// <param name="deltaTime">フレーム間差分</param>
 /// <param name="outsideHitFlag">コース外に出たか</param>
-void Car::AutoDrive(const float deltaTime, VECTOR destinationPos, ItemInfo itemInfo)
+void Car::AutoDrive()
 {
-	wheelArgumentCarInfo.inputDir = GetAutoDriveDirection();
-	CommonUpdate(deltaTime, destinationPos,itemInfo);
+	CommonUpdate();
 }
 /// <summary>
 /// 共通処理
@@ -226,24 +225,16 @@ void Car::AutoDrive(const float deltaTime, VECTOR destinationPos, ItemInfo itemI
 /// <param name="deltaTime"></param>
 /// <param name="destinationPos"></param>
 /// <param name="itemInfo"></param>
-void Car::CommonUpdate(const float deltaTime, VECTOR destinationPos, ItemInfo itemInfo)
+void Car::CommonUpdate()
 {
-	destinationPosition = destinationPos;
 	//落下
-	Down(deltaTime);
+	UpDown();
 	//ダメージを受けている時は
-	PostDamageProccess(deltaTime);
-	//ダメージを受けていないならアイテムの効果を得る
-	if (!isDamage)
-	{
-		RecieveItemEffecacy(itemInfo, deltaTime);
-	}
+	PostDamageProccess();
 	//速さを所得
-	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir, deltaTime);
+	VECTOR accelVec = GetAccelVec(wheelArgumentCarInfo.inputDir);
 	//速度を更新
-	UpdateVelocity(VScale(accelVec, deltaTime));
-	//速さによってはじき返す力を増やす
-	bouncePower = setBouncePower + GetTotalAccelPowerPercent();
+	UpdateVelocity(accelVec);
 
 	//位置の更新
 	UpdateMV1Pos();
@@ -251,50 +242,42 @@ void Car::CommonUpdate(const float deltaTime, VECTOR destinationPos, ItemInfo it
 	ModelSetMatrix();
 	//タイヤに渡したい情報を出す
 	InitWheelArgumentCarInfo();
-	printfDx("effect%d\n", playEffect);
-	printfDx("velocity%f\n", VSize(velocity));
 	if (VSize(velocity) > 0.5f)
 	{
-		if (playEffect != -1)
+		//走っている最中にもエフェクトが出ているか
+		if (runEffect == -1)
 		{
-			SetPosPlayingEffekseer3DEffect(playEffect, prevPos.x, 0, prevPos.z);
-			float degree = OriginalMath::GetDegreeMisalignment(VGet(1, 0, 0), direction);
-			SetRotationPlayingEffekseer3DEffect(playEffect, 0, degree * RAGE, 0);
+
+			//エフェクトが消えてたら出す
+			runEffect = EffectManager::GetPlayEffect3D(windEffectResource);
+		}
+		//車の場所と回転に合わせる
+		SetPosPlayingEffekseer3DEffect(runEffect, prevPos.x, 0, prevPos.z);
+		float degree = OriginalMath::GetDegreeMisalignment(VGet(1, 0, 0), direction);
+		if (VCross(VGet(1, 0, 0), direction).y < 0)
+		{
+			SetRotationPlayingEffekseer3DEffect(runEffect, 0, -degree * RAGE, 0);
 		}
 		else
 		{
-			playEffect = EffectManager::GetPlayEffect3D(windEffectResource);
-			SetPosPlayingEffekseer3DEffect(playEffect, prevPos.x, 0, prevPos.z);
-			float degree = OriginalMath::GetDegreeMisalignment(VGet(1, 0, 0), direction);
-			SetRotationPlayingEffekseer3DEffect(playEffect, 0, degree * RAGE, 0);
+			SetRotationPlayingEffekseer3DEffect(runEffect, 0, degree * RAGE, 0);
 		}
 	}
 	else
 	{
-		if (playEffect != -1)
+		//スピード出ていなかったらエフェクトを消す
+		if (runEffect != -1)
 		{
-			StopEffekseer3DEffect(playEffect);
-			DeleteEffekseerEffect(playEffect);
-			playEffect = -1;
+			StopEffekseer3DEffect(runEffect);
+			runEffect = -1;
 		}
 	}
 	//タイヤの更新
 	wheels->WheelUpdate(wheelArgumentCarInfo);
 }
-/// <summary>
-/// ハンドルの向きを出す
-/// </summary>
-/// <returns></returns>
-InputInfo Car::GetAutoDriveDirection()
-{
-	autoDriveP.direction = direction;
-	autoDriveP.position = position;
-	autoDriveP.turnProccessLine = turnProccesAngularLine;
-	return DirectionOfTravelGenerator::GetNextPointDirection(autoDriveP,destinationPosition);
-}
 
 
-VECTOR Car::GetAccelVec(InputInfo inputDir, float deltaTime)
+VECTOR Car::GetAccelVec(InputInfo inputDir )
 {
 	if (fabsf(VSize(collVec)) > 0.1f)
 	{
@@ -304,7 +287,7 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, float deltaTime)
 	if (!inputDir.isBreake)
 	{
 		// 加速処理.
-		accelPower =  accelPower + carParam.addSpeed * deltaTime;
+		accelPower =  accelPower + carParam.addSpeed;
 		if (accelPower > carParam.maxSpeed)
 		{
 			accelPower = carParam.maxSpeed ;
@@ -317,13 +300,13 @@ VECTOR Car::GetAccelVec(InputInfo inputDir, float deltaTime)
 		if (inputDir.handleDir != HandleDirection::straight)
 		{
 			//左右に曲がろうとしたら減速する
-			accelPower -= accelPower * gripDecel * deltaTime;
+			accelPower -= accelPower * gripDecel;
 		}
 
 		//ブレーキしていたら減速
 		if (inputDir.isBreake)
 		{
-			accelPower -= accelPower * breakDecel * deltaTime;
+			accelPower -= accelPower * breakDecel;
 		}
 		if (accelPower < 0)
 		{
@@ -342,24 +325,36 @@ void Car::PlayDriveSound(InputInfo inputDir )
 {
 	if (inputDir.isBreake)//ブレーキ
 	{		
-		SoundPlayer::SetPosition3DSound(position, breakeSEAddress);
-		if (!SoundPlayer::IsPlaySound(breakeSEAddress))
+		if (!SoundPlayer::IsPlaySound(breakeSEPass))
 		{
-			SoundPlayer::SetSoundRadius(MAX1BYTEVALUE, breakeSEAddress);
-			SoundPlayer::SetSoundVolume(MAX1BYTEVALUE, breakeSEAddress);
-			SoundPlayer::Play3DSE(breakeSEAddress);
+			SoundPlayer::Play2DSE(breakeSEPass);
 		}
 	}
 	else//走行音
 	{
-		SoundPlayer::SetPosition3DSound(position, drivingSEAddress);
-		if (!SoundPlayer::IsPlaySound(drivingSEAddress))
+		if (!SoundPlayer::IsPlaySound(drivingSEPass))
 		{
-			SoundPlayer::SetSoundRadius(MAX1BYTEVALUE, drivingSEAddress);
-			SoundPlayer::SetSoundVolume(MAX1BYTEVALUE, drivingSEAddress);
-			SoundPlayer::Play3DSE(drivingSEAddress);
+			SoundPlayer::Play2DSE(drivingSEPass);
+
 		}
 	}
+}
+/// <summary>
+/// ぶつかった時の効果音を鳴らす
+/// </summary>
+void Car::PlayConflictSound()
+{
+	SoundPlayer::Play3DSE(carClashSEPass);
+	SoundPlayer::Play3DSE(carHornSEPass);
+}
+/// <summary>
+/// ぶつかった時のエフェクト
+/// </summary>
+void Car::PlayConflictEffect()
+{
+	//衝突エフェクト
+	int playingEffect = EffectManager::GetPlayEffect3D(conflictEffectResource);
+	SetPosPlayingEffekseer3DEffect(playingEffect, position.x, position.y, position.z);
 }
 
 /// <summary>
@@ -375,9 +370,10 @@ void Car::InitWheelArgumentCarInfo()
 /// 落下処理
 /// </summary>
 /// <param name="deltaTime"></param>
-void Car::Down(float deltaTime)
+void Car::UpDown()
 {
-	position.y += (firstPosY - fabsf(position.y)) * fallSpeed * deltaTime;
+	position.y = firstPosY + cos(cosValue) * updownSpeed;
+	cosValue += cosAddValue;
 }
 
 /// <summary>
@@ -395,32 +391,9 @@ float Car::GetTotalAccelPower()
 }
 
 /// <summary>
-/// アイテムの効果を受け取る
+/// カメラ等に渡したい情報を返す
 /// </summary>
-/// <param name="item"></param>
-/// <param name="deltaTime"></param>
-void Car::RecieveItemEffecacy(ItemInfo itemInfo,float deltaTime)
-{
-	if (itemInfo.itemTag != non && !isDamage)
-	{
-		//アイテム使用中ならその効果を受ける
-		if (itemInfo.itemSituation == ItemUseSituation::Useing)
-		{
-			switch (itemInfo.itemTag)
-			{
-			case kite:
-				position.y = itemInfo.effecacyValue;
-				
-				isOnGround = false;
-				break;
-			case bomber:
-				
-				break;
-			}
-		}
-	}
-}
-
+/// <returns></returns>
 ObjInfo Car::GetCarPosAndDir()
 {
 	ObjInfo argumentInfo = {};
@@ -429,7 +402,10 @@ ObjInfo Car::GetCarPosAndDir()
 	argumentInfo.modelSize = modelSize;
 	return argumentInfo;
 }
-
+/// <summary>
+/// 移動する前のポジションを渡す
+/// </summary>
+/// <returns></returns>
 HitCheckExamineObjectInfo Car::GetHitCheckExamineInfo()
 {
 	HitCheckExamineObjectInfo info;

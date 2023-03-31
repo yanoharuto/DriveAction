@@ -14,6 +14,10 @@ public:
     //model‚ÌƒfƒŠ[ƒg
     ~SkyDome();
     /// <summary>
+    /// ‰ñ“]‚³‚¹‚é
+    /// </summary>
+    void Update();
+    /// <summary>
     /// model‚Ì•`‰æ
     /// </summary>
     void Draw();
@@ -21,5 +25,6 @@ public:
 private:
     int modelHandle;
     float setSize = 4.0f;
+    float rotaSpeed = 0.2f;
 };
 

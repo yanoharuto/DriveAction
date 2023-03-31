@@ -16,9 +16,8 @@ CircuitTrack::CircuitTrack()
     floorModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(stageFilePass + floorFilePass);
     MV1SetPosition(obstracleModelHandle, outsideModelPosition);
     
-    courceCollider = new MeshCollider(courceModelHandle, resultInfo);
-    floorCollider = new MeshCollider(floorModelHandle, resultInfo);
-    obstracleCollider = new MeshCollider(obstracleModelHandle, resultInfo);
+    floorCollider = new MeshCollider(floorModelHandle, ObjectTag::stage);
+    obstracleCollider = new MeshCollider(obstracleModelHandle, ObjectTag::obstacle);
 }
 
 /// <summary>
@@ -42,4 +41,3 @@ void CircuitTrack::Draw()
     MV1DrawModel(obstracleModelHandle);
     MV1DrawModel(floorModelHandle);
 }
-

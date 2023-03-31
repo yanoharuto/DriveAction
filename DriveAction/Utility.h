@@ -12,8 +12,13 @@
 
 #define SCREEN_HEIGHT 1030
 
-#define MAX1BYTEVALUE 0
+#define MAX1BYTEVALUE 255
 
 #define UI_SCREEN_WIDTH 96
 
 #define UI_SCREEN_HEIGHT 51.5
+
+#define DELTATIME 0.016667f
+
+#define HUNDRED 100
+

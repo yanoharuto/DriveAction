@@ -8,6 +8,6 @@ public:
     RacerGenerater();
     void CreateRacers(int racerNum, std::list<Racer*>* racerList,Player** player,PlayerInformationCenter* infoCenter);
 private:
-    const std::string firstPosAddress = "/firstPosition.txt";
+    const std::string firstPosPass = "/firstPosition.txt";
 };
 

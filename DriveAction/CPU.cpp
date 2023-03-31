@@ -9,8 +9,7 @@ CPU::CPU()
 
 CPU::CPU(VECTOR firstPos)
 {
-    cpuCar = new CPUCar(firstPos, VGet(1.0f,0,0));
-    SetCarPointer(cpuCar);
+    car = new CPUCar(firstPos, VGet(1.0f,0,0));
     itemCoolTime = setItemCoolTime;
 
 }
@@ -19,17 +18,14 @@ CPU::~CPU()
 {
 }
 
-void CPU::Update(float deltaTime)
+void CPU::Update()
 {
-    itemCoolTime -= deltaTime;
-
-    ItemInfo itemInfo = itemHolder->GetItemInfo();
+    itemCoolTime -= DELTATIME;
 
     ItemArgumentCarInfo itemArgumentCarInfo;
     itemArgumentCarInfo.SetCarInfo(car);
-    itemHolder->Update(itemArgumentCarInfo, deltaTime);
+    
     //ŽÔ‚ÌXV
-    car->Update(deltaTime, checkPoint->GetCheckPointPos(transitCPCount), itemInfo);
     if (checkPoint->IsTransitCheckPoint(transitCPCount, car->GetHitCheckExamineInfo()))
     {
         transitCPCount++;

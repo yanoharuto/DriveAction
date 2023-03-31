@@ -2,17 +2,24 @@
 #include "DxLib.h"
 #include "ObjectTagEnum.h"
 #include "Object.h"
+
+enum class HitSituation
+{
+    NotHit,
+    Enter,
+    Stay,
+    Exist
+};
 /// <summary>
 /// 当たり判定の結果で出来る情報
 /// </summary>
 struct ConflictExamineResultInfo
 {
-    bool hitFlag = false;//当たり判定で当たったか
+    HitSituation hit = HitSituation::NotHit;//当たり判定で当たったか
     ObjectTag tag = ObjectTag::obstacle;//オブジェクトのタグ
     VECTOR bounceVec = {};
     VECTOR pos = {};
     float radius = 0;//半径
-    float bouncePower;//反発力
     /// <summary>
     /// 引数のオブジェクトから情報を作成
     /// </summary>
@@ -22,6 +29,5 @@ struct ConflictExamineResultInfo
     {
         tag = obj->GetTag();
         radius = obj->GetRadius();
-        bouncePower = obj->GetBouncePower();
     }
 };

@@ -43,8 +43,7 @@ void Effect_Update()
 //エフェクトの描写
 void Effect_Draw() {
 
-    // Effekseerにより再生中のエフェクトを描画する。
-    DrawEffekseer3D();
+
 }
 //エフェクトの終了処理
 void Effect_Finalize() {

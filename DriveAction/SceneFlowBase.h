@@ -12,7 +12,7 @@ public:
     /// XV
     /// </summary>
     /// <param name="deltaTime"></param>
-    virtual void Update(float deltaTime) = 0;
+    virtual void Update() = 0;
     /// <summary>
     /// •`‰æ
     /// </summary>

@@ -1,4 +1,5 @@
 #include "SkyDome.h"
+#include "OriginalMath.h"
 /// <summary>
 /// modelのロードとタグ付け
 /// </summary>
@@ -15,11 +16,17 @@ SkyDome::~SkyDome()
 {
     MV1DeleteModel(modelHandle);
 }
+void SkyDome::Update()
+{
+  
+    
+}
 /// <summary>
 /// modelの描画
 /// </summary>
 void SkyDome::Draw()
 {
+
     SetUseLighting(false);
     MV1DrawModel(modelHandle);
     SetUseLighting(true);

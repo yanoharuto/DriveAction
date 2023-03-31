@@ -5,7 +5,7 @@
 #include "ConflictManager.h"
 #include "HitChecker.h"
 #include "SoundPlayer.h"
-#include "ItemHolder.h"
+
 #include "Racer.h"
 #include "Player.h"
 #include "DirectionOfTravelGenerator.h"
@@ -43,8 +43,11 @@ public:
     /// </summary>
     /// <param name="deltaTime">フレーム間の経過時間</param>
     /// <param name="circuit">走るコース</param>
-    void RacerUpdate(const float deltaTime);
-
+    void RacerUpdate();
+    /// <summary>
+    /// 上下に動かす
+    /// </summary>
+    void UpDown();
     /// <summary>
     /// 描画
     /// </summary>

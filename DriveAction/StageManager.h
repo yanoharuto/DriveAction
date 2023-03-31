@@ -14,10 +14,9 @@ public:
     /// </summary>
     /// <returns></returns>
     StageManager();
-    StageManager(CourceDataLoader* courceDataLoader);
 
     ~StageManager();
-
+    void Update();
     CircuitTrack* GetCircuit()const;
     void Draw()const;
 

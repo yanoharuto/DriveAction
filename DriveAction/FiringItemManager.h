@@ -28,7 +28,7 @@ public:
     /// XV
     /// </summary>
     /// <param name="deltaTime"></param>
-    void Update(float deltaTime);
+    void Update();
     /// <summary>
     /// •`‰æ
     /// </summary>

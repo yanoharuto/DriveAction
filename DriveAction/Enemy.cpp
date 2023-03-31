@@ -9,7 +9,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::Update(const float deltaTime, VECTOR playerPos, ItemInfo itemInfo)
+void Enemy::Update(const  VECTOR playerPos, ItemInfo itemInfo)
 {
 }
 

@@ -3,12 +3,20 @@
 #include "ItemArgumentCarInfo.h"
 #include "Actor.h"
 #include "Timer.h"
-#include "SphereCollider.h"
+#include "LineCollider.h"
 #include "FiringObjOwner.h"
+struct InitParam
+{
+    std::string laserEffectPass;
+    float laserSize;
+    float trackSize;
+    float radius;
+    float laserRange;
+};
 /// <summary>
 /// 回転レーザー
 /// </summary>
-class RotatingLasers :public Actor
+class RotatingLasers abstract :public Actor
 {
 public:
     /// <summary>
@@ -16,34 +24,29 @@ public:
     /// </summary>
     /// <param name="carInfo"></param>
     /// <param name="timer"></param>
-    RotatingLasers(FiringObjOwner* setOwner);
+    RotatingLasers(FiringObjOwner* setOwner,InitParam setParam);
     ~RotatingLasers();
-    /// <summary>
-    /// 回転させる
-    /// </summary>
-    /// <param name="deltaTime"></param>
-    void Update(float deltaTime)override;
+    void RotateLaser(std::string laserEffectPass,float rotaSpeed, float laserRange);
+    void SetLaserTrack();
+    void Draw()override;
+protected:
 
-private:
-    //レーザーエフェクトのパス
-    const std::string laserEffectAddress = "Lacer.efkefc";
+    static const std::string laserTrackPass;
+    
+    static const std::string laserSEPass;
+    
     //エフェクトハンドル
-    int playEffect = -1;
+    int laserEffect = -1;
+    //焼き後
+    int trackEffect = -1;
+    //エフェクトのシャドウになるカプセルを描画したか
+    bool isDrawShadow = false;
     //エフェクトの回転角（ラジアン）
     float effectRota;
     //最初の回転方向
     static const VECTOR firstDir;
-    //回転速度
-    static const float rotaSpeed;
-    //レーザーの中心からの距離
-    static const float laserRange;
-    //レーザーの太さ
-    static const float setRadius;
-    //当たる高度
-    static const float conflictY;
-    //当たった時のはじく力
-    static const float setBouncePower;
+
     FiringObjOwner* owner;
-    VECTOR firstPos = {};
-    SphereCollider* collider;
+    VECTOR endPos = {};
+    LineCollider* collider;
 };

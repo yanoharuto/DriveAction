@@ -5,7 +5,6 @@ class SphereCollider final:
 {
 public:
     SphereCollider(Actor* obj);
-    ~SphereCollider()override;
     ConflictExamineResultInfo HitCheck(HitCheckExamineObjectInfo hitCheckInfo)override;
 };
 

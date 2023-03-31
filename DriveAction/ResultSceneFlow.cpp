@@ -16,7 +16,7 @@ ResultSceneFlow::ResultSceneFlow()
     uidata.y = SCREEN_HEIGHT / 2;
     
     //”wŒi
-    uidata.dataHandle = LoadGraph(resultBackImgAddress.c_str());
+    uidata.dataHandle = LoadGraph(resultBackImgPass.c_str());
     backGround = new ImgUI(2.0f, uidata);
 
     //‡ˆÊ
@@ -24,7 +24,7 @@ ResultSceneFlow::ResultSceneFlow()
     uidata.y = UI_SCREEN_HEIGHT * 8;
     uidata.x = UI_SCREEN_WIDTH * 8;
     rankUI = new StringUI(GetColor(200,200,100), uidata);
-    rankUI->UpdateString(std::to_string(ResultScore::GetPlayerRank()) + "ƒqƒbƒg‚µ‚½‰ñ”");
+    
 
     switchUI = new SwitchUI();
 }
@@ -36,9 +36,9 @@ ResultSceneFlow::~ResultSceneFlow()
     SAFE_DELETE(backGround);
 }
 
-void ResultSceneFlow::Update(float deltaTime)
+void ResultSceneFlow::Update()
 {
-    switchUI->Update(deltaTime);
+    switchUI->Update();
     int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
     if (key & PAD_INPUT_10)
     {

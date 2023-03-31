@@ -10,7 +10,7 @@
 /// <param name="count">イテレーターを回したい回数</param>
 /// <returns></returns>
 template<typename T>
-T GetIncrementVector(std::list<T> list, int count)
+T GetIncrementList(std::list<T> list, int count)
 {
     auto ite = list.begin();
     for (int i = 0; i < count; i++)

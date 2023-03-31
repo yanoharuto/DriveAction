@@ -13,8 +13,7 @@ public:
         direction({}),
         position({}),
         tag(ObjectTag::car),
-        radius(0),
-        bouncePower(0.0f)
+        radius(0)
     {
     };
     /// <summary>
@@ -47,14 +46,7 @@ public:
     {
         return radius;
     }
-    /// <summary>
-    /// ’µ‚Ë•Ô‚è—Í‚ğ•Ô‚·
-    /// </summary>
-    /// <returns></returns>
-    float GetBouncePower() const
-    {
-        return bouncePower;
-    }
+
     /// <summary>
     /// Œü‚«Š“¾
     /// </summary>
@@ -72,7 +64,6 @@ public:
         return tag;
     };
 protected:
-    float bouncePower;
     //”¼Œa
     float radius;
     //¶‘¶ƒtƒ‰ƒO

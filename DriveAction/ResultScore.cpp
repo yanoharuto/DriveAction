@@ -1,24 +1,34 @@
 #include "ResultScore.h"
 #include <math.h>
 #include <iomanip>
-static float scoreTime = 0.0f;
-static int playerRank = 0.0f;
-ResultScore::ResultScore()
+
+int ResultScore::coinScore;
+int ResultScore::hitScore;
+int ResultScore::timeScore;
+ResultScore::ResultScore(Timer* timer, PlayerRelatedInfo playerInfo)
 {
+    timeScore = timer->GetLimitTime() * timeBonus;
+    hitScore = noHitScore - playerInfo.damageObjHitCount * damageObjHitDec;
+    coinScore = playerInfo.hitCoinCount * coinBonus;
 }
 
-ResultScore::ResultScore(float timer, int rank)
+
+int ResultScore::GetScore()
 {
-    scoreTime = round(timer * 100) / 100;
-    playerRank = rank;
+    return coinScore - hitScore + timeScore;
 }
 
-float ResultScore::GetScoreTime()
+int ResultScore::GetCoinScore()
 {
-    return scoreTime;
+    return coinScore;
 }
 
-int ResultScore::GetPlayerRank()
+int ResultScore::GetHitScore()
 {
-    return playerRank;
+    return hitScore;
+}
+
+int ResultScore::GetTimeScore()
+{
+    return timeScore;
 }

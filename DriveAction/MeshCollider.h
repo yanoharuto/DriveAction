@@ -1,17 +1,39 @@
 #include "ConflictProccesor.h"
-
+/// <summary>
+/// ステージの障害物とかの当たり判定
+/// </summary>
 class MeshCollider final :public ConflictProccesor
 {
 public:
-    MeshCollider() {};
-    MeshCollider(int setModelHandle,ConflictExamineResultInfo setResultInfo);
+    /// <summary>
+    /// モデルハンドルから当たり判定を作る 
+    /// </summary>
+    MeshCollider(int setModelHandle, ObjectTag setTag);
     ~MeshCollider()override;
+    /// <summary>
+    /// 当たり判定を返す
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns></returns>
     ConflictExamineResultInfo HitCheck(HitCheckExamineObjectInfo)override;
+    /// <summary>
+    /// 球との当たり判定
+    /// </summary>
+    /// <param name="examineInfo"></param>
+    /// <returns></returns>
     ConflictExamineResultInfo GetSphereConflictModelInfo(HitCheckExamineObjectInfo examineInfo);
+    /// <summary>
+    /// meshなので位置とかは教えれない
+    /// </summary>
+    /// <returns></returns>
     HitCheckExamineObjectInfo GetHitExamineCheckInfo()override;
-    void ConflictProccess(ConflictExamineResultInfo resultInfo)override;
+    /// <summary>
+    /// 当たった場合の反応
+    /// </summary>
+    /// <param name="resultInfo"></param>
+    void ConflictProccess(std::list<ConflictExamineResultInfo> resultInfo)override;
 private:
     int modelHandle = -1;
-    ObjectTag tag=ObjectTag::stage;
+    ObjectTag tag = ObjectTag::stage;
     float bouncePower;
 };

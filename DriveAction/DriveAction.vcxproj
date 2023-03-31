@@ -91,6 +91,7 @@
       <AdditionalIncludeDirectories>DxLib_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,6 +110,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\8bith\OneDrive\デスクトップ\DxLib_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -127,6 +129,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>DxLib_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,6 +148,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\8bith\OneDrive\デスクトップ\DxLib_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -156,38 +160,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AccelerationFloor.cpp" />
     <ClCompile Include="Accelerator.cpp" />
     <ClCompile Include="AccelMeter.cpp" />
     <ClCompile Include="ArgumentConflictResultInfo.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BigRadiusLaser.cpp" />
     <ClCompile Include="BomberFlyShip.cpp" />
     <ClCompile Include="Broom.cpp" />
+    <ClCompile Include="CircleLaserFlyShip.cpp" />
     <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="CoinManager.cpp" />
     <ClCompile Include="ConflictProccesor.cpp" />
-    <ClCompile Include="Cource.cpp" />
     <ClCompile Include="CPU.cpp" />
-    <ClCompile Include="DamageImpact.cpp" />
-    <ClCompile Include="DamageImpactLauncer.cpp" />
     <ClCompile Include="DamageObject.cpp" />
     <ClCompile Include="DirectionOfTravelGenerator.cpp" />
     <ClCompile Include="EffectManager.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FiringItemManager.cpp" />
     <ClCompile Include="DamageObjectGenerator.cpp" />
     <ClCompile Include="FiringObjOwner.cpp" />
     <ClCompile Include="FlyShip.cpp" />
-    <ClCompile Include="FlyShipInitializer.cpp" />
     <ClCompile Include="FlyShipManager.cpp" />
-    <ClCompile Include="ItemHolder.cpp" />
     <ClCompile Include="CreatePosAndDirData.cpp" />
     <ClCompile Include="FadeInFadeOut.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="ItemBox.cpp" />
+    <ClCompile Include="HitNumCounter.cpp" />
     <ClCompile Include="ItemUI.cpp" />
     <ClCompile Include="LaserFlyShip.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
+    <ClCompile Include="LittleRadiusLaser.cpp" />
     <ClCompile Include="MeshCollider.cpp" />
     <ClCompile Include="ModelUpdater.cpp" />
+    <ClCompile Include="NumUI.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerInformationCenter.cpp" />
     <ClCompile Include="RaceMenu.cpp" />
@@ -209,8 +213,6 @@
     <ClCompile Include="LapUI.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="PlayerRelatedUI.cpp" />
-    <ClCompile Include="ReverseDrivingCautionUI.cpp" />
-    <ClCompile Include="Saw.cpp" />
     <ClCompile Include="PointUI.cpp" />
     <ClCompile Include="PostGoalStaging.cpp" />
     <ClCompile Include="RacePrevProcess.cpp" />
@@ -218,17 +220,17 @@
     <ClCompile Include="ResultScore.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="SwitchUI.cpp" />
+    <ClCompile Include="TimerUI.cpp" />
+    <ClCompile Include="UpDownLaserFlyShip.cpp" />
     <ClCompile Include="VECTOR3Loader.cpp" />
     <ClCompile Include="ImgUI.cpp" />
     <ClCompile Include="RacerManager.cpp" />
-    <ClCompile Include="PlaySceeneFlow.cpp" />
+    <ClCompile Include="PlaySceneFlow.cpp" />
     <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="StringUI.cpp" />
     <ClCompile Include="TitleSceeneFlow.cpp" />
-    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="VectorDataCreator.cpp" />
-    <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Wheels.cpp" />
     <ClCompile Include="HitChecker.cpp" />
     <ClCompile Include="RaceCamera.cpp" />
@@ -252,30 +254,27 @@
     <ClInclude Include="ArgumentConflictResultInfo.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AutoDriveInfo.h" />
+    <ClInclude Include="BigRadiusLaser.h" />
     <ClInclude Include="BomberFlyShip.h" />
     <ClInclude Include="Broom.h" />
     <ClInclude Include="CarModelEnum.h" />
     <ClInclude Include="CarParamater.h" />
+    <ClInclude Include="CircleLaserFlyShip.h" />
     <ClInclude Include="Clock.h" />
+    <ClInclude Include="Coin.h" />
+    <ClInclude Include="CoinManager.h" />
     <ClInclude Include="ConflictProccesor.h" />
-    <ClInclude Include="Cource.h" />
     <ClInclude Include="CPU.h" />
-    <ClInclude Include="DamageImpact.h" />
-    <ClInclude Include="DamageImpactLauncer.h" />
     <ClInclude Include="DamageObject.h" />
     <ClInclude Include="DirectionOfTravelGenerator.h" />
     <ClInclude Include="EffectManager.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnumToString.h" />
     <ClInclude Include="FiringItemManager.h" />
     <ClInclude Include="DamageObjectGenerator.h" />
     <ClInclude Include="FiringObjOwner.h" />
     <ClInclude Include="FlyShip.h" />
     <ClInclude Include="FlyShipArgumentInfo.h" />
-    <ClInclude Include="FlyShipInitializer.h" />
     <ClInclude Include="FlyShipKind.h" />
     <ClInclude Include="FlyShipManager.h" />
-    <ClInclude Include="ItemHolder.h" />
     <ClInclude Include="CpuCarMode.h" />
     <ClInclude Include="CreatePosAndDirData.h" />
     <ClInclude Include="FadeInFadeOut.h" />
@@ -284,14 +283,17 @@
     <ClInclude Include="InputDirection.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemArgumentCarInfo.h" />
-    <ClInclude Include="ItemBox.h" />
+    <ClInclude Include="HitNumCounter.h" />
     <ClInclude Include="ItemInfo.h" />
     <ClInclude Include="ItemTag.h" />
     <ClInclude Include="ItemUI.h" />
     <ClInclude Include="ItemUseSituation.h" />
     <ClInclude Include="LaserFlyShip.h" />
+    <ClInclude Include="LineCollider.h" />
+    <ClInclude Include="LittleRadiusLaser.h" />
     <ClInclude Include="MeshCollider.h" />
     <ClInclude Include="ModelUpdater.h" />
+    <ClInclude Include="NumUI.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ObjPosAndDir.h" />
     <ClInclude Include="PlayerInformationCenter.h" />
@@ -323,7 +325,6 @@
     <ClInclude Include="ObjectTagEnum.h" />
     <ClInclude Include="PlayerRelatedInfo.h" />
     <ClInclude Include="PlayerRelatedUI.h" />
-    <ClInclude Include="ReverseDrivingCautionUI.h" />
     <ClInclude Include="Saw.h" />
     <ClInclude Include="OriginalMath.h" />
     <ClInclude Include="PointUI.h" />
@@ -334,10 +335,12 @@
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="StageDataAddressStruct.h" />
     <ClInclude Include="SwitchUI.h" />
+    <ClInclude Include="TimerUI.h" />
+    <ClInclude Include="UpDownLaserFlyShip.h" />
     <ClInclude Include="VECTOR3Loader.h" />
     <ClInclude Include="ImgUI.h" />
     <ClInclude Include="RacerManager.h" />
-    <ClInclude Include="PlaySceeneFlow.h" />
+    <ClInclude Include="PlaySceneFlow.h" />
     <ClInclude Include="PlaySceeneProgressEnum.h" />
     <ClInclude Include="StageManager.h" />
     <ClInclude Include="StageSelect.h" />
@@ -347,7 +350,6 @@
     <ClInclude Include="UIDataStruct.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="VectorDataCreator.h" />
-    <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Wheels.h" />
     <ClInclude Include="HitChecker.h" />
     <ClInclude Include="Object.h" />

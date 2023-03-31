@@ -33,5 +33,10 @@ void ItemBase::ShowEffect(ItemArgumentCarInfo carInfo)
 /// <returns>アイテムの効果量、今使えるか、アイテムの種類、アイテムの使用状況</returns>
 ItemInfo ItemBase::GetItemInfo()
 {
-    return {effecacyValue,coolTime < -0.1f,itemTag,useSituation};
+    ItemInfo info;
+    info.effecacyValue = effecacyValue;
+
+    info.itemTag = itemTag;
+    info.itemSituation = useSituation;
+    return info;
 }

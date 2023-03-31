@@ -33,18 +33,18 @@ public:
         {
         case FadeMode::fadeInStart:
 
-            fadeInFadeOut->FadeIn(timer->GetDeltaTime());
+            fadeInFadeOut->FadeIn();
             break;
         case FadeMode::fadeInEnd:
             //シーンごとの処理
-            sceneFlow->Update(timer->GetDeltaTime());
+            sceneFlow->Update();
             if (sceneFlow->GetIsEndProccess())//処理が終わったら
             {
                 fadeInFadeOut->FadeOutStart();
             }
             break;
         case FadeMode::fadeOutStart:
-            fadeInFadeOut->FadeOut(timer->GetDeltaTime());
+            fadeInFadeOut->FadeOut();
             break;
         case FadeMode::fadeOutEnd://フェードアウトが終わったら次のシーン
             return sceneFlow->GetNextSceneType();

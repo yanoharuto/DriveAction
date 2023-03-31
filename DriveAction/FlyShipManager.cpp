@@ -1,6 +1,5 @@
 #include "FlyShipManager.h"
-#include "LaserFlyShip.h"
-#include "BomberFlyShip.h"
+
 #include "Utility.h"
 #include "ListUtility.h"
 #include "CourceDataLoader.h"
@@ -13,14 +12,9 @@ FlyShipManager::FlyShipManager()
         BomberFlyShip* flyship = new BomberFlyShip();
         bombList.push_back(flyship);
     }  
+
     ufoPosList = CourceDataLoader::GetVECTORData(ufoPosPass);
-    for (int i = 0; i < UFONum * ufoPosList.size(); i++)
-    {
-        LaserFlyShip* flyship = new LaserFlyShip();
-        UfoFlyshipList.push_back(flyship);
-    }
     VECTOR generatePos = {};
-    
     int j = 0;
     for (auto itr = ufoPosList.begin(); itr != ufoPosList.end(); itr++)
     {
@@ -29,12 +23,18 @@ FlyShipManager::FlyShipManager()
         {
             dir = VNorm(OriginalMath::GetYRotateVector(dir, 60.0f));
             generatePos = VAdd((*itr), VScale(dir, 200.0f));
-            auto obj = GetIncrementVector(UfoFlyshipList, i + j);
-            obj ->Init(generatePos, (*itr));
+            CircleLaserFlyShip* flyship = new CircleLaserFlyShip(generatePos, (*itr));
+            UfoFlyshipList.push_back(flyship);
         }
         j += UFONum;
     }
 
+    updownFlyShipPosList = CourceDataLoader::GetVECTORData(updownFlyShipPosPass);
+    for (auto itr = updownFlyShipPosList.begin(); itr != updownFlyShipPosList.end(); itr++)
+    {
+        UpDownLaserFlyShip* flyship = new UpDownLaserFlyShip((*itr),VGet(0,0,0));
+        updownFlyShipList.push_back(flyship);
+    }
 }
 
 FlyShipManager::~FlyShipManager()
@@ -45,21 +45,26 @@ FlyShipManager::~FlyShipManager()
     }
 }
 
-void FlyShipManager::Update(float deltaTime, PlayerInformationCenter* infoCenter)
+void FlyShipManager::Update( PlayerInformationCenter* infoCenter)
 {
-    timer->Update(deltaTime);
+    timer->Update();
     for (auto ite = bombList.begin(); ite != bombList.end(); ite++)
     {
         if ((*ite)->GetAliveFlag())
         {
-            (*ite)->Update(deltaTime);
+            (*ite)->Update();
         }
     }
     for (auto ite = UfoFlyshipList.begin(); ite != UfoFlyshipList.end(); ite++)
     {
-        (*ite)->Update(deltaTime);
+        (*ite)->Update();
     }
-    Init(infoCenter);
+    for (auto ite = updownFlyShipList.begin(); ite != updownFlyShipList.end(); ite++)
+    {
+        (*ite)->Update();
+    }
+    BomberInit(infoCenter);
+    LaserInit(infoCenter);
 }
 
 void FlyShipManager::Draw()
@@ -72,9 +77,13 @@ void FlyShipManager::Draw()
     {
         (*ite)->Draw();
     }
+    for(auto ite = updownFlyShipList.begin(); ite != updownFlyShipList.end(); ite++)
+    {
+        (*ite)->Draw();
+    }
 }
 
-void FlyShipManager::Init(PlayerInformationCenter* infoCenter)
+void FlyShipManager::BomberInit(PlayerInformationCenter* infoCenter)
 {
     if (timer->IsOverLimitTime())
     {
@@ -85,14 +94,11 @@ void FlyShipManager::Init(PlayerInformationCenter* infoCenter)
         VECTOR destinationPos = {};
         VECTOR dir = {};
 
-        while (VSize(dir) < 0.1f)
-        {
-            dir = VScale(VGet(OriginalMath::GetRandom(-1.0f, 1.0f), 0, OriginalMath::GetRandom(-1.0f, 1.0f)), 300.0f);
-        }
 
+        dir = VNorm(OriginalMath::GetYRotateVector(playerInfo.objInfo.dir, OriginalMath::GetRandom(-randomDegree,randomDegree)));
         destinationPos = playerInfo.objInfo.pos;
-        generatePos = VAdd(destinationPos, dir);
-        dir = VScale(VCross(VNorm(VSub(destinationPos, generatePos)), VGet(0, 1, 0)), 100.0f);
+        generatePos = VAdd(destinationPos, VScale(dir,initBomberShipGeneratePosScale));
+        dir = VScale(VCross(VNorm(VSub(destinationPos, generatePos)), VGet(0, 1, 0)), initBomberShipBetween);
         for (auto ite = bombList.begin(); ite != bombList.end(); ite++)
         {
             (*ite)->Init(generatePos, destinationPos);
@@ -101,4 +107,17 @@ void FlyShipManager::Init(PlayerInformationCenter* infoCenter)
         }
     }
     if (timer->IsOverLimitTime())        timer->Init();
+}
+
+void FlyShipManager::LaserInit(PlayerInformationCenter* infoCenter)
+{
+    for (auto ite = UfoFlyshipList.begin(); ite != UfoFlyshipList.end(); ite++)
+    {
+        (*ite)->Init(infoCenter->GetPlayerRelatedInfo(0).objInfo.pos);
+    }
+
+    for (auto ite = updownFlyShipList.begin(); ite != updownFlyShipList.end(); ite++)
+    {
+        (*ite)->Init(infoCenter->GetPlayerRelatedInfo(0).objInfo.pos);
+    }
 }

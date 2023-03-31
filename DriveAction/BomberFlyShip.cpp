@@ -2,14 +2,19 @@
 #include "DamageObjectGenerator.h"
 #include "Utility.h"
 #include "AssetManager.h"
+#include "SoundPlayer.h"
+#include "Car.h"
+const int BomberFlyShip:: SEVolume = 80;
 //初期Y座標
-const float BomberFlyShip:: setFirstPosY = 700.0f;
+const float BomberFlyShip:: setFirstPosY = 500.0f;
 //速さ
-const float BomberFlyShip:: speed = 390.0f;
+const float BomberFlyShip:: speed = 5.8f;
 //modelの大きさ
-const float BomberFlyShip::modelSize = 0.4f;
+const float BomberFlyShip::modelSize = 0.7f;
 //幅
 const float BomberFlyShip::setRadius = 12.0f;
+//空を飛ぶ時の効果音
+const std::string BomberFlyShip::flightSE = "space-fighter-taking-off-1.mp3";
 //生存時間　爆弾発射クールタイム　最大高度　上昇速度
 const FlyShipArgumentInfo BomberFlyShip::setFlyShipParam
 {
@@ -19,52 +24,43 @@ const FlyShipArgumentInfo BomberFlyShip::setFlyShipParam
     12.0f
 };
 BomberFlyShip::BomberFlyShip()
-    :FlyShip(setFlyShipParam)
 {
     modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/PrototypeZero.mv1");
     MV1SetScale(modelHandle, { modelSize,modelSize,modelSize });
-    firstPosY = setFirstPosY;
-    coolTime = setCoolTime;
+    coolTime = setFlyShipParam.setCoolTime;
     radius = setRadius;
-    shipKInd = Bomber;
     aliveFlag = false;
+    SoundPlayer::LoadSound(flightSE);
+    SoundPlayer::SetSoundVolume(50,flightSE);
 }
 
 BomberFlyShip::BomberFlyShip(VECTOR setFirstPos,VECTOR setDestinationPos)
-    :FlyShip(setFlyShipParam)
 {
     modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/PrototypeZero.mv1");
     MV1SetScale(modelHandle, {modelSize,modelSize,modelSize });
-    firstPosY = setFirstPosY;
     position = setFirstPos;
-    position.y = firstPosY;
-    destinationPosition = setDestinationPos;
-    destinationPosition.y = firstPosY;
-    direction = VNorm(VSub(destinationPosition, position));
-    coolTime = setCoolTime;
+    position.y = setFlyShipParam.setCoolTime;;
+    direction = VNorm(VSub(setDestinationPos, position));
+    direction.y = 0;
+    coolTime = setFlyShipParam.setCoolTime;
     radius = setRadius;
-    shipKInd = Bomber;
     aliveFlag = false;
+    SoundPlayer::LoadSound(flightSE);
 }
 
 BomberFlyShip::~BomberFlyShip()
 {
-    SAFE_DELETE(aliveTimer);
 }
 
-void BomberFlyShip::Update(const float deltaTime)
+void BomberFlyShip::Update()
 {
-    velocity = VScale(direction, speed * deltaTime);
-    coolTime -= deltaTime;
-    //時間経過したら消える
-    if (aliveTimer->IsOverLimitTime())
-    {
-        aliveFlag = false;
-    }
+    velocity = VScale(direction, speed);
+    coolTime -= DELTATIME;
+    position.y = setFirstPosY;
     //クールタイムが終わったら
-    else if (coolTime < 0)
+    if (coolTime < 0)
     {
-        coolTime = setCoolTime;
+        coolTime = setFlyShipParam.setCoolTime;
         //投下位置設定
         ItemArgumentCarInfo itemInfo = {};
         itemInfo.SetCarInfo(this);
@@ -72,8 +68,19 @@ void BomberFlyShip::Update(const float deltaTime)
         itemInfo.position.y -= radius;
         //爆弾を投下
         DamageObjectGenerator::GenerateDamageObject(bomber,itemInfo,this);
-        bomberCount++;
+        
     }
     UpdateMV1Pos();
     ModelSetMatrix();
+}
+
+void BomberFlyShip::Init(VECTOR newPosition, VECTOR newDestinationPos)
+{
+    position = newPosition;
+    position.y = setFirstPosY;
+    direction = VNorm(VSub(newDestinationPos, newPosition));
+    direction.y = 0;
+    aliveFlag = true;
+    SoundPlayer::Play3DSE(flightSE);
+    SoundPlayer::SetPosition3DSound(position, flightSE);
 }

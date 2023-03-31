@@ -1,7 +1,6 @@
 #pragma once
 #include "CircuitDataStruct.h"
 #include "SoundPlayer.h"
-#include "ItemHolder.h"
 #include "Car.h"
 #include "CheckPoint.h"
 #include "ConflictExamineResultInfo.h"
@@ -20,23 +19,15 @@ public:
     /// <param name="deltaTime"></param>
     /// <param name="outsideHitFlag"></param>
     /// <param name="damageObj"></param>
-    virtual void Update(float deltaTime);
-    /// <summary>
-    /// このレーサーの車に引数のオブジェクトがぶつかっているか調べる
-    /// </summary>
-    /// <param name="objInfo"></param>
-    /// <returns></returns>
-    bool HitCheck(HitCheckExamineObjectInfo objInfo);
+    virtual void Update();
     /// <summary>
     /// 描画する
     /// </summary>
     void Draw();
     /// <summary>
-    /// 当たり判定を調べるために必要な情報
+    /// 発進前に上下に動く
     /// </summary>
-    /// <returns></returns>
-    HitCheckExamineObjectInfo GetCarHitCheckExamineInfo();
-
+    void UpDown();
     /// <summary>
     /// ランク
     /// </summary>
@@ -47,11 +38,6 @@ public:
     CheckPoint* GetCheckPointer();
 
 protected:
-    /// <summary>
-    /// インストラクタで呼ぶ
-    /// </summary>
-    /// <param name="car"></param>
-    void SetCarPointer(Car* car);
 
     int transitCPCount = 0;
 
@@ -62,8 +48,5 @@ protected:
     CheckPoint* checkPoint;
     //車
     Car* car;
-    //アイテムを取ってきて保存する
-    ItemHolder* itemHolder;
-    float hp = 0;
 };
 

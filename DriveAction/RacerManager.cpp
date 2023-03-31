@@ -48,7 +48,7 @@ RacerManager::~RacerManager()
 /// </summary>
 /// <param name="deltaTime">フレーム間の経過時間</param>
 /// <param name="circuit">走るコース</param>
-void RacerManager::RacerUpdate(const float deltaTime)
+void RacerManager::RacerUpdate( )
 {
     Racer* racer;
     ConflictExamineResultInfo conflictResultInfo;
@@ -56,10 +56,22 @@ void RacerManager::RacerUpdate(const float deltaTime)
     {
         racer = *racerIte;
         //車の更新　
-        racer->Update(deltaTime);
+        racer->Update();
     }
     //位置情報とか更新
     playerInfoCenter->UpdatePlayerRelatedInfo();
+}
+/// <summary>
+/// 上下に動く
+/// </summary>
+void RacerManager::UpDown()
+{
+    Racer* racer;
+    for (auto racerIte = racerList.begin(); racerIte != racerList.end(); racerIte++)
+    {
+        racer = *racerIte;
+        racer->UpDown();
+    }
 }
 
 /// <summary>

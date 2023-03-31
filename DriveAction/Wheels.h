@@ -91,8 +91,8 @@ private:
 	float wheelDriveRota = 0.0f;
 	//まっすぐ進んでいるかどうか
 	bool isStraightDash;
-	std::string smokeAddress = "smoke.efkefc";
-	std::string wheelAddress = "data/model/Player/Wheel.MV1";
+	std::string smokePass = "smoke.efkefc";
+	std::string wheelPass = "data/model/Player/Wheel.MV1";
 
 	//タイヤのモデルハンドル
 	int modelHandle;

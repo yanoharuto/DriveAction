@@ -27,29 +27,28 @@ void FiringItemManager::AddFiringObject(Actor* damageObj)
     }
 }
 
-void FiringItemManager::Update(float deltaTime)
+void FiringItemManager::Update()
 {
-    //更新
-    for (auto objIte = damageObjList.begin(); objIte != damageObjList.end(); objIte++)
-    {
-        (*objIte)->Update(deltaTime);
-    }
+    //イテレーター
     auto objIte = damageObjList.begin();
+    //消去していいやつリスト
     std::list<Actor*> brokenList;
     //更新する必要が無くなったら消去
     while (objIte != damageObjList.end())
     {
+        (*objIte)->Update();
         if (!(*objIte)->GetAliveFlag()) //もう存在していなかったら更新終了
         {
             brokenList.push_back((*objIte));
 
-            objIte = damageObjList.erase(objIte);//eraseはイテレーターの次の奴を返す
+            objIte = damageObjList.erase(objIte);//eraseは消したイテレーターの次の奴を返す
         }
         else
         {
-            ++objIte;
+            ++objIte;//消す条件に合わなかったら次に
         }
     }
+    //消していいやつ消す
     for (auto ite = brokenList.begin(); ite != brokenList.end(); ite++)
     {
         SAFE_DELETE(*ite);

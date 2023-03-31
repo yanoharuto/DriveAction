@@ -6,10 +6,6 @@ SphereCollider::SphereCollider(Actor* obj)
 {
 }
 
-SphereCollider::~SphereCollider()
-{
-}
-
 ConflictExamineResultInfo SphereCollider::HitCheck(HitCheckExamineObjectInfo hitCheckInfo)
 {
     ConflictExamineResultInfo resultInfo = {};
@@ -18,7 +14,7 @@ ConflictExamineResultInfo SphereCollider::HitCheck(HitCheckExamineObjectInfo hit
         resultInfo.bounceVec = VSub(hitCheckInfo.pos, object->GetPos());
         resultInfo.pos = VAdd(hitCheckInfo.pos, resultInfo.bounceVec);
         resultInfo.tag = object->GetTag();
-        resultInfo.hitFlag = true;
+        resultInfo.hit = HitSituation::Enter;
     }
     return resultInfo;
 }

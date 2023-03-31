@@ -25,9 +25,9 @@ public:
     void Draw();
 private:
     //　描画する画像のアドレス
-    std::string speedMeterAddress = "data/play/meter.png";
+    std::string speedMeterPass = "data/play/meter.png";
     //描画する画像のアドレス
-    std::string meterAllowAddress = "data/play/MeterAllow.png";
+    std::string meterAllowPass = "data/play/MeterAllow.png";
     std::string timerFont = "data/timerFont.png";
 
     float accelPower;

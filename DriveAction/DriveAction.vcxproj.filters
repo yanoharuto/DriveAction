@@ -120,9 +120,6 @@
     <ClCompile Include="Wheels.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="StageManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
@@ -132,7 +129,7 @@
     <ClCompile Include="TitleSceeneFlow.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="PlaySceeneFlow.cpp">
+    <ClCompile Include="PlaySceneFlow.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="RacePrevProcess.cpp">
@@ -165,12 +162,6 @@
     <ClCompile Include="SwitchUI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="AccelerationFloor.cpp">
-      <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Saw.cpp">
-      <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
     <ClCompile Include="LapUI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
@@ -178,9 +169,6 @@
       <Filter>ソース ファイル\Other</Filter>
     </ClCompile>
     <ClCompile Include="PlayerRelatedUI.cpp">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="ReverseDrivingCautionUI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
     <ClCompile Include="ConflictManager.cpp">
@@ -198,16 +186,7 @@
     <ClCompile Include="Item.cpp">
       <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
-    <ClCompile Include="ItemBox.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemHolder.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Accelerator.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="DamageImpactLauncer.cpp">
       <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
     <ClCompile Include="PostGoalStaging.cpp">
@@ -236,9 +215,6 @@
     </ClCompile>
     <ClCompile Include="AssetManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="DamageImpact.cpp">
-      <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
     <ClCompile Include="FadeInFadeOut.cpp">
       <Filter>ソース ファイル\Other</Filter>
@@ -276,19 +252,10 @@
     <ClCompile Include="RaceMenu.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Cource.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DirectionOfTravelGenerator.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="FlyShip.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FlyShipInitializer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="RotatingLasers.cpp">
@@ -301,9 +268,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="PlayerInformationCenter.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Vehicle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Clock.cpp">
@@ -331,6 +295,36 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="FiringObjOwner.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="UpDownLaserFlyShip.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="BigRadiusLaser.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="LittleRadiusLaser.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="LineCollider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleLaserFlyShip.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CoinManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="HitNumCounter.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="NumUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -404,7 +398,7 @@
     <ClInclude Include="StageSelect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PlaySceeneFlow.h">
+    <ClInclude Include="PlaySceneFlow.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TitleSceeneFlow.h">
@@ -494,9 +488,6 @@
     <ClInclude Include="SwitchUI.h">
       <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ReverseDrivingCautionUI.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
-    </ClInclude>
     <ClInclude Include="SoundPlayer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -512,16 +503,7 @@
     <ClInclude Include="Accelerator.h">
       <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
-    <ClInclude Include="DamageImpactLauncer.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemBox.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemHolder.h">
       <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
     <ClInclude Include="Rocket.h">
@@ -593,9 +575,6 @@
     <ClInclude Include="ItemUI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DamageImpact.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="EffectManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -605,9 +584,6 @@
     <ClInclude Include="RacerGenerater.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="EnumToString.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="RaceMenu.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -615,12 +591,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Rule.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Cource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="CarModelEnum.h">
@@ -636,9 +606,6 @@
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
     <ClInclude Include="FlyShip.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="FlyShipInitializer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="FlyShipKind.h">
@@ -657,9 +624,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="PlayerInformationCenter.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Vehicle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Clock.h">
@@ -687,6 +651,36 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="FiringObjOwner.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="UpDownLaserFlyShip.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BigRadiusLaser.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="LittleRadiusLaser.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="LineCollider.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleLaserFlyShip.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HitNumCounter.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="NumUI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

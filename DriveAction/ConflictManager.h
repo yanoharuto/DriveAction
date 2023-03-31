@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <unordered_map>
 #include "ConflictProccesor.h"
 #include "ConflictExamineResultInfo.h"
 #include "ArgumentConflictResultInfo.h"
@@ -13,20 +14,29 @@ public:
     ConflictManager();
     ~ConflictManager();
     /// <summary>
- /// ぶつかってるか調べたいやつを追加する
- /// </summary>
- /// <param name="obj"></param>
+    /// ぶつかってるか調べたいやつを追加する
+    /// </summary>
+    /// <param name="obj"></param>
     static void AddConflictObjInfo(ConflictProccesor* conflictProccesor);
+    /// <summary>
+    /// 当たり判定を消去する
+    /// </summary>
+    /// <param name="conflictProccesor"></param>
     static void EraceConflictObjInfo(ConflictProccesor* conflictProccesor);
+    /// <summary>
+    /// デバッグ用球を出す
+    /// </summary>
     void DrawCollisionSphere();
     /// <summary>
     /// 引数のオブジェクトとぶつかっているか調べる
     /// </summary>
     /// <param name="examineObjInfo"></param>
     /// <returns></returns>
-    ConflictExamineResultInfo GetConflictObjInfo(ConflictProccesor* conflictProccesor);
-
+    std::list<ConflictExamineResultInfo> GetConflictObjInfo(ConflictProccesor* conflictProccesor);
+    bool IsContainsConflictList(ConflictProccesor* proccesor,ConflictProccesor* pastProccesor);
     void Update();
 private:
+
     static std::list<ConflictProccesor*> conflictObjList;
+    static std::unordered_map<ConflictProccesor*,std::list<ConflictProccesor*>> conflictMap;
 };

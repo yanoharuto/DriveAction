@@ -13,7 +13,7 @@ FadeInFadeOut::~FadeInFadeOut()
 /// フェードイン
 /// </summary>
 /// <param name="deltaTime"></param>
-void FadeInFadeOut::FadeIn(float deltaTime)
+void FadeInFadeOut::FadeIn()
 {
 	switch (fadeMode)
 	{
@@ -21,7 +21,7 @@ void FadeInFadeOut::FadeIn(float deltaTime)
 
 		if (fadeValue > 0)
 		{
-			fadeValue -= fadeSpeed * deltaTime;//α値と色のRGB減少
+			fadeValue -= fadeSpeed ;//α値と色のRGB減少
 		}
 		else
 		{
@@ -56,7 +56,7 @@ void FadeInFadeOut::FadeOutStart()
 /// だんだん白くなる
 /// </summary>
 /// <param name="deltaTime"></param>
-void FadeInFadeOut::FadeOut(float deltaTime)
+void FadeInFadeOut::FadeOut()
 {
 	switch (fadeMode)
 	{
@@ -64,7 +64,7 @@ void FadeInFadeOut::FadeOut(float deltaTime)
 		
 		if (fadeValue < MAX1BYTEVALUE)
 		{
-			fadeValue += fadeSpeed * deltaTime;//α値と色のRGB増加
+			fadeValue += fadeSpeed;//α値と色のRGB増加
 		}
 		else
 		{

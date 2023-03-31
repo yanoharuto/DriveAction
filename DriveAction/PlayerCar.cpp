@@ -7,14 +7,14 @@
 #include "SoundPlayer.h"
 #include "EffectManager.h"
 #include "ConflictManager.h"
-const CarInfomation setCarParam = 
+const CarInfomation PlayerCar::setCarParam =
 {
-	46.0f,
-	540.0f,
+	0.7f,
+	4.7f,
 	3.0f,
 	0.13f,
 	1.0f,
-	0.04f,
+	0.34f,
 	7.0f,
 };
 /// <summary>
@@ -25,9 +25,10 @@ PlayerCar::PlayerCar()
 {
 }
 
-PlayerCar::PlayerCar(VECTOR firstPos)
+PlayerCar::PlayerCar(VECTOR firstPos, HitNumCounter* counter)
 	:Car(setCarParam)
 {
+	damageCoolTimer = new Timer(setDamageCoolTime);
 	modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/IceBlades.mv1");
 	MV1SetScale(modelHandle, { modelSize,modelSize,modelSize });
 	position = firstPos;
@@ -37,6 +38,8 @@ PlayerCar::PlayerCar(VECTOR firstPos)
 	direction = VGet(0.0f, 0.0f, -1.0f);
 	SoundPlayer::SetListener(position,VAdd(position,direction));
 	collider = new SphereCollider(this);
+	collider->SetCoolTimer(ObjectTag::damageObject, damageCoolTimer);
+	counter->SetTimer(ObjectTag::damageObject, damageCoolTimer);
 }
 
 /// <summary>
@@ -46,22 +49,27 @@ PlayerCar::PlayerCar(VECTOR firstPos)
 PlayerCar::~PlayerCar()
 {
 	SAFE_DELETE(wheels);
+
+	SoundPlayer::StopSound(drivingSEPass);
+	SoundPlayer::StopSound(carClashSEPass);
+	SoundPlayer::StopSound(carHornSEPass);
 	ConflictManager::EraceConflictObjInfo(collider);
 	SAFE_DELETE(collider);
-	if (playEffect != -1)
+	if (runEffect != -1)
 	{
-		DeleteEffekseerEffect(playEffect);
+		StopEffekseer3DEffect(runEffect);
+		DeleteEffekseerEffect(runEffect);
 	}
 }
 
 /// <summary>
 /// çXêV
 /// </summary>
-void PlayerCar::Update(const float deltaTime, VECTOR destinationPos,ItemInfo item)
+void PlayerCar::Update()
 {
 	VECTOR prevPos = position;
 	SetInputDir();
-	CommonUpdate(deltaTime, destinationPos, item);
+	CommonUpdate();
 	PlayDriveSound(wheelArgumentCarInfo.inputDir);
 	SoundPlayer::SetListener(position, VAdd(position, direction));
 	ArgumentConflictResultInfo resultInfo = GetConflictArgumentInfo();
@@ -71,33 +79,9 @@ void PlayerCar::Update(const float deltaTime, VECTOR destinationPos,ItemInfo ite
 #ifdef _DEBUG
 	printfDx("position::%f,%f,%f\n", position.x,position.y,position.z);
 	printfDx("dir::%f,%f,%f\n", direction.x,direction.y,direction.z);
-	//printfDx("velocity::%f,%f,%f\n", velocity.x,velocity.y,velocity.z);
+	printfDx("velocity::%f,%f,%f\n", velocity.x,velocity.y,velocity.z);
+
 #endif
-}
-
-void PlayerCar::PostDamageProccess(float deltaTime)
-{
-	if (isDamage)
-	{
-		damageReactionTime -= deltaTime;
-		if (damageReactionTime < 0)
-		{
-			isDamage = false;
-		}
-	}
-	damageCoolTime -= deltaTime;
-}
-
-void PlayerCar::DamageReaction(const ConflictExamineResultInfo conflictInfo)
-{
-	if (damageCoolTime < 0)
-	{
-		isDamage = true;
-		damageReactionTime = setDamageReactionTime;
-		damageCoolTime = setDamageCoolTime;
-		HP++;
-		twistZRota = 0.0f;
-	}
 }
 
 void PlayerCar::SetInputDir()

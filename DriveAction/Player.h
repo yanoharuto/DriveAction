@@ -3,6 +3,7 @@
 #include "PlayerCar.h"
 #include "PlayerRelatedInfo.h"
 #include "ObjPosAndDir.h"
+#include "HitNumCounter.h"
 /// <summary>
 /// プレイヤーの車やアイテムの処理を呼び出す
 /// </summary>
@@ -25,7 +26,7 @@ public:
     /// <param name="deltaTime"></param>
     /// <param name="outsideHitFlag"></param>
     /// <param name="damageObjGene"></param>
-    void Update(float deltaTime)override;
+    void Update()override;
     /// <summary>
     /// プレイヤーの周辺情報を返す
     /// </summary>
@@ -37,6 +38,7 @@ public:
     /// <returns></returns>
     ObjInfo GetPlayerPosAndDir();
 private:
-    std::string rouletteSE = "rourette.mp3";
+    HitNumCounter* hitNumCounter;
+
 };
 

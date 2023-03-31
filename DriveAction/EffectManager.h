@@ -5,8 +5,8 @@ class EffectManager
 public:
     EffectManager();
     ~EffectManager();
-    static void LoadEffectManager(std::string address,float size);
-    static int GetPlayEffect3D(std::string address);
-    static int GetPlayEffect2D(std::string address);
-    static bool IsPlayEffect(std::string address);
+    static void LoadEffectManager(std::string Pass,float size);
+    static int GetPlayEffect3D(std::string Pass);
+    static int GetPlayEffect2D(std::string Pass);
+    static bool IsPlayEffect(std::string Pass);
 };

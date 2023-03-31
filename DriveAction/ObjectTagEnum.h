@@ -2,10 +2,11 @@
 enum class ObjectTag
 {
     car,
-    itemBox,
+    coin,
     damageObject,
     obstacle,
     stage,
     goal,
-    acelerationFloor
+    acelerationFloor,
+    countSystem
 };

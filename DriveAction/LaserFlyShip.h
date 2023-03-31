@@ -1,17 +1,16 @@
 #pragma once
 #include "FlyShip.h"
-class LaserFlyShip :
+class LaserFlyShip abstract:
     public FlyShip
 {
 public:
     LaserFlyShip();
     LaserFlyShip(VECTOR firstPos, VECTOR setDestinationPos);
     ~LaserFlyShip();
-    void Init(VECTOR newPosition, VECTOR newDestinationPos) override;
-    void Update(const float deltaTime) override;
+    virtual void Init(VECTOR playerPos);
+    virtual void GenerateLaser() = 0;
 private:
+    float firstPosY;
     bool isGenerateLaser = false;
-    static const float setFirstPosY;
-    static const float setModelSize;
-    static const FlyShipArgumentInfo setFlyShipParam;
+    static const float deleteBetween;
 };

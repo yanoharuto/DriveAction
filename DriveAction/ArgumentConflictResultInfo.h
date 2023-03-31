@@ -7,7 +7,6 @@ struct ArgumentConflictResultInfo
     VECTOR pos = {};
     VECTOR bounceVec = {};
     float radius = 0;//半径
-    float bouncePower;//反発力
     /// <summary>
     /// 引数のオブジェクトから情報を作成
     /// </summary>
@@ -17,6 +16,5 @@ struct ArgumentConflictResultInfo
     {
         tag = obj->GetTag();
         radius = obj->GetRadius();
-        bouncePower = obj->GetBouncePower();
     }
 };

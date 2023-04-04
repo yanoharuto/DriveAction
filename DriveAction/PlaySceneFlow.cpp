@@ -105,8 +105,6 @@ void PlaySceeneFlow::Update()
 		break;
 	case PlaySceeneProgress::playerGoal:
 
-		//ゴール後の処理更新
-		postGoalStaging->Update();
 		if (postGoalStaging->Update())
 		{
 			nowProgress = PlaySceeneProgress::end;

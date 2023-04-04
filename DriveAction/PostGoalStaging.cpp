@@ -3,6 +3,7 @@
 #include "SoundPlayer.h"
 #include "UserInput.h"
 #include "ResultScore.h"
+
 PostGoalStaging::PostGoalStaging()
 {
     SoundPlayer::StopAllSound();
@@ -16,65 +17,88 @@ PostGoalStaging::PostGoalStaging()
     stringUI = new StringUI(goalMarkerUIColor, goalMarkerUI, "èIóπ");
     switchUI = new SwitchUI();
     SoundPlayer::LoadSound(clapSE);
+    SoundPlayer::LoadSound(rouretteSE);
+    SoundPlayer::LoadSound(stopSE);
     SoundPlayer::Play2DSE(clapSE);
 
     UIData uidata = {};
-    uidata.dataHandle = 
+
     uidata.y = UI_SCREEN_HEIGHT * 2;
     uidata.x = UI_SCREEN_WIDTH * 8;
-    uidata.dataHandle = LoadGraph("data/TimeBonus.png");
-    timeUI = uidata;
-    uidata.y = UI_SCREEN_HEIGHT * 6;
-    uidata.dataHandle = LoadGraph("data/Damage.png");
-    hitUI = uidata;
-    uidata.y = UI_SCREEN_HEIGHT * 10;
-    uidata.dataHandle = LoadGraph("data/CoinBonus.png");
-    coinUI = uidata;
-    uidata.y = UI_SCREEN_HEIGHT * 15; 
-    uidata.dataHandle = LoadGraph("data/Score.png");
-    scoreUI = uidata;
+    for (int i = 0; i < SCORE_KIND_NUM; i++)
+    {
+
+        switch (i)
+        {
+        case ResultScore::collect:
+            uidata.dataHandle = LoadGraph("data/CollectBonus.png");
+            break;
+        case ResultScore::hit:
+            uidata.dataHandle = LoadGraph("data/Damage.png");
+            break;
+        case ResultScore::total:
+            uidata.dataHandle = LoadGraph("data/Score.png");
+            break;
+        case ResultScore::time:
+            uidata.dataHandle = LoadGraph("data/TimeBonus.png");
+            break;
+        default:
+            break;
+        }
+        scoreUI[i].data = uidata;
+        uidata.y += UI_SCREEN_HEIGHT * 4;
+    }
+    
     
     num = new NumUI();
     screenGraph = MakeGraph(SCREEN_WIDTH, SCREEN_HEIGHT);
     GetDrawScreenGraph(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, screenGraph);
-}
 
+    timer = new Timer(spaceKeyCoolTime);
+}
 
 PostGoalStaging::~PostGoalStaging()
 {
     DeleteGraph(screenGraph);
     SAFE_DELETE(switchUI);
     SAFE_DELETE(stringUI);
+
 }
 
 bool PostGoalStaging::Update()
 {
-    
-    if(!isEndGoalUI)
+
+    if (x > SCREEN_WIDTH && !SoundPlayer::IsPlaySound(stopSE) && spaceClickCount < SCORE_KIND_NUM )
     {
-        if (UserInput::GetInputState(Space) == Detach)
+        timer->Update();
+        if (!SoundPlayer::IsPlaySound(rouretteSE))
         {
-            isEndGoalUI = true;
+            SoundPlayer::Play2DSE(rouretteSE);
         }
-        if (x > SCREEN_WIDTH)
+        float larp = 1 - timer->GetLimitTime() / spaceKeyCoolTime;
+        scoreUI[spaceClickCount].score = ResultScore::GetScore(spaceClickCount) * larp;
+        if (UserInput::GetInputState(Space) == Detach || scoreUI[spaceClickCount].score == ResultScore::GetScore(spaceClickCount))
         {
-            isEndGoalUI = true;
-           
-        }
-        else
-        {
-            x += goalMoveX;
-            stringUI->SetXY(static_cast<int>(x), static_cast<int>(y));
+            SoundPlayer::StopSound(rouretteSE);
+            SoundPlayer::Play2DSE(stopSE);
+            scoreUI[spaceClickCount].score = ResultScore::GetScore(spaceClickCount);
+
+            spaceClickCount++;
+
+            if (UserInput::GetInputState(Space) == Detach && spaceClickCount >= SCORE_KIND_NUM + 1)
+            {
+                return true;
+            }
+            timer->Init();
         }
     }
     else
     {
-        if (UserInput::GetInputState(Space) == Detach)
-        {
-            return true;
-        }
-        switchUI->Update();
+        x += goalMoveX;
+        stringUI->SetXY(static_cast<int>(x), static_cast<int>(y));
     }
+    
+    switchUI->Update();
     return false;
 }
 
@@ -83,20 +107,19 @@ void PostGoalStaging::Draw()
     SetDrawBright(60, 60, 60);
     DrawGraph(0, 0, screenGraph, false);
     SetDrawBright(255, 255, 255);
-    if (isEndGoalUI)
+    if (x > SCREEN_WIDTH)
     {
-        switchUI->Draw();
-        DrawRotaGraph(scoreUI.x, scoreUI.y, 1, 0, scoreUI.dataHandle, true);
-        num->Draw(numDrawX, scoreUI.y, ResultScore::GetScore(), numSize);
+        for (int i = 0; i <= spaceClickCount ; i++)
+        {
+            int safe_Num= i % SCORE_KIND_NUM;
+            num->Draw(numDrawX, scoreUI[safe_Num].data.y, scoreUI[safe_Num].score, numSize);
+            DrawRotaGraph(scoreUI[safe_Num].data.x, scoreUI[safe_Num].data.y, 1, 0, scoreUI[safe_Num].data.dataHandle, true);
+        }
 
-        DrawRotaGraph(coinUI.x, coinUI.y, scoreSize, 0, coinUI.dataHandle, true);
-        num->Draw(numDrawX, coinUI.y,ResultScore::GetCoinScore(), numSize);
-
-        DrawRotaGraph(hitUI.x, hitUI.y, scoreSize, 0, hitUI.dataHandle, true);
-        num->Draw(numDrawX, hitUI.y, ResultScore::GetHitScore(), numSize);
-
-        DrawRotaGraph(timeUI.x, timeUI.y, scoreSize, 0, timeUI.dataHandle, true);
-        num->Draw(numDrawX, timeUI.y, ResultScore::GetTimeScore(), numSize);
+        if (spaceClickCount != 0)
+        {
+            switchUI->Draw();
+        }
     }
     else
     {

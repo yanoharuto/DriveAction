@@ -171,8 +171,9 @@ void SoundPlayer::SetSoundRadius(int soundRadius, std::string soundFileName)
 /// その音が鳴ってるかどうか調べる
 /// </summary>
 /// <param name="soundFileName"></param>
-/// <returns></returns>
+/// <returns>鳴ってたらTrue</returns>
 bool SoundPlayer::IsPlaySound(std::string soundFileName)
 {
+    //1ならなってる-1なってない
     return  CheckSoundMem(soundHandleMap[soundFileName]) == 1;
 }

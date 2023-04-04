@@ -12,23 +12,61 @@ ResultScore::ResultScore(Timer* timer, PlayerRelatedInfo playerInfo)
     coinScore = playerInfo.hitCoinCount * coinBonus;
 }
 
-
-int ResultScore::GetScore()
+int ResultScore::GetScore(ScoreKind scoreKind)
 {
-    return coinScore - hitScore + timeScore;
+    switch (scoreKind)
+    {
+    case ScoreKind::time:
+        return timeScore;
+         break;
+    case ScoreKind::hit:
+        return hitScore;
+        break;
+    case ScoreKind::collect:
+        return coinScore;
+        break;
+    case ScoreKind::total:
+        return timeScore + hitScore + coinScore;
+        break;
+    default:
+        break;
+    }
+    return 0;
 }
 
-int ResultScore::GetCoinScore()
+int ResultScore::GetScore(int kindNum)
 {
-    return coinScore;
+    switch (kindNum)
+    {
+    case ScoreKind::time:
+        return timeScore;
+        break;
+    case ScoreKind::hit:
+        return hitScore;
+        break;
+    case ScoreKind::collect:
+        return coinScore;
+        break;
+    case ScoreKind::total:
+        return timeScore + hitScore + coinScore;
+        break;
+    default:
+        break;
+    }
+    return 0;
 }
 
-int ResultScore::GetHitScore()
+int ResultScore::GetCollectBonus()
 {
-    return hitScore;
+    return 0;
 }
 
-int ResultScore::GetTimeScore()
+int ResultScore::GetHitBunus()
 {
-    return timeScore;
+    return 0;
+}
+
+int ResultScore::GetTimeBunus()
+{
+    return 0;
 }

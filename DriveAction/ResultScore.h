@@ -1,12 +1,21 @@
 #pragma once
 #include "PlayerRelatedInfo.h"
 #include "Timer.h"
+#define SCORE_KIND_NUM 4
+
 /// <summary>
 /// 最終的なスコアの保存役
 /// </summary>
 class ResultScore
 {
 public:
+    enum ScoreKind
+    {
+        time = 0,
+        hit = 1,
+        collect = 2,
+        total = 3
+    };
     /// <summary>
     /// 最終的なスコアの保存
     /// </summary>
@@ -16,22 +25,23 @@ public:
     /// スコアの所得
     /// </summary>
     /// <returns></returns>
-    static int GetScore();
+    static int GetScore(ScoreKind);
+    static int GetScore(int kindNum);
     /// <summary>
     /// コインを取ったスコア
     /// </summary>
     /// <returns></returns>
-    static int GetCoinScore();
+    static int GetCollectBonus();
     /// <summary>
     /// 当たった回数分ヘルスコア
     /// </summary>
     /// <returns></returns>
-    static int GetHitScore();
+    static int GetHitBunus();
     /// <summary>
     /// 残り時間のスコア
     /// </summary>
     /// <returns></returns>
-    static int GetTimeScore();
+    static int GetTimeBunus();
 private:
     //コインのスコア
     static int coinScore;

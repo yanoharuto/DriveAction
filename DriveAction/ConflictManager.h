@@ -33,10 +33,8 @@ public:
     /// <param name="examineObjInfo"></param>
     /// <returns></returns>
     std::list<ConflictExamineResultInfo> GetConflictObjInfo(ConflictProccesor* conflictProccesor);
-    bool IsContainsConflictList(ConflictProccesor* proccesor,ConflictProccesor* pastProccesor);
     void Update();
 private:
 
     static std::list<ConflictProccesor*> conflictObjList;
-    static std::unordered_map<ConflictProccesor*,std::list<ConflictProccesor*>> conflictMap;
 };

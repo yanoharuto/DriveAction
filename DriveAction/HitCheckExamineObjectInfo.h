@@ -9,8 +9,10 @@ struct HitCheckExamineObjectInfo
     VECTOR pos = {};//ƒ|ƒWƒVƒ‡ƒ“
     VECTOR velocity = {};//ˆÚ“®—Ê
     float radius = 0;//”¼Œa
+    ObjectTag tag;
     void SetExamineInfo(Object* obj)
     {
+        tag = obj->GetTag();
         pos = obj->GetPos();
         radius = obj->GetRadius();
     }

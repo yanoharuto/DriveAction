@@ -11,8 +11,8 @@ ConflictExamineResultInfo SphereCollider::HitCheck(HitCheckExamineObjectInfo hit
     ConflictExamineResultInfo resultInfo = {};
     if (HitChecker::HitCheck(object, hitCheckInfo))
     {
-        resultInfo.bounceVec = VSub(hitCheckInfo.pos, object->GetPos());
-        resultInfo.pos = VAdd(hitCheckInfo.pos, resultInfo.bounceVec);
+        resultInfo.bounceVec = VNorm(VSub(hitCheckInfo.pos, object->GetPos()));
+        resultInfo.pos = VAdd(object->GetPos(), VScale(resultInfo.bounceVec, object->GetRadius() + object->GetBouncePower()));
         resultInfo.tag = object->GetTag();
         resultInfo.hit = HitSituation::Enter;
     }

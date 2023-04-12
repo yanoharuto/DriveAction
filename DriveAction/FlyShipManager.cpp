@@ -1,19 +1,20 @@
 #include "FlyShipManager.h"
-
+#include "ListUtility.h"
+#include "GetGeneratePos.h"
 #include "Utility.h"
 #include "ListUtility.h"
 #include "CourceDataLoader.h"
 
 FlyShipManager::FlyShipManager()
 {
-    timer = new Timer(setCoolTime);
+    bomberFlyShipGoTimer = new Timer(setCoolTime);
     for (int i = 0; i < BomberFlyShipNum; i++)
     {
         BomberFlyShip* flyship = new BomberFlyShip();
         bombList.push_back(flyship);
     }  
 
-    ufoPosList = CourceDataLoader::GetVECTORData(ufoPosPass);
+    std::list<VECTOR> ufoPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(enemyPosPass,0));
     VECTOR generatePos = {};
     int j = 0;
     for (auto itr = ufoPosList.begin(); itr != ufoPosList.end(); itr++)
@@ -29,7 +30,7 @@ FlyShipManager::FlyShipManager()
         j += UFONum;
     }
 
-    updownFlyShipPosList = CourceDataLoader::GetVECTORData(updownFlyShipPosPass);
+    std::list<VECTOR>updownFlyShipPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(enemyPosPass,1));
     for (auto itr = updownFlyShipPosList.begin(); itr != updownFlyShipPosList.end(); itr++)
     {
         UpDownLaserFlyShip* flyship = new UpDownLaserFlyShip((*itr),VGet(0,0,0));
@@ -47,7 +48,7 @@ FlyShipManager::~FlyShipManager()
 
 void FlyShipManager::Update( PlayerInformationCenter* infoCenter)
 {
-    timer->Update();
+    bomberFlyShipGoTimer->Update();
     for (auto ite = bombList.begin(); ite != bombList.end(); ite++)
     {
         if ((*ite)->GetAliveFlag())
@@ -85,28 +86,29 @@ void FlyShipManager::Draw()
 
 void FlyShipManager::BomberInit(PlayerInformationCenter* infoCenter)
 {
-    if (timer->IsOverLimitTime())
+    //時間が過ぎたらまた爆撃機を発信
+    if (bomberFlyShipGoTimer->IsOverLimitTime())
     {
         PlayerRelatedInfo playerInfo = infoCenter->GetPlayerRelatedInfo(0);
+        
+        //ランダムな方向から爆撃機を発進させる
+        VECTOR dir = VNorm(OriginalMath::GetYRotateVector(playerInfo.objInfo.dir, OriginalMath::GetRandom(-randomDegree,randomDegree)));
+        //プレイヤーに向かって
+        VECTOR destinationPos = playerInfo.objInfo.pos;
         //出現場所
-        VECTOR generatePos = {};
-        //目標地点
-        VECTOR destinationPos = {};
-        VECTOR dir = {};
-
-
-        dir = VNorm(OriginalMath::GetYRotateVector(playerInfo.objInfo.dir, OriginalMath::GetRandom(-randomDegree,randomDegree)));
-        destinationPos = playerInfo.objInfo.pos;
-        generatePos = VAdd(destinationPos, VScale(dir,initBomberShipGeneratePosScale));
-        dir = VScale(VCross(VNorm(VSub(destinationPos, generatePos)), VGet(0, 1, 0)), initBomberShipBetween);
+        VECTOR generatePos = VAdd(destinationPos, VScale(dir,initBomberShipGeneratePosScale));
+        //一機目以降は他の機体と距離を置いて発進
+        VECTOR between = VScale(VCross(VNorm(VSub(destinationPos, generatePos)), VGet(0, 1, 0)), initBomberShipBetween);
+        
         for (auto ite = bombList.begin(); ite != bombList.end(); ite++)
         {
             (*ite)->Init(generatePos, destinationPos);
-            generatePos = VAdd(generatePos, dir);
-            destinationPos = VAdd(destinationPos, dir);
+            generatePos = VAdd(generatePos, between);
+            destinationPos = VAdd(destinationPos, between);
         }
+
+        bomberFlyShipGoTimer->Init();
     }
-    if (timer->IsOverLimitTime())        timer->Init();
 }
 
 void FlyShipManager::LaserInit(PlayerInformationCenter* infoCenter)

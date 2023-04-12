@@ -1,13 +1,14 @@
 #include "RacerGenerater.h"
 #include "CPU.h"
 #include "CourceDataLoader.h"
-
+#include "GetGeneratePos.h"
+#include "ListUtility.h"
 RacerGenerater::RacerGenerater()
 {
 }
 void RacerGenerater::CreateRacers(int racerNum, std::list<Racer*>* racerList, Player** player, PlayerInformationCenter* infoCenter)
 {
-    std::list<VECTOR> firstPosList = CourceDataLoader::GetVECTORData(firstPosPass);
+    std::list<VECTOR> firstPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(firstPosPass,0));
     //ポジションのイテレーター
     auto firstPosIte = firstPosList.begin();
     

@@ -27,8 +27,14 @@ T GetIncrementList(std::list<T> list, int count)
 /// <param name="list"></param>
 /// <returns></returns>
 template<typename T>
-std::vector<T> GetVectorConversion(std::list<T> list)
+std::vector<T> ConvertListToVector(std::list<T> list)
 {
-    std::vector<T> tempPos(list.begin(), list.end());
-    return tempPos;
+    std::vector<T> newList(list.begin(), list.end());
+    return newList;
+}
+template<typename T>
+std::list<T> ConvertVectorToList(std::vector<T> vector)
+{
+    std::list<T> newVec(vector.begin(), vector.end());
+    return newVec;
 }

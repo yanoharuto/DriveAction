@@ -11,7 +11,7 @@ AccelMeter::AccelMeter()
     allowPngData.x = UI_SCREEN_WIDTH * 18.5f;
     allowPngData.y = UI_SCREEN_HEIGHT * 16;
     allowPngData.dataHandle = LoadGraph(meterAllowPass.c_str());
-    
+    accelPower = 0;
     allowRota = 0;
 }
 

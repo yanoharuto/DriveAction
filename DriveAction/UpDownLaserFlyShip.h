@@ -13,6 +13,7 @@ private:
     static const float addMoveValue;
     static const float setFirstPosY;
     static const float updownSpeed;
+    static const float setModelSize;
     float totalMoveValue = 0;
     bool isGenerateLaser = false;
 };

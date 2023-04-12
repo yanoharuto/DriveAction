@@ -5,6 +5,7 @@ StageManager::StageManager()
 {
     circuit = new CircuitTrack();
     skyDome = new SkyDome();
+
 }
 
 
@@ -12,6 +13,7 @@ StageManager::~StageManager()
 {
     SAFE_DELETE(circuit);
     SAFE_DELETE(skyDome);
+
 }
 
 void StageManager::Update()
@@ -29,4 +31,5 @@ void StageManager::Draw() const
 {
     circuit->Draw();
     skyDome->Draw();
+
 }

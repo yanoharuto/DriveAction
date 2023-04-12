@@ -21,15 +21,13 @@ public:
     ~PostGoalStaging();
     bool Update();
     void Draw();
+    void SetUp(int graphHandle);
 private:
     struct ScoreUI
     {
         UIData data;
         int score;
     };
-
-    float x = 0.0f;
-    float y = 0.0f;
     //終了アナウンス
     int spaceClickCount = 0;
 
@@ -51,6 +49,7 @@ private:
     //終了のアナウンス
     StringUI* stringUI;
     ScoreUI scoreUI[SCORE_KIND_NUM];
+    UIData goalMarkerUI;
     //スコアの描画係
     NumUI* num;
     Timer* timer;
@@ -58,5 +57,6 @@ private:
     const std::string clapSE = "clap.mp3";
     const std::string rouretteSE = "rourette.mp3";
     const std::string stopSE = "stopRourette.mp3";
+    const std::string nextSE = "Sys_Set02-pop down.mp3";
 };
 

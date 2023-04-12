@@ -39,7 +39,7 @@ public:
     int GetCoinNowNum();
 private:
     //コインのポジションのパス
-    const std::string coinPosPass = "/coinPos.txt";
+    const std::string coinPosPass = "data/stageMap_collectPos.csv";
     //コインの最初の枚数
     int coinFirstNum;
     //コインの現在枚数

@@ -6,13 +6,12 @@
 #include "ResultScene.h"
 #include "Utility.h"
 #include "UserInput.h"
-//しーんを作るのに必要
+//シーンを作るのに必要
 SceneBase* MakeScene(SceneType _NowSceneType);
 //ひとつ前のシーン
 SceneType prevSceneType = SceneType::TITLE;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
 	ChangeWindowMode(true);
 
 	// DirectX11を使用するようにする。(DirectX9も可、一部機能不可)
@@ -57,13 +56,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//更新
 		userInput->Update();
 		nowSceneType = scene->Update();
-		Effect_Update();
 
 		//画面を初期化する
 		ClearDrawScreen();
 
 		scene->Draw();//描画
-		Effect_Draw();
 		//裏画面の内容を表画面に反映させる
 		ScreenFlip();
 		//Updateで次のシーンに更新したなら

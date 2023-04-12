@@ -19,7 +19,7 @@
 #include "AssetManager.h"
 #include "PlayerRelatedUI.h"
 #include "RacePrevProcess.h"
-
+#include "RaceScreen.h"
 #include "ShadowMap.h"
 #include "CoinManager.h"
 /// <summary>
@@ -82,6 +82,8 @@ private:
     CoinManager* coinManager;
     //シャドウマップ
     ShadowMap* shadowMap;
+    //レース中の描画した物を保存する
+    RaceScreen* screen;
     //BGMのパス
     const std::string BGMPass = "movements.mp3";
     int BGMBolume = 50;

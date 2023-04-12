@@ -28,16 +28,17 @@ private:
     const int miniMapUpLeftX = miniMapFrontX - mapRength;
     //描画開始左上Y座標
     const int miniMapUpLeftY = miniMapFrontY - mapRength;
-    
-    //ミニマップの画像の横幅
-    int mapGraphWidth = 0;
-    //ミニマップの画像の縦幅
-    int mapGraphHeight = 0;
-
     //ミニマップの画像のアドレス
     const std::string miniMapPass = "data/miniMap.png";
     //自機のIconの大きさ
     const float iconSize = 5.0f;
+    //ミニマップの画像の横幅
+    int mapGraphWidth = 0;
+    //ミニマップの画像の縦幅
+    int mapGraphHeight = 0;
+    const float mapSize = 420;
+    float mapSizeCoefficient = 0;
+    float mapRotate = 0;
     //ミニマップ
     UIData miniMap;
     //自機のアイコン

@@ -26,12 +26,16 @@ public:
     /// </summary>
     virtual void Draw()
     {
+        MATRIX tmpMat = MV1GetMatrix(modelHandle);
         if (modelHandle != - 1)
         {
             ModelSetMatrix();
             UpdateMV1Pos();
+            MV1SetScale(modelHandle, VGet(modelSize, modelSize, modelSize));
             MV1DrawModel(modelHandle);
         }
+        //行列を元に戻す
+        MV1SetRotationMatrix(modelHandle, tmpMat);
     }
     
     /// <summary>
@@ -61,17 +65,22 @@ protected:
         resultInfo.SetObjInfo(this);
         return resultInfo;
     };
+    /// <summary>
+    /// 描画モデルの行列をセット
+    /// </summary>
     virtual void ModelSetMatrix()
     {
         // 向きに合わせて回転.
         MV1SetRotationZYAxis(modelHandle, direction, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
-        // モデルに向いてほしい方向に回転.
+        
         MATRIX tmpMat = MV1GetMatrix(modelHandle);
+        // モデルに向いてほしい方向に回転.
         MATRIX rotYMat = MGetRotY(180.0f * RAGE);
         tmpMat = MMult(tmpMat, rotYMat);
         MV1SetRotationMatrix(modelHandle, tmpMat);
     }
+    //ポジションの位置に変更する
     virtual void UpdateMV1Pos()
     {
         // 力をかけ終わったベロシティの方向にディレクションを調整.
@@ -88,4 +97,6 @@ protected:
     int modelHandle;
     //速度
     VECTOR velocity;
+    //modelのサイズ
+    float modelSize = 1;
 };

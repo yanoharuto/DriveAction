@@ -3,7 +3,7 @@
 #include "ImgUI.h"
 #include "PointUI.h"
 #include "CourceDataLoader.h"
-
+#include "OriginalMath.h"
 MiniMap::MiniMap()
 {
     icon.x = miniMapUpLeftX + mapRength;
@@ -12,30 +12,39 @@ MiniMap::MiniMap()
     
     GetGraphSize(miniMap.dataHandle,&mapGraphWidth, &mapGraphHeight);
 
-
+    mapSizeCoefficient = mapSize / mapGraphWidth;
 }
 
 MiniMap::~MiniMap()
 {
 }
 
-void MiniMap::Update(ObjInfo objInfo, std::list<VECTOR> setCoinPosList)
+void MiniMap::Update(ObjInfo objInfo, std::list<VECTOR> setCollectPos)
 {
-    VECTOR pos = ConvertPosition(objInfo.pos);
-    miniMap.x = pos.x;
-    miniMap.y = pos.y;
+    mapRotate = OriginalMath::GetDegreeMisalignment(VGet(1, 0, 0), objInfo.dir) * RAGE;
+    mapRotate = VCross(VGet(1, 0, 0), objInfo.dir).y < 0 ? -mapRotate: mapRotate;
     coinPosList.clear();
-    for (auto ite = setCoinPosList.begin(); ite != setCoinPosList.end(); ite++)
+    for (auto ite = setCollectPos.begin(); ite != setCollectPos.end(); ite++)
     {
-        pos = ConvertPosition((*ite));
-        coinPosList.push_back(pos);
+        VECTOR collectPos = *ite;
+        collectPos.y = 0;
+
+        VECTOR playerPos = objInfo.pos;
+        playerPos.y = 0;
+        collectPos = VSub(collectPos, playerPos);
+        if (VSize(collectPos) < mapGraphWidth)
+        {
+            OriginalMath::GetYRotateVector(collectPos, mapRotate);
+            collectPos = ConvertPosition(collectPos);
+            coinPosList.push_back(collectPos);
+        }
     }
 }
 
 void MiniMap::Draw()
 {
-    DrawRotaGraph(icon.x,icon.y,1,0,miniMap.dataHandle,false);
-    DrawCircle(miniMap.x, miniMap.y, iconSize ,playerColor, 1, 1);
+    DrawRotaGraph(icon.x, icon.y, mapSizeCoefficient, mapRotate, miniMap.dataHandle, true);
+    DrawCircle(icon.x, icon.y, iconSize, playerColor, 1, 1);
     for (auto ite = coinPosList.begin(); ite != coinPosList.end(); ite++)
     {
         DrawCircle((*ite).x, (*ite).y, iconSize, coinColor, 1, 1);
@@ -46,7 +55,6 @@ VECTOR MiniMap::ConvertPosition(VECTOR pos)
 {
     VECTOR data;
     data.x = -pos.x * (mapGraphWidth / 2) / 6000 + miniMapFrontX ;
-
     data.y = pos.z * (mapGraphHeight / 2) / 6000 + miniMapFrontY;
     return data;
 }

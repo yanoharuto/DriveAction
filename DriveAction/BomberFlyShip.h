@@ -18,7 +18,7 @@ private:
     //速さ
     static const float speed;
     //modelの大きさ
-    static const float modelSize;
+    static const float setModelSize;
     //幅
     static const float setRadius;
     //生存時間　爆弾発射クールタイム　最大高度　上昇速度

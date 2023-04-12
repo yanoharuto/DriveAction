@@ -45,7 +45,7 @@ private:
     const float size = 0.55f;
     int eraseFontPosiLength = -1;
     const int eraseFontDecLength = 2;
-    const float timerFontLoadSize = 80.0f;
+    const int timerFontLoadSize = 80;
     const float timerFontBigSize = 1.0f;
     const float timerFontSmaleSize = 0.65f;
     const float meterSize = 0.4f;

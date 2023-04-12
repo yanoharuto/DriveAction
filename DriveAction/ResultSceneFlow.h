@@ -33,6 +33,7 @@ private:
     StringUI* rankUI;
     //スペースキーの催促
     SwitchUI* switchUI;
+
     ImgUI* backGround;
 };
 

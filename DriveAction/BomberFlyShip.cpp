@@ -10,7 +10,7 @@ const float BomberFlyShip:: setFirstPosY = 500.0f;
 //ë¨Ç≥
 const float BomberFlyShip:: speed = 5.8f;
 //modelÇÃëÂÇ´Ç≥
-const float BomberFlyShip::modelSize = 0.7f;
+const float BomberFlyShip::setModelSize = 0.7f;
 //ïù
 const float BomberFlyShip::setRadius = 12.0f;
 //ãÛÇîÚÇ‘éûÇÃå¯â âπ
@@ -25,8 +25,8 @@ const FlyShipArgumentInfo BomberFlyShip::setFlyShipParam
 };
 BomberFlyShip::BomberFlyShip()
 {
-    modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/PrototypeZero.mv1");
-    MV1SetScale(modelHandle, { modelSize,modelSize,modelSize });
+    modelHandle = AssetManager::Get3DModelAssetHandle("Player/PrototypeZero.mv1");
+    modelSize = setModelSize;
     coolTime = setFlyShipParam.setCoolTime;
     radius = setRadius;
     aliveFlag = false;
@@ -36,8 +36,8 @@ BomberFlyShip::BomberFlyShip()
 
 BomberFlyShip::BomberFlyShip(VECTOR setFirstPos,VECTOR setDestinationPos)
 {
-    modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/PrototypeZero.mv1");
-    MV1SetScale(modelHandle, {modelSize,modelSize,modelSize });
+    modelHandle = AssetManager::Get3DModelAssetHandle("Player/PrototypeZero.mv1");
+    modelSize = setModelSize;
     position = setFirstPos;
     position.y = setFlyShipParam.setCoolTime;;
     direction = VNorm(VSub(setDestinationPos, position));

@@ -29,23 +29,26 @@ HitCheckExamineObjectInfo ConflictProccesor::GetHitExamineCheckInfo()
 /// <param name="resultInfo"></param>
 void ConflictProccesor::ConflictProccess(std::list<ConflictExamineResultInfo> resultInfo)
 {
-    for (auto ite = resultInfo.begin(); ite != resultInfo.end(); ite++)
+    if (object != nullptr)
     {
-        if ((*ite).hit != HitSituation::NotHit)
+        for (auto ite = resultInfo.begin(); ite != resultInfo.end(); ite++)
         {
-            if (coolTimer.contains((*ite).tag))
+            if ((*ite).hit != HitSituation::NotHit)
             {
-                //クールタイムが過ぎていて当たっているなら
-                if (coolTimer[(*ite).tag]->IsOverLimitTime())
+                if (coolTimer.contains((*ite).tag))
+                {
+                    //クールタイムが過ぎていて当たっているなら
+                    if (coolTimer[(*ite).tag]->IsOverLimitTime())
+                    {
+                        //当たった時の処理を行う
+                        object->ConflictProccess((*ite));
+                    }
+                }
+                else
                 {
                     //当たった時の処理を行う
                     object->ConflictProccess((*ite));
                 }
-            }
-            else
-            {
-                //当たった時の処理を行う
-                object->ConflictProccess((*ite));
             }
         }
     }

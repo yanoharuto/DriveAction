@@ -2,4 +2,4 @@
 
 #define MAX_LAP 2
 #define CPU_RACER_NUM  0
-#define MAX_GAME_TIME  2.0f
+#define MAX_GAME_TIME  100.0f

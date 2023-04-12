@@ -35,17 +35,15 @@ private:
     static const float effectSize;
     //最初の高さ
     static const float firstY;
-    //エフェクトのパス
-    static const std::string coinEffectPass;
     //modelのパス
     static const std::string coinPass;
     //コインの効果音のパス
     static const std::string coinSEPass;
     //回転量
     float totalMoveYValue = 0;
-    //車にぶつかった時のエフェクト
-    int conflictEffect=-1;
     //球当たり判定
     SphereCollider* collider;
+    //車にぶつかった
+    bool isCarConflict = false;
 };
 

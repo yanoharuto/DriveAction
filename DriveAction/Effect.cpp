@@ -35,10 +35,6 @@ int Effect_Initialize() {
 //エフェクトの更新
 void Effect_Update() 
 {
-    // DXライブラリのカメラとEffekseerのカメラを同期する。
-    Effekseer_Sync3DSetting();
-    // Effekseerにより再生中のエフェクトを更新する。
-    UpdateEffekseer3D();
 }
 //エフェクトの描写
 void Effect_Draw() {

@@ -18,8 +18,8 @@ static CircuitData cPParam;
 /// <returns></returns>
 CheckPoint::CheckPoint()
 {
-    cPParam.positionVec = GetVectorConversion(CourceDataLoader::GetVECTORData(checkPointPosPass));
-    cPParam.directionVec = GetVectorConversion(CourceDataLoader::GetVECTORData(checkPointDirPass));
+    cPParam.positionVec = ConvertListToVector(CourceDataLoader::GetVECTORData(checkPointPosPass));
+    cPParam.directionVec = ConvertListToVector(CourceDataLoader::GetVECTORData(checkPointDirPass));
     vecSize = cPParam.positionVec.size();
     
 }

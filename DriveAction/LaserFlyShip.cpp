@@ -8,14 +8,14 @@ const float LaserFlyShip::deleteBetween = 1500.0f;
 
 LaserFlyShip::LaserFlyShip()
 {
-    modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/Rocker.mv1");
+    modelHandle = AssetManager::Get3DModelAssetHandle("Player/Rocker.mv1");
 
     isGenerateLaser = false;
 }
 
 LaserFlyShip::LaserFlyShip(VECTOR firstPos, VECTOR setDestinationPos)
 {
-    modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/Rocker.mv1");
+    modelHandle = AssetManager::Get3DModelAssetHandle("Player/Rocker.mv1");
 
     position = firstPos;
     

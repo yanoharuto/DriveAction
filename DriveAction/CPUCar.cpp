@@ -22,8 +22,7 @@ CPUCar::CPUCar()
 CPUCar::CPUCar(VECTOR firstPos, VECTOR destinaTionPos)
     :Car(setCarParam)
 {
-    modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/BlueBull.mv1");
-    MV1SetScale(modelHandle, { modelSize,modelSize,modelSize });
+    modelHandle = AssetManager::Get3DModelAssetHandle("Player/BlueBull.mv1");
     position = firstPos;
     position.y = firstPosY;
     direction = VGet(1.0f, 0.0f, 0.0f);

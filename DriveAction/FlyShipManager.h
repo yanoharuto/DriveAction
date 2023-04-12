@@ -19,7 +19,7 @@ private:
     std::list<BomberFlyShip*>bombList;
     std::list<CircleLaserFlyShip*>UfoFlyshipList;
     std::list<UpDownLaserFlyShip*>updownFlyShipList;
-    Timer* timer;
+    Timer* bomberFlyShipGoTimer;
     const float setCoolTime = 5.0f;
     const int UFONum = 6;
     const int BomberFlyShipNum = 3;
@@ -33,10 +33,6 @@ private:
     //modelのアドレス
     const std::string ufoModelPass = "Player/Rocker.mv1";
     //レーザー売ってくる敵の座標
-    const std::string ufoPosPass = "/UFOPos.txt";
-    //レーザー撃ってくる敵２の座標が書いてある
-    const std::string updownFlyShipPosPass = "/enemyPos.txt";
+    const std::string enemyPosPass = "data/stageMap_enemyPos.csv";
     
-    std::list<VECTOR> ufoPosList;
-    std::list<VECTOR> updownFlyShipPosList;
 };

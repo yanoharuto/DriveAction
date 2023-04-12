@@ -77,7 +77,10 @@ protected:
 	/// <param name="destinationPos"></param>
 	/// <param name="itemInfo"></param>
 	void CommonUpdate();
-
+	/// <summary>
+	/// 移動中のエフェクトとかコインのエフェクトとかを更新
+	/// </summary>
+	void EffectUpdate();
 	/// <summary>
 	/// 車がぶつかった時の関数
 	/// </summary>
@@ -144,7 +147,9 @@ protected:
 	//走っているときに出るエフェクト
 	int runEffect = -1;
 	//ぶつかった時に出てくるエフェクト
-	int conflictEffect = -1;
+	int stageConflictEffect = -1;
+	//コインにぶつかった時に出てくるエフェクト
+	int coinConflictEffect = -1;
 	//曲がったりするときに傾く速度
 	const float twistZRotaSpeed = 1.7f * RAGE;
 	//最大傾き度
@@ -163,8 +168,6 @@ protected:
 	float updownSpeed = 2.0f;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;
-	//modelのおおきさ
-	float modelSize = 1.0f;
 	//目的地に向かうときに曲がるか判断する
 	float turnProccesAngularLine = 5.0f;
 	//チェックポイントに当たってるか
@@ -185,10 +188,12 @@ protected:
 	static const float colideDecel;
 	//降りる速度
 	static const float fallSpeed;
+	//エフェクトの大きさ
+	static const float effectSize;
+	//ダメージを受けた時に回転する速度
+	static const float damageReactionRotaSpeed;
 	//ダメージを受けた時の操作不可能時間の合計
 	static const float setDamageReactionTime;
-	//煙のエフェクト
-	static const std::string smokeEffectResource;
 	//ぶつかった時のエフェクト
 	static const std::string conflictEffectResource;
 	//風のエフェクト
@@ -201,6 +206,8 @@ protected:
 	static const std::string carHornSEPass;
 	//運転中の効果音
 	static const std::string drivingSEPass;
+	//エフェクトのパス
+	static const std::string coinEffectPass;
 	//ダメージを受けた後の無敵時間
 	Timer* damageCoolTimer;
 	//タイヤ

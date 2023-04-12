@@ -29,8 +29,8 @@
 /// <param name="carInfo"></param>
 Rocket::Rocket(ItemArgumentCarInfo carInfo)
 {
-    modelHandle = MV1DuplicateModel(AssetManager::GetDuplicate3DModelAssetHandle(rocketModelPass));
-    MV1SetScale(modelHandle, VGet(setModelSize, setModelSize, setModelSize));
+    modelHandle = AssetManager::Get3DModelAssetHandle(rocketModelPass);
+    modelSize = setModelSize;
     fallingSpeed = setFallingSpeed;
     tag = ObjectTag::damageObject;
     radius = setRadius;
@@ -42,7 +42,9 @@ Rocket::Rocket(ItemArgumentCarInfo carInfo)
     onGround = false;
     collider = new SphereCollider(this);
 }
-
+/// <summary>
+/// ‹…“–‚½‚è”»’è
+/// </summary>
 Rocket::~Rocket()
 {
     StopEffekseer3DEffect(burnEffect);

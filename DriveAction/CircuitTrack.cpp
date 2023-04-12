@@ -5,19 +5,27 @@
 #include "OriginalMath.h"
 #include "Utility.h"
 #include "ConflictManager.h"
+#include "GetGeneratePos.h"
 /// <summary>
 /// èâä˙âª
 /// </summary>
-/// <param name="player">ÉvÉåÉCÉÑÅ[ÇÃïùÇéÊÇÈ</param>
 /// <returns></returns>
 CircuitTrack::CircuitTrack()
 {
-    obstracleModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(stageFilePass + obstracleFilePass);
-    floorModelHandle = AssetManager::GetDuplicate3DModelAssetHandle(stageFilePass + floorFilePass);
-    MV1SetPosition(obstracleModelHandle, outsideModelPosition);
-    
-    floorCollider = new MeshCollider(floorModelHandle, ObjectTag::stage);
-    obstracleCollider = new MeshCollider(obstracleModelHandle, ObjectTag::obstacle);
+    floorModelHandle = AssetManager::Get3DModelAssetHandle(stageFilePass + floorFilePass);
+    for (int i = 0; i < RockPattern; i++)
+    {
+        std::vector<VECTOR> posList = GetGeneratePos::CSVConvertPosition("data/stageMap_rockPos.csv",i);
+        for (auto ite = posList.begin(); ite != posList.end(); ite++)
+        {
+            VECTOR pos = (*ite);
+            pos.y = rockYPos * i;
+            Rock* rock = new Rock(pos,i);
+            rocks.push_back(rock);
+        }
+    }
+
+    stageWall = new StageWall();
 }
 
 /// <summary>
@@ -26,10 +34,11 @@ CircuitTrack::CircuitTrack()
 /// <returns></returns>
 CircuitTrack::~CircuitTrack()
 {
-    ConflictManager::EraceConflictObjInfo(floorCollider);
-    ConflictManager::EraceConflictObjInfo(obstracleCollider);
-    SAFE_DELETE(floorCollider);
-    SAFE_DELETE(obstracleCollider);
+    for (auto ite = rocks.begin(); ite != rocks.end(); ite++)
+    {
+        SAFE_DELETE((*ite));
+    }
+    SAFE_DELETE(stageWall);
 }
 
 
@@ -38,6 +47,10 @@ CircuitTrack::~CircuitTrack()
 /// </summary>
 void CircuitTrack::Draw()
 {
-    MV1DrawModel(obstracleModelHandle);
+    for (auto ite = rocks.begin(); ite != rocks.end(); ite++)
+    {
+        (*ite)->Draw();
+    }
+    stageWall->Draw();
     MV1DrawModel(floorModelHandle);
 }

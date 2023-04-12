@@ -1,7 +1,7 @@
 #pragma once
 #include "CircuitTrack.h"
 #include "SkyDome.h"
-#include <list>
+#include "StageWall.h"
 class CourceDataLoader;
 /// <summary>
 /// コースのロードや描画とか当たり判定とかする

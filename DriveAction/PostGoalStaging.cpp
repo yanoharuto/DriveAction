@@ -3,24 +3,23 @@
 #include "SoundPlayer.h"
 #include "UserInput.h"
 #include "ResultScore.h"
-
+#include "RaceScreen.h"
 PostGoalStaging::PostGoalStaging()
 {
     SoundPlayer::StopAllSound();
-    x = 0.0f;
-    y = SCREEN_HEIGHT;
-    y /= 2;
-    UIData goalMarkerUI;
-    goalMarkerUI.x = x;
-    goalMarkerUI.y = y;
+    goalMarkerUI.x = 0;
+    goalMarkerUI.y = SCREEN_HEIGHT / 2;
     goalMarkerUI.dataHandle = CreateFontToHandle("BIZ UDゴシック", 122, 3, DX_FONTTYPE_NORMAL);
     stringUI = new StringUI(goalMarkerUIColor, goalMarkerUI, "終了");
     switchUI = new SwitchUI();
     SoundPlayer::LoadSound(clapSE);
     SoundPlayer::LoadSound(rouretteSE);
     SoundPlayer::LoadSound(stopSE);
+    SoundPlayer::LoadSound(nextSE);
     SoundPlayer::Play2DSE(clapSE);
-
+    
+    screenGraph = RaceScreen::GetRaceScreen();
+    
     UIData uidata = {};
 
     uidata.y = UI_SCREEN_HEIGHT * 2;
@@ -51,9 +50,6 @@ PostGoalStaging::PostGoalStaging()
     
     
     num = new NumUI();
-    screenGraph = MakeGraph(SCREEN_WIDTH, SCREEN_HEIGHT);
-    GetDrawScreenGraph(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, screenGraph);
-
     timer = new Timer(spaceKeyCoolTime);
 }
 
@@ -67,38 +63,60 @@ PostGoalStaging::~PostGoalStaging()
 
 bool PostGoalStaging::Update()
 {
-
-    if (x > SCREEN_WIDTH && !SoundPlayer::IsPlaySound(stopSE) && spaceClickCount < SCORE_KIND_NUM )
+    //終了のアナウンスの表示が終えたら
+    if (goalMarkerUI.x > SCREEN_WIDTH && !SoundPlayer::IsPlaySound(stopSE) && spaceClickCount < SCORE_KIND_NUM )
     {
         timer->Update();
         if (!SoundPlayer::IsPlaySound(rouretteSE))
         {
             SoundPlayer::Play2DSE(rouretteSE);
         }
+        //スコアの表示を少しずつしていく
         float larp = 1 - timer->GetLimitTime() / spaceKeyCoolTime;
         scoreUI[spaceClickCount].score = ResultScore::GetScore(spaceClickCount) * larp;
+        //スコアを表示しきったら
         if (UserInput::GetInputState(Space) == Detach || scoreUI[spaceClickCount].score == ResultScore::GetScore(spaceClickCount))
         {
+            //スコアの最終表示
             SoundPlayer::StopSound(rouretteSE);
             SoundPlayer::Play2DSE(stopSE);
             scoreUI[spaceClickCount].score = ResultScore::GetScore(spaceClickCount);
-
+            //次のスコアの更新の準備
             spaceClickCount++;
 
-            if (UserInput::GetInputState(Space) == Detach && spaceClickCount >= SCORE_KIND_NUM + 1)
-            {
-                return true;
-            }
             timer->Init();
         }
     }
-    else
+    else//終了アナウンスを移動させる
     {
-        x += goalMoveX;
-        stringUI->SetXY(static_cast<int>(x), static_cast<int>(y));
+        goalMarkerUI.x += goalMoveX;
+        stringUI->SetXY(goalMarkerUI.x, goalMarkerUI.y);
     }
-    
+    //スペースキー催促
     switchUI->Update();
+
+    
+    //終了時の音が鳴ってない時
+    if (!SoundPlayer::IsPlaySound(nextSE))
+    {
+        
+        //スコアを表示しきったら音を鳴らして
+        if (spaceClickCount == SCORE_KIND_NUM && UserInput::GetInputState(Space))
+        {
+            SoundPlayer::Play2DSE(nextSE);
+            spaceClickCount++;
+            timer->Init();
+        }
+        //なり終わったら終了
+        if (spaceClickCount > SCORE_KIND_NUM )
+        {
+            timer->Update();
+            if (timer->IsOverLimitTime())
+            {
+                return true;
+            }
+        }
+    }
     return false;
 }
 
@@ -107,7 +125,7 @@ void PostGoalStaging::Draw()
     SetDrawBright(60, 60, 60);
     DrawGraph(0, 0, screenGraph, false);
     SetDrawBright(255, 255, 255);
-    if (x > SCREEN_WIDTH)
+    if (goalMarkerUI.x > SCREEN_WIDTH)
     {
         for (int i = 0; i <= spaceClickCount ; i++)
         {
@@ -125,4 +143,9 @@ void PostGoalStaging::Draw()
     {
         stringUI->DrawRightAlignedString();
     }
+}
+
+void PostGoalStaging::SetUp(int graphHandle)
+{
+    
 }

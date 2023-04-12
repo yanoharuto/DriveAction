@@ -9,11 +9,6 @@ public:
     /// </summary>
     /// <returns></returns>
     Object()
-        :aliveFlag(true),
-        direction({}),
-        position({}),
-        tag(ObjectTag::car),
-        radius(0)
     {
     };
     /// <summary>
@@ -46,7 +41,10 @@ public:
     {
         return radius;
     }
-
+    float GetBouncePower()
+    {
+        return bouncePower;
+    }
     /// <summary>
     /// Œü‚«Š“¾
     /// </summary>
@@ -65,14 +63,16 @@ public:
     };
 protected:
     //”¼Œa
-    float radius;
+    float radius = 0;
+    //’µ‚Ë•Ô‚·—Í
+    float bouncePower = 0;
     //¶‘¶ƒtƒ‰ƒO
-    bool aliveFlag;
+    bool aliveFlag = true;
     //©•ª‚ª‰½‚È‚Ì‚©
-    ObjectTag tag;
+    ObjectTag tag = ObjectTag::stage;
     //•ûŒü
-    VECTOR direction;
+    VECTOR direction = {1,0,0};
     //êŠ
-    VECTOR position;
+    VECTOR position = {};
 };
 

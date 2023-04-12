@@ -25,8 +25,10 @@ PlaySceeneFlow::PlaySceeneFlow()
 	effectManager = new EffectManager();
 	flyShipManager = new FlyShipManager(); 
 	shadowMap = new ShadowMap();
+	stageManager = new StageManager();
 	racePrevProccess = new RacePrevProcess();
 	countDown=new CountDown(timer);
+	screen = new RaceScreen();
 	SoundPlayer::LoadSound(BGMPass);
 	SoundPlayer::SetSoundVolume(BGMBolume, BGMPass);
 #ifdef _DEBUG
@@ -35,7 +37,6 @@ PlaySceeneFlow::PlaySceeneFlow()
 
 PlaySceeneFlow::~PlaySceeneFlow()
 {
-	
 	SAFE_DELETE(racerManager)
 	SAFE_DELETE(stageManager);
 	SAFE_DELETE(camera);
@@ -43,7 +44,6 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(postGoalStaging);
 	SAFE_DELETE(playerUI);
 	SAFE_DELETE(score);
-	SAFE_DELETE(courceDataLoader);
 	SAFE_DELETE(modelManager);
 	SAFE_DELETE(firingManager);
 	SAFE_DELETE(effectManager);
@@ -54,6 +54,7 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(coinManager);
 	SAFE_DELETE(timer);
 	SAFE_DELETE(countDown);
+	SAFE_DELETE(screen);
 #ifdef _DEBUG
 #endif
 
@@ -93,6 +94,7 @@ void PlaySceeneFlow::Update()
 		conflictManager->Update();
 		//プレイヤーUI
 		playerUI->Update(playerRelatedInfo,coinManager->GetCoinPosList());
+		//残り三秒になったらカウントダウンしてくれる
 		countDown->Update();
 		//レース終了
 		if (timer->IsOverLimitTime() || coinManager->GetCoinNowNum() == 0)
@@ -120,7 +122,12 @@ void PlaySceeneFlow::Update()
 	}
 	//カメラの処理
 	camera->Update(playerPosAndDir);
+	//シャドウマップの更新
 	shadowMap->SetShadowMapErea(racerManager->GetPlayerCarPosDir());
+	// DXライブラリのカメラとEffekseerのカメラを同期する。
+	Effekseer_Sync3DSetting();
+	// Effekseerにより再生中のエフェクトを更新する。
+	UpdateEffekseer3D();
 #ifdef _DEBUG
 #endif
 }
@@ -131,6 +138,7 @@ void PlaySceeneFlow::Draw()
 	ManagerDraw();
 	shadowMap->DrawEnd();
 	ManagerDraw();
+	shadowMap->Use();
 	switch (nowProgress)
 	{
 	case PlaySceeneProgress::start:
@@ -138,6 +146,7 @@ void PlaySceeneFlow::Draw()
 	case PlaySceeneProgress::race:
 		// Effekseerにより再生中のエフェクトを描画する。
 		DrawEffekseer3D();
+		screen->SetUp();
 		playerUI->Draw();
 		countDown->DrawUI();
 		break;
@@ -146,7 +155,6 @@ void PlaySceeneFlow::Draw()
 		postGoalStaging->Draw();
 		break;
 	}
-	shadowMap->Use();
 #ifdef DEBUG
 	conflictManager->DrawCollisionSphere();
 #endif // DEBUG
@@ -162,5 +170,6 @@ void PlaySceeneFlow::ManagerDraw()
 		flyShipManager->Draw();
 		stageManager->Draw();
 		coinManager->Draw();
+
 	}
 }

@@ -9,8 +9,8 @@
 #include "ConflictManager.h"
 const CarInfomation PlayerCar::setCarParam =
 {
-	0.7f,
-	4.7f,
+	1.0f,
+	6.0f,
 	3.0f,
 	0.13f,
 	1.0f,
@@ -29,8 +29,7 @@ PlayerCar::PlayerCar(VECTOR firstPos, HitNumCounter* counter)
 	:Car(setCarParam)
 {
 	damageCoolTimer = new Timer(setDamageCoolTime);
-	modelHandle = AssetManager::GetDuplicate3DModelAssetHandle("Player/IceBlades.mv1");
-	MV1SetScale(modelHandle, { modelSize,modelSize,modelSize });
+	modelHandle = AssetManager::Get3DModelAssetHandle("Player/IceBlades.mv1");
 	position = firstPos;
 	firstPosY = setFirstPosY;
 	position.y = firstPosY;
@@ -67,7 +66,6 @@ PlayerCar::~PlayerCar()
 /// </summary>
 void PlayerCar::Update()
 {
-	VECTOR prevPos = position;
 	SetInputDir();
 	CommonUpdate();
 	PlayDriveSound(wheelArgumentCarInfo.inputDir);
@@ -80,7 +78,6 @@ void PlayerCar::Update()
 	printfDx("position::%f,%f,%f\n", position.x,position.y,position.z);
 	printfDx("dir::%f,%f,%f\n", direction.x,direction.y,direction.z);
 	printfDx("velocity::%f,%f,%f\n", velocity.x,velocity.y,velocity.z);
-
 #endif
 }
 

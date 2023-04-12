@@ -41,7 +41,7 @@ private:
     //コインの枚数を描画するクラス
     NumUI* numUI;
     //操作説明のUI情報
-    UIData manualData{ UI_SCREEN_WIDTH * 2,UI_SCREEN_HEIGHT * 10 ,-1};
+    UIData manualData{ UI_SCREEN_WIDTH * 2,static_cast<int>(UI_SCREEN_HEIGHT) *10 ,-1 };
     //コインの枚数についてのUIの描画位置
     float coinUIDrawX = UI_SCREEN_WIDTH * 15;
     //コインの枚数についてのUIの描画位置

@@ -6,6 +6,7 @@ const std::string AssetManager::genericPass = "data/model/";
 std::map<std::string, int> AssetManager::assetMap;
 AssetManager::AssetManager()
 {
+    assetMap.clear();
 }
 
 AssetManager::~AssetManager()
@@ -21,7 +22,7 @@ AssetManager::~AssetManager()
 /// </summary>
 /// <param name="assetPass"></param>
 /// <returns></returns>
-int AssetManager::GetDuplicate3DModelAssetHandle(std::string assetPass)
+int AssetManager::Get3DModelAssetHandle(std::string assetPass)
 {
     if (!assetMap.contains(assetPass))//まだロードしてないならロードする
     {

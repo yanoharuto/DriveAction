@@ -47,7 +47,7 @@ private:
     static const float setRadius;
     //燃えた時の当たり判定の大きさ
     static const float setBurnRadius;
-    //動いているエフェクト
+    //燃えているときのエフェクト
     int burnEffect = -1;
     //地面に触れているか
     bool onGround = false;

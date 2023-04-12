@@ -1,8 +1,11 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "Rock.h"
+#include "StageWall.h"
 #include "ConflictExamineResultInfo.h"
 #include "HitCheckExamineObjectInfo.h"
-#include "MeshCollider.h"
+#include "SphereCollider.h"
 
 #define  COURCE_GENERATE_NUM 5
 struct StageModel;
@@ -23,29 +26,19 @@ public:
     /// </summary>
     void Draw();
 private:
-    
+
     //コースの外側のmodelのポジション
-    const VECTOR outsideModelPosition = { 0,-200,0 };
+    const float rockYPos = 20;
     //ステージのmodelのファイルのパス
     const std::string stageFilePass = "Stage/";
-    //障害物
-    const std::string obstracleFilePass = "Obstracle.mv1";
+    
     //地面
     const std::string floorFilePass = "Floor.mv1";
-    //コースのモデルの数
-    const int courceModelNum = 2;
-    //コースのパターンの数
-    const int courcePatternNum = 3;
+
     //次に出すmodelのエイリアス
     int random = 1;
-    
-    //障害物モデルハンドル
-    int obstracleModelHandle;
-
     //地面
     int floorModelHandle;
-    //壁の当たり判定
-    MeshCollider* obstracleCollider;
-    //地面の当たり判定
-    MeshCollider* floorCollider;
+    std::vector<Rock*> rocks;
+    StageWall* stageWall;
 };

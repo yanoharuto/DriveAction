@@ -1,12 +1,14 @@
 #include "CoinManager.h"
 #include "CourceDataLoader.h"
 #include "Utility.h"
+#include "ListUtility.h"
+#include "GetGeneratePos.h"
 /// <summary>
 /// ÉRÉCÉìÇÃê›íu
 /// </summary>
 CoinManager::CoinManager()
 {
-    std::list<VECTOR> posList = CourceDataLoader::GetVECTORData(coinPosPass);
+    std::list<VECTOR> posList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(coinPosPass,0));
     coinFirstNum = posList.size();
     for (auto ite = posList.begin(); ite != posList.end(); ite++)
     {

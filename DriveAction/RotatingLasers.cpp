@@ -48,20 +48,7 @@ void RotatingLasers::RotateLaser(std::string laserEffectPass,float rotaSpeed,flo
     direction = VNorm(OriginalMath::GetYRotateVector(direction, rotaSpeed));
     effectRota -= rotaSpeed * RAGE;
     endPos = VAdd(position, VScale(direction, position.y * laserRange));
-    if (owner->GetOwnerState() != OwnerState::Delete)
-    {
-        if (laserEffect == -1)
-        {
-            laserEffect = EffectManager::GetPlayEffect3D(laserEffectPass);
-        }
-        SetPosPlayingEffekseer3DEffect(laserEffect, position.x, position.y, position.z);
-        SetRotationPlayingEffekseer3DEffect(laserEffect, 0, effectRota, 0);
-        SetLaserTrack();
-        SetPosPlayingEffekseer3DEffect(trackEffect, endPos.x, 0, endPos.z);
-
-        isDrawShadow = false;
-    }
-    else
+    if (owner->GetOwnerState() == OwnerState::Delete)
     {
         if (laserEffect != -1)
         {
@@ -70,6 +57,17 @@ void RotatingLasers::RotateLaser(std::string laserEffectPass,float rotaSpeed,flo
             StopEffekseer3DEffect(laserEffect);
             laserEffect = -1;
         }
+    }
+    else
+    {
+        if (laserEffect == -1)
+        {
+            laserEffect = EffectManager::GetPlayEffect3D(laserEffectPass);
+        }
+        SetPosPlayingEffekseer3DEffect(laserEffect, position.x, position.y, position.z);
+        SetRotationPlayingEffekseer3DEffect(laserEffect, 0, effectRota, 0);
+        SetLaserTrack();
+        isDrawShadow = false;
     }
 }
 
@@ -80,6 +78,7 @@ void RotatingLasers::SetLaserTrack()
     {
         trackEffect = EffectManager::GetPlayEffect3D(laserTrackPass);
     }
+    SetPosPlayingEffekseer3DEffect(trackEffect, endPos.x, 0, endPos.z);
 }
 void RotatingLasers::Draw()
 {

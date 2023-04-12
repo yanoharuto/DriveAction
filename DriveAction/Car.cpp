@@ -19,14 +19,18 @@ const float Car:: gripDecel = 0.08f;
 const float Car:: colideDecel = 0.88f;
 //降りる速度
 const float Car:: fallSpeed = 10.8f;
+//エフェクトの大きさ
+const float Car::effectSize = 10.0f;
 //ダメージを受けた時の操作不可能時間の合計
 const float Car:: setDamageReactionTime = 0.5f;
-//煙のエフェクト
-const std::string Car:: smokeEffectResource = "smoke.efkefc";
+//ダメージを受けた時に回転する速度
+const float Car:: damageReactionRotaSpeed = 75.0f;
 //ぶつかった時のエフェクト
 const std::string Car::conflictEffectResource = "conflict.efkefc";
 //走っているときのエフェクト
 const std::string Car:: windEffectResource = "sandWind.efkefc";
+//エフェクトのパス
+const std::string Car::coinEffectPass = "coin.efkefc";
 //止まった時の効果音
 const std::string Car:: breakeSEPass = "brake.mp3";
 //ぶつかった時の効果音
@@ -43,7 +47,10 @@ Car::Car()
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 
 }
-
+/// <summary>
+/// 初期化
+/// </summary>
+/// <param name="param"></param>
 Car::Car(CarInfomation param)
 {
 	turnProccesAngularLine = param.turnAngularLine;
@@ -57,11 +64,10 @@ Car::Car(CarInfomation param)
 	ModelSetMatrix();
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 
-	EffectManager::LoadEffectManager(smokeEffectResource, 1.0f);
-	EffectManager::LoadEffectManager(conflictEffectResource, 10.0f);
-	EffectManager::LoadEffectManager(windEffectResource, 10.0f);
+	EffectManager::LoadEffectManager(coinEffectPass, effectSize);
+	EffectManager::LoadEffectManager(conflictEffectResource, effectSize);
+	EffectManager::LoadEffectManager(windEffectResource, effectSize);
 	SoundPlayer::LoadSound(drivingSEPass);
-
 	SoundPlayer::LoadSound(carClashSEPass);
 	SoundPlayer::LoadSound(carHornSEPass);
 }
@@ -87,7 +93,9 @@ void Car::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
 	case ObjectTag::obstacle:
 		ConflictReaction(conflictInfo);
 		break;
-	case ObjectTag::acelerationFloor:
+	case ObjectTag::coin:
+		coinConflictEffect = EffectManager::GetPlayEffect3D(coinEffectPass);
+		SetPosPlayingEffekseer3DEffect(coinConflictEffect, position.x, position.y, position.z);
 		break;
 	case ObjectTag::damageObject:
 		DamageReaction(conflictInfo);
@@ -145,6 +153,7 @@ void Car::DamageReaction(const ConflictExamineResultInfo conflictInfo)
 /// <param name="conflictObjRad">ぶつかったオブジェクトの半径</param>
 void Car::PostDamageProccess()
 {
+	//ダメージを受けたならダメージを受けたリアクションをする
 	if (isDamage)
 	{
 		damageReactionTime -= DELTATIME;
@@ -153,6 +162,7 @@ void Car::PostDamageProccess()
 			isDamage = false;
 		}
 	}
+	//無敵時間更新
 	damageCoolTimer->Update();
 }
 
@@ -200,7 +210,7 @@ void Car::ModelSetMatrix()
 	if (isDamage)
 	{
 		rota = damageReactionTime / setDamageReactionTime * 100;
-		rota *= 75.0f;
+		rota *= damageReactionRotaSpeed;
 	}
 	// 向きに合わせて回転.
 	MV1SetRotationZYAxis(modelHandle, direction, VGet(0.0f, 1.0f, 0.0f), twistZRota);
@@ -242,18 +252,26 @@ void Car::CommonUpdate()
 	ModelSetMatrix();
 	//タイヤに渡したい情報を出す
 	InitWheelArgumentCarInfo();
+	EffectUpdate();
+	//タイヤの更新
+	wheels->WheelUpdate(wheelArgumentCarInfo);
+}
+/// <summary>
+/// 移動中のエフェクトとかコインのエフェクトとかを更新
+/// /// </summary>
+void Car::EffectUpdate()
+{
+	float degree = OriginalMath::GetDegreeMisalignment(VGet(1, 0, 0), direction);
 	if (VSize(velocity) > 0.5f)
 	{
 		//走っている最中にもエフェクトが出ているか
 		if (runEffect == -1)
 		{
-
 			//エフェクトが消えてたら出す
 			runEffect = EffectManager::GetPlayEffect3D(windEffectResource);
 		}
 		//車の場所と回転に合わせる
-		SetPosPlayingEffekseer3DEffect(runEffect, prevPos.x, 0, prevPos.z);
-		float degree = OriginalMath::GetDegreeMisalignment(VGet(1, 0, 0), direction);
+		SetPosPlayingEffekseer3DEffect(runEffect, position.x, 0, position.z);
 		if (VCross(VGet(1, 0, 0), direction).y < 0)
 		{
 			SetRotationPlayingEffekseer3DEffect(runEffect, 0, -degree * RAGE, 0);
@@ -272,8 +290,20 @@ void Car::CommonUpdate()
 			runEffect = -1;
 		}
 	}
-	//タイヤの更新
-	wheels->WheelUpdate(wheelArgumentCarInfo);
+	//コインのエフェクトを表示
+	if (coinConflictEffect != -1)
+	{
+		SetPosPlayingEffekseer3DEffect(coinConflictEffect, position.x, position.y, position.z);
+		if (VCross(VGet(1, 0, 0), direction).y < 0)
+		{
+			SetRotationPlayingEffekseer3DEffect(runEffect, 0, -degree * RAGE, 0);
+		}
+		else
+		{
+			SetRotationPlayingEffekseer3DEffect(runEffect, 0, degree * RAGE, 0);
+		}
+
+	}
 }
 
 
@@ -411,6 +441,6 @@ HitCheckExamineObjectInfo Car::GetHitCheckExamineInfo()
 	HitCheckExamineObjectInfo info;
 	info.pos = prevPos;
 	info.radius = radius;
-	info.velocity = VAdd(velocity,collVec);
+	info.velocity = velocity;
 	return info;
 }

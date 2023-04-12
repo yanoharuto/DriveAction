@@ -30,17 +30,15 @@ void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo, std::list<VECTOR> se
 
 void PlayerRelatedUI::Draw()
 {
-    DrawGraph(manualData.x, manualData.y, manualData.dataHandle,true);
-    
+    DrawGraph(manualData.x, manualData.y, manualData.dataHandle, true);
+
     int x = numUI->Draw(coinUIDrawX, coinUIDrawY, nowGetCoinNum, fontSize);
     x += numUI->GetNumWidthSize() * fontSize;
     DrawRotaGraph(x, coinUIDrawY, fontSize, 0, slashHandle, true);
     x += numUI->GetNumWidthSize() * fontSize;
-    numUI->Draw(x , coinUIDrawY, firstCoinNum, fontSize);
-    
+    numUI->Draw(x, coinUIDrawY, firstCoinNum, fontSize);
+
     timerUI->Draw();
-    if (UserInput::GetInputState(Space) == Hold)
-    {
-        minimapUI->Draw();
-    }
+    minimapUI->Draw();
+
 }

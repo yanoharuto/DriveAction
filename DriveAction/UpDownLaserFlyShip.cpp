@@ -4,7 +4,7 @@
 const float UpDownLaserFlyShip::addMoveValue = 0.05f;
 const float UpDownLaserFlyShip::updownSpeed = 6.0f;
 const float UpDownLaserFlyShip::setFirstPosY = 220.0f;
-
+const float UpDownLaserFlyShip::setModelSize = 0.3f;
 UpDownLaserFlyShip::UpDownLaserFlyShip()
     :LaserFlyShip()
 {
@@ -14,6 +14,7 @@ UpDownLaserFlyShip::UpDownLaserFlyShip()
 UpDownLaserFlyShip::UpDownLaserFlyShip(VECTOR setPos, VECTOR setDestinationPos)
     :LaserFlyShip(setPos,setDestinationPos)
 {
+    modelSize = setModelSize;
     position.y = setFirstPosY;
     GenerateLaser();
 }

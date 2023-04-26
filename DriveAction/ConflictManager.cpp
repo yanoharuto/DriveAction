@@ -68,10 +68,9 @@ std::list<ConflictExamineResultInfo> ConflictManager::GetConflictObjInfo(Conflic
     }
     return nowHitList;
 }
-
-
-
-
+/// <summary>
+/// “–‚½‚è”»’è‚ð‚·‚é
+/// </summary>
 void ConflictManager::Update()
 {
     for (auto objIte = conflictObjList.begin(); objIte != conflictObjList.end(); objIte++)

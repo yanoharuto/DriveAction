@@ -1,12 +1,16 @@
 #pragma once
 #include "SceneType.h"
+
 /// <summary>
 /// シーンごとの処理の流れ
 /// </summary>
 class SceneFlowBase abstract
 {
 public:
-    SceneFlowBase() { isEndProccess = false; };
+    SceneFlowBase() 
+    {
+        isEndProccess = false; 
+    };
     virtual ~SceneFlowBase() {};
     /// <summary>
     /// 更新
@@ -31,5 +35,5 @@ protected:
     //処理が終わったか
     bool isEndProccess = false;
     //次のシーンはどれか
-    SceneType nextSceneType;
+    SceneType nextSceneType = SceneType::TITLE;
 };

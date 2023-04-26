@@ -1,9 +1,8 @@
 #pragma once
-#include "StringUI.h"
-#include "ImgUI.h"
 #include "SwitchUI.h"
 #include "SceneFlowBase.h"
 #include <string>
+class UIManager;
 /// <summary>
 /// リザルトシーンの処理の流れ
 /// </summary>
@@ -26,14 +25,8 @@ public:
     /// </summary>
     void Draw()override;
 private:
-    //背景のアドレス
-    const std::string resultBackImgPass = "data/result/resultGraph.png";
-    
-    //スコアのUI
-    StringUI* rankUI;
+    UIManager* uiManager;
     //スペースキーの催促
     SwitchUI* switchUI;
-
-    ImgUI* backGround;
 };
 

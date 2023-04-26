@@ -1,10 +1,12 @@
 #pragma once
+#include <list>
 #include "PlayerRelatedInfo.h"
-#include "TimerUI.h"
 #include "Utility.h"
-#include "UIDataStruct.h"
-#include "MiniMap.h"
-#include "NumUI.h"
+#include "UIManager.h"
+class MiniMap;
+class TimerUI;
+class Timer;
+class NumUI;
 /// <summary>
 /// プレイヤーに関係のあるUI
 /// </summary>
@@ -24,12 +26,6 @@ public:
     /// </summary>
     void Draw();
 private:
-    //操作説明の画像
-    const std::string manualPass = "data/Manual.png";
-    // /これの画像のパス
-    const std::string slash = "data/slash.png";
-    //スラッシュ
-    int slashHandle = -1;
     //最初のコインの枚数
     int firstCoinNum = 0;
     // プレイヤーが所得した枚数
@@ -41,17 +37,14 @@ private:
     //コインの枚数を描画するクラス
     NumUI* numUI;
     //操作説明のUI情報
-    UIData manualData{ UI_SCREEN_WIDTH * 2,static_cast<int>(UI_SCREEN_HEIGHT) *10 ,-1 };
-    //コインの枚数についてのUIの描画位置
-    float coinUIDrawX = UI_SCREEN_WIDTH * 15;
-    //コインの枚数についてのUIの描画位置
-    float coinUIDrawY = UI_SCREEN_HEIGHT * 8;
-    //フォント画像のサイズ
-    const float timerFontLoadSize = 80.0f;
-    //描画位置
-    const float drawTimerX = UI_SCREEN_WIDTH * 17;
-    //描画位置
-    const float drawTimerY = UI_SCREEN_HEIGHT * 4;
+    UIData manualData;
+    //スラッシュ
+    UIData slashHandle;
+    //所得したコインの枚数についてのUIの描画位置
+    int coinUIDrawX = UI_SCREEN_WIDTH * 15;
+    //所得したコインの枚数についてのUIの描画位置
+    int coinUIDrawY = static_cast<int>(UI_SCREEN_HEIGHT * 8);
+    
     //フォントのサイズ
-    const float fontSize = 1.0f;
+    const int fontSize = 1;
 };

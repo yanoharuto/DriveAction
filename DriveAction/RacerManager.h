@@ -1,19 +1,13 @@
 #pragma once
-#include <List>
-#include <string>
+#include <list>
 #include "ObjPosAndDir.h"
 #include "ConflictManager.h"
 #include "HitChecker.h"
 #include "SoundPlayer.h"
-
 #include "Racer.h"
 #include "Player.h"
 #include "DirectionOfTravelGenerator.h"
 #include "PlayerInformationCenter.h"
-class CourceDataLoader;
-class CircuitTrack;
-struct ConflictExamineResultInfo;
-struct PlayerRelatedInfo;
 
 /// <summary>
 /// レーサーの順位操作に使う
@@ -35,7 +29,7 @@ public:
     /// </summary>
     /// <param name="lacerNum">車乗りの数だけリストに追加するよ</param>
     /// <returns></returns>
-    RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader);
+    RacerManager(int cpuNum);
     //デストラクタ
     ~RacerManager();
     /// <summary>
@@ -79,5 +73,5 @@ private:
     //プレイヤーの情報
     Player* player = nullptr;
     //
-    PlayerInformationCenter* playerInfoCenter;
+    PlayerInformationCenter* playerInfoCenter = nullptr;
 };

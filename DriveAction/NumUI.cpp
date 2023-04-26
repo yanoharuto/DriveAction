@@ -2,39 +2,78 @@
 #include "DxLib.h"
 #include "Utility.h"
 #include "OriginalMath.h"
+
 NumUI::NumUI()
 {
-    LoadDivGraph(timerFontPass.c_str(), TIMER_FONT_NUM, TIMER_FONT_NUM, 1, fontSize, HUNDRED, numGraphHandle);
+    numData = UIManager::CreateUIData(num);
+    pointData= UIManager::CreateUIData(point);
 }
 
 NumUI::~NumUI()
 {
 }
 
+/// <summary>
+/// 数字を描画したい時用
+/// </summary>
+/// <param name="x">一番右端</param>
+/// <param name="y">Y座標</param>
+/// <param name="num">数字</param>
+/// <param name="scale">文字の大きさ</param>
+/// <returns>左端の座標</returns>
 int NumUI::Draw(int x, int y, int num,float scale)
 {
     //桁数
-    int digits = pow(TIMER_FONT_NUM, OriginalMath::GetDigits(num) - 1);
-    if (digits == 0)
-    {
-        DrawRotaGraph(x, y, scale, 0, numGraphHandle[0], true);
-    }
-    //桁数がゼロになるまで
-    while (digits != 0)
+    int digits = static_cast<int>(OriginalMath::GetDigits(num));
+    //表示位置を右端にいったん移動
+    x -= static_cast<int> (scale * numData.width * digits);
+    //桁数がゼロになるまで描画する　頭から描画する
+    for (int i = digits; i > 0; i--)
     {
         //10のけたで割った時のあまり
-        int drawNum = num / digits;
-        DrawRotaGraph(x, y, scale, 0, numGraphHandle[drawNum], true);
-        //フォントサイズ分横に
-        x += scale * fontSize;
-        num -= drawNum * digits;
-        //桁数を下げる
-        digits /= TIMER_FONT_NUM;
+        int drawNum = num / pow(TIMER_FONT_NUM, i - 1);
+        //描画
+        int result = DrawRotaGraph(x, y, scale, 0, numData.dataHandle[drawNum], true);
+        //位置をずらす
+        x += static_cast<int> (scale * numData.width);
+        //次に描画したい数字の準備
+        num -= drawNum * pow(TIMER_FONT_NUM, i - 1);
     }
     return x;
 }
-
+/// <summary>
+/// 小数点も描画したい時用
+/// </summary>
+/// <param name="x">一番右端</param>
+/// <param name="y">Y座標</param>
+/// <param name="num">数字</param>
+/// <param name="scale">文字の大きさ</param>
+/// <returns>左端の座標</returns>
+int NumUI::Draw(int x, int y, float num, float scale)
+{
+    //整数部分
+    int iNum = static_cast<int>(num);
+    //小数第一位の部分
+    int decimalNum1 = (num - iNum) * 10;
+    //小数部分第二位
+    int decimalNum2 = ((num - iNum) * 100 - decimalNum1 * 10);
+    //描画終了した場所をedgeに渡す
+    int edge = Draw(x, y, decimalNum2, scale);
+    edge -= static_cast<int> (scale * numData.width);
+    edge = Draw(edge, y, decimalNum1, scale);
+    edge -= static_cast<int> (scale * numData.width);
+    //整数部分を描画
+    Draw(edge, y, iNum, scale);
+    edge -= static_cast<int> (scale * numData.width);
+    //小数点
+    DrawRotaGraph(edge, y, pointData.size, 0, pointData.dataHandle[0], true);
+    return x;
+}
+/// <summary>
+/// 一文字の大きさ
+/// </summary>
+/// <returns></returns>
 int NumUI::GetNumWidthSize()
 {
-    return fontSize;
+    return numData.width;
 }

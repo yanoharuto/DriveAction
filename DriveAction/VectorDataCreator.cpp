@@ -12,7 +12,10 @@ VectorDataCreator::VectorDataCreator(std::string setFileName)
 VectorDataCreator::~VectorDataCreator()
 {
 }
-
+/// <summary>
+/// ŽÔ‚Ì“¹‹Ø‚Æ‚©‹L˜^‚·‚é‚Æ‚«‚ÉŽg‚¤
+/// </summary>
+/// <param name="vec"></param>
 void VectorDataCreator::WriteVECTOR(VECTOR vec)
 {
     writing_file.open(fileName, std::ios::app);

@@ -114,9 +114,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>ソース ファイル\Other</Filter>
     </ClCompile>
-    <ClCompile Include="StringUI.cpp">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Wheels.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
@@ -138,9 +135,6 @@
     <ClCompile Include="RacerManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="PointUI.cpp">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
     <ClCompile Include="MiniMap.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
@@ -150,9 +144,6 @@
     <ClCompile Include="CourceDataLoader.cpp">
       <Filter>ソース ファイル\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="DataAddresLoader.cpp">
-      <Filter>ソース ファイル\Loader</Filter>
-    </ClCompile>
     <ClCompile Include="VECTOR3Loader.cpp">
       <Filter>ソース ファイル\Loader</Filter>
     </ClCompile>
@@ -160,9 +151,6 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="SwitchUI.cpp">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="LapUI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
     <ClCompile Include="Effect.cpp">
@@ -177,16 +165,10 @@
     <ClCompile Include="HitChecker.cpp">
       <Filter>ソース ファイル\ConflictCheck</Filter>
     </ClCompile>
-    <ClCompile Include="AccelMeter.cpp">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
     <ClCompile Include="DamageObject.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Accelerator.cpp">
       <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
     <ClCompile Include="PostGoalStaging.cpp">
@@ -221,9 +203,6 @@
     </ClCompile>
     <ClCompile Include="GimmickObject.cpp">
       <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemUI.cpp">
-      <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
     <ClCompile Include="Rocket.cpp">
       <Filter>ソース ファイル\Item</Filter>
@@ -342,6 +321,18 @@
     <ClCompile Include="RaceScreen.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="RankingData.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="InitActor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectIconUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SkyDome.h">
@@ -383,12 +374,6 @@
     <ClInclude Include="HitChecker.h">
       <Filter>ヘッダー ファイル\Other</Filter>
     </ClInclude>
-    <ClInclude Include="ImgUI.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Other</Filter>
     </ClInclude>
@@ -397,9 +382,6 @@
     </ClInclude>
     <ClInclude Include="RaceCamera.h">
       <Filter>ヘッダー ファイル\Other</Filter>
-    </ClInclude>
-    <ClInclude Include="StringUI.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
     <ClInclude Include="Wheels.h">
       <Filter>ヘッダー ファイル\Object</Filter>
@@ -455,9 +437,6 @@
     <ClInclude Include="MiniMap.h">
       <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
-    <ClInclude Include="PointUI.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
-    </ClInclude>
     <ClInclude Include="PostGoalStaging.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -485,14 +464,8 @@
     <ClInclude Include="HitCheckExamineObjectInfo.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
-    <ClInclude Include="AccelerationFloor.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
     <ClInclude Include="GimmickObject.h">
       <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="LapUI.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
     <ClInclude Include="PlayerRelatedUI.h">
       <Filter>ヘッダー ファイル\UI</Filter>
@@ -515,17 +488,11 @@
     <ClInclude Include="DamageObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Accelerator.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
     <ClInclude Include="Rocket.h">
       <Filter>ヘッダー ファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="AccelMeter.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
     <ClInclude Include="CpuCarMode.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
@@ -587,13 +554,7 @@
     <ClInclude Include="DamageObjectGenerator.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ItemUI.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="EffectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Broom.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="RacerGenerater.h">
@@ -714,6 +675,15 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="RaceScreen.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RankingData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="InitActor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectIconUI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,6 +5,9 @@
 #include "HitCheckExamineObjectInfo.h"
 #include "HitChecker.h"
 #include "OriginalMath.h"
+/// <summary>
+/// 描画するオブジェクト
+/// </summary>
 class Actor abstract:
     public Object
 {
@@ -26,16 +29,20 @@ public:
     /// </summary>
     virtual void Draw()
     {
-        MATRIX tmpMat = MV1GetMatrix(modelHandle);
         if (modelHandle != - 1)
         {
+            //変更前の行列を保存
+            MATRIX tmpMat = MV1GetMatrix(modelHandle);
+            //向きを変える
             ModelSetMatrix();
+            //ポジション変更
             UpdateMV1Pos();
+            //サイズ変更
             MV1SetScale(modelHandle, VGet(modelSize, modelSize, modelSize));
             MV1DrawModel(modelHandle);
+            //行列を元に戻す
+            MV1SetRotationMatrix(modelHandle, tmpMat);
         }
-        //行列を元に戻す
-        MV1SetRotationMatrix(modelHandle, tmpMat);
     }
     
     /// <summary>
@@ -50,6 +57,10 @@ public:
     {
         return velocity;
     }
+    /// <summary>
+    /// 当たり判定で当たってたら渡す情報
+    /// </summary>
+    /// <returns></returns>
     virtual HitCheckExamineObjectInfo GetHitCheckExamineInfo()
     {
         HitCheckExamineObjectInfo objInfo;
@@ -57,8 +68,12 @@ public:
         objInfo.velocity = velocity;
         return objInfo;
     };
+
 protected:
-    
+    /// <summary>
+    /// 他のオブジェクトに当たってるか調べる用の情報
+    /// </summary>
+    /// <returns></returns>
     ArgumentConflictResultInfo GetConflictArgumentInfo()
     {
         ArgumentConflictResultInfo resultInfo;

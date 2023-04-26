@@ -28,7 +28,7 @@ CoinManager::~CoinManager()
 /// <summary>
 /// coinPosListの更新と取られたコインの削除
 /// </summary>
-void CoinManager::Update()
+void CoinManager::Update(ObjInfo objInfo)
 {
     coinPosList.clear();
     auto objIte = coinList.begin();
@@ -37,7 +37,7 @@ void CoinManager::Update()
     while (objIte != coinList.end())
     {
         //回転させたり
-        (*objIte)->Update();
+        (*objIte)->Update(objInfo);
         if (!(*objIte)->GetAliveFlag()) //もう存在していなかったら更新終了
         {
             //壊すものリストに追加

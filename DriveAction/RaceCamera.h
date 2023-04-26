@@ -1,7 +1,7 @@
 #pragma once
 #include "DxLib.h"
 #include "ObjPosAndDir.h"
-//プレイヤークラスの前方宣言
+
 class RaceCamera final
 {
 public:
@@ -22,9 +22,9 @@ private:
     //プレイヤーまでの距離Z
     const float betweenPlayerZ = 370.0f;
     //描画しようとする範囲
-    const float setNearValue = 0.1f;
+    const float setNearValue = 15.0f;
     //描画しようとする範囲
-    const float setFarValue = 10000.0f;
+    const float setFarValue = 10700.0f;
     //カメラの狙う先までの距離の大きさ
     const float aimBetween = 30.0f;
     //カメラが車の方に向く速度

@@ -2,6 +2,7 @@
 #include <string>
 #include <list>
 #include "Coin.h"
+#include "ObjPosAndDir.h"
 /// <summary>
 /// 位置をミニマップに教えたりする
 /// </summary>
@@ -16,7 +17,7 @@ public:
     /// <summary>
     /// coinPosListの更新と取られたコインの削除
     /// </summary>
-    void Update();
+    void Update(ObjInfo objInfo);
     /// <summary>
     /// コインの描画
     /// </summary>
@@ -49,4 +50,3 @@ private:
     //コインのポジション
     std::list<VECTOR> coinPosList;
 };
-

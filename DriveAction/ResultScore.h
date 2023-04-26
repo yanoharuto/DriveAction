@@ -1,8 +1,7 @@
 #pragma once
-#include "PlayerRelatedInfo.h"
-#include "Timer.h"
 #define SCORE_KIND_NUM 4
-
+class Timer;
+struct PlayerRelatedInfo;
 /// <summary>
 /// 最終的なスコアの保存役
 /// </summary>
@@ -12,8 +11,8 @@ public:
     enum ScoreKind
     {
         time = 0,
-        hit = 1,
-        collect = 2,
+        collect = 1,
+        hit = 2,
         total = 3
     };
     /// <summary>
@@ -31,21 +30,21 @@ public:
     /// コインを取ったスコア
     /// </summary>
     /// <returns></returns>
-    static int GetCollectBonus();
+    int GetCollectBonus();
     /// <summary>
     /// 当たった回数分ヘルスコア
     /// </summary>
     /// <returns></returns>
-    static int GetHitBunus();
+    int GetHitDecrease();
     /// <summary>
     /// 残り時間のスコア
     /// </summary>
     /// <returns></returns>
-    static int GetTimeBunus();
+    int GetTimeBunus();
 private:
     //コインのスコア
-    static int coinScore;
-    //ダメージを受けた回数減るスコア
+    static int collectScore;
+    //ダメージを受けたら減るスコア
     static int hitScore;
     //残り時間スコア
     static int timeScore;
@@ -57,5 +56,6 @@ private:
     const int noHitScore = 500;
     //コインはボーナス
     const int coinBonus = 500;
+    int rankingData;
 };
 

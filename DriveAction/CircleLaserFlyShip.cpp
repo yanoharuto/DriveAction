@@ -1,12 +1,14 @@
 #include "CircleLaserFlyShip.h"
 #include "AssetManager.h"
 #include "DamageObjectGenerator.h"
+//初期位置
 const float CircleLaserFlyShip::setFirstPosY = 400.0f;
+//modelの大きさ
 const float CircleLaserFlyShip::setModelSize = 0.3f;
-CircleLaserFlyShip::CircleLaserFlyShip()
-{
-}
 
+/// <summary>
+/// 円状に陣形を作った飛行船
+/// </summary>
 CircleLaserFlyShip::CircleLaserFlyShip(VECTOR firstPos, VECTOR setDestinationPos)
     :LaserFlyShip(firstPos, setDestinationPos)
 {
@@ -19,11 +21,7 @@ CircleLaserFlyShip::CircleLaserFlyShip(VECTOR firstPos, VECTOR setDestinationPos
 
 void CircleLaserFlyShip::GenerateLaser()
 {
-    if (!isGenerateLaser)
-    {
-        ItemArgumentCarInfo itemInfo;
-        itemInfo.SetCarInfo(this);
-        DamageObjectGenerator::GenerateDamageObject(ufo, itemInfo, this);
-        isGenerateLaser = true;
-    }
+    ItemArgumentCarInfo itemInfo;
+    itemInfo.SetCarInfo(this);
+    DamageObjectGenerator::GenerateDamageObject(ufo, itemInfo, this);
 }

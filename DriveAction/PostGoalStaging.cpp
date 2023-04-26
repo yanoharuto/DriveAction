@@ -4,13 +4,11 @@
 #include "UserInput.h"
 #include "ResultScore.h"
 #include "RaceScreen.h"
+#include "SwitchUI.h"
+#include "NumUI.h"
 PostGoalStaging::PostGoalStaging()
 {
     SoundPlayer::StopAllSound();
-    goalMarkerUI.x = 0;
-    goalMarkerUI.y = SCREEN_HEIGHT / 2;
-    goalMarkerUI.dataHandle = CreateFontToHandle("BIZ UDゴシック", 122, 3, DX_FONTTYPE_NORMAL);
-    stringUI = new StringUI(goalMarkerUIColor, goalMarkerUI, "終了");
     switchUI = new SwitchUI();
     SoundPlayer::LoadSound(clapSE);
     SoundPlayer::LoadSound(rouretteSE);
@@ -26,29 +24,25 @@ PostGoalStaging::PostGoalStaging()
     uidata.x = UI_SCREEN_WIDTH * 8;
     for (int i = 0; i < SCORE_KIND_NUM; i++)
     {
-
         switch (i)
         {
         case ResultScore::collect:
-            uidata.dataHandle = LoadGraph("data/CollectBonus.png");
+            uidata = UIManager::CreateUIData(collectScore);
             break;
         case ResultScore::hit:
-            uidata.dataHandle = LoadGraph("data/Damage.png");
+            uidata = UIManager::CreateUIData(damageScore);
             break;
         case ResultScore::total:
-            uidata.dataHandle = LoadGraph("data/Score.png");
+            uidata = UIManager::CreateUIData(totalScore);
             break;
         case ResultScore::time:
-            uidata.dataHandle = LoadGraph("data/TimeBonus.png");
+            uidata = UIManager::CreateUIData(timeScore);
             break;
         default:
             break;
         }
         scoreUI[i].data = uidata;
-        uidata.y += UI_SCREEN_HEIGHT * 4;
     }
-    
-    
     num = new NumUI();
     timer = new Timer(spaceKeyCoolTime);
 }
@@ -57,14 +51,12 @@ PostGoalStaging::~PostGoalStaging()
 {
     DeleteGraph(screenGraph);
     SAFE_DELETE(switchUI);
-    SAFE_DELETE(stringUI);
-
 }
 
 bool PostGoalStaging::Update()
 {
     //終了のアナウンスの表示が終えたら
-    if (goalMarkerUI.x > SCREEN_WIDTH && !SoundPlayer::IsPlaySound(stopSE) && spaceClickCount < SCORE_KIND_NUM )
+    if (!SoundPlayer::IsPlaySound(stopSE) && spaceClickCount < SCORE_KIND_NUM )
     {
         timer->Update();
         if (!SoundPlayer::IsPlaySound(rouretteSE))
@@ -89,8 +81,6 @@ bool PostGoalStaging::Update()
     }
     else//終了アナウンスを移動させる
     {
-        goalMarkerUI.x += goalMoveX;
-        stringUI->SetXY(goalMarkerUI.x, goalMarkerUI.y);
     }
     //スペースキー催促
     switchUI->Update();
@@ -125,27 +115,16 @@ void PostGoalStaging::Draw()
     SetDrawBright(60, 60, 60);
     DrawGraph(0, 0, screenGraph, false);
     SetDrawBright(255, 255, 255);
-    if (goalMarkerUI.x > SCREEN_WIDTH)
-    {
-        for (int i = 0; i <= spaceClickCount ; i++)
-        {
-            int safe_Num= i % SCORE_KIND_NUM;
-            num->Draw(numDrawX, scoreUI[safe_Num].data.y, scoreUI[safe_Num].score, numSize);
-            DrawRotaGraph(scoreUI[safe_Num].data.x, scoreUI[safe_Num].data.y, 1, 0, scoreUI[safe_Num].data.dataHandle, true);
-        }
 
-        if (spaceClickCount != 0)
-        {
-            switchUI->Draw();
-        }
-    }
-    else
+    for (int i = 0; i <= spaceClickCount; i++)
     {
-        stringUI->DrawRightAlignedString();
+        int safeNum = i % SCORE_KIND_NUM;
+        num->Draw(numDrawX, scoreUI[safeNum].data.y, scoreUI[safeNum].score, numSize);
+        DrawRotaGraph(scoreUI[safeNum].data.x, scoreUI[safeNum].data.y, scoreUI[safeNum].data.size, 0, scoreUI[safeNum].data.dataHandle[0], true);
     }
-}
 
-void PostGoalStaging::SetUp(int graphHandle)
-{
-    
+    if (spaceClickCount != 0)
+    {
+        switchUI->Draw();
+    }
 }

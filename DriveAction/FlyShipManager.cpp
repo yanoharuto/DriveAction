@@ -2,12 +2,11 @@
 #include "ListUtility.h"
 #include "GetGeneratePos.h"
 #include "Utility.h"
-#include "ListUtility.h"
 #include "CourceDataLoader.h"
 
 FlyShipManager::FlyShipManager()
 {
-    bomberFlyShipGoTimer = new Timer(setCoolTime);
+    bomberFlyShipGoTimer = new Timer(setBShipInitSpan);
     for (int i = 0; i < BomberFlyShipNum; i++)
     {
         BomberFlyShip* flyship = new BomberFlyShip();
@@ -20,14 +19,14 @@ FlyShipManager::FlyShipManager()
     for (auto itr = ufoPosList.begin(); itr != ufoPosList.end(); itr++)
     {
         VECTOR dir = VGet(1, 0, 0);
-        for (int i = 0; i < UFONum; i++)
+        for (int i = 0; i < circleShipNum; i++)
         {
             dir = VNorm(OriginalMath::GetYRotateVector(dir, 60.0f));
             generatePos = VAdd((*itr), VScale(dir, 200.0f));
             CircleLaserFlyShip* flyship = new CircleLaserFlyShip(generatePos, (*itr));
-            UfoFlyshipList.push_back(flyship);
+            circleFlyshipList.push_back(flyship);
         }
-        j += UFONum;
+        j += circleShipNum;
     }
 
     std::list<VECTOR>updownFlyShipPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(enemyPosPass,1));
@@ -56,7 +55,7 @@ void FlyShipManager::Update( PlayerInformationCenter* infoCenter)
             (*ite)->Update();
         }
     }
-    for (auto ite = UfoFlyshipList.begin(); ite != UfoFlyshipList.end(); ite++)
+    for (auto ite = circleFlyshipList.begin(); ite != circleFlyshipList.end(); ite++)
     {
         (*ite)->Update();
     }
@@ -64,8 +63,8 @@ void FlyShipManager::Update( PlayerInformationCenter* infoCenter)
     {
         (*ite)->Update();
     }
-    BomberInit(infoCenter);
-    LaserInit(infoCenter);
+    BomberShipInit(infoCenter);
+    LaserShipInit(infoCenter);
 }
 
 void FlyShipManager::Draw()
@@ -74,7 +73,7 @@ void FlyShipManager::Draw()
     {
         (*ite)->Draw();
     }
-    for (auto ite = UfoFlyshipList.begin(); ite != UfoFlyshipList.end(); ite++)
+    for (auto ite = circleFlyshipList.begin(); ite != circleFlyshipList.end(); ite++)
     {
         (*ite)->Draw();
     }
@@ -84,22 +83,23 @@ void FlyShipManager::Draw()
     }
 }
 
-void FlyShipManager::BomberInit(PlayerInformationCenter* infoCenter)
+void FlyShipManager::BomberShipInit(PlayerInformationCenter* infoCenter)
 {
     //時間が過ぎたらまた爆撃機を発信
     if (bomberFlyShipGoTimer->IsOverLimitTime())
     {
         PlayerRelatedInfo playerInfo = infoCenter->GetPlayerRelatedInfo(0);
-        
+        //ランダムな角度を出す
+        int randomNum = OriginalMath::GetRandom(0, bShipInitRandDeg);
         //ランダムな方向から爆撃機を発進させる
-        VECTOR dir = VNorm(OriginalMath::GetYRotateVector(playerInfo.objInfo.dir, OriginalMath::GetRandom(-randomDegree,randomDegree)));
+        VECTOR dir = OriginalMath::GetYRotateVector(VGet(1, 0, 0), static_cast<float> (randomNum));
         //プレイヤーに向かって
         VECTOR destinationPos = playerInfo.objInfo.pos;
         //出現場所
-        VECTOR generatePos = VAdd(destinationPos, VScale(dir,initBomberShipGeneratePosScale));
+        VECTOR generatePos = VAdd(destinationPos, VScale(dir,initBShipGeneratePosScale));
         //一機目以降は他の機体と距離を置いて発進
-        VECTOR between = VScale(VCross(VNorm(VSub(destinationPos, generatePos)), VGet(0, 1, 0)), initBomberShipBetween);
-        
+        VECTOR between = VScale(VCross(VNorm(VSub(destinationPos, generatePos)), VGet(0, 1, 0)), initBShipBetween);
+        //初期化
         for (auto ite = bombList.begin(); ite != bombList.end(); ite++)
         {
             (*ite)->Init(generatePos, destinationPos);
@@ -111,15 +111,15 @@ void FlyShipManager::BomberInit(PlayerInformationCenter* infoCenter)
     }
 }
 
-void FlyShipManager::LaserInit(PlayerInformationCenter* infoCenter)
+void FlyShipManager::LaserShipInit(PlayerInformationCenter* infoCenter)
 {
-    for (auto ite = UfoFlyshipList.begin(); ite != UfoFlyshipList.end(); ite++)
+    for (auto ite = circleFlyshipList.begin(); ite != circleFlyshipList.end(); ite++)
     {
-        (*ite)->Init(infoCenter->GetPlayerRelatedInfo(0).objInfo.pos);
+        (*ite)->Init(infoCenter->GetPlayerRelatedInfo(0));
     }
 
     for (auto ite = updownFlyShipList.begin(); ite != updownFlyShipList.end(); ite++)
     {
-        (*ite)->Init(infoCenter->GetPlayerRelatedInfo(0).objInfo.pos);
+        (*ite)->Init(infoCenter->GetPlayerRelatedInfo(0));
     }
 }

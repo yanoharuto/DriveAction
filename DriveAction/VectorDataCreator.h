@@ -21,7 +21,9 @@ public:
     /// <param name="vec"></param>
     void WriteVECTOR(VECTOR vec);
 private:
+    //書き込むファイル
     std::ofstream writing_file;
+    //書き込むファイルの名前
     std::string fileName;
 };
 

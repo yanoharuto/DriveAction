@@ -3,23 +3,24 @@
 #include "MiniMap.h"
 #include "OriginalMath.h"
 #include "UserInput.h"
-
+#include "TimerUI.h"
+#include "Timer.h"
+#include "NumUI.h"
 PlayerRelatedUI::PlayerRelatedUI(Timer* setTimer, int setFirstCoinNum)
 {
-    timerUI = new TimerUI(drawTimerX, drawTimerY, fontSize, setTimer);
+    timerUI = new TimerUI(fontSize, setTimer);
     minimapUI = new MiniMap();
-    manualData.dataHandle = LoadGraph(manualPass.c_str());
+    manualData = UIManager::CreateUIData(manual);
     firstCoinNum = setFirstCoinNum;
     numUI = new NumUI();
-    slashHandle = LoadGraph(slash.c_str());
-
+    slashHandle = UIManager::CreateUIData(slash);
 }
 
 
 PlayerRelatedUI::~PlayerRelatedUI()
 {
-    DeleteGraph(manualData.dataHandle);
     SAFE_DELETE(timerUI);
+    SAFE_DELETE(minimapUI);
 }
 
 void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo, std::list<VECTOR> setCoinPosList)
@@ -30,15 +31,13 @@ void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo, std::list<VECTOR> se
 
 void PlayerRelatedUI::Draw()
 {
-    DrawGraph(manualData.x, manualData.y, manualData.dataHandle, true);
+    DrawRotaGraph(manualData.x, manualData.y, manualData.size, 0, manualData.dataHandle[0], true);
 
     int x = numUI->Draw(coinUIDrawX, coinUIDrawY, nowGetCoinNum, fontSize);
-    x += numUI->GetNumWidthSize() * fontSize;
-    DrawRotaGraph(x, coinUIDrawY, fontSize, 0, slashHandle, true);
+    int result = DrawRotaGraph(x, coinUIDrawY, fontSize, 0, slashHandle.dataHandle[0], true);
     x += numUI->GetNumWidthSize() * fontSize;
     numUI->Draw(x, coinUIDrawY, firstCoinNum, fontSize);
 
     timerUI->Draw();
     minimapUI->Draw();
-
 }

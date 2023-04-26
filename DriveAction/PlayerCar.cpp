@@ -10,7 +10,7 @@
 const CarInfomation PlayerCar::setCarParam =
 {
 	1.0f,
-	6.0f,
+	10.0f,
 	3.0f,
 	0.13f,
 	1.0f,

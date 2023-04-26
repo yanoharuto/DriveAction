@@ -28,8 +28,8 @@ public:
                 if (std::atof(rockList[num].c_str()) == dataNum)
                 {
                     VECTOR pos;
-                    pos.x = j * 12000 / lineCount - 6000;
-                    pos.z = i * 12000 / sideLine - 6000;
+                    pos.x = j * 12000.0f / lineCount - 6000.0f;
+                    pos.z = i * 12000.0f / sideLine - 6000.0f;
                     posList.push_back(pos);
                 }
             }

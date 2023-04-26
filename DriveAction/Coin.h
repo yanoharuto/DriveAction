@@ -2,6 +2,10 @@
 #include <string>
 #include "Actor.h"
 #include "SphereCollider.h"
+#include "ObjPosAndDir.h"
+/// <summary>
+/// 収集アイテム
+/// </summary>
 class Coin :
     public Actor
 {
@@ -16,12 +20,16 @@ public:
     /// <summary>
     /// 更新
     /// </summary>
-    void Update()override;
+    void Update(ObjInfo info);
     /// <summary>
     /// ぶつかった時の処理
     /// </summary>
     /// <param name="conflictInfo"></param>
     void ConflictProccess(const ConflictExamineResultInfo conflictInfo);
+    /// <summary>
+    /// ちょっと影を変更して描画
+    /// </summary>
+    void Draw()override;
 private:
     //毎秒向きがこの値分変化する
     static const float rotateY;
@@ -39,6 +47,7 @@ private:
     static const std::string coinPass;
     //コインの効果音のパス
     static const std::string coinSEPass;
+
     //回転量
     float totalMoveYValue = 0;
     //球当たり判定

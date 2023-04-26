@@ -3,7 +3,7 @@
 ShadowMap::ShadowMap()
 {
     //‚©‚°‚ÌŒü‚«
-    SetShadowMapLightDirection(shadowMap, VGet(1.0f, -1, 0));
+    SetShadowMapLightDirection(shadowMap, VGet(0.1f, -1, 0));
     SetShadowMapDrawArea(shadowMap, DrawAreaMinPos, DrawAreaMaxPos);
 }
 

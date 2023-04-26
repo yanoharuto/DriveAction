@@ -8,7 +8,7 @@ Clock::Clock()
     startTime = GetNowCount();
 
     // 現在のカウントを取得する
-    timeD = GetNowHiPerformanceCount();
+    timeD = static_cast<double>(GetNowHiPerformanceCount());
 }
 
 Clock::~Clock()
@@ -22,14 +22,14 @@ void Clock::Update()
 {
     // １７ミリ秒(約秒間６０フレームだった時の１フレームあたりの経過時間)
     // 経過するまでここで待つ
-   double temp = GetNowHiPerformanceCount() - timeD;
+   double temp =  static_cast<double>(GetNowHiPerformanceCount()) - timeD;
     while (temp < DELTATIME)
     {
-        temp = GetNowHiPerformanceCount() - timeD;
+        temp =  static_cast<double>(GetNowHiPerformanceCount()) - timeD;
     }
 
     // 現在のカウントを取得する
-    timeD = GetNowHiPerformanceCount();
+    timeD =  static_cast<double>(GetNowHiPerformanceCount());
 }
 
 /// <summary>
@@ -38,5 +38,5 @@ void Clock::Update()
 /// <returns>経過時間</returns>
 float Clock::GetScoreTime()
 {
-    return GetNowCount() - startTime;
+    return static_cast<int>(GetNowCount() - startTime);
 }

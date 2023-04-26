@@ -4,12 +4,12 @@
 /// <summary>
 ///　データのアドレスとかを読み取る
 /// </summary>
-class DataPassLoader
+class StringDataLoader
 {
 public:
-    DataPassLoader();
-    DataPassLoader(std::string fileName);
-    ~DataPassLoader();
+    StringDataLoader();
+    StringDataLoader(std::string fileName);
+    ~StringDataLoader();
     std::list<std::string>::iterator GetBeginIterator();
     std::list<std::string>::iterator GetEndIterator();
 private:

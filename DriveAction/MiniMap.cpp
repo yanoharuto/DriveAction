@@ -1,29 +1,33 @@
 #include "MiniMap.h"
 #include "UIManager.h"
-#include "ImgUI.h"
-#include "PointUI.h"
 #include "CourceDataLoader.h"
 #include "OriginalMath.h"
+/// <summary>
+/// 収集アイテムとかを描画するための奴
+/// </summary>
 MiniMap::MiniMap()
 {
-    icon.x = miniMapUpLeftX + mapRength;
-    icon.y = miniMapUpLeftY + mapRength;
-    miniMap.dataHandle = LoadGraph(miniMapPass.c_str(), true);
+    miniMap = UIManager::CreateUIData(radar);
     
-    GetGraphSize(miniMap.dataHandle,&mapGraphWidth, &mapGraphHeight);
-
+    GetGraphSize(miniMap.dataHandle[0], &mapGraphWidth, &mapGraphHeight);
+    //マップの大きさを一定にする
     mapSizeCoefficient = mapSize / mapGraphWidth;
 }
 
 MiniMap::~MiniMap()
 {
 }
-
+/// <summary>
+/// 収集アイテムの位置を更新
+/// </summary>
+/// <param name="objInfo"></param>
+/// <param name="setCollectPos"></param>
 void MiniMap::Update(ObjInfo objInfo, std::list<VECTOR> setCollectPos)
 {
     mapRotate = OriginalMath::GetDegreeMisalignment(VGet(1, 0, 0), objInfo.dir) * RAGE;
     mapRotate = VCross(VGet(1, 0, 0), objInfo.dir).y < 0 ? -mapRotate: mapRotate;
     coinPosList.clear();
+    //収集アイテムをミニマップに反映
     for (auto ite = setCollectPos.begin(); ite != setCollectPos.end(); ite++)
     {
         VECTOR collectPos = *ite;
@@ -31,7 +35,8 @@ void MiniMap::Update(ObjInfo objInfo, std::list<VECTOR> setCollectPos)
 
         VECTOR playerPos = objInfo.pos;
         playerPos.y = 0;
-        collectPos = VSub(collectPos, playerPos);
+        collectPos = VScale(VSub(collectPos, playerPos),collectBetween);
+        //マップの大きさに入っているなら
         if (VSize(collectPos) < mapGraphWidth)
         {
             OriginalMath::GetYRotateVector(collectPos, mapRotate);
@@ -43,18 +48,21 @@ void MiniMap::Update(ObjInfo objInfo, std::list<VECTOR> setCollectPos)
 
 void MiniMap::Draw()
 {
-    DrawRotaGraph(icon.x, icon.y, mapSizeCoefficient, mapRotate, miniMap.dataHandle, true);
-    DrawCircle(icon.x, icon.y, iconSize, playerColor, 1, 1);
+    //枠描画
+    DrawRotaGraph(miniMap.x, miniMap.y, mapSizeCoefficient, 0, miniMap.dataHandle[0], true);
+    //プレイヤーアイコンの描画
+    DrawCircle(miniMap.x, miniMap.y, iconSize, playerColor, 1, 1);
+    //収集アイテムの描画
     for (auto ite = coinPosList.begin(); ite != coinPosList.end(); ite++)
     {
-        DrawCircle((*ite).x, (*ite).y, iconSize, coinColor, 1, 1);
+        DrawCircle(static_cast<int>((*ite).x), static_cast<int>((*ite).y), iconSize, coinColor, 1, 1);
     }
 }
 
 VECTOR MiniMap::ConvertPosition(VECTOR pos)
 {
     VECTOR data;
-    data.x = -pos.x * (mapGraphWidth / 2) / 6000 + miniMapFrontX ;
-    data.y = pos.z * (mapGraphHeight / 2) / 6000 + miniMapFrontY;
+    data.x = -pos.x * (mapGraphWidth / 2) / 6000 + miniMap.x;
+    data.y = pos.z * (mapGraphHeight / 2) / 6000 + miniMap.y;
     return data;
 }

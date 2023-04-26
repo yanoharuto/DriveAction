@@ -1,27 +1,26 @@
 ﻿#pragma once
 #include "SceneFlowBase.h"
-#include "EffectManager.h"
-#include "FlyShipManager.h"
-
-#include "SoundPlayer.h"
 #include "PlaySceeneProgressEnum.h"
-#include "RacerManager.h"
-#include "RaceCamera.h"
-#include "CourceDataLoader.h"
-#include "StageManager.h"
-#include "CountDown.h"
-#include "PostGoalStaging.h"
-#include "ResultScore.h"
-#include "ConflictManager.h"
-#include "PlayerRelatedUI.h"
-#include "FiringItemManager.h"
-#include "DamageObjectGenerator.h"
-#include "AssetManager.h"
-#include "PlayerRelatedUI.h"
-#include "RacePrevProcess.h"
-#include "RaceScreen.h"
-#include "ShadowMap.h"
-#include "CoinManager.h"
+#include <string>
+class AssetManager;
+class CountDown;
+class ConflictManager;
+class CourceDataLoader;
+class CoinManager;
+class EffectManager;
+class FiringItemManager;
+class FlyShipManager;
+class PostGoalStaging;
+class PlayerRelatedUI;
+class RaceCamera;
+class ResultScore;
+class RaceScreen;
+class RacePrevProcess;
+class RacerManager;
+class ShadowMap;
+class StageManager;
+class Timer;
+class UIManager;
 /// <summary>
 /// どういう順番で処理を行うか決める
 /// </summary>
@@ -74,8 +73,8 @@ private:
     RacerManager* racerManager;
     //敵のオブジェクトのマネージャー
     FlyShipManager* flyShipManager;
-    //タイマー
-    Timer* timer;
+    //ゲーム終了タイマー
+    Timer* gameLimitTimer;
     //終了時のカウントダウン
     CountDown* countDown;
     //コインのマネージャー
@@ -84,6 +83,7 @@ private:
     ShadowMap* shadowMap;
     //レース中の描画した物を保存する
     RaceScreen* screen;
+    UIManager* uiManager;
     //BGMのパス
     const std::string BGMPass = "movements.mp3";
     int BGMBolume = 50;

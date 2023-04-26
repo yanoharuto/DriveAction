@@ -43,14 +43,16 @@ public:
     {
         int deg = static_cast<int> (degree);
         float rota = 60 * RAGE;
-        VECTOR addVec = degree > 0 ? VGet(0, 1, 0) : VGet(0, -1, 0);
+        VECTOR tempVec = degree > 0 ? VGet(0, 1, 0) : VGet(0, -1, 0);
+        VECTOR addVec = VNorm(VCross(rotateVector, tempVec));
+        addVec = VScale(addVec, rota);
         for (int i = 0; i < deg / 60; i++)
         {
-            addVec = VScale(VNorm(VCross(rotateVector, addVec)), rota);
             rotateVector = VAdd(rotateVector, addVec);
+            degree -= 60;
         }
-        rota = (degree - deg) * RAGE;
-        addVec = VScale(VNorm(VCross(rotateVector, addVec)), rota);
+        rota = degree * RAGE;
+        addVec = VScale(VNorm(VCross(rotateVector, tempVec)), rota);
         rotateVector = VAdd(rotateVector, addVec);
         return rotateVector;
     }
@@ -61,8 +63,8 @@ public:
     /// <returns></returns>
     static int GetDigits(int num)
     {
-        int digits = 0;
-        while (num!=0)
+        int digits = 1;
+        while (num >= 10)
         {
             num /= 10;
             digits++;

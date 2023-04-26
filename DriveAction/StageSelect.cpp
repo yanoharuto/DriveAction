@@ -1,17 +1,17 @@
 #include "StageSelect.h"
 #include "Utility.h"
+#include "ListUtility.h"
 static std::string fileAddres;
 StageSelect::StageSelect()
 {
-    dataLoader = new DataPassLoader(allStageAddresFile);
-    fileNameIte = dataLoader->GetBeginIterator();
+    dataLoader = LoadData(allStageAddresFile);
+    fileNameIte = dataLoader.begin();
     fileAddres = *fileNameIte;
     fileNameIte++;
 }
 
 StageSelect::~StageSelect()
 {
-    SAFE_DELETE(dataLoader);
 }
 
 void StageSelect::ChangeStage(bool up)
@@ -19,16 +19,16 @@ void StageSelect::ChangeStage(bool up)
     if (up)
     {
         fileNameIte++;
-        if (fileNameIte == dataLoader->GetEndIterator())
+        if (fileNameIte == dataLoader.end())
         {
-            fileNameIte = dataLoader->GetBeginIterator();
+            fileNameIte = dataLoader.begin();
         }
     }
     else
     {
-        if (fileNameIte == dataLoader->GetBeginIterator())
+        if (fileNameIte == dataLoader.begin())
         {
-            fileNameIte = dataLoader->GetEndIterator();
+            fileNameIte = dataLoader.end();
         }
         fileNameIte--;
     }

@@ -1,6 +1,8 @@
 #pragma once
 #include <list>
 #include <vector>
+#include <iostream>
+#include <fstream>
 #include "DxLib.h"
 
 /// <summary>
@@ -10,7 +12,7 @@
 /// <param name="count">イテレーターを回したい回数</param>
 /// <returns></returns>
 template<typename T>
-T GetIncrementList(std::list<T> list, int count)
+static T GetIncrementList(std::list<T> list, int count)
 {
     auto ite = list.begin();
     for (int i = 0; i < count; i++)
@@ -21,20 +23,45 @@ T GetIncrementList(std::list<T> list, int count)
 }
 
 /// <summary>
-/// リストをVECTORに変換する
+/// リストをベクター
+/// に変換する
 /// </summary>
 /// <typeparam name="T"></typeparam>
 /// <param name="list"></param>
 /// <returns></returns>
 template<typename T>
-std::vector<T> ConvertListToVector(std::list<T> list)
+static std::vector<T> ConvertListToVector(std::list<T> list)
 {
     std::vector<T> newList(list.begin(), list.end());
     return newList;
 }
+/// <summary>
+/// ベクターからリストにする
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="vector"></param>
+/// <returns></returns>
 template<typename T>
-std::list<T> ConvertVectorToList(std::vector<T> vector)
+static std::list<T> ConvertVectorToList(std::vector<T> vector)
 {
     std::list<T> newVec(vector.begin(), vector.end());
     return newVec;
+}
+
+static std::list<std::string>LoadData(std::string fileName)
+{
+    std::ifstream ifs(fileName);
+    if (!ifs)
+    {
+        std::cerr << "読み込みに失敗" << std::endl;
+        std::exit(1);
+    }
+    std::string charBuf;
+    std::list<std::string> stringList;
+    for (int i = 0; std::getline(ifs, charBuf); i++)
+    {
+        std::string backspaceChar = charBuf;
+        stringList.push_back(backspaceChar);
+    }
+    return stringList;
 }

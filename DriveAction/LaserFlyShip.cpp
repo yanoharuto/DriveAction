@@ -4,21 +4,21 @@
 #include "AssetManager.h"
 #include "Utility.h"
 
-const float LaserFlyShip::deleteBetween = 1500.0f;
-
 LaserFlyShip::LaserFlyShip()
 {
     modelHandle = AssetManager::Get3DModelAssetHandle("Player/Rocker.mv1");
-
-    isGenerateLaser = false;
 }
-
+/// <summary>
+/// レーザーを発射する飛行船
+/// </summary>
+/// <param name="firstPos"></param>
+/// <param name="setDestinationPos"></param>
 LaserFlyShip::LaserFlyShip(VECTOR firstPos, VECTOR setDestinationPos)
 {
     modelHandle = AssetManager::Get3DModelAssetHandle("Player/Rocker.mv1");
 
     position = firstPos;
-    
+    firstPosY = position.y;
     direction = VNorm(VSub(setDestinationPos, VGet(position.x, setDestinationPos.y, position.z)));
 
     firingPosition = position;
@@ -29,16 +29,21 @@ LaserFlyShip::LaserFlyShip(VECTOR firstPos, VECTOR setDestinationPos)
 LaserFlyShip::~LaserFlyShip()
 {
 }
-
-void LaserFlyShip::Init(VECTOR playerPos)
+/// <summary>
+/// カメラの視界に入らなくなったらエフェクトを消す
+/// </summary>
+/// <param name="playerInfo"></param>
+void LaserFlyShip::Init(PlayerRelatedInfo playerInfo)
 {
-    float between = VSize(VSub(playerPos,position));
-    if (between > deleteBetween)
+    VECTOR between = VSub(position, playerInfo.objInfo.pos);
+    float degree = OriginalMath::GetDegreeMisalignment(between, playerInfo.objInfo.dir);
+
+    if (degree < 90)
     {
-        ownerState = OwnerState::Delete;
+        ownerState = OwnerState::Move;
     }
     else
     {
-        ownerState = OwnerState::Move;
+        ownerState = OwnerState::Delete;
     }
 }

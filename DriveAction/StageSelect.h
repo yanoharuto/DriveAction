@@ -28,8 +28,11 @@ public:
     /// <returns></returns>
     static std::string GetLoadeStageName();
 private:
-    std::list<std::string>::iterator fileNameIte;//プレイヤーが遊びたいステージのアセットのアドレスを指す
-    const std::string allStageAddresFile = "data/stageData/AllStageFileName.txt";//ステージの一覧的な奴
-    DataPassLoader* dataLoader;
+    //プレイヤーが遊びたいステージのアセットのアドレスを指す
+    std::list<std::string>::iterator fileNameIte;
+    //ステージの一覧的な奴
+    std::string allStageAddresFile = "data/stageData/AllStageFileName.txt";
+
+    std::list<std::string> dataLoader;
 };
 

@@ -28,7 +28,10 @@ Coin::Coin()
     direction = { 1,0,0 };
     collider = new SphereCollider(this);
 }
-
+/// <summary>
+/// 初期化
+/// </summary>
+/// <param name="firstPos"></param>
 Coin::Coin(VECTOR firstPos)
 {
     position = firstPos;
@@ -38,6 +41,7 @@ Coin::Coin(VECTOR firstPos)
     radius = setRadius;
     SoundPlayer::LoadSound(coinSEPass);
     tag = ObjectTag::coin;
+    firstPos.y += radius;
 }
 
 Coin::~Coin()
@@ -45,12 +49,18 @@ Coin::~Coin()
     ConflictManager::EraceConflictObjInfo(collider);
     SAFE_DELETE(collider);
 }
-
-void Coin::Update()
+/// <summary>
+/// くるくる回転
+/// </summary>
+void Coin::Update(ObjInfo info)
 {
+
+    //向きを変更
     direction = VNorm(OriginalMath::GetYRotateVector(direction, rotateY));
     totalMoveYValue += moveYValue;
+    //ちょっと上下に動く
     position.y = firstY + cosf(totalMoveYValue) * moveYSpeed;
+    //車にぶつかってたら効果音を出して終了
     if (isCarConflict == true)
     {
         ConflictManager::EraceConflictObjInfo(collider);
@@ -72,4 +82,25 @@ void Coin::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
        SoundPlayer::Play3DSE(coinSEPass);
        isCarConflict = true;
     }
+}
+
+void Coin::Draw()
+{
+    VECTOR lightDir = GetLightDirection();
+    VECTOR lightPos = position;
+    lightPos.y += 300;
+    ChangeLightTypeSpot(lightPos, VGet(0, -1.0f, 0), DX_PI_F / 2, DX_PI_F / 4, 2000.0f, 0.0f, 0.008f, 0.0f);
+
+    MATRIX tmpMat = MV1GetMatrix(modelHandle);
+    if (modelHandle != -1)
+    {
+        ModelSetMatrix();
+        UpdateMV1Pos();
+        MV1SetScale(modelHandle, VGet(modelSize, modelSize, modelSize));
+        MV1DrawModel(modelHandle);
+    }
+    //行列を元に戻す
+    MV1SetRotationMatrix(modelHandle, tmpMat);
+
+    ChangeLightTypeDir(lightDir);
 }

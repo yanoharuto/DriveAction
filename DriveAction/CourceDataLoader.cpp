@@ -8,7 +8,7 @@
 std::string CourceDataLoader::genericPass;
 
 /// <summary>
-/// コース情報
+/// コースによって変わるパスを更新
 /// </summary>
 CourceDataLoader::CourceDataLoader()
 {

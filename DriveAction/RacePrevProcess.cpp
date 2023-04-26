@@ -5,30 +5,24 @@
 #include "Utility.h"
 RacePrevProcess::RacePrevProcess()
 {
-    displaySwitchingTimer = new Timer(visibleCoolTime);
     SoundPlayer::LoadSound(fanfareSEPass);
     SoundPlayer::Play2DSE(fanfareSEPass);
-    purposeData.dataHandle = LoadGraph(purposeGraph.c_str());
+    gamePuroseData = UIManager::CreateUIData(gamePurose);
+    collectIconData = UIManager::CreateUIData(collectIcon);
 }
 
 RacePrevProcess::~RacePrevProcess()
 {
-    DeleteGraph(purposeData.dataHandle);
 }
 
 void RacePrevProcess::Update()
 {
-    displaySwitchingTimer->Update();
-    if (displaySwitchingTimer->IsOverLimitTime())
-    {
-        isVisible = !isVisible;
-        displaySwitchingTimer->Init();
-    }
+
 }
 
 void RacePrevProcess::Draw()
 {
-    DrawRotaGraph(purposeData.x, purposeData.y, 1,0,purposeData.dataHandle, true);
+    DrawRotaGraph(gamePuroseData.x, gamePuroseData.y, 1,0,gamePuroseData.dataHandle[0], true);
 }
 
 bool RacePrevProcess::IsProccesEnd()

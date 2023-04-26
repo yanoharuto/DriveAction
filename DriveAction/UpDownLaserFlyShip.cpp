@@ -32,11 +32,8 @@ void UpDownLaserFlyShip::Update()
 
 void UpDownLaserFlyShip::GenerateLaser()
 {
-    if (!isGenerateLaser)
-    {
-        ItemArgumentCarInfo itemInfo;
-        itemInfo.SetCarInfo(this);
-        DamageObjectGenerator::GenerateDamageObject(laser, itemInfo, this);
-        isGenerateLaser = true;
-    }
+
+    ItemArgumentCarInfo itemInfo;
+    itemInfo.SetCarInfo(this);
+    DamageObjectGenerator::GenerateDamageObject(laser, itemInfo, this);
 }

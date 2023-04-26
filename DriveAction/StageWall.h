@@ -17,7 +17,7 @@ private:
     //壁のmodelパス
     const std::string modelFilePass = "Stage/StageWall.mv1";
     //付き飛ばす力
-    const float setBouncePower = 20;
+    const float setBouncePower = 50;
     //ちょっと埋まってるから上に行く
     VECTOR setFirstPos = { 0,100.0f,0 };
     //行動範囲

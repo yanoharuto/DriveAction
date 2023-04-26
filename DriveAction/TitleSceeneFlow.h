@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
 #include "SceneFlowBase.h"
-#include "StageSelect.h"
-#include "CourceDataLoader.h"
-#include "SwitchUI.h"
-#include "ImgUI.h"
-#include "StringUI.h"
-#include "StageManager.h"
-#include "SoundPlayer.h"
+#include "UIManager.h"
+class CourceDataLoader;
+class StageSelect;
+class StageManager;
+class SwitchUI;
+
+
 /// <summary>
 /// タイトルシーンの処理の流れ
 /// </summary>
@@ -25,11 +25,10 @@ private:
     StageSelect* stageSelect;
     CourceDataLoader* courceDataLoader;
     StageManager* stageManager;
-    
+    UIManager* uiManager;
     SwitchUI* switchUI;
-    ImgUI* titleLogo;
     const float logoSize = 1.0f;
     const float setNearValue = 0.1f;
     const float setFarValue = 10000.0f;
-    UIData uiData;
+    UIData titleLogoData;
 };

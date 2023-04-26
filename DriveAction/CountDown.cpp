@@ -2,30 +2,21 @@
 #include "DxLib.h"
 #include "Utility.h"
 #include "SoundPlayer.h"
-#define DOWN_SCALE		8				// ガウスフィルタを掛ける画像が画面のサイズの何分の１か
+
 CountDown::CountDown(Timer* setTimer)
 {
 	countDownEnd = false;
-
-
-	uiData.x = SCREEN_WIDTH / 2;
-	uiData.y = SCREEN_HEIGHT / 2;
-	oneGraph = LoadGraph(oneGraphPass.c_str());
-	twoGraph = LoadGraph(twoGraphPass.c_str());
-	threeGraph = LoadGraph(threeGraphPass.c_str());
+	countDownUI = UIManager::CreateUIData(UIKind::countDown);
 	timer = setTimer;
 	SoundPlayer::LoadSound(countDownSE);
 }
 
 CountDown::~CountDown()
 {
-	DeleteGraph(uiData.dataHandle);
 }
 
 void CountDown::Update()
 {
-	
-	
 	switch (static_cast<int>(timer->GetLimitTime()))
 	{
 	case 3:
@@ -34,28 +25,32 @@ void CountDown::Update()
 			countStart = true;
 			SoundPlayer::Play2DSE(countDownSE);
 		}
-		uiData.dataHandle = threeGraph;
+		uiNum = 2;
 	break;
 	case 2:
-		uiData.dataHandle = twoGraph;
+		uiNum = 1;
 		break;
 	case 1:
-		uiData.dataHandle = oneGraph;
+		uiNum = 0;
 		break;
 	case 0:
 		countDownEnd = true;
 		break;
 	default:
+		uiNum = -1;
 		break;
 	}
 }
 
-bool CountDown::CountDownEnd()
+bool CountDown::IsCountDownEnd()
 {
 	return countDownEnd;
 }
 
 void CountDown::DrawUI()
 {
-	DrawRotaGraph(uiData.x, uiData.y, 1, 0, uiData.dataHandle, true);
+	if (uiNum != -1)
+	{
+		DrawRotaGraph(countDownUI.x, countDownUI.y, 1, 0, countDownUI.dataHandle[uiNum], true);
+	}
 }

@@ -165,7 +165,7 @@ protected:
 	//cosValueに毎回足す
 	float cosAddValue = 0.05f;
 	//上下に動く速度
-	float updownSpeed = 2.0f;
+	float updownSpeed = 1.4f;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;
 	//目的地に向かうときに曲がるか判断する
@@ -177,7 +177,7 @@ protected:
 	//ダメージ
 	bool isDamage = false;
 	//これ以下の速度になってたらaccelPowerを0にするよ
-	static const float stopAccelLine;
+	static const float lowestSpeed;
 	// なにもしない時の減速.
 	static const float defaultDecel;
 	// ブレーキ時の減速.
@@ -216,6 +216,8 @@ protected:
 	VECTOR collVec = {};
 	//ひとつ前のポジション
 	VECTOR prevPos = {};
+	//加速
+	float turboPower ;
 	//タイヤに渡したい情報
 	WheelArgumentCarInfo wheelArgumentCarInfo = {};
 	AutoDriveInfo autoDriveP = {};

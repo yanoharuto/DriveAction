@@ -1,15 +1,19 @@
 #include "ResultScore.h"
 #include <math.h>
 #include <iomanip>
-
-int ResultScore::coinScore;
+#include "Timer.h"
+#include "PlayerRelatedInfo.h"
+//収集物のスコア
+int ResultScore::collectScore;
+//敵にヒットすると減点するスコア
 int ResultScore::hitScore;
+//残り時間ボーナス
 int ResultScore::timeScore;
 ResultScore::ResultScore(Timer* timer, PlayerRelatedInfo playerInfo)
 {
     timeScore = timer->GetLimitTime() * timeBonus;
     hitScore = noHitScore - playerInfo.damageObjHitCount * damageObjHitDec;
-    coinScore = playerInfo.hitCoinCount * coinBonus;
+    collectScore = playerInfo.hitCoinCount * coinBonus;
 }
 
 int ResultScore::GetScore(ScoreKind scoreKind)
@@ -23,10 +27,10 @@ int ResultScore::GetScore(ScoreKind scoreKind)
         return hitScore;
         break;
     case ScoreKind::collect:
-        return coinScore;
+        return collectScore;
         break;
     case ScoreKind::total:
-        return timeScore + hitScore + coinScore;
+        return timeScore + hitScore + collectScore;
         break;
     default:
         break;
@@ -45,10 +49,10 @@ int ResultScore::GetScore(int kindNum)
         return hitScore;
         break;
     case ScoreKind::collect:
-        return coinScore;
+        return collectScore;
         break;
     case ScoreKind::total:
-        return timeScore + hitScore + coinScore;
+        return timeScore + hitScore + collectScore;
         break;
     default:
         break;
@@ -58,15 +62,15 @@ int ResultScore::GetScore(int kindNum)
 
 int ResultScore::GetCollectBonus()
 {
-    return 0;
+    return coinBonus;
 }
 
-int ResultScore::GetHitBunus()
+int ResultScore::GetHitDecrease()
 {
-    return 0;
+    return damageObjHitDec;
 }
 
 int ResultScore::GetTimeBunus()
 {
-    return 0;
+    return timeScore;
 }

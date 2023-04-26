@@ -13,7 +13,7 @@
 /// </summary>
 /// <param name="racerNum">Ôæ‚è‚Ì”‚¾‚¯ƒŠƒXƒg‚É’Ç‰Á‚·‚é‚æ</param>
 /// <returns></returns>
-RacerManager::RacerManager(int cpuNum, CourceDataLoader* const courceDataLoader)
+RacerManager::RacerManager(int cpuNum)
 {
     racerNum = cpuNum > maxRacerNum ? maxRacerNum : cpuNum;
     playerInfoCenter = new PlayerInformationCenter();

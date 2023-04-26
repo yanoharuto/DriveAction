@@ -87,15 +87,12 @@ FadeMode FadeInFadeOut::GetFadeMode()
     return fadeMode;
 }
 /// <summary>
-/// □でフェードインフェードアウトする
+/// アウト中なら白くなる　インなら周りのモデルとかが見える
 /// </summary>
 void FadeInFadeOut::Draw()
 {
-	if (fadeMode != FadeMode::fadeInEnd)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeValue);//α値をいじる
-		int colorValue = MAX1BYTEVALUE - fadeValue;
-		DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GetColor(colorValue, colorValue, colorValue), true);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);//元に戻す
-	}
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeValue);//α値をいじる
+	int colorValue = MAX1BYTEVALUE - fadeValue;
+	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GetColor(colorValue, colorValue, colorValue), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);//元に戻す
 }

@@ -1,28 +1,22 @@
 #pragma once
 #include <string>
-#include "ImgUI.h"
 #include "DxLib.h"
 #include "Timer.h"
+#include "UIManager.h"
 class CountDown
 {
 public:
     CountDown(Timer* timer);
     ~CountDown();
     void Update();
-    bool CountDownEnd();
+    bool IsCountDownEnd();
     void DrawUI();
 private:
-    float startTime;
     bool countDownEnd;
     bool countStart = false;
-    int oneGraph;
-    int twoGraph;
-    int threeGraph;
+    UIData countDownUI;
     const std::string countDownSE = "countdown.mp3";
-    const std::string oneGraphPass = "data/1.png";
-    const std::string twoGraphPass = "data/2.png";
-    const std::string threeGraphPass = "data/3.png";
-    UIData uiData;
+    int uiNum = -1;
     Timer* timer;
 };
 

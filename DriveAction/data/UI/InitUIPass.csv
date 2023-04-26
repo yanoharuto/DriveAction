@@ -1,0 +1,28 @@
+﻿gamePurose
+data/UI/gamePurose/UIData.csv
+    collectIcon
+data/UI/collectIcon/UIData.csv
+    countDown
+data/UI/countDown/UIData.csv
+    collectScore
+data/UI/collectScore/UIData.csv
+    damageScore
+data/UI/damageScore/UIData.csv
+    num
+data/UI/num/UIData.csv
+    manual
+data/UI/manual/UIData.csv
+    point
+data/UI/point/UIData.csv
+    radar
+data/UI/radar/UIData.csv
+    slash
+data/UI/slash/UIData.csv
+    tilteLogo
+data/UI/titleLogo/UIData.csv
+    timerFrame
+data/UI/timerFrame/UIData.csv
+    timeScore
+data/UI/timeScore/UIData.csv
+    totalScore
+data/UI/totalScore/UIData.csv

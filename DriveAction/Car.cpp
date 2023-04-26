@@ -8,15 +8,15 @@
 #include "DirectionOfTravelGenerator.h"
 #include "SoundPlayer.h"
 //これ以下の速度になってたらaccelPowerを0にするよ
-const float Car:: stopAccelLine = 0.01f;
+const float Car:: lowestSpeed = 1.2f;
 // なにもしない時の減速.
-const float Car::defaultDecel = 0.78f;
+const float Car::defaultDecel = 0.01f;
 // ブレーキ時の減速.
-const float Car:: breakDecel = 0.006f;
+const float Car:: breakDecel = 0.03f;
 // グリップの減速.
 const float Car:: gripDecel = 0.08f;
 // 障害物にぶつかったときの減速率.
-const float Car:: colideDecel = 0.88f;
+const float Car:: colideDecel = 0.98f;
 //降りる速度
 const float Car:: fallSpeed = 10.8f;
 //エフェクトの大きさ
@@ -39,13 +39,13 @@ const std::string Car:: carClashSEPass = "carClash.mp3";
 const std::string Car:: carHornSEPass = "carHorn.mp3";
 //運転中の効果音
 const std::string Car:: drivingSEPass = "driving1.mp3";
+
 Car::Car()
 {
 	tag = ObjectTag::car;
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
-
 }
 /// <summary>
 /// 初期化
@@ -192,11 +192,16 @@ void Car::UpdateMV1Pos()
 	{
 		direction = VNorm(velocity);
 	}
-	// ポジションを更新.
-	position = VAdd(position, velocity);
-	if (VSize(collVec) != 0)
+	//ぶつかった時の衝撃で移動
+	if (VSize(collVec) > 0.1f)
 	{
 		position = VAdd(position, collVec);
+		collVec = VScale(collVec, defaultDecel);
+	}
+	else //衝撃が無くなったら運転できる
+	{
+		// ポジションを更新.
+		position = VAdd(position, velocity);
 	}
 	// ３Dモデルのポジション設定
 	MV1SetPosition(modelHandle, position);
@@ -262,6 +267,7 @@ void Car::CommonUpdate()
 void Car::EffectUpdate()
 {
 	float degree = OriginalMath::GetDegreeMisalignment(VGet(1, 0, 0), direction);
+	//走っている最中に出るエフェクト
 	if (VSize(velocity) > 0.5f)
 	{
 		//走っている最中にもエフェクトが出ているか
@@ -290,10 +296,11 @@ void Car::EffectUpdate()
 			runEffect = -1;
 		}
 	}
-	//コインのエフェクトを表示
+	//コインを取った時に出るエフェクトを表示
 	if (coinConflictEffect != -1)
 	{
 		SetPosPlayingEffekseer3DEffect(coinConflictEffect, position.x, position.y, position.z);
+		//車の向きに合わせる
 		if (VCross(VGet(1, 0, 0), direction).y < 0)
 		{
 			SetRotationPlayingEffekseer3DEffect(runEffect, 0, -degree * RAGE, 0);
@@ -309,41 +316,45 @@ void Car::EffectUpdate()
 
 VECTOR Car::GetAccelVec(InputInfo inputDir )
 {
-	if (fabsf(VSize(collVec)) > 0.1f)
-	{
-		collVec = VScale(collVec, defaultDecel);
-	}
+	float decelPower = 0;
 	//ブレーキしてなかったら
 	if (!inputDir.isBreake)
 	{
 		// 加速処理.
-		accelPower =  accelPower + carParam.addSpeed;
+		accelPower += carParam.addSpeed;
+
+		accelPower += turboPower;
+		turboPower = turboPower > 0 ? turboPower - turboPower * defaultDecel : 0;
 		if (accelPower > carParam.maxSpeed)
 		{
-			accelPower = carParam.maxSpeed ;
+			accelPower = carParam.maxSpeed;
 		}
 	}
-	// 止まっている場合は減速しない.
-	if (VSize(velocity) > 0)
-	{
 		//左右に曲がろうとしていたら減速
-		if (inputDir.handleDir != HandleDirection::straight)
-		{
-			//左右に曲がろうとしたら減速する
-			accelPower -= accelPower * gripDecel;
-		}
-
-		//ブレーキしていたら減速
+	if (inputDir.handleDir != HandleDirection::straight)
+	{
+		//左右に曲がろうとしたら減速する
+		decelPower = gripDecel;
 		if (inputDir.isBreake)
 		{
-			accelPower -= accelPower * breakDecel;
-		}
-		if (accelPower < 0)
-		{
-			accelPower = 0;
-		}
+			turboPower = turboPower > 3 ? 3 : turboPower + carParam.addSpeed;
 
+		}
 	}
+
+	//ブレーキしていたら減速
+	if (inputDir.isBreake)
+	{
+		decelPower = breakDecel;
+	}
+	accelPower -= accelPower * decelPower;
+	
+	//最低速度
+	if (accelPower < lowestSpeed)
+	{
+		accelPower = lowestSpeed;
+	}
+	printfDx("power::%f\n", accelPower);
 	return VScale(direction, accelPower);
 }
 /// <summary>
@@ -365,7 +376,6 @@ void Car::PlayDriveSound(InputInfo inputDir )
 		if (!SoundPlayer::IsPlaySound(drivingSEPass))
 		{
 			SoundPlayer::Play2DSE(drivingSEPass);
-
 		}
 	}
 }
@@ -397,7 +407,7 @@ void Car::InitWheelArgumentCarInfo()
 	wheelArgumentCarInfo.velocitySize = VSize(velocity);
 }
 /// <summary>
-/// 落下処理
+/// 上下に動く
 /// </summary>
 /// <param name="deltaTime"></param>
 void Car::UpDown()

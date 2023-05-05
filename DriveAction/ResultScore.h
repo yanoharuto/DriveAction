@@ -1,7 +1,8 @@
 #pragma once
 #define SCORE_KIND_NUM 4
 class Timer;
-struct PlayerRelatedInfo;
+class ObjectObserver;
+class RacerManager;
 /// <summary>
 /// 最終的なスコアの保存役
 /// </summary>
@@ -18,7 +19,7 @@ public:
     /// <summary>
     /// 最終的なスコアの保存
     /// </summary>
-    ResultScore(Timer* timer,PlayerRelatedInfo playerInfo);
+    ResultScore(Timer* timer,RacerManager* racerManager);
     ~ResultScore() {};
     /// <summary>
     /// スコアの所得
@@ -56,6 +57,8 @@ private:
     const int noHitScore = 500;
     //コインはボーナス
     const int coinBonus = 500;
-    int rankingData;
+
+    ObjectObserver* playerObserver;
+
 };
 

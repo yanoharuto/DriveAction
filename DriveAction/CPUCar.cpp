@@ -2,6 +2,7 @@
 #include "CPUCar.h"
 #include "Wheels.h"
 #include "Utility.h"
+#include "InitActor.h"
 CarInfomation setCarParam =
 {
     120.0f,
@@ -20,9 +21,8 @@ CPUCar::CPUCar()
 {
 }
 CPUCar::CPUCar(VECTOR firstPos, VECTOR destinaTionPos)
-    :Car(setCarParam)
+    :Car(setCarParam,Init::player)
 {
-    modelHandle = AssetManager::Get3DModelAssetHandle("Player/BlueBull.mv1");
     position = firstPos;
     position.y = firstPosY;
     direction = VGet(1.0f, 0.0f, 0.0f);

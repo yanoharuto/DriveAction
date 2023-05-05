@@ -1,17 +1,17 @@
 #pragma once
-#include "Item.h"
-#include "CpuCarMode.h"
-#include "DxLib.h"
 #include "Actor.h"
+#include "OriginalMath.h"
+#include "DxLib.h"
 #include "Wheels.h"
-#include "CarNeighborhoodExamineInfo.h"
 #include "CarParamater.h"
-#include "InputDirection.h"
-#include "ItemInfo.h"
-#include "AutoDriveInfo.h"
-#include "HitCheckExamineObjectInfo.h"
-#include "ObjPosAndDir.h"
-#include "Timer.h"
+enum EffectKind;
+struct ConflictExamineResultInfo;
+struct HitCheckExamineObjectInfo;
+struct ObjInfo;
+struct InputInfo;
+class Timer;
+class Wheels;
+
 /// <summary>
 /// 車の加速とか減速とかするよ。どの向きに加速するかとかはwheelsからとってくるよ
 /// </summary>
@@ -27,7 +27,7 @@ public:
 	/// <param name="firstDir"></param>
 	/// <param name="destinationPos"></param>
 	/// <param name="soundPlayer"></param>
-	Car(CarInfomation param);
+	Car(CarInfomation param,Init::InitObjKind);
     virtual ~Car();
 	/// <summary>
     /// 更新（移動処理）
@@ -54,11 +54,6 @@ public:
 	/// <param name="deltaTime"></param>
 	/// <param name="outsideHitFlag"></param>
 	void AutoDrive();
-	/// <summary>
-    /// カメラ等に渡したい情報を返す
-    /// </summary>
-	/// <returns></returns>
-	ObjInfo GetCarPosAndDir();
 	/// <summary>
 	/// 移動する前のポジションを渡す
 	/// </summary>
@@ -168,8 +163,6 @@ protected:
 	float updownSpeed = 1.4f;
 	//ダメージを受けた時の操作不可能時間
 	float damageReactionTime = -1.0f;
-	//目的地に向かうときに曲がるか判断する
-	float turnProccesAngularLine = 5.0f;
 	//チェックポイントに当たってるか
 	bool isGoalConflict = false;
 	//地面に降りているか
@@ -186,18 +179,15 @@ protected:
 	static const float gripDecel;
 	// 障害物にぶつかったときの減速率.
 	static const float colideDecel;
-	//降りる速度
-	static const float fallSpeed;
-	//エフェクトの大きさ
-	static const float effectSize;
+
 	//ダメージを受けた時に回転する速度
 	static const float damageReactionRotaSpeed;
 	//ダメージを受けた時の操作不可能時間の合計
 	static const float setDamageReactionTime;
 	//ぶつかった時のエフェクト
-	static const std::string conflictEffectResource;
+	static const EffectKind conflictEffectResource;
 	//風のエフェクト
-	static const std::string windEffectResource;
+	static const EffectKind windEffectResource;
 	//止まった時の効果音
 	static const std::string breakeSEPass;
 	//ぶつかった時の効果音
@@ -207,9 +197,8 @@ protected:
 	//運転中の効果音
 	static const std::string drivingSEPass;
 	//エフェクトのパス
-	static const std::string coinEffectPass;
-	//ダメージを受けた後の無敵時間
-	Timer* damageCoolTimer;
+	static const EffectKind coinEffectPass;
+
 	//タイヤ
 	Wheels* wheels;
 	//ぶつかった物体との方向
@@ -220,5 +209,4 @@ protected:
 	float turboPower ;
 	//タイヤに渡したい情報
 	WheelArgumentCarInfo wheelArgumentCarInfo = {};
-	AutoDriveInfo autoDriveP = {};
 };

@@ -46,5 +46,5 @@ protected:
     //アイテムを使っている状態かどうか
     ItemUseSituation useSituation;
     //アイテムの種類を教えて
-    ItemTag itemTag;
+    Item::ItemTag itemTag;
 };

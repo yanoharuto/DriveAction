@@ -17,8 +17,6 @@ public:
     /// <returns></returns>
     static int Get3DModelAssetHandle(std::string assetPass);
 private :
-    static const std::string genericPass;
     //modelのアドレスを貰うとモデルハンドルを返す
     static std::map<std::string, int> assetMap;
 };
-

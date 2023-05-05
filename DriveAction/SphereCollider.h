@@ -1,5 +1,6 @@
 #pragma once
 #include "conflictProccesor.h"
+
 class SphereCollider final:
     public ConflictProccesor
 {

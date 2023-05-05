@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
-#include "ItemArgumentCarInfo.h"
-#include "Actor.h"
-#include "Timer.h"
-#include "LineCollider.h"
-#include "FiringObjOwner.h"
+#include "DamageObject.h"
+class LineCollider;
+enum EffectKind;
+enum Init::InitObjKind;
 struct InitParam
 {
-    std::string laserEffectPass;
+    EffectKind laserEffectPass;
+    Init::InitObjKind initKind;
     float laserSize;
     float trackSize;
     float radius;
@@ -16,7 +16,7 @@ struct InitParam
 /// <summary>
 /// âÒì]ÉåÅ[ÉUÅ[
 /// </summary>
-class RotatingLasers abstract :public Actor
+class RotatingLasers abstract :public DamageObject
 {
 public:
     /// <summary>
@@ -24,14 +24,14 @@ public:
     /// </summary>
     /// <param name="carInfo"></param>
     /// <param name="timer"></param>
-    RotatingLasers(FiringObjOwner* setOwner,InitParam setParam);
+    RotatingLasers(InitParam setParam, ObjectObserver* setObserver);
     ~RotatingLasers();
-    void RotateLaser(std::string laserEffectPass,float rotaSpeed, float laserRange);
+    void RotateLaser(EffectKind kind,float rotaSpeed, float laserRange);
     void SetLaserTrack();
     void Draw()override;
 protected:
 
-    static const std::string laserTrackPass;
+    static const EffectKind laserTrackPass;
     
     static const std::string laserSEPass;
     
@@ -46,7 +46,6 @@ protected:
     //ç≈èâÇÃâÒì]ï˚å¸
     static const VECTOR firstDir;
 
-    FiringObjOwner* owner;
     VECTOR endPos = {};
     LineCollider* collider;
 };

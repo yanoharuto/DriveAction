@@ -1,9 +1,20 @@
 #pragma once
 #include "DxLib.h"
-#include "ObjectTagEnum.h"
+
 class Object
 {
 public:
+    enum ObjectTag
+    {
+        player,
+        coin,
+        damageObject,
+        obstacle,
+        stage,
+        goal,
+        acelerationFloor,
+        countSystem
+    };
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -41,6 +52,7 @@ public:
     {
         return radius;
     }
+    //跳ね返す力を返す
     float GetBouncePower()
     {
         return bouncePower;
@@ -61,6 +73,7 @@ public:
     {
         return tag;
     };
+
 protected:
     //半径
     float radius = 0;
@@ -74,5 +87,5 @@ protected:
     VECTOR direction = {1,0,0};
     //場所
     VECTOR position = {};
-};
 
+};

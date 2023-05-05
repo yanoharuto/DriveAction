@@ -1,6 +1,7 @@
 #include "SphereCollider.h"
 #include "HitChecker.h"
 #include "ConflictManager.h"
+
 SphereCollider::SphereCollider(Actor* obj)
     :ConflictProccesor(obj)
 {

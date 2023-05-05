@@ -3,7 +3,7 @@
 #include "Utility.h"
 #include "DxLib.h"
 std::vector<std::string> UIManager::initDataVec;
-std::unordered_map<UIKind, int*> UIManager::loadGraphs;
+std::unordered_map<int, int*> UIManager::loadGraphs;
 UIManager::UIManager()
 {
     CSVFileLoader* initDataFile = new CSVFileLoader(initUIDataPassFile);
@@ -21,26 +21,36 @@ UIManager::~UIManager()
 
 UIData UIManager::CreateUIData(UIKind uiKind)
 {
+    return CreateUIData(static_cast<int>(uiKind));
+}
+
+UIData UIManager::CreateUIData(int kindNum)
+{
     UIData data;
-    int num = static_cast<int>(uiKind) * 2 + 1;
-    CSVFileLoader* initDataFile = new CSVFileLoader(initDataVec[num]);
+
+    //データ読み取り
+    CSVFileLoader* initDataFile = new CSVFileLoader(initDataVec[kindNum]);
     std::vector<std::string> dataVec = initDataFile->GetLoadData();
-    data.x = atoi(dataVec[1].c_str());
-    data.y = atoi(dataVec[3].c_str());
-    int xNum = atoi(dataVec[9].c_str());
-    int yNum =  atoi(dataVec[11].c_str());
-    data.width = atoi(dataVec[5].c_str()) / xNum;
-    data.height = atoi(dataVec[7].c_str()) / yNum;
-    data.graphNum = xNum + yNum - 1;
+    //位置とか幅とか分割数を読み取る
+    data.x = atoi(dataVec[drawX].c_str());
+    data.y = atoi(dataVec[drawY].c_str());
+    int divXNum = atoi(dataVec[xNum].c_str());
+    int divYNum = atoi(dataVec[yNum].c_str());
+    data.width = atoi(dataVec[width].c_str()) / divXNum;
+    data.height = atoi(dataVec[height].c_str()) / divYNum;
+    //画像を分割読み込み
     int graphArray[1000];
-    LoadDivGraph(dataVec[13].c_str(), data.graphNum, xNum, yNum, data.width, data.height, graphArray);
-    for (int i = 0; i < xNum + yNum - 1; i++)
+    LoadDivGraph(dataVec[graphPass].c_str(), divXNum * divYNum, divXNum, divYNum, data.width, data.height, graphArray);
+    for (int i = 0; i < divXNum + divYNum - 1; i++)
     {
         data.dataHandle.push_back(graphArray[i]);
     }
-    data.size = atof(dataVec[15].c_str());
-    loadGraphs.insert(std::make_pair(uiKind, graphArray));
+    //大きさとコマ送り速度
+    data.size = static_cast<float>(atof(dataVec[UISize].c_str()));
+    data.frameSpeed = static_cast<float>(atof(dataVec[frameSpeed].c_str()));
+    //跡でまとめて消す
+    loadGraphs.insert(std::make_pair(kindNum, graphArray));
+    //初期化データを消す
+    SAFE_DELETE(initDataFile);
     return data;
 }
-
-

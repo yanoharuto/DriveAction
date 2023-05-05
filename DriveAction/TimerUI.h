@@ -7,8 +7,7 @@ class NumUI;
 class TimerUI
 {
 public:
-    TimerUI();
-    TimerUI(float setFontSize,Timer* setTimer);
+    TimerUI(Timer* setTimer);
     ~TimerUI();
 
     void Draw();
@@ -21,8 +20,8 @@ private:
     int pointGraphHandle;
 
     //フォント画像のサイズ
-    float timerFontLoadSize = 80.0f;
-    float fontSize = 0;
+    int timerFontLoadSize;
+
     Timer* timer = nullptr;
     NumUI* numUI = nullptr;
 };

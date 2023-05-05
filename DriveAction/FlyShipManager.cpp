@@ -3,38 +3,22 @@
 #include "GetGeneratePos.h"
 #include "Utility.h"
 #include "CourceDataLoader.h"
-
-FlyShipManager::FlyShipManager()
+#include "Timer.h"
+#include "BomberFlyShip.h"
+#include "CircleLaserFlyShip.h"
+#include "UpDownLaserFlyShip.h"
+#include "OriginalMath.h"
+#include "RacerManager.h"
+#include "SubjectInfoCentor.h"
+/// <summary>
+/// 空を飛ぶ船のマネージャー
+/// </summary>
+/// <param name="racerManager"></param>
+FlyShipManager::FlyShipManager(RacerManager* racerManager)
 {
     bomberFlyShipGoTimer = new Timer(setBShipInitSpan);
-    for (int i = 0; i < BomberFlyShipNum; i++)
-    {
-        BomberFlyShip* flyship = new BomberFlyShip();
-        bombList.push_back(flyship);
-    }  
-
-    std::list<VECTOR> ufoPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(enemyPosPass,0));
-    VECTOR generatePos = {};
-    int j = 0;
-    for (auto itr = ufoPosList.begin(); itr != ufoPosList.end(); itr++)
-    {
-        VECTOR dir = VGet(1, 0, 0);
-        for (int i = 0; i < circleShipNum; i++)
-        {
-            dir = VNorm(OriginalMath::GetYRotateVector(dir, 60.0f));
-            generatePos = VAdd((*itr), VScale(dir, 200.0f));
-            CircleLaserFlyShip* flyship = new CircleLaserFlyShip(generatePos, (*itr));
-            circleFlyshipList.push_back(flyship);
-        }
-        j += circleShipNum;
-    }
-
-    std::list<VECTOR>updownFlyShipPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(enemyPosPass,1));
-    for (auto itr = updownFlyShipPosList.begin(); itr != updownFlyShipPosList.end(); itr++)
-    {
-        UpDownLaserFlyShip* flyship = new UpDownLaserFlyShip((*itr),VGet(0,0,0));
-        updownFlyShipList.push_back(flyship);
-    }
+    playerObserver = SubjectInfoCentor::GetObjectObserver(racerManager->GetPlayerSubject(0));
+    LaserShipInit();
 }
 
 FlyShipManager::~FlyShipManager()
@@ -45,9 +29,8 @@ FlyShipManager::~FlyShipManager()
     }
 }
 
-void FlyShipManager::Update( PlayerInformationCenter* infoCenter)
+void FlyShipManager::Update()
 {
-    bomberFlyShipGoTimer->Update();
     for (auto ite = bombList.begin(); ite != bombList.end(); ite++)
     {
         if ((*ite)->GetAliveFlag())
@@ -63,8 +46,7 @@ void FlyShipManager::Update( PlayerInformationCenter* infoCenter)
     {
         (*ite)->Update();
     }
-    BomberShipInit(infoCenter);
-    LaserShipInit(infoCenter);
+    BomberShipInit();
 }
 
 void FlyShipManager::Draw()
@@ -82,44 +64,60 @@ void FlyShipManager::Draw()
         (*ite)->Draw();
     }
 }
-
-void FlyShipManager::BomberShipInit(PlayerInformationCenter* infoCenter)
+/// <summary>
+/// 爆撃機の初期化　
+/// </summary>
+/// <param name="infoCenter"></param>
+void FlyShipManager::BomberShipInit()
 {
-    //時間が過ぎたらまた爆撃機を発信
+    //時間が過ぎたらまた爆撃機を発進
     if (bomberFlyShipGoTimer->IsOverLimitTime())
     {
-        PlayerRelatedInfo playerInfo = infoCenter->GetPlayerRelatedInfo(0);
         //ランダムな角度を出す
         int randomNum = OriginalMath::GetRandom(0, bShipInitRandDeg);
         //ランダムな方向から爆撃機を発進させる
         VECTOR dir = OriginalMath::GetYRotateVector(VGet(1, 0, 0), static_cast<float> (randomNum));
         //プレイヤーに向かって
-        VECTOR destinationPos = playerInfo.objInfo.pos;
+        VECTOR destinationPos = playerObserver->GetSubPos();
         //出現場所
         VECTOR generatePos = VAdd(destinationPos, VScale(dir,initBShipGeneratePosScale));
         //一機目以降は他の機体と距離を置いて発進
         VECTOR between = VScale(VCross(VNorm(VSub(destinationPos, generatePos)), VGet(0, 1, 0)), initBShipBetween);
         //初期化
-        for (auto ite = bombList.begin(); ite != bombList.end(); ite++)
+        for (int i = 0; i < BomberFlyShipNum; i++)
         {
-            (*ite)->Init(generatePos, destinationPos);
             generatePos = VAdd(generatePos, between);
             destinationPos = VAdd(destinationPos, between);
+            BomberFlyShip* flyship = new BomberFlyShip(generatePos,destinationPos);
+            bombList.push_back(flyship);
         }
-
+        //また時間が来たら発進
         bomberFlyShipGoTimer->Init();
     }
 }
 
-void FlyShipManager::LaserShipInit(PlayerInformationCenter* infoCenter)
+void FlyShipManager::LaserShipInit()
 {
-    for (auto ite = circleFlyshipList.begin(); ite != circleFlyshipList.end(); ite++)
+    std::list<VECTOR> circleLaserShipPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(enemyPosPass, 0));
+    VECTOR generatePos = {};
+    int j = 0;
+    for (auto itr = circleLaserShipPosList.begin(); itr != circleLaserShipPosList.end(); itr++)
     {
-        (*ite)->Init(infoCenter->GetPlayerRelatedInfo(0));
+        VECTOR dir = VGet(1, 0, 0);
+        for (int i = 0; i < circleShipNum; i++)
+        {
+            dir = VNorm(OriginalMath::GetYRotateVector(dir, 60.0f));
+            generatePos = VAdd((*itr), VScale(dir, 200.0f));
+            CircleLaserFlyShip* flyship = new CircleLaserFlyShip(generatePos, (*itr));
+            circleFlyshipList.push_back(flyship);
+        }
+        j += circleShipNum;
     }
 
-    for (auto ite = updownFlyShipList.begin(); ite != updownFlyShipList.end(); ite++)
+    std::list<VECTOR>updownFlyShipPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(enemyPosPass, 1));
+    for (auto itr = updownFlyShipPosList.begin(); itr != updownFlyShipPosList.end(); itr++)
     {
-        (*ite)->Init(infoCenter->GetPlayerRelatedInfo(0));
+        UpDownLaserFlyShip* flyship = new UpDownLaserFlyShip((*itr), VGet(0, 0, 0));
+        updownFlyShipList.push_back(flyship);
     }
 }

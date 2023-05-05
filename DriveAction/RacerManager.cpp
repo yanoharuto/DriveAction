@@ -1,36 +1,24 @@
 #include "RacerManager.h"
 #include "CPU.h"
 #include "Player.h"
-#include "CheckPoint.h"
-#include "PlayerCar.h"
 #include "Utility.h"
 #include "RacerGenerater.h"
-#include "CircuitTrack.h"
-#include "CourceDataLoader.h"
-#include "PlayerRelatedInfo.h"
+#include "SoundPlayer.h"
+#include "ObjectSubject.h"
 /// <summary>
 /// 初期化
 /// </summary>
 /// <param name="racerNum">車乗りの数だけリストに追加するよ</param>
 /// <returns></returns>
-RacerManager::RacerManager(int cpuNum)
+RacerManager::RacerManager(int playerNum)
 {
-    racerNum = cpuNum > maxRacerNum ? maxRacerNum : cpuNum;
-    playerInfoCenter = new PlayerInformationCenter();
     //走る人たちを生成
     RacerGenerater* racerGenerater = new RacerGenerater();
-    racerGenerater->CreateRacers(racerNum, &racerList, &player,playerInfoCenter);
-
-    //プレイヤーの初期化処理
-    RacerRankInfo rankInfo{};
-
-    for (auto i = racerList.begin(); i != racerList.end(); i++)
+    for (int i = 0; i < playerNum; i++)
     {
-        //ランク情報を追加
-        rankInfo.checkPointP = (*i)->GetCheckPointer();
-        rankInfo.rankP = (*i)->GetRankPointer();
-        racerRankList.push_front(rankInfo);
+        racerList.push_back(racerGenerater->CreatePlayer(i));
     }
+
     SAFE_DELETE(racerGenerater);
     
 }
@@ -41,7 +29,6 @@ RacerManager::~RacerManager()
     {
         SAFE_DELETE((*ite));
     }
-    SAFE_DELETE(playerInfoCenter);
 }
 /// <summary>
 /// 車乗りたちの更新
@@ -58,8 +45,6 @@ void RacerManager::RacerUpdate( )
         //車の更新　
         racer->Update();
     }
-    //位置情報とか更新
-    playerInfoCenter->UpdatePlayerRelatedInfo();
 }
 /// <summary>
 /// 上下に動く
@@ -72,15 +57,6 @@ void RacerManager::UpDown()
         racer = *racerIte;
         racer->UpDown();
     }
-}
-
-/// <summary>
-/// プレイヤーのUIに必要な情報を渡す
-/// </summary>
-/// <returns></returns>
-PlayerInformationCenter* RacerManager::GetPlayerRelatedInfo()
-{
-   return playerInfoCenter;
 }
 
 
@@ -98,7 +74,7 @@ void RacerManager::Draw()
     }
 }
 
-ObjInfo RacerManager::GetPlayerCarPosDir() 
+ObjectSubject* RacerManager::GetPlayerSubject(int num)
 {
-    return player->GetPlayerPosAndDir();
+    return (*racerList.begin())->GetSubject();
 }

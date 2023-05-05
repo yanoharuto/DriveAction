@@ -44,7 +44,6 @@ ConflictExamineResultInfo WallCollider::HitCheck(HitCheckExamineObjectInfo hitCh
         tempVec = VSub(hitCheckInfo.velocity, VScale(tempVec, 2 * a));
         //‚Í‚¶‚©‚êæ‚Ìƒ|ƒWƒVƒ‡ƒ“
         resultInfo.pos = VAdd(hitCheckInfo.pos, tempVec);
-        
         resultInfo.bounceVec = VScale(VNorm(hitCheckInfo.pos), - object->GetBouncePower());
     }
 

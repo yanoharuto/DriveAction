@@ -1,6 +1,6 @@
 #include "MeshCollider.h"
 #include "ConflictManager.h"
-MeshCollider::MeshCollider(int setModelHandle, ObjectTag setTag)
+MeshCollider::MeshCollider(int setModelHandle, Object::ObjectTag setTag)
 {
     modelHandle = setModelHandle;
     tag = setTag;

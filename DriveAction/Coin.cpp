@@ -14,8 +14,7 @@ const float Coin::moveYValue = 0.2f;
 const float Coin::moveYSpeed = 4.0f;
 //半径
 const float Coin ::setRadius = 46.0f;
-//エフェクトの大きさ
-const float Coin::effectSize = 4.0f;
+
 //コインの効果音のパス
 const std::string Coin::coinSEPass="coin.wav";
 //初期y座標
@@ -33,9 +32,9 @@ Coin::Coin()
 /// </summary>
 /// <param name="firstPos"></param>
 Coin::Coin(VECTOR firstPos)
+    :Actor(Init::coin)
 {
     position = firstPos;
-    modelHandle = AssetManager::Get3DModelAssetHandle(coinPass);
     direction = { 1,0,0 };
     collider = new SphereCollider(this);
     radius = setRadius;
@@ -52,9 +51,8 @@ Coin::~Coin()
 /// <summary>
 /// くるくる回転
 /// </summary>
-void Coin::Update(ObjInfo info)
+void Coin::Update()
 {
-
     //向きを変更
     direction = VNorm(OriginalMath::GetYRotateVector(direction, rotateY));
     totalMoveYValue += moveYValue;
@@ -85,11 +83,11 @@ void Coin::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
 }
 
 void Coin::Draw()
-{
+{/*
     VECTOR lightDir = GetLightDirection();
     VECTOR lightPos = position;
     lightPos.y += 300;
-    ChangeLightTypeSpot(lightPos, VGet(0, -1.0f, 0), DX_PI_F / 2, DX_PI_F / 4, 2000.0f, 0.0f, 0.008f, 0.0f);
+    ChangeLightTypeSpot(lightPos, VGet(0, -1.0f, 0), DX_PI_F / 2, DX_PI_F / 4, 2000.0f, 0.0f, 0.008f, 0.0f);*/
 
     MATRIX tmpMat = MV1GetMatrix(modelHandle);
     if (modelHandle != -1)
@@ -102,5 +100,5 @@ void Coin::Draw()
     //行列を元に戻す
     MV1SetRotationMatrix(modelHandle, tmpMat);
 
-    ChangeLightTypeDir(lightDir);
+   // ChangeLightTypeDir(lightDir);
 }

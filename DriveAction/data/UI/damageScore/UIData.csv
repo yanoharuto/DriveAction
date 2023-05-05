@@ -14,3 +14,5 @@ graphPass
 data/UI/damageScore/Damage.png
 size
 0.7
+frameSpeed
+0

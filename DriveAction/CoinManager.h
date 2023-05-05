@@ -17,7 +17,7 @@ public:
     /// <summary>
     /// coinPosListの更新と取られたコインの削除
     /// </summary>
-    void Update(ObjInfo objInfo);
+    void Update();
     /// <summary>
     /// コインの描画
     /// </summary>

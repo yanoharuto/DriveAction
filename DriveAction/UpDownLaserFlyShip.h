@@ -1,19 +1,30 @@
 #pragma once
 #include "LaserFlyShip.h"
+/// <summary>
+/// 上下に動きながらレーザーを出すやつ
+/// </summary>
 class UpDownLaserFlyShip :
     public LaserFlyShip
 {
 public:
-    UpDownLaserFlyShip();
+    /// <summary>
+    /// 上下に動きながらレーザーを出すやつ
+    /// </summary>
     UpDownLaserFlyShip(VECTOR setPos, VECTOR setDestinationPos);
-    ~UpDownLaserFlyShip();
+    /// <summary>
+    /// 上下に動くよ
+    /// </summary>
     void Update() override;
+    /// <summary>
+    /// レーザーを発射
+    /// </summary>
     void GenerateLaser()override;
 private:
+    //Cosの量
     static const float addMoveValue;
-    static const float setFirstPosY;
+    //上下に動く速度
     static const float updownSpeed;
-    static const float setModelSize;
+    //動いた量
     float totalMoveValue = 0;
 };
 

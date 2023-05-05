@@ -1,10 +1,15 @@
 #include "ShadowMap.h"
+#include "ObjectObserver.h"
+#include "SubjectInfoCentor.h"
+#include "ObjectSubject.h"
+#include "RacerManager.h"
 
-ShadowMap::ShadowMap()
+ShadowMap::ShadowMap(RacerManager* manager)
 {
     //‚©‚°‚ÌŒü‚«
     SetShadowMapLightDirection(shadowMap, VGet(0.1f, -1, 0));
     SetShadowMapDrawArea(shadowMap, DrawAreaMinPos, DrawAreaMaxPos);
+    playerObserber = SubjectInfoCentor::GetObjectObserver(manager->GetPlayerSubject(0));
 }
 
 ShadowMap::~ShadowMap()
@@ -15,10 +20,10 @@ ShadowMap::~ShadowMap()
 /// ‰e‚Ì•`‰æ”ÍˆÍ‚Ì•ÏX
 /// </summary>
 /// <param name="objInfo">ˆø”‚ÌÀ•W‚ğ’†S‚É‚·‚é</param>
-void ShadowMap::SetShadowMapErea(ObjInfo objInfo)
+void ShadowMap::SetShadowMapErea()
 {
-    VECTOR minPos = VAdd(objInfo.pos, DrawAreaMinPos);
-    VECTOR maxPos = VAdd(objInfo.pos, DrawAreaMaxPos);
+    VECTOR minPos = VAdd(playerObserber->GetSubPos(), DrawAreaMinPos);
+    VECTOR maxPos = VAdd(playerObserber->GetSubPos(), DrawAreaMaxPos);
     SetShadowMapDrawArea(shadowMap, minPos, maxPos);
 }
 /// <summary>

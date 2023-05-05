@@ -4,16 +4,12 @@
 #include "HitChecker.h"
 #include"Utility.h"
 #include "OriginalMath.h"
-#include "DirectionOfTravelGenerator.h"
 Racer::Racer()
 {
-    checkPoint = new CheckPoint();
-    rank = 0;
 }
 
 Racer::~Racer()
 {
-    SAFE_DELETE(checkPoint);
     SAFE_DELETE(car);
 }
 
@@ -32,16 +28,4 @@ void Racer::Draw()
 void Racer::UpDown()
 {
     car->UpDown();
-}
-
-
-
-int* Racer::GetRankPointer()
-{
-    return &rank;
-}
-
-CheckPoint* Racer::GetCheckPointer()
-{
-    return checkPoint;
 }

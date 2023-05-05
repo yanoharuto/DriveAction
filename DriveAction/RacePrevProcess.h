@@ -25,6 +25,8 @@ private:
     UIData collectIconData;
     //ゲームの目標
     UIData gamePuroseData;
-
-    int iconIncrement;
+    //コマ送り用タイマー
+    Timer* frameByFrameTimer;
+    //現在のコマ
+    int iconIncrement = 0;
 };

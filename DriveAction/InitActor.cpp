@@ -1,45 +1,31 @@
 #include "InitActor.h"
-#include "ListUtility.h"
+#include "CSVFileLoader.h"
+#include "Utility.h"
+#include "InitObjKind.h"
 InitActor::InitActor()
 {
-    std::vector<std::string> actorDataPassFile = ConvertListToVector(LoadData(initActorFileName));
-    for (int i = 0; i < actorDataPassFile.size(); i++)
-    {
-        if (i % 2 == 1)
-        {
-            initData.push_back(actorDataPassFile[i]);
-        }
-    }
+    CSVFileLoader* initDataLoader = new CSVFileLoader(initActorFileName);
+    initDataPassFile = initDataLoader->GetLoadData();
+    SAFE_DELETE(initDataLoader);
 }
 
 InitActor::~InitActor()
 {
 }
 
-InitActor::ActorParametor InitActor::GetActorParametor(InitObjKind objKind)
+ActorParametor InitActor::GetActorParametor(Init::InitObjKind objKind)
 {
-    std::list<std::string> data = LoadData(initData[objKind]);
-    ActorParametor param;
-    int i = 0;
-    for (auto itr = data.begin(); itr != data.end(); itr++)
-    {
-        switch (i)
-        {
-        case 0:
-            param.firstPosY = atof((*itr).c_str());
-            break;
-        case 1:
-            param.modelPass = (*itr).c_str();
-            break;
-        case 2:
-            param.setModelSize = atof((*itr).c_str());
-            break;
-        default:
-            break;
-        }
-        i++;
-        itr++;
-    }
+    int num = static_cast<int>(objKind);
 
+    //ÉfÅ[É^ì«Ç›éÊÇË
+    CSVFileLoader* initDataLoader = new CSVFileLoader(initDataPassFile[num]);
+    std::vector<std::string> initData = initDataLoader->GetLoadData();
+    ActorParametor param = {};
+    param.firstPosY = atof(initData[InitObjParamator::firstPosY].c_str());
+    param.modelPass = initData[InitObjParamator::assetPass];
+    param.setModelSize = atof(initData[InitObjParamator::modelSize].c_str());
+    param.setBouncePow = atof(initData[InitObjParamator::bouncePower ].c_str());
+    param.setRadius = atof(initData[InitObjParamator::collRadius].c_str());
+    SAFE_DELETE(initDataLoader);
     return param;
 }

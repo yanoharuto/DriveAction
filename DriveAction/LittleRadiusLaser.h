@@ -4,7 +4,7 @@ class LittleRadiusLaser :
     public RotatingLasers
 {
 public:
-    LittleRadiusLaser(FiringObjOwner* owner);
+    LittleRadiusLaser(ObjectObserver* observer);
     ~LittleRadiusLaser();
     void Update()override;
 private:

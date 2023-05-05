@@ -20,7 +20,7 @@ public:
     /// <summary>
     /// 更新
     /// </summary>
-    void Update(ObjInfo info);
+    void Update();
     /// <summary>
     /// ぶつかった時の処理
     /// </summary>
@@ -39,15 +39,12 @@ private:
     static const float moveYSpeed;
     //半径
     static const float setRadius;
-    //エフェクトの大きさ
-    static const float effectSize;
     //最初の高さ
     static const float firstY;
     //modelのパス
     static const std::string coinPass;
     //コインの効果音のパス
     static const std::string coinSEPass;
-
     //回転量
     float totalMoveYValue = 0;
     //球当たり判定

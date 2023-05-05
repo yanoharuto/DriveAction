@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include "ItemTag.h"
-#include "FiringObjOwner.h"
-#include "ItemArgumentCarInfo.h"
-
+class ObjectSubject;
+class DamageObject;
+class ObjectObserver;
 /// <summary>
 /// 投擲アイテムなどのダメージがあるオブジェクトを生成する
 /// </summary>
@@ -20,5 +20,5 @@ public:
     /// </summary>
     /// <param name="itemTag"></param>
     /// <param name="carInfo"></param>
-    static Actor* GenerateDamageObject(ItemTag itemTag, ItemArgumentCarInfo carInfo,FiringObjOwner* owner);
+    static DamageObject* GenerateDamageObject(Item::ItemTag itemTag,ObjectSubject* sub);
 };

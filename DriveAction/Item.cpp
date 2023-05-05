@@ -7,7 +7,6 @@ ItemBase::ItemBase()
 {
     useSituation = ItemUseSituation::nonUse;
     effecacyValue = {};
-    itemTag = non;
 }
 
 ItemBase::~ItemBase()

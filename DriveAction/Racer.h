@@ -1,12 +1,7 @@
 #pragma once
-#include "CircuitDataStruct.h"
-#include "SoundPlayer.h"
-#include "Car.h"
-#include "CheckPoint.h"
-#include "ConflictExamineResultInfo.h"
-#include "DamageObjectGenerator.h"
+class Car;
 /// <summary>
-/// レーサー　現状　コンピューターとプレイヤーの二種類
+/// レーサー　
 /// </summary>
 class Racer abstract
 {
@@ -28,24 +23,8 @@ public:
     /// 発進前に上下に動く
     /// </summary>
     void UpDown();
-    /// <summary>
-    /// ランク
-    /// </summary>
-    int* GetRankPointer();
-    /// <summary>
-    /// チェックポイントを返す
-    /// </summary>
-    CheckPoint* GetCheckPointer();
-
+    
 protected:
-
-    int transitCPCount = 0;
-
-    bool reverse = false;
-    //順位
-    int rank;
-    //通ってきたチェックポイント
-    CheckPoint* checkPoint;
     //車
     Car* car;
 };

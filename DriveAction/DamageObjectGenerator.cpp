@@ -1,9 +1,10 @@
 #include "DamageObjectGenerator.h"
 #include "Rocket.h"
-
 #include "LittleRadiusLaser.h"
 #include "BigRadiusLaser.h"
 #include "FiringItemManager.h"
+#include "DamageObject.h"
+#include "SubjectInfoCentor.h"
 
 DamageObjectGenerator::DamageObjectGenerator()
 {    
@@ -17,24 +18,25 @@ DamageObjectGenerator::~DamageObjectGenerator()
 /// </summary>
 /// <param name="itemTag"></param>
 /// <param name="carInfo"></param>
-Actor* DamageObjectGenerator::GenerateDamageObject(ItemTag itemTag, ItemArgumentCarInfo carInfo,FiringObjOwner* owner)
+DamageObject* DamageObjectGenerator::GenerateDamageObject(Item::ItemTag itemTag,ObjectSubject* sub)
 {
-    Actor* obj = nullptr;
-
+    DamageObject* obj = nullptr;
+    ObjectObserver* observer = SubjectInfoCentor::GetObjectObserver(sub);
     switch (itemTag)
     {
-    case bomber:
-        obj = new Rocket(carInfo);
+    case Item:: bomber:
+        obj = new Rocket(observer);
         break;
-    case ufo:
-        obj = new LittleRadiusLaser(owner);
+    case Item::littleRadLaser:
+        obj = new LittleRadiusLaser(observer);
         break;
-    case laser:
-        obj = new BigRadiusLaser(owner);
+    case Item::bigRadLaser:
+        obj = new BigRadiusLaser(observer);
         break;
     default:
         break;
     }
+    
     FiringItemManager::AddFiringObject(obj);
     return obj;
 }

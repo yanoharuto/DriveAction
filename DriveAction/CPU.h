@@ -11,7 +11,5 @@ public:
     ~CPU();
     void Update()override;
 private:
-    const float setItemCoolTime = 10.0f;
-    float itemCoolTime = 0;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
-#include "CircuitTrack.h"
-#include "DamageObjectGenerator.h"
+class DamageObject;
+class DamageObjectGenerator;
 /// <summary>
 /// 飛び道具の面倒を見る奴
 /// </summary>
@@ -23,7 +23,7 @@ public:
     /// </summary>
     /// <param name="itemTag"></param>
     /// <param name="carInfo"></param>
-    static void AddFiringObject(Actor* damageObj);
+    static void AddFiringObject(DamageObject* damageObj);
     /// <summary>
     /// 更新
     /// </summary>
@@ -37,5 +37,5 @@ private:
     DamageObjectGenerator* damageObjGenerator;
 
     //オブジェクトタグがDamageObjectになってるオブジェクトのリスト
-    static std::list<Actor*> damageObjList;
+    static std::list<DamageObject*> damageObjList;
 };

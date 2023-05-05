@@ -1,6 +1,8 @@
 #pragma once
 #include "SphereCollider.h"
 #include "Actor.h"
+#include "InitObjKind.h"
+#include <string>
 //岩のパターン　大きさとかが変わる
 #define RockPattern 3
 /// <summary>
@@ -21,15 +23,8 @@ public:
     /// </summary>
     ~Rock();
 private:
-    //modelのパス
-    static const std::string modelPass[RockPattern];
-    //ぶつかった時に付き飛ばす力
-    static const int setBouncePower;
-    //当たり判定の幅
-    static const float setRadius[RockPattern]; 
-    //大きさ
-    VECTOR scale;
     //球当たり判定
     SphereCollider* collider;
+    static Init::InitObjKind rockPattern[RockPattern];
 };
 

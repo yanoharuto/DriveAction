@@ -8,7 +8,7 @@ ConflictManager::ConflictManager()
 
 ConflictManager::~ConflictManager()
 {
-
+    conflictObjList.clear();
 }
 /// <summary>
 /// “–‚½‚è”»’è‚ð’Ç‰Á
@@ -75,6 +75,7 @@ void ConflictManager::Update()
 {
     for (auto objIte = conflictObjList.begin(); objIte != conflictObjList.end(); objIte++)
     {
+        
         (*objIte)->ConflictProccess(GetConflictObjInfo((*objIte)));
     }
 }

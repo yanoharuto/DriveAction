@@ -1,12 +1,18 @@
 #pragma once
-#include "PlayerRelatedInfo.h"
 #include "Timer.h"
+
+/// <summary>
+/// •`‰æ‚µ‚½‰æ‘œ‚ğ•Û‘¶‚·‚é
+/// </summary>
 class RaceScreen
 {
 public:
     RaceScreen();
     ~RaceScreen();
-    void SetUp();
+    /// <summary>
+    /// •`‰æ‚µ‚Ä‚¢‚é‰æ‘œ‚ğXV
+    /// </summary>
+    void ScreenUpdate();
     static int GetRaceScreen();
 private:
    static int screen;

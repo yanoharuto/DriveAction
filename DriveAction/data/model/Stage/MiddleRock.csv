@@ -1,0 +1,15 @@
+﻿    //modelの相対パス
+    assetPass = 2
+data/model/Stage/MiddleRock.mv1
+    //大きさ
+    modelSize = 5
+1
+    //最初のポジション
+    firstPosY = 8
+-20
+    //modelの当たり半径
+    collRadius = 11
+120
+    //跳ね返りの大きさ
+    bouncePower = 14
+15

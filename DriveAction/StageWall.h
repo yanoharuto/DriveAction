@@ -1,6 +1,7 @@
 #pragma once
 #include "Actor.h"
 #include "WallCollider.h"
+#include <string>
 /// <summary>
 /// 行動範囲を狭める壁
 /// </summary>
@@ -14,8 +15,6 @@ public:
     //当たり判定を消す
     ~StageWall();
 private:
-    //壁のmodelパス
-    const std::string modelFilePass = "Stage/StageWall.mv1";
     //付き飛ばす力
     const float setBouncePower = 50;
     //ちょっと埋まってるから上に行く

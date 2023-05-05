@@ -1,19 +1,26 @@
-#include "ResultScore.h"
+#include <iostream>
+#include <fstream>
 #include <math.h>
-#include <iomanip>
+#include "ResultScore.h"
 #include "Timer.h"
-#include "PlayerRelatedInfo.h"
+#include "ObjectObserver.h"
+#include "RacerManager.h"
+#include "SubjectInfoCentor.h"
+#include "Object.h"
 //収集物のスコア
 int ResultScore::collectScore;
 //敵にヒットすると減点するスコア
 int ResultScore::hitScore;
 //残り時間ボーナス
 int ResultScore::timeScore;
-ResultScore::ResultScore(Timer* timer, PlayerRelatedInfo playerInfo)
+
+ResultScore::ResultScore(Timer* timer,RacerManager* racerManager)
 {
-    timeScore = timer->GetLimitTime() * timeBonus;
-    hitScore = noHitScore - playerInfo.damageObjHitCount * damageObjHitDec;
-    collectScore = playerInfo.hitCoinCount * coinBonus;
+    timeScore = static_cast<int>(timer->GetLimitTime() * timeBonus);
+    playerObserver = SubjectInfoCentor::GetObjectObserver(racerManager->GetPlayerSubject(0));
+
+    hitScore = noHitScore - playerObserver->GetObjHitCount(Object::ObjectTag::damageObject) * damageObjHitDec;
+    collectScore = playerObserver->GetObjHitCount(Object::ObjectTag::coin) * coinBonus;
 }
 
 int ResultScore::GetScore(ScoreKind scoreKind)

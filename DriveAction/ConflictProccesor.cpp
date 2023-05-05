@@ -29,36 +29,62 @@ HitCheckExamineObjectInfo ConflictProccesor::GetHitExamineCheckInfo()
 /// <param name="resultInfo"></param>
 void ConflictProccesor::ConflictProccess(std::list<ConflictExamineResultInfo> resultInfo)
 {
-    if (object != nullptr)
+    
+    //衝突後の処理を行う必要がないなら終了
+    if (object != nullptr)return;
+
+    for (auto ite = resultInfo.begin(); ite != resultInfo.end(); ite++)
     {
-        for (auto ite = resultInfo.begin(); ite != resultInfo.end(); ite++)
+        if ((*ite).hit != HitSituation::NotHit)
         {
-            if ((*ite).hit != HitSituation::NotHit)
+            if (coolTimer.contains((*ite).tag))
             {
-                if (coolTimer.contains((*ite).tag))
-                {
-                    //クールタイムが過ぎていて当たっているなら
-                    if (coolTimer[(*ite).tag]->IsOverLimitTime())
-                    {
-                        //当たった時の処理を行う
-                        object->ConflictProccess((*ite));
-                    }
-                }
-                else
+                //クールタイムが過ぎていて当たっているなら
+                if (coolTimer[(*ite).tag]->IsOverLimitTime())
                 {
                     //当たった時の処理を行う
                     object->ConflictProccess((*ite));
+                    IncrementHitCount((*ite).tag);
                 }
+            }
+            else
+            {
+                //当たった時の処理を行う
+                object->ConflictProccess((*ite));
+                IncrementHitCount((*ite).tag);
             }
         }
     }
+
 }
 /// <summary>
 /// 当たり判定で特定のものにクールタイムが発生する場合タイマーをセット出来る
 /// </summary>
 /// <param name="tag">特定の者のタグ</param>
+/// 
 /// <param name="timer">クールタイム計測用のタイマー</param>
-void ConflictProccesor::SetCoolTimer(ObjectTag tag,Timer* timer)
+void ConflictProccesor::SetCoolTimer(Object::ObjectTag tag,float setCoolTime)
 {
+    Timer* timer = new Timer(setCoolTime);
     coolTimer.insert(std::make_pair(tag, timer));
+}
+
+int ConflictProccesor::GetTagHitCount(Object::ObjectTag objTag)
+{
+    return hitCountMap[objTag];
+}
+
+void ConflictProccesor::IncrementHitCount(Object::ObjectTag objTag)
+{
+    //まだ追加したことのないタグなら当たった回数を記録
+    if (!hitCountMap.contains(objTag))
+    {
+        int hitCount = 1;
+        hitCountMap.insert(std::make_pair(objTag, hitCount));
+    }
+    //あるならぶつかった時に回数を増やす
+    else
+    {
+        hitCountMap[objTag]++;
+    }
 }

@@ -7,6 +7,8 @@
 #include "SoundPlayer.h"
 #include "EffectManager.h"
 #include "ConflictManager.h"
+#include "AssetManager.h"
+#include "SphereCollider.h"
 const CarInfomation PlayerCar::setCarParam =
 {
 	1.0f,
@@ -17,28 +19,18 @@ const CarInfomation PlayerCar::setCarParam =
 	0.34f,
 	7.0f,
 };
-/// <summary>
-/// コンストラクタ
-/// </summary>
-/// <returns></returns>
-PlayerCar::PlayerCar()
-{
-}
 
-PlayerCar::PlayerCar(VECTOR firstPos, HitNumCounter* counter)
-	:Car(setCarParam)
+PlayerCar::PlayerCar(VECTOR firstPos)
+	:Car(setCarParam,Init::player)
 {
-	damageCoolTimer = new Timer(setDamageCoolTime);
-	modelHandle = AssetManager::Get3DModelAssetHandle("Player/IceBlades.mv1");
+	
+	firstPosY = position.y;
 	position = firstPos;
-	firstPosY = setFirstPosY;
 	position.y = firstPosY;
+
 	prevPos = position;
 	direction = VGet(0.0f, 0.0f, -1.0f);
 	SoundPlayer::SetListener(position,VAdd(position,direction));
-	collider = new SphereCollider(this);
-	collider->SetCoolTimer(ObjectTag::damageObject, damageCoolTimer);
-	counter->SetTimer(ObjectTag::damageObject, damageCoolTimer);
 }
 
 /// <summary>
@@ -52,8 +44,6 @@ PlayerCar::~PlayerCar()
 	SoundPlayer::StopSound(drivingSEPass);
 	SoundPlayer::StopSound(carClashSEPass);
 	SoundPlayer::StopSound(carHornSEPass);
-	ConflictManager::EraceConflictObjInfo(collider);
-	SAFE_DELETE(collider);
 	if (runEffect != -1)
 	{
 		StopEffekseer3DEffect(runEffect);

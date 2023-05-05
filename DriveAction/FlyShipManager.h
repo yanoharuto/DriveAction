@@ -1,11 +1,11 @@
 #pragma once
 #include <list>
-#include "FlyShip.h"
-#include "PlayerInformationCenter.h"
-#include "Timer.h"
-#include "BomberFlyShip.h"
-#include "CircleLaserFlyShip.h"
-#include "UpDownLaserFlyShip.h"
+#include "ObjectObserver.h"
+class Timer;
+class BomberFlyShip;
+class CircleLaserFlyShip;
+class UpDownLaserFlyShip;
+class RacerManager;
 /// <summary>
 /// 敵機のマネージャー
 /// </summary>
@@ -15,28 +15,28 @@ public:
     /// <summary>
     /// 敵機の初期化する
     /// </summary>
-    FlyShipManager();
+    FlyShipManager(RacerManager* racerManager);
 
     ~FlyShipManager();
     /// <summary>
     /// 敵機たちの更新
     /// </summary>
     /// <param name="infoCenter"></param>
-    void Update(PlayerInformationCenter* infoCenter);
+    void Update();
     /// <summary>
     /// 描画
     /// </summary>
     void Draw();
     /// <summary>
-    /// 爆撃機の初期化　再利用するために使う　
+    /// 爆撃機の初期化
     /// </summary>
     /// <param name="infoCenter"></param>
-    void BomberShipInit(PlayerInformationCenter* infoCenter);
+    void BomberShipInit();
     /// <summary>
-    /// レーザーシップの初期化　再利用するために使う
+    /// レーザーシップの初期化
     /// </summary>
     /// <param name="infoCenter"></param>
-    void LaserShipInit(PlayerInformationCenter* infoCenter);
+    void LaserShipInit();
 private:
     //爆撃機のリスト
     std::list<BomberFlyShip*>bombList;
@@ -46,6 +46,8 @@ private:
     std::list<UpDownLaserFlyShip*>updownFlyShipList;
     //爆撃機再利用のタイマー
     Timer* bomberFlyShipGoTimer;
+    //プレイヤーの位置
+    ObjectObserver* playerObserver;
     //爆撃機の初期化の間隔
     const float setBShipInitSpan = 5.0f;
     //円状の敵機の数
@@ -58,12 +60,6 @@ private:
     const float initBShipGeneratePosScale = 1000.0f;
     //爆撃機同士の距離
     const float initBShipBetween = 300.0f;
-    
-    //爆撃機のアドレス
-    const std::string bomberModelPass = "Player/PrototypeZero.mv1";
-    //modelのアドレス
-    const std::string ufoModelPass = "Player/Rocker.mv1";
     //レーザー売ってくる敵の座標
-    const std::string enemyPosPass = "data/stageMap_enemyPos.csv";
-    
+    const std::string enemyPosPass = "data/stageMap_enemyPos.csv";    
 };

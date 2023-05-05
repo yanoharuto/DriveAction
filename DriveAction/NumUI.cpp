@@ -3,14 +3,19 @@
 #include "Utility.h"
 #include "OriginalMath.h"
 
-NumUI::NumUI()
+NumUI::NumUI(UIKind kind)
 {
-    numData = UIManager::CreateUIData(num);
-    pointData= UIManager::CreateUIData(point);
+    numData = UIManager::CreateUIData(kind);
+    pointData = UIManager::CreateUIData(point);
 }
 
 NumUI::~NumUI()
 {
+}
+
+void NumUI::Draw(int num)
+{
+    Draw(numData.x, numData.y, num);
 }
 
 /// <summary>
@@ -21,23 +26,23 @@ NumUI::~NumUI()
 /// <param name="num">”š</param>
 /// <param name="scale">•¶š‚Ì‘å‚«‚³</param>
 /// <returns>¶’[‚ÌÀ•W</returns>
-int NumUI::Draw(int x, int y, int num,float scale)
+int NumUI::Draw(int x, int y, int num)
 {
     //Œ…”
     int digits = static_cast<int>(OriginalMath::GetDigits(num));
     //•\¦ˆÊ’u‚ğ‰E’[‚É‚¢‚Á‚½‚ñˆÚ“®
-    x -= static_cast<int> (scale * numData.width * digits);
+    x -= static_cast<int> (numData.size * numData.width * digits);
     //Œ…”‚ªƒ[ƒ‚É‚È‚é‚Ü‚Å•`‰æ‚·‚é@“ª‚©‚ç•`‰æ‚·‚é
     for (int i = digits; i > 0; i--)
     {
         //10‚Ì‚¯‚½‚ÅŠ„‚Á‚½‚Ì‚ ‚Ü‚è
-        int drawNum = num / pow(TIMER_FONT_NUM, i - 1);
+        int drawNum = (static_cast<int>(num / pow(TIMER_FONT_NUM, i - 1))) % numData.dataHandle.size();
         //•`‰æ
-        int result = DrawRotaGraph(x, y, scale, 0, numData.dataHandle[drawNum], true);
+        int result = DrawRotaGraph(x, y, numData.size, 0, numData.dataHandle[drawNum], true);
         //ˆÊ’u‚ğ‚¸‚ç‚·
-        x += static_cast<int> (scale * numData.width);
+        x += static_cast<int> (numData.size * numData.width);
         //Ÿ‚É•`‰æ‚µ‚½‚¢”š‚Ì€”õ
-        num -= drawNum * pow(TIMER_FONT_NUM, i - 1);
+        num -= static_cast<int>(drawNum * pow(TIMER_FONT_NUM, i - 1));
     }
     return x;
 }
@@ -49,25 +54,24 @@ int NumUI::Draw(int x, int y, int num,float scale)
 /// <param name="num">”š</param>
 /// <param name="scale">•¶š‚Ì‘å‚«‚³</param>
 /// <returns>¶’[‚ÌÀ•W</returns>
-int NumUI::Draw(int x, int y, float num, float scale)
+void NumUI::Draw(float num)
 {
     //®”•”•ª
     int iNum = static_cast<int>(num);
     //¬”‘æˆêˆÊ‚Ì•”•ª
-    int decimalNum1 = (num - iNum) * 10;
+    int decimalNum1 = static_cast<int>((num - iNum) * 10);
     //¬”•”•ª‘æ“ñˆÊ
-    int decimalNum2 = ((num - iNum) * 100 - decimalNum1 * 10);
+    int decimalNum2 = static_cast<int>(((num - iNum) * 100 - decimalNum1 * 10));
     //•`‰æI—¹‚µ‚½êŠ‚ğedge‚É“n‚·
-    int edge = Draw(x, y, decimalNum2, scale);
-    edge -= static_cast<int> (scale * numData.width);
-    edge = Draw(edge, y, decimalNum1, scale);
-    edge -= static_cast<int> (scale * numData.width);
+    int edge = Draw(numData.x, numData.y, decimalNum2);
+    edge -= static_cast<int> (numData.size * numData.width);
+    edge = Draw(edge, numData.y, decimalNum1);
+    edge -= static_cast<int> (numData.size * numData.width);
     //®”•”•ª‚ğ•`‰æ
-    Draw(edge, y, iNum, scale);
-    edge -= static_cast<int> (scale * numData.width);
+    Draw(edge, numData.y, iNum);
+    edge -= static_cast<int> (numData.size * numData.width);
     //¬”“_
-    DrawRotaGraph(edge, y, pointData.size, 0, pointData.dataHandle[0], true);
-    return x;
+    DrawRotaGraph(edge, numData.y, pointData.size, 0, pointData.dataHandle[0], true);
 }
 /// <summary>
 /// ˆê•¶š‚Ì‘å‚«‚³

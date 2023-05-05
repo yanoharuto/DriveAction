@@ -2,9 +2,11 @@
 #include "Rocket.h"
 #include "Utility.h"
 #include "ListUtility.h"
-
+#include "DamageObject.h"
+#include "DamageObjectGenerator.h"
 //オブジェクトタグがDamageObjectになってるオブジェクトのリスト
-std::list<Actor*> FiringItemManager::damageObjList;
+std::list<DamageObject*> FiringItemManager::damageObjList;
+
 FiringItemManager::FiringItemManager()
 {
     damageObjGenerator = new DamageObjectGenerator();
@@ -19,7 +21,7 @@ FiringItemManager::~FiringItemManager()
     damageObjList.clear();
 }
 
-void FiringItemManager::AddFiringObject(Actor* damageObj)
+void FiringItemManager::AddFiringObject(DamageObject* damageObj)
 {
     if (damageObj != nullptr)
     {

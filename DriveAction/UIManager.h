@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 enum UIKind;
-struct InitUIData;
+enum InitUIData;
 struct UIData;
 /// <summary>
 /// UIを纏めるマネージャー
@@ -18,53 +18,95 @@ public:
     UIManager();
     ~UIManager();
     static UIData CreateUIData(UIKind uiKind);
+    static UIData CreateUIData(int kindNum);
  private:
     static std::vector<std::string> initDataVec;
-    static std::unordered_map<UIKind,int*> loadGraphs;
+    static std::unordered_map<int,int*> loadGraphs;
     const std::string initUIDataPassFile = "data/UI/InitUIPass.csv";
 };
+//UIの種類
 enum UIKind
 {
     //ゲームの目標
-    gamePurose = 0 ,
-    //収集物のアイコン
-    collectIcon = 1,
+    gamePurose = 2,
     //カウントダウン
-    countDown = 2,
-    //収集物のスコア表示
-    collectScore = 3,
-    //ダメージを受けると減少するスコア表示
-    damageScore = 4,
-    //タイム　やスコアの表字
-    num = 5,
-    //
-    manual = 6,
-    point = 7,
-    radar = 8,
-    slash = 9,
-    tilteLogo = 10,
-    timerFrame = 11,
-    timeScore = 12,
-    totalScore = 13
+    countDown = 5,
+    //コレクトアイテムの残り数などのUI
+    collectItemUI = 8,
+    //収集物のスコアの文字
+    collectScore = 11,
+    //収集物のスコア
+    collectScoreNum = 14,
+    //ダメージを受けると減少するスコアの文字
+    damageScore = 17,
+    //ダメージを受けると減少するスコア
+    damageScoreNum = 20,
+    //操作説明
+    manual = 26,
+    //小数点
+    point = 29,
+    //レーダー
+    radar = 32,
+    //タイトルロゴ
+    tilteLogo = 35,
+    //タイマーの枠
+    timerFrame = 38,
+    //残り時間スコアの文字
+    timeScore = 41,
+    //残り時間のスコア
+    timeScoreNum = 44,
+    //合計スコアの文字
+    totalScore = 47,
+    //合計スコア
+    totalScoreNum = 50,
+    //収集アイテムの最初の数についてのUI
+    allCollectItemNum = 23,
+    //収集アイテムのもうゲットした数について
+    getCollectItemNum = 53,
+    //残り時間
+    timeNum = 56,
 };
-struct InitUIData
+/// <summary>
+/// UIの初期化情報　数字は読み込み段数
+/// </summary>
+enum InitUIData
 {
-    int drawX;
-    int drawY;
-    int width;
-    int height;
-    int xNum;
-    int yNum;
-    std::string graphPass;
-    float size;
+    //描画場所X
+    drawX = 1,
+    //Y
+    drawY = 3,
+    //画像横幅
+    width = 5,
+    //画像縦幅
+    height = 7,
+    //横幅分割数
+    xNum = 9,
+    //縦分割数
+    yNum = 11,
+    //画像の相対パス
+    graphPass = 13,
+    //大きさ
+    UISize = 15,
+    //分割してある場合のコマ送りスピード
+    frameSpeed = 17
 };
+/// <summary>
+/// UIで実際に使う情報
+/// </summary>
 struct  UIData
 {
-    int x;
-    int y;
-    int width;
-    int height;
-    int graphNum;
-    std::vector<int> dataHandle;
-    float size;
+    //描画場所X
+    int x = 0;
+    //描画場所Y
+    int y = 0;
+    //分割後の画像横幅
+    int width = 0;
+    //分割後の画像縦幅
+    int height = 0;
+    //画像ハンドル
+    std::vector<int> dataHandle ;
+    //大きさ
+    float size = 0.0f;
+    //コマ送り速度
+    float frameSpeed = 0.0f;
 };

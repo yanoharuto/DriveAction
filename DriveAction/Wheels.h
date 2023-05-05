@@ -22,7 +22,7 @@ struct WheelArgumentCarInfo
 	float velocitySize;//速さの大きさ
 	InputInfo inputDir;
 };
-
+enum EffectKind;
 /// <summary>
 /// 車が走る向きを渡すよ。あとタイヤが回転したり描画する
 /// </summary>
@@ -91,7 +91,7 @@ private:
 	float wheelDriveRota = 0.0f;
 	//まっすぐ進んでいるかどうか
 	bool isStraightDash;
-	std::string smokePass = "smoke.efkefc";
+	EffectKind smokePass;
 	std::string wheelPass = "data/model/Player/Wheel.MV1";
 
 	//タイヤのモデルハンドル

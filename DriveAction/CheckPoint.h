@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
+#include<string>
 #include "ConflictExamineResultInfo.h"
-
 #include "HitCheckExamineObjectInfo.h"
-#include "Actor.h"
+
+class Actor;
 /// <summary>
 /// プレイヤーが何回ゴールしたか数える
 /// </summary>

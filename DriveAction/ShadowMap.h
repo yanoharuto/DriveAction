@@ -1,6 +1,9 @@
 #pragma once
 #include "DxLib.h"
 #include "ObjPosAndDir.h"
+class ObjectObserver;
+class ObjectSubject;
+class RacerManager;
 /// <summary>
 /// 影を描画するクラス
 /// </summary>
@@ -10,13 +13,13 @@ public:
     /// <summary>
     /// 影を描画するクラス
     /// </summary>
-    ShadowMap();
+    ShadowMap(RacerManager* manager);
     ~ShadowMap();
     /// <summary>
     /// 影の描画範囲の変更
     /// </summary>
     /// <param name="objInfo">引数の座標を中心にする</param>
-    void SetShadowMapErea(ObjInfo objInfo);
+    void SetShadowMapErea();
     /// <summary>
     /// これから描画する影の準備
     /// </summary>
@@ -36,5 +39,7 @@ private:
     VECTOR DrawAreaMaxPos = VGet(300.0f, 700.0f, 300.0f);
     //シャドウマップ作製
     int shadowMap = MakeShadowMap(2048, 2048);
+    //こいつを軸に影を作る範囲を決める
+     ObjectObserver* playerObserber;
 };
 

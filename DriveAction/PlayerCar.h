@@ -1,8 +1,6 @@
 #pragma once
 #include "Car.h"
-#include "AssetManager.h"
-#include "SphereCollider.h"
-#include "HitNumCounter.h"
+class SphereCollider;
 class Wheels;
  /// <summary>
  /// プレイヤー(車)
@@ -14,8 +12,7 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <returns></returns>
-	PlayerCar();
-	PlayerCar(VECTOR firstPos,HitNumCounter* counter);
+	PlayerCar(VECTOR firstPos);
 	///デストラクタ
     ~PlayerCar();
     /// <summary>
@@ -28,8 +25,6 @@ private:
 	void SetInputDir();
 	//高さ
 	const float setFirstPosY = 6.0f;
-	const float setDamageCoolTime = 1.5f;
-	//球当たり判定
-	SphereCollider* collider;
+
 	static const CarInfomation setCarParam;
 };

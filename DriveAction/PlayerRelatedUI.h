@@ -1,26 +1,37 @@
 #pragma once
 #include <list>
-#include "PlayerRelatedInfo.h"
 #include "Utility.h"
 #include "UIManager.h"
+//収集アイテムのマップ
 class MiniMap;
+//残り時間を表示してくれる
 class TimerUI;
+//ゲームの残り時間とかのタイマー
 class Timer;
+//数字に関するUI
 class NumUI;
+//情報を更新してくれる
+class ObjectSubject;
+//Subjectを見ている
+class ObjectObserver;
+//走ってるやつのマネージャー
+class RacerManager;
+//カウントダウン
+class CountDown;
 /// <summary>
 /// プレイヤーに関係のあるUI
 /// </summary>
 class PlayerRelatedUI final
 {
 public:
-    PlayerRelatedUI(Timer* setTimer,int setFirstCoinNum);
+    PlayerRelatedUI(Timer* setTimer,int setFirstCoinNum,RacerManager* manager);
     ~PlayerRelatedUI();
     /// <summary>
     /// ミニマップの更新　やコインの枚数を更新
     /// </summary>
     /// <param name="relatedInfo"></param>
     /// <param name="setCoinPosList"></param>
-    void Update(PlayerRelatedInfo relatedInfo,std::list<VECTOR> setCoinPosList);
+    void Update();
     /// <summary>
     /// 描画
     /// </summary>
@@ -34,17 +45,18 @@ private:
     TimerUI* timerUI;
     //ミニマップ
     MiniMap* minimapUI;
-    //コインの枚数を描画するクラス
-    NumUI* numUI;
+    //最初のコインの枚数を描画するクラス
+    NumUI* firstNumUI;
+    //ゲットしたコインの枚数を描画
+    NumUI* getNumUI;
     //操作説明のUI情報
     UIData manualData;
     //スラッシュ
-    UIData slashHandle;
-    //所得したコインの枚数についてのUIの描画位置
-    int coinUIDrawX = UI_SCREEN_WIDTH * 15;
-    //所得したコインの枚数についてのUIの描画位置
-    int coinUIDrawY = static_cast<int>(UI_SCREEN_HEIGHT * 8);
-    
+    UIData slashHandle;  
+    //終了時のカウントダウン
+    CountDown* countDown;
     //フォントのサイズ
     const int fontSize = 1;
+    //プレイヤーの位置とかコインの所得数などを教えてくれる奴
+    ObjectObserver* playerObserver;
 };

@@ -4,39 +4,25 @@
 #include "EffekseerForDXLib.h"
 #include "ConflictManager.h"
 #include "Utility.h"
+#include "InitObjKind.h"
+#include "SphereCollider.h"
 //ロケットのモデルのアドレス
  const std::string Rocket::rocketModelPass = "Item/Rocket/Rocket04_Grey.mv1";
 //エフェクトのmodelのアドレス
- const std::string Rocket::effectPass = "bomb.efkefc";
+ const EffectKind Rocket::effectPass = bombExplosion;
 //落下速度
  const float Rocket::setFallingSpeed = 0.7f;
-//はじき返す力
- const float Rocket::setBouncePower = 4.25f;
 //重力
  const float Rocket::gravityPower = 0.08f;
-//ロケットのサイズ
- const float Rocket::setModelSize = 3.5f;
-//エフェクトのサイズ
- const float Rocket::setEffectSize = 22.000f;
-//当たり判定の大きさ
- const float Rocket::setRadius = 25.0f;
  //燃えた時の当たり判定の大きさ
  const float Rocket::setBurnRadius = 42.0f;
- 
-/// <summary>
-/// コンストラクタ
-/// </summary>
-/// <param name="carInfo"></param>
-Rocket::Rocket(ItemArgumentCarInfo carInfo)
+Rocket::Rocket(ObjectObserver* setObserver)
+    :DamageObject(Init::bomber,setObserver)
 {
-    modelHandle = AssetManager::Get3DModelAssetHandle(rocketModelPass);
-    modelSize = setModelSize;
+    position = observer->GetSubPos();
     fallingSpeed = setFallingSpeed;
     tag = ObjectTag::damageObject;
-    radius = setRadius;
-    position = carInfo.position;
-    position = VAdd(position, VScale(VGet(0, -1, 0), carInfo.radius + radius));
-    EffectManager::LoadEffectManager(effectPass, setEffectSize);
+    EffectManager::LoadEffectManager(effectPass);
     velocity = VGet(0, 0, 0);
     direction = VGet(1, 0, 0);
     onGround = false;

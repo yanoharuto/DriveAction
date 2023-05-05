@@ -1,4 +1,5 @@
 #include "ConflictProccesor.h"
+#include "Object.h"
 /// <summary>
 /// ステージの障害物とかの当たり判定
 /// </summary>
@@ -8,7 +9,7 @@ public:
     /// <summary>
     /// モデルハンドルから当たり判定を作る 
     /// </summary>
-    MeshCollider(int setModelHandle, ObjectTag setTag);
+    MeshCollider(int setModelHandle, Object::ObjectTag setTag);
     ~MeshCollider()override;
     /// <summary>
     /// 当たり判定を返す
@@ -34,6 +35,6 @@ public:
     void ConflictProccess(std::list<ConflictExamineResultInfo> resultInfo)override;
 private:
     int modelHandle = -1;
-    ObjectTag tag = ObjectTag::stage;
+    Object::ObjectTag tag = Object::ObjectTag::stage;
     float bouncePower;
 };

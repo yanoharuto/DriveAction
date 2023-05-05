@@ -6,14 +6,27 @@
 #include "TimerUI.h"
 #include "Timer.h"
 #include "NumUI.h"
-PlayerRelatedUI::PlayerRelatedUI(Timer* setTimer, int setFirstCoinNum)
+#include "ObjectSubject.h"
+#include "ObjectObserver.h"
+#include "SubjectInfoCentor.h"
+#include "RacerManager.h"
+#include "CountDown.h"
+/// <summary>
+/// プレイヤーに関するUI　コインの所得数とか
+/// </summary>
+/// <param name="setTimer"></param>
+/// <param name="setFirstCoinNum"></param>
+PlayerRelatedUI::PlayerRelatedUI(Timer* setTimer, int setFirstCoinNum,RacerManager* manager)
 {
-    timerUI = new TimerUI(fontSize, setTimer);
+    countDown = new CountDown(setTimer);
+    timerUI = new TimerUI( setTimer);
     minimapUI = new MiniMap();
     manualData = UIManager::CreateUIData(manual);
     firstCoinNum = setFirstCoinNum;
-    numUI = new NumUI();
-    slashHandle = UIManager::CreateUIData(slash);
+    firstNumUI = new NumUI(allCollectItemNum);
+    getNumUI = new NumUI(getCollectItemNum);
+    slashHandle = UIManager::CreateUIData(collectItemUI);
+    playerObserver = SubjectInfoCentor::GetObjectObserver(manager->GetPlayerSubject(0));
 }
 
 
@@ -21,23 +34,28 @@ PlayerRelatedUI::~PlayerRelatedUI()
 {
     SAFE_DELETE(timerUI);
     SAFE_DELETE(minimapUI);
+    SAFE_DELETE(getNumUI);
+    SAFE_DELETE(firstNumUI);
+    SAFE_DELETE(countDown);
 }
 
-void PlayerRelatedUI::Update(PlayerRelatedInfo relatedInfo, std::list<VECTOR> setCoinPosList)
+void PlayerRelatedUI::Update()
 {
-    minimapUI->Update(relatedInfo.objInfo,setCoinPosList);
-    nowGetCoinNum = relatedInfo.hitCoinCount;
+    nowGetCoinNum = playerObserver->GetObjHitCount(Object::ObjectTag::coin);
+
+    //残り三秒になったらカウントダウンしてくれる
+    countDown->Update();
 }
 
 void PlayerRelatedUI::Draw()
 {
     DrawRotaGraph(manualData.x, manualData.y, manualData.size, 0, manualData.dataHandle[0], true);
 
-    int x = numUI->Draw(coinUIDrawX, coinUIDrawY, nowGetCoinNum, fontSize);
-    int result = DrawRotaGraph(x, coinUIDrawY, fontSize, 0, slashHandle.dataHandle[0], true);
-    x += numUI->GetNumWidthSize() * fontSize;
-    numUI->Draw(x, coinUIDrawY, firstCoinNum, fontSize);
-
+    DrawRotaGraph( slashHandle.x,slashHandle.y, slashHandle.size, 0, slashHandle.dataHandle[0], true);
+    firstNumUI->Draw(firstCoinNum);
+    getNumUI->Draw(nowGetCoinNum); 
     timerUI->Draw();
     minimapUI->Draw();
+    countDown->DrawUI();
 }
+

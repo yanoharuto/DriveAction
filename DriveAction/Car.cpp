@@ -1,12 +1,15 @@
-﻿#include "OriginalMath.h"
+﻿#include "Wheels.h"
+#include "InputDirection.h"
 #include "Car.h"
-#include "Wheels.h"
 #include "Utility.h"
 #include "ConflictExamineResultInfo.h"
 #include "EffekseerForDXLib.h"
 #include "EffectManager.h"
-#include "DirectionOfTravelGenerator.h"
 #include "SoundPlayer.h"
+#include "HitCheckExamineObjectInfo.h"
+#include "ObjPosAndDir.h"
+#include "Timer.h"
+
 //これ以下の速度になってたらaccelPowerを0にするよ
 const float Car:: lowestSpeed = 1.2f;
 // なにもしない時の減速.
@@ -17,20 +20,16 @@ const float Car:: breakDecel = 0.03f;
 const float Car:: gripDecel = 0.08f;
 // 障害物にぶつかったときの減速率.
 const float Car:: colideDecel = 0.98f;
-//降りる速度
-const float Car:: fallSpeed = 10.8f;
-//エフェクトの大きさ
-const float Car::effectSize = 10.0f;
 //ダメージを受けた時の操作不可能時間の合計
 const float Car:: setDamageReactionTime = 0.5f;
 //ダメージを受けた時に回転する速度
 const float Car:: damageReactionRotaSpeed = 75.0f;
 //ぶつかった時のエフェクト
-const std::string Car::conflictEffectResource = "conflict.efkefc";
+const EffectKind Car::conflictEffectResource = carConflict;
 //走っているときのエフェクト
-const std::string Car:: windEffectResource = "sandWind.efkefc";
-//エフェクトのパス
-const std::string Car::coinEffectPass = "coin.efkefc";
+const EffectKind Car:: windEffectResource = carWind;
+//コインを取った時のエフェクトのパス
+const EffectKind Car::coinEffectPass = getCoin;
 //止まった時の効果音
 const std::string Car:: breakeSEPass = "brake.mp3";
 //ぶつかった時の効果音
@@ -42,7 +41,7 @@ const std::string Car:: drivingSEPass = "driving1.mp3";
 
 Car::Car()
 {
-	tag = ObjectTag::car;
+	tag = ObjectTag::player;
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
@@ -51,22 +50,20 @@ Car::Car()
 /// 初期化
 /// </summary>
 /// <param name="param"></param>
-Car::Car(CarInfomation param)
+Car::Car(CarInfomation param,Init::InitObjKind kind)
+	:Actor(kind)
 {
-	turnProccesAngularLine = param.turnAngularLine;
-	modelSize = param.modelSize;
-	tag = ObjectTag::car;
+	tag = ObjectTag::player;
 	carParam.gripPower = param.gripPower;
-	radius = param.setRadius;
 	carParam.addSpeed = param.addSpeed;
 	carParam.maxSpeed = param.maxSpeed;
 	UpdateMV1Pos();
 	ModelSetMatrix();
 	wheels = new Wheels(WheelArgumentCarInfo{ MV1GetMatrix(modelHandle),direction,VSize(velocity) });
 
-	EffectManager::LoadEffectManager(coinEffectPass, effectSize);
-	EffectManager::LoadEffectManager(conflictEffectResource, effectSize);
-	EffectManager::LoadEffectManager(windEffectResource, effectSize);
+	EffectManager::LoadEffectManager(coinEffectPass);
+	EffectManager::LoadEffectManager(conflictEffectResource);
+	EffectManager::LoadEffectManager(windEffectResource);
 	SoundPlayer::LoadSound(drivingSEPass);
 	SoundPlayer::LoadSound(carClashSEPass);
 	SoundPlayer::LoadSound(carHornSEPass);
@@ -88,7 +85,7 @@ void Car::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
 {
 	switch (conflictInfo.tag)
 	{
-	case ObjectTag::car:
+	case ObjectTag::player:
 	case ObjectTag::stage:
 	case ObjectTag::obstacle:
 		ConflictReaction(conflictInfo);
@@ -113,7 +110,6 @@ void Car::ConflictProccess(const ConflictExamineResultInfo conflictInfo)
 /// <param name="conflictObjRad"></param>
 void Car::ConflictReaction(const ConflictExamineResultInfo conflictInfo)
 {
-
 	PlayConflictSound();
 	PlayConflictEffect();
 
@@ -134,17 +130,12 @@ void Car::ConflictReaction(const ConflictExamineResultInfo conflictInfo)
 /// <param name="conflictInfo"></param>
 void Car::DamageReaction(const ConflictExamineResultInfo conflictInfo)
 {
-	//無敵時間終了していたらダメージ
-	if (damageCoolTimer->IsOverLimitTime())
-	{
-		isDamage = true;
-		damageReactionTime = setDamageReactionTime;
-		//無敵時間セット
-		damageCoolTimer->Init();
-		twistZRota = 0.0f;
-		PlayConflictSound();
-		PlayConflictEffect();
-	}
+	isDamage = true;
+	damageReactionTime = setDamageReactionTime;
+	//無敵時間セット
+	twistZRota = 0.0f;
+	PlayConflictSound();
+	PlayConflictEffect();
 }
 /// <summary>
 /// 車がダメージを受けた後に走る処理
@@ -162,8 +153,6 @@ void Car::PostDamageProccess()
 			isDamage = false;
 		}
 	}
-	//無敵時間更新
-	damageCoolTimer->Update();
 }
 
 /// <summary>
@@ -300,15 +289,6 @@ void Car::EffectUpdate()
 	if (coinConflictEffect != -1)
 	{
 		SetPosPlayingEffekseer3DEffect(coinConflictEffect, position.x, position.y, position.z);
-		//車の向きに合わせる
-		if (VCross(VGet(1, 0, 0), direction).y < 0)
-		{
-			SetRotationPlayingEffekseer3DEffect(runEffect, 0, -degree * RAGE, 0);
-		}
-		else
-		{
-			SetRotationPlayingEffekseer3DEffect(runEffect, 0, degree * RAGE, 0);
-		}
 
 	}
 }
@@ -430,18 +410,6 @@ float Car::GetTotalAccelPower()
 	return accelPower ;
 }
 
-/// <summary>
-/// カメラ等に渡したい情報を返す
-/// </summary>
-/// <returns></returns>
-ObjInfo Car::GetCarPosAndDir()
-{
-	ObjInfo argumentInfo = {};
-	argumentInfo.dir = direction;
-	argumentInfo.pos = position;
-	argumentInfo.modelSize = modelSize;
-	return argumentInfo;
-}
 /// <summary>
 /// 移動する前のポジションを渡す
 /// </summary>

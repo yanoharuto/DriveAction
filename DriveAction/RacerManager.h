@@ -1,22 +1,7 @@
 #pragma once
 #include <list>
-#include "ObjPosAndDir.h"
-#include "ConflictManager.h"
-#include "HitChecker.h"
-#include "SoundPlayer.h"
-#include "Racer.h"
-#include "Player.h"
-#include "DirectionOfTravelGenerator.h"
-#include "PlayerInformationCenter.h"
-
-/// <summary>
-/// レーサーの順位操作に使う
-/// </summary>
-struct RacerRankInfo
-{
-    int* rankP;
-    CheckPoint* checkPointP;
-};
+class Player;
+class ObjectSubject;
 /// <summary>
 /// 車乗りのマネージャー
 /// </summary>
@@ -47,31 +32,7 @@ public:
     /// </summary>
     /// <returns></returns>
     void Draw();
-    /// <summary>
-    /// 一番最初に追加したオブジェクトを返す
-    /// </summary>
-    /// <returns></returns>
-    ObjInfo GetPlayerCarPosDir();
-
-    /// <summary>
-    /// プレイヤーの情報を渡す
-    /// </summary>
-    /// <returns></returns>
-    PlayerInformationCenter* GetPlayerRelatedInfo();
+    ObjectSubject* GetPlayerSubject(int num);
 private:
-    //レーサーの最大人数
-    static const int maxRacerNum = 6;
-    //レーサーの数
-    int racerNum = 0;
-   
-    //racerInstanceArrayを指しているリスト
-    std::list<Racer*> racerList;
-    //レーサーの順位を更新するために必要なリスト
-    std::list<RacerRankInfo> racerRankList;
-    //当たってるかどうか調べる
-    HitChecker hitChecker;
-    //プレイヤーの情報
-    Player* player = nullptr;
-    //
-    PlayerInformationCenter* playerInfoCenter = nullptr;
+    std::list<Player*> racerList;
 };

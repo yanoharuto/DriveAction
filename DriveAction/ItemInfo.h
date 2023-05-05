@@ -11,7 +11,7 @@ struct  ItemInfo
     //アイテムを使っていいか
     bool isFiriable;
     //アイテムの種類
-    ItemTag itemTag;
+    Item::ItemTag itemTag;
     //アイテムの状況
     ItemUseSituation itemSituation;
 };

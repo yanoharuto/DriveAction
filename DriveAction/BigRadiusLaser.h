@@ -1,10 +1,10 @@
 #pragma once
-#include "FiringObjOwner.h"
 #include "RotatingLasers.h"
+class ObjectObserver;
 class BigRadiusLaser:public RotatingLasers
 {
 public:
-    BigRadiusLaser(FiringObjOwner* setOwner);
+    BigRadiusLaser(ObjectObserver* setObserver);
 
     /// <summary>
 /// ‰ñ“]‚³‚¹‚é
@@ -18,6 +18,5 @@ private:
     
     //‰ñ“]‘¬“x
     static const float rotaSpeed;
-    FiringObjOwner* owner;
 };
 

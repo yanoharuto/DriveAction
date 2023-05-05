@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "SceneFlowBase.h"
-#include "PlaySceeneProgressEnum.h"
 #include <string>
+#define PlaySceneProccess 4
 class AssetManager;
 class CountDown;
 class ConflictManager;
@@ -24,15 +24,15 @@ class UIManager;
 /// <summary>
 /// どういう順番で処理を行うか決める
 /// </summary>
-class PlaySceeneFlow final:public SceneFlowBase
+class PlaySceneFlow final:public SceneFlowBase
 {
 public:
     /// <summary>
     /// 初期化
     /// </summary>
     /// <returns></returns>
-    PlaySceeneFlow();
-    ~PlaySceeneFlow()override;
+    PlaySceneFlow();
+    ~PlaySceneFlow()override;
     /// <summary>
     /// プレイシーンの更新
     /// </summary>
@@ -42,9 +42,24 @@ public:
     /// 描画
     /// </summary>
     void Draw() override;
-
+    
 private:
-    void ManagerDraw();
+    /// <summary>
+/// プレイシーンの段階
+/// </summary>
+    enum PlaySceeneProgress
+    {
+        start,
+        game,
+        playerGoal,
+        end
+    };
+    void DrawManagers();
+    void GameUpdate();
+    void PlayerGoalUpdate();
+    void EndUpdate();
+    void StartUpdate();
+    void (PlaySceneFlow::*UpdateFunc[PlaySceneProccess])();
     //ステージのマネージャー
     StageManager* stageManager;
     //カメラ
@@ -52,9 +67,10 @@ private:
     //コースの情報を読み取って
     CourceDataLoader* courceDataLoader;
     //スコア
-    ResultScore* score;
+    ResultScore* score = nullptr;
     //ゴール後の処理
     PostGoalStaging* postGoalStaging;
+    //プレイヤー関係のUI
     PlayerRelatedUI* playerUI;
     //当たり判定処理
     ConflictManager* conflictManager;
@@ -75,14 +91,14 @@ private:
     FlyShipManager* flyShipManager;
     //ゲーム終了タイマー
     Timer* gameLimitTimer;
-    //終了時のカウントダウン
-    CountDown* countDown;
+
     //コインのマネージャー
     CoinManager* coinManager;
     //シャドウマップ
     ShadowMap* shadowMap;
     //レース中の描画した物を保存する
     RaceScreen* screen;
+
     UIManager* uiManager;
     //BGMのパス
     const std::string BGMPass = "movements.mp3";

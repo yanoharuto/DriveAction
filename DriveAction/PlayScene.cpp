@@ -7,7 +7,7 @@
 PlayScene::PlayScene()
     :SceneBase(SceneType::PLAY)
 {
-    sceneFlow = new PlaySceeneFlow();
+    sceneFlow = new PlaySceneFlow();
     fadeInFadeOut->FadeInStart();
 }
 

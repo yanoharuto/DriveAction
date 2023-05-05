@@ -3,7 +3,7 @@
 #include "Object.h"
 struct ArgumentConflictResultInfo
 {
-    ObjectTag tag = ObjectTag::obstacle;//オブジェクトのタグ
+    Object::ObjectTag tag = Object::ObjectTag::obstacle;//オブジェクトのタグ
     VECTOR pos = {};
     VECTOR bounceVec = {};
     float radius = 0;//半径

@@ -1,14 +1,14 @@
 #pragma once
 #include "DxLib.h"
-#include "ObjPosAndDir.h"
-
+#include <vector>
+class ObjectObserver;
+class ObjectSubject;
+class RacerManager;
 class RaceCamera final
 {
 public:
-    RaceCamera();
+    RaceCamera(RacerManager* manager);
     ~RaceCamera();
-
-    void Update(ObjInfo argumentInfo);
     void Update();
 private:
     //カメラの位置
@@ -29,5 +29,7 @@ private:
     const float aimBetween = 30.0f;
     //カメラが車の方に向く速度
     const float cameraRotateSpeed = 0.043f;
+    //プレイヤーの位置を教えてくれるやつ
+    std::vector<ObjectObserver*> playerObserverVec;
 };
 

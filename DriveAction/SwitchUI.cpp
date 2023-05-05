@@ -13,7 +13,6 @@ SwitchUI::~SwitchUI()
 
 void SwitchUI::Update()
 {
-    timer->Update();
 }
 
 void SwitchUI::Draw()

@@ -1,19 +1,17 @@
 #pragma once
 #include "Actor.h"
-#include "FlyShipArgumentInfo.h"
-#include "Timer.h"
-#include "FlyShipKind.h"
-#include "FiringObjOwner.h"
+#include "ObjectSubject.h"
 /// <summary>
 /// 飛行船
 /// </summary>
 class FlyShip abstract:
-    public Actor,public FiringObjOwner
+    public Actor
 {
 public:
-    FlyShip();
+    FlyShip(Init::InitObjKind kind);
     virtual ~FlyShip();
     virtual void Update();
-    virtual void Init(VECTOR newPosition,VECTOR newDestinationPos);
 protected:
+    //撃ったレーザーの位置などを教える用
+    ObjectSubject* sub;
 };

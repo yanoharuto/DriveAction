@@ -1,59 +1,37 @@
+#include <iostream>
+#include <fstream>
 #include "Player.h"
 #include "Utility.h"
 #include "Rule.h"
 #include "UserInput.h"
-Player::Player()
-{
-}
-
+#include "ObjectSubject.h"
+#include "PlayerCar.h"
+#include "SphereCollider.h"
+#include "Object.h"
+#include "ConflictManager.h"
 Player::Player(VECTOR firstPos)
     :Racer()
 {
-    hitNumCounter = new HitNumCounter(3.0f);
-    car = new PlayerCar(firstPos,hitNumCounter);
- 
- 
+    car = new PlayerCar(firstPos);
+
+    collider = new SphereCollider(car);
+    collider->SetCoolTimer(Object::ObjectTag::damageObject, setDamageCoolTime);
+    subject = new ObjectSubject(car,collider);
 }
 
 Player::~Player()
 {
-    SAFE_DELETE(hitNumCounter);
+    ConflictManager::EraceConflictObjInfo(collider);
+    SAFE_DELETE(collider);
+    SAFE_DELETE(subject);
 }
 
 void Player::Update()
 {
     car->Update();
-    if (checkPoint->IsTransitCheckPoint(transitCPCount, car->GetHitCheckExamineInfo()))
-    {
-        transitCPCount++;
-    }
-    if (UserInput::GetInputState(Space) == Push)
-    {
-        ItemArgumentCarInfo itemArgumentInfo;
-        itemArgumentInfo.SetCarInfo(car);
-        
-    }
-    hitNumCounter->Update(car->GetHitCheckExamineInfo().pos);
 }
 
-PlayerRelatedInfo Player::GetRelatedInfo()
+ObjectSubject* Player::GetSubject()
 {
-    PlayerRelatedInfo info = {};
-    info.accelPower = car->GetTotalAccelPower();
-    info.accelPowerParcent = car->GetTotalAccelPowerPercent();
-    info.isReverseDrive = reverse;
-    info.lap = checkPoint->GetGoalCount(transitCPCount);
-    info.transitCount = transitCPCount;
-    info.rank = rank;
-    info.hitCoinCount = hitNumCounter->GetHitObjecctNum(ObjectTag::coin);
-    info.damageObjHitCount = hitNumCounter->GetHitObjecctNum(ObjectTag::damageObject);
-    printfDx("hitCoin%d\n", info.hitCoinCount);
-    info.objInfo = car->GetCarPosAndDir();
-    info.isAlive = car->GetAliveFlag();
-    return info;
-}
-
-ObjInfo Player::GetPlayerPosAndDir()
-{
-    return car->GetCarPosAndDir();
+    return subject;
 }

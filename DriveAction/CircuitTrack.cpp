@@ -6,21 +6,22 @@
 #include "Utility.h"
 #include "ConflictManager.h"
 #include "GetGeneratePos.h"
+#include "InitActor.h"
 /// <summary>
 /// èâä˙âª
 /// </summary>
 /// <returns></returns>
 CircuitTrack::CircuitTrack()
 {
-    floorModelHandle = AssetManager::Get3DModelAssetHandle(stageFilePass + floorFilePass);
+    InitActor* init = new InitActor();
+    ActorParametor initParam = init->GetActorParametor(Init::stageFloor);
+    floorModelHandle = AssetManager::Get3DModelAssetHandle(initParam.modelPass);
     for (int i = 0; i < RockPattern; i++)
     {
         std::vector<VECTOR> posList = GetGeneratePos::CSVConvertPosition("data/stageMap_rockPos.csv",i);
         for (auto ite = posList.begin(); ite != posList.end(); ite++)
         {
-            VECTOR pos = (*ite);
-            pos.y = rockYPos * i;
-            Rock* rock = new Rock(pos,i);
+            Rock* rock = new Rock((*ite), i);
             rocks.push_back(rock);
         }
     }

@@ -1,9 +1,9 @@
 #pragma once
+#include "DxLib.h"
 #include "Racer.h"
-#include "PlayerCar.h"
-#include "PlayerRelatedInfo.h"
-#include "ObjPosAndDir.h"
-#include "HitNumCounter.h"
+class SphereCollider;
+class ObjectSubject;
+class Timer;
 /// <summary>
 /// プレイヤーの車やアイテムの処理を呼び出す
 /// </summary>
@@ -11,7 +11,6 @@ class Player final:
     public Racer 
 {
 public:
-    Player();
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -28,17 +27,25 @@ public:
     /// <param name="damageObjGene"></param>
     void Update()override;
     /// <summary>
-    /// プレイヤーの周辺情報を返す
+    /// 車の位置とかを渡す
     /// </summary>
     /// <returns></returns>
-    PlayerRelatedInfo GetRelatedInfo();
-    /// <summary>
-    /// カメラに渡したい情報を返す
-    /// </summary>
-    /// <returns></returns>
-    ObjInfo GetPlayerPosAndDir();
+    ObjectSubject* GetSubject();
 private:
-    HitNumCounter* hitNumCounter;
-
+    SphereCollider* collider;
+    ObjectSubject* subject;
+    const float setDamageCoolTime = 1.5f;
 };
 
+/// <summary>
+/// プレイヤーのUI周りに必要な情報
+/// </summary>
+enum PlayerRelatedInfo
+{
+    //当たった回数
+    damageObjHitCount = 0,
+    //コインを回収した回数
+    hitCoinCount = 1,
+    //速度
+    accelPower = 3,
+};

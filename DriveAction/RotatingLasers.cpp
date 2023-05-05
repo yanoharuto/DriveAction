@@ -5,7 +5,9 @@
 #include "ConflictManager.h"
 #include "Utility.h"
 #include "SoundPlayer.h"
-const std::string RotatingLasers::laserTrackPass = "LaserTrack.efkefc";
+#include "Timer.h"
+#include "LineCollider.h"
+const EffectKind RotatingLasers::laserTrackPass = laserTrack;
 const std::string RotatingLasers::laserSEPass = "Laser.mp3";
 
 //最初の回転方向
@@ -16,15 +18,14 @@ const VECTOR RotatingLasers::firstDir = { 0.0f,0.0f,-1.0f };
 /// 初期化
 /// </summary>
 /// <param name="setOwner"></param>
-RotatingLasers::RotatingLasers(FiringObjOwner* setOwner,InitParam setParam)
+RotatingLasers::RotatingLasers(InitParam setParam, ObjectObserver* setObserver)
+    :DamageObject(setParam.initKind, setObserver)
 {
-    position = setOwner->GetPosition();
-    owner = setOwner;
     tag = ObjectTag::damageObject;
     
-    EffectManager::LoadEffectManager(setParam.laserEffectPass, setParam.laserSize);
+    EffectManager::LoadEffectManager(setParam.laserEffectPass);
     
-    EffectManager::LoadEffectManager(laserTrackPass, setParam.trackSize);
+    EffectManager::LoadEffectManager(laserTrackPass);
     direction = firstDir;
     radius = setParam.radius;
     collider = new LineCollider(this,setParam.laserRange);
@@ -41,36 +42,29 @@ RotatingLasers::~RotatingLasers()
     SAFE_DELETE(collider);
 }
 
-void RotatingLasers::RotateLaser(std::string laserEffectPass,float rotaSpeed,float laserRange)
+void RotatingLasers::RotateLaser(EffectKind kind, float rotaSpeed, float laserRange)
 {
-    position = owner->GetPosition();
+    position = observer->GetSubPos();
     //方向変更　エフェクトの向きを変える
     direction = VNorm(OriginalMath::GetYRotateVector(direction, rotaSpeed));
     effectRota -= rotaSpeed * RAGE;
+    //レーザーの終着点
     endPos = VAdd(position, VScale(direction, position.y * laserRange));
-    if (owner->GetOwnerState() == OwnerState::Delete)
+    //エフェクト終了したらもう一回撃つ
+    if (laserEffect == -1)
     {
-        if (laserEffect != -1)
-        {
-            StopEffekseer3DEffect(trackEffect);
-            trackEffect = -1;
-            StopEffekseer3DEffect(laserEffect);
-            laserEffect = -1;
-        }
+        laserEffect = EffectManager::GetPlayEffect3D(kind);
     }
-    else
-    {
-        if (laserEffect == -1)
-        {
-            laserEffect = EffectManager::GetPlayEffect3D(laserEffectPass);
-        }
-        SetPosPlayingEffekseer3DEffect(laserEffect, position.x, position.y, position.z);
-        SetRotationPlayingEffekseer3DEffect(laserEffect, 0, effectRota, 0);
-        SetLaserTrack();
-        isDrawShadow = false;
-    }
-}
+    //エフェクトの向きとか場所を修正
+    SetPosPlayingEffekseer3DEffect(laserEffect, position.x, position.y, position.z);
+    SetRotationPlayingEffekseer3DEffect(laserEffect, 0, effectRota, 0);
 
+    SetLaserTrack();
+    isDrawShadow = false;
+}
+/// <summary>
+/// レーザーを撃った場所に後を出す
+/// </summary>
 void RotatingLasers::SetLaserTrack()
 {
     //レーザー跡のエフェクトが表示し終えたら

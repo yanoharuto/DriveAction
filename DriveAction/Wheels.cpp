@@ -118,8 +118,6 @@ void Wheels::SmokeEffectUpdate(VECTOR pos)
 {
 	if (isStraightDash)
 	{
-		playEffect = EffectManager::GetPlayEffect3D(smokePass);
-		SetPosPlayingEffekseer3DEffect(playEffect, pos.x, pos.y, pos.z);
 	}
 	
 }

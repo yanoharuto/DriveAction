@@ -6,6 +6,7 @@
 #include "OriginalMath.h"
 #include "CourceDataLoader.h"
 #include "CircuitDataStruct.h"
+#include "Actor.h"
 //車はDirと反対向きなので内積を取って1に近かったらゴールした判定
 static const float dirJugeLine = 0.8f;
 //次のチェックポイントまでの向きを出し始める範囲

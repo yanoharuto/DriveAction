@@ -5,12 +5,11 @@
 /// s“®”ÍˆÍ‚ğ‹·‚ß‚é•Ç
 /// </summary>
 StageWall::StageWall()
+    :Actor(Init::wall)
 {
-    modelHandle = AssetManager::Get3DModelAssetHandle(modelFilePass);
     tag = ObjectTag::stage;
     position = setFirstPos;
     wallCollider = new WallCollider(this, stageBiggestSize, stageSmallestSize);
-    bouncePower = setBouncePower;
 }
 
 StageWall::~StageWall()

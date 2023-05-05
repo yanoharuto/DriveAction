@@ -1,33 +1,40 @@
 #include "RaceCamera.h"
 #include "OriginalMath.h"
+#include "ObjectObserver.h"
+#include "ObjectSubject.h"
+#include "SubjectInfoCentor.h"
+#include "RacerManager.h"
 
-RaceCamera::RaceCamera()
+RaceCamera::RaceCamera(RacerManager* manager)
 {
     SetCameraNearFar(setNearValue, setFarValue);
+    ObjectObserver* playerObserver = SubjectInfoCentor::GetObjectObserver(manager->GetPlayerSubject(0));
+    playerObserverVec.push_back(playerObserver);
     position = {};
 }
 
 RaceCamera::~RaceCamera()
 {
-}
-
-void RaceCamera::Update(ObjInfo argumentInfo)
-{
-    //向きの更新
-    VECTOR tempDir = VScale(VSub(argumentInfo.dir, direction), cameraRotateSpeed);
-    direction = VNorm(VAdd(direction, tempDir));
-    //カメラの位置の更新
-    position = argumentInfo.pos;
-    position.y += betweenPlayerY * argumentInfo.modelSize;
-    position.x += -(direction.x * betweenPlayerX * argumentInfo.modelSize);
-    position.z += -(direction.z * betweenPlayerZ * argumentInfo.modelSize);
-    //カメラの狙ってる座標
-    VECTOR aimPos = VAdd(argumentInfo.pos, VScale(direction, aimBetween));
-    SetupCamera_Perspective(60.0f * DX_PI_F / 180.0f);
-    SetCameraPositionAndTarget_UpVecY(position, aimPos);
-    
+    playerObserverVec.clear();
 }
 
 void RaceCamera::Update()
 {
+
+    for (int i = 0; i < playerObserverVec.size(); i++)
+    {
+        //向きの更新
+        VECTOR tempDir = VScale(VSub(playerObserverVec[i]->GetSubDir(), direction), cameraRotateSpeed);
+        direction = VNorm(VAdd(direction, tempDir));
+        //カメラの位置の更新
+        position = playerObserverVec[i]->GetSubPos();
+        position.y += betweenPlayerY;
+        position.x += -(direction.x * betweenPlayerX);
+        position.z += -(direction.z * betweenPlayerZ);
+        //カメラの狙ってる座標
+        VECTOR aimPos = VAdd(position, VScale(direction, aimBetween));
+
+        //位置を確定
+        SetCameraPositionAndTarget_UpVecY(position, aimPos);
+    }
 }

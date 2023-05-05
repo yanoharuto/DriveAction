@@ -1,6 +1,5 @@
 #pragma once
 #include "DxLib.h"
-#include "ObjectTagEnum.h"
 #include "Object.h"
 
 enum class HitSituation
@@ -16,7 +15,7 @@ enum class HitSituation
 struct ConflictExamineResultInfo
 {
     HitSituation hit = HitSituation::NotHit;//当たり判定で当たったか
-    ObjectTag tag = ObjectTag::obstacle;//オブジェクトのタグ
+    Object::Object::ObjectTag tag = Object::ObjectTag::obstacle;//オブジェクトのタグ
     VECTOR bounceVec = {};
     VECTOR pos = {};
     float radius = 0;//半径

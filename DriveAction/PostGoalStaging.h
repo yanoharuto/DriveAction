@@ -7,7 +7,16 @@
 class NumUI;
 class SwitchUI;
 class Timer;
-struct PlayerRelatedInfo;
+
+/// <summary>
+/// スコアの表示
+/// </summary>
+struct ScoreUI
+{
+    UIData data;
+    int score;
+    NumUI* ui;
+};
 /// <summary>
 /// ゴール後の演出をする
 /// </summary>
@@ -33,13 +42,11 @@ public:
     void Draw();
 private:
     /// <summary>
-    /// スコアの表示
+    /// スコアに関するUIの初期化
     /// </summary>
-    struct ScoreUI
-    {
-        UIData data;
-        int score;
-    };
+    /// <param name="kind"></param>
+    /// <param name="index"></param>
+    void InitScoreUI(UIKind kind,int index);
     //終了アナウンス
     int spaceClickCount = 0;
 
@@ -49,22 +56,15 @@ private:
     const float goalMoveX = 10.0f;
     //スペースキーを押す合間
     const float spaceKeyCoolTime = 1.5f;
-
-    //数字の大きさ
-    const float numSize = 1.3f;
     //終了のアナウンスの色
     unsigned int goalMarkerUIColor = GetColor(200, 100, 100);
     //スペースキー催促
     SwitchUI* switchUI;
     //各スコアを表示するための配列
-    ScoreUI scoreUI[SCORE_KIND_NUM];
+    ScoreUI scoreUI[SCORE_KIND_NUM] = { {},{},{},{} };
     //ゴールしたときの終了アナウンス
-    //スコアの描画係
-    NumUI* num;
     //タイマー
     Timer* timer;
-    //スコアの数字を表示するときのX座標
-    int numDrawX = UI_SCREEN_WIDTH * 15;
     //ゲーム終了時の音
     const std::string clapSE = "clap.mp3";
     //スコアを表示するときの音

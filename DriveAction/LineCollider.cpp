@@ -1,5 +1,5 @@
 #include "LineCollider.h"
-
+#include "HitChecker.h"
 LineCollider::LineCollider(Actor* obj, float setLineRange)
     :ConflictProccesor(obj)
 {

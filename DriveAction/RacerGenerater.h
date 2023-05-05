@@ -1,12 +1,15 @@
 #pragma once
 #include <string>
-#include "Racer.h"
-#include "PlayerInformationCenter.h"
+
+
+class Player;
+class CPU;
 class RacerGenerater
 {
 public:
     RacerGenerater();
-    void CreateRacers(int racerNum, std::list<Racer*>* racerList,Player** player,PlayerInformationCenter* infoCenter);
+    Player* CreatePlayer(int racerNum);
+    CPU* CreateRacer(int racerNum);
 private:
     const std::string firstPosPass = "data/stageMap_playerPos.csv";
 };

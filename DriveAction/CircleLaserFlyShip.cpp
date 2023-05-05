@@ -10,18 +10,15 @@ const float CircleLaserFlyShip::setModelSize = 0.3f;
 /// â~èÛÇ…êwå`ÇçÏÇ¡ÇΩîÚçsëD
 /// </summary>
 CircleLaserFlyShip::CircleLaserFlyShip(VECTOR firstPos, VECTOR setDestinationPos)
-    :LaserFlyShip(firstPos, setDestinationPos)
+    :LaserFlyShip(firstPos, setDestinationPos,Init::circleLaserShip)
 {
     modelSize = setModelSize;
     firstPosY = setFirstPosY;
     position.y = firstPosY;
-    firingPosition = position;
     GenerateLaser();
 }
 
 void CircleLaserFlyShip::GenerateLaser()
 {
-    ItemArgumentCarInfo itemInfo;
-    itemInfo.SetCarInfo(this);
-    DamageObjectGenerator::GenerateDamageObject(ufo, itemInfo, this);
+    DamageObjectGenerator::GenerateDamageObject(Item::littleRadLaser, sub);
 }

@@ -6,7 +6,8 @@
 #include "Utility.h"
 const InitParam BigRadiusLaser::initParam =
 {
-    "BigRadiusLaser.efkefc",
+    EffectKind::bigRadiusLaser,
+    Init::InitObjKind::bigRadiusLaser,
     120.0f,
     30.0f,
     20.0f,
@@ -15,8 +16,8 @@ const InitParam BigRadiusLaser::initParam =
 //‰ñ“]‘¬“x
 const float BigRadiusLaser::rotaSpeed = 2.0f;
 
-BigRadiusLaser::BigRadiusLaser(FiringObjOwner* setOwner)
-    :RotatingLasers(setOwner,initParam)
+BigRadiusLaser::BigRadiusLaser(ObjectObserver* setObserver)
+    :RotatingLasers(initParam, setObserver)
 {
 }
 

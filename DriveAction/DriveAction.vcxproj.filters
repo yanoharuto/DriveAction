@@ -219,16 +219,10 @@
     <ClCompile Include="ResultScore.cpp">
       <Filter>ソース ファイル\Other</Filter>
     </ClCompile>
-    <ClCompile Include="EffectManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="RacerGenerater.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="RaceMenu.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectionOfTravelGenerator.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="FlyShip.cpp">
@@ -241,9 +235,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="BomberFlyShip.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerInformationCenter.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Clock.cpp">
@@ -267,7 +258,7 @@
     <ClCompile Include="ShadowMap.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="FiringObjOwner.cpp">
+    <ClCompile Include="SubjectInfoCentor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="UpDownLaserFlyShip.cpp">
@@ -294,13 +285,7 @@
     <ClCompile Include="TimerUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="HitNumCounter.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="NumUI.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SpeedEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="CSVFileLoader.cpp">
@@ -330,7 +315,16 @@
     <ClCompile Include="UIManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CollectIconUI.cpp">
+    <ClCompile Include="EffectManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectSubject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectObserver.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -446,9 +440,6 @@
     <ClInclude Include="NeighborhoodInfo.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectTagEnum.h">
-      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
-    </ClInclude>
     <ClInclude Include="PlaySceeneProgressEnum.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
@@ -530,9 +521,6 @@
     <ClInclude Include="VectorDataCreator.h">
       <Filter>ヘッダー ファイル\DataCreate</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerRelatedInfo.h">
-      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
-    </ClInclude>
     <ClInclude Include="ItemInfo.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -575,12 +563,6 @@
     <ClInclude Include="CarParamater.h">
       <Filter>ヘッダー ファイル\StructAndEnum</Filter>
     </ClInclude>
-    <ClInclude Include="DirectionOfTravelGenerator.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="AutoDriveInfo.h">
-      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
-    </ClInclude>
     <ClInclude Include="FlyShip.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -597,9 +579,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="BomberFlyShip.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerInformationCenter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Clock.h">
@@ -623,7 +602,7 @@
     <ClInclude Include="ShadowMap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="FiringObjOwner.h">
+    <ClInclude Include="SubjectInfoCentor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="UpDownLaserFlyShip.h">
@@ -650,13 +629,7 @@
     <ClInclude Include="TimerUI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="HitNumCounter.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="NumUI.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SpeedEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="CSVFileLoader.h">
@@ -683,7 +656,13 @@
     <ClInclude Include="InitActor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CollectIconUI.h">
+    <ClInclude Include="InitObjKind.h">
+      <Filter>ヘッダー ファイル\StructAndEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectSubject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectObserver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

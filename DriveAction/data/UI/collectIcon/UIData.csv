@@ -1,7 +1,7 @@
 ﻿ drawX
-0
+760
  drawY
-0
+515
  width
 280
  height
@@ -13,4 +13,6 @@
 graphPass
 data/UI/collectIcon/Jwel.png
 size
-1
+3
+frameSpeed
+0.15

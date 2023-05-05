@@ -13,6 +13,7 @@ class  ConflictProccesor abstract
 public:
     ConflictProccesor() {};
     ConflictProccesor(Actor* obj);
+
     virtual ~ConflictProccesor();
     /// <summary>
     /// 当たり判定を行う
@@ -35,10 +36,19 @@ public:
     /// </summary>
     /// <param name="tag">特定の者のタグ</param>
     /// <param name="timer">クールタイム計測用のタイマー</param>
-    void SetCoolTimer(ObjectTag tag,Timer* timer);
+    void SetCoolTimer(Object::ObjectTag tag,float setCoolTime);
+    /// <summary>
+    /// 引数のタグのオブジェクトに何回ぶつかったか返す
+    /// </summary>
+    /// <param name="objTag"></param>
+    /// <returns></returns>
+    int GetTagHitCount(Object::ObjectTag objTag);
 protected:
+    void IncrementHitCount(Object::ObjectTag objTag);
     //当たり判定の持ち主
     Actor* object = nullptr;
     //クールタイマー
-    std::unordered_map<ObjectTag, Timer*> coolTimer;
+    std::unordered_map<Object::ObjectTag, Timer*> coolTimer;
+    //ぶつかったタグの当たった回数を記録
+    std::unordered_map<Object::ObjectTag, int> hitCountMap;
 };

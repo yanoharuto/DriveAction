@@ -1,33 +1,33 @@
 #include "RacerGenerater.h"
 #include "CPU.h"
+#include "Player.h"
 #include "CourceDataLoader.h"
 #include "GetGeneratePos.h"
 #include "ListUtility.h"
+#include "RaceCamera.h"
+#include "ShadowMap.h"
+#include "PlayerRelatedUI.h"
+#include "ObjectSubject.h"
+#include "ObjectObserver.h"
+#include "SubjectInfoCentor.h"
 RacerGenerater::RacerGenerater()
 {
 }
-void RacerGenerater::CreateRacers(int racerNum, std::list<Racer*>* racerList, Player** player, PlayerInformationCenter* infoCenter)
+Player* RacerGenerater::CreatePlayer(int racerNum)
 {
-    std::list<VECTOR> firstPosList = ConvertVectorToList(GetGeneratePos::CSVConvertPosition(firstPosPass,0));
+    std::vector<VECTOR> firstPosList = GetGeneratePos::CSVConvertPosition(firstPosPass, 0);
     //ポジションのイテレーター
-    auto firstPosIte = firstPosList.begin();
-    
-    //レーサーの数だけNewする
-    Racer* newRacer;
-    for (int i = 0; i < racerNum + 1; i++)
-    {
-        if (i == 0)
-        {
-            (*player) = new Player(*firstPosIte);
-            newRacer =(*player);
-            infoCenter->AddPlayer((*player));
-        }
-        else
-        {
-            newRacer = new CPU(*firstPosIte);
-        }
-        (*racerList).push_front(newRacer);
-        firstPosIte++;
-    }
-
+    auto firstPosIte = firstPosList[racerNum];
+    Player* newPlayer = new Player(firstPosIte);
+    std::string str;
+    ObjectSubject* subject = newPlayer->GetSubject();
+    return newPlayer;
+}
+CPU* RacerGenerater::CreateRacer(int racerNum)
+{
+    std::vector<VECTOR> firstPosList = GetGeneratePos::CSVConvertPosition(firstPosPass, 1);
+    //ポジションのイテレーター
+    auto firstPosIte = firstPosList[racerNum];
+    CPU* newPlayer = new CPU(firstPosIte);
+    return newPlayer;
 }

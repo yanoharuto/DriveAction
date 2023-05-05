@@ -1,5 +1,4 @@
 ﻿#include "PlaySceneFlow.h"
-#include "PlayerRelatedInfo.h"
 #include "Utility.h"
 #include "AssetManager.h"
 #include "CoinManager.h"
@@ -14,7 +13,7 @@
 #include "RaceScreen.h"
 #include "EffekseerForDXLib.h"
 #include "CourceDataLoader.h"
-#include "CountDown.h"
+
 #include "RaceCamera.h"
 #include "RacerManager.h"
 #include "ResultScore.h"
@@ -23,41 +22,48 @@
 #include "SoundPlayer.h"
 #include "ShadowMap.h"
 #include "UIManager.h"
-PlaySceeneFlow::PlaySceeneFlow()
+/// <summary>
+/// ゲームしているときの流れ
+/// </summary>
+PlaySceneFlow::PlaySceneFlow()
 {
-	uiManager = new UIManager();
+	uiManager = new UIManager();	
+	effectManager = new EffectManager();
 	conflictManager = new ConflictManager();
+
+	racerManager = new RacerManager(1);
 	courceDataLoader = new CourceDataLoader();
-	nowProgress = PlaySceeneProgress::start;
 	stageManager = new StageManager();
-	camera = new RaceCamera();
+	camera = new RaceCamera(racerManager);
+	nowProgress = PlaySceeneProgress::start;
+
 	gameLimitTimer = new Timer(MAX_GAME_TIME);
 	postGoalStaging = nullptr;
+	score = nullptr;
 	modelManager = new AssetManager();
 	firingManager = new FiringItemManager();
-	racerManager = new RacerManager(CPU_RACER_NUM);
+	
 	coinManager = new CoinManager();
-	playerUI = new PlayerRelatedUI(gameLimitTimer,coinManager->GetCoinFirstNum());
-	effectManager = new EffectManager();
-	flyShipManager = new FlyShipManager(); 
-	shadowMap = new ShadowMap();
+	flyShipManager = new FlyShipManager(racerManager); 
+	shadowMap = new ShadowMap(racerManager);
 	stageManager = new StageManager();
 	racePrevProccess = new RacePrevProcess();
-	countDown = new CountDown(gameLimitTimer);
 	screen = new RaceScreen();
-	
+	playerUI = new PlayerRelatedUI(gameLimitTimer,coinManager->GetCoinFirstNum(),racerManager);
+
 	SoundPlayer::LoadSound(BGMPass);
 	SoundPlayer::SetSoundVolume(BGMBolume, BGMPass);
-
-	PlayerRelatedInfo playerRelatedInfo = PlayerInformationCenter::GetPlayerRelatedInfo(0);
-	ObjInfo playerPosAndDir = playerRelatedInfo.objInfo;
+	UpdateFunc[PlaySceneFlow::start] = &PlaySceneFlow::StartUpdate;
+	UpdateFunc[PlaySceneFlow::game] = &PlaySceneFlow::GameUpdate;
+	UpdateFunc[PlaySceneFlow::playerGoal] = &PlaySceneFlow::PlayerGoalUpdate;
+	UpdateFunc[PlaySceneFlow::end] = &PlaySceneFlow::EndUpdate;
 	//カメラの処理
-	camera->Update(playerPosAndDir);
+	camera->Update();
 #ifdef _DEBUG
 #endif
 }
 
-PlaySceeneFlow::~PlaySceeneFlow()
+PlaySceneFlow::~PlaySceneFlow()
 {
 	SAFE_DELETE(racerManager)
 	SAFE_DELETE(stageManager);
@@ -75,7 +81,7 @@ PlaySceeneFlow::~PlaySceeneFlow()
 	SAFE_DELETE(racePrevProccess);
 	SAFE_DELETE(coinManager);
 	SAFE_DELETE(gameLimitTimer);
-	SAFE_DELETE(countDown);
+	
 	SAFE_DELETE(screen);
 	SAFE_DELETE(uiManager);
 #ifdef _DEBUG
@@ -83,69 +89,9 @@ PlaySceeneFlow::~PlaySceeneFlow()
 
 }
 
-void PlaySceeneFlow::Update()
+void PlaySceneFlow::Update()
 {
-	
-	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	PlayerRelatedInfo playerRelatedInfo = PlayerInformationCenter::GetPlayerRelatedInfo(0);
-	ObjInfo playerPosAndDir = playerRelatedInfo.objInfo;
-	stageManager->Update();
-	//コインの更新
-	coinManager->Update(playerPosAndDir);
-	switch (nowProgress)
-	{
-		//スタート処理
-	case PlaySceeneProgress::start:
-		racePrevProccess->Update();
-		racerManager->UpDown();
-		if (racePrevProccess->IsProccesEnd())
-		{
-			nowProgress = PlaySceeneProgress::race;
-			SoundPlayer::Play2DSE(BGMPass);
-		}
-		break;
-		//レース
-	case PlaySceeneProgress::race:
-		gameLimitTimer->Update();
-		//レーサーの処理
-		racerManager->RacerUpdate();
-		flyShipManager->Update(racerManager->GetPlayerRelatedInfo());
-		//発射物の更新
-		firingManager->Update();
-		//当たり判定処理
-		conflictManager->Update();
-		//プレイヤーUI
-		playerUI->Update(playerRelatedInfo,coinManager->GetCoinPosList());
-		//残り三秒になったらカウントダウンしてくれる
-		countDown->Update();
-		//レース終了
-		if (gameLimitTimer->IsOverLimitTime() || coinManager->GetCoinNowNum() == 0)
-		{
-			nowProgress = PlaySceeneProgress::playerGoal;
-			score = new ResultScore(gameLimitTimer, playerRelatedInfo);
-			//ゴール後の処理をお願い
-			postGoalStaging = new PostGoalStaging();
-		}
-		break;
-	case PlaySceeneProgress::playerGoal:
-
-		if (postGoalStaging->Update())
-		{
-			nowProgress = PlaySceeneProgress::end;
-		}
-		break;
-	case PlaySceeneProgress::end:
-		nextSceneType = SceneType::TITLE;
-		isEndProccess = true;
-		break;
-	default:
-		nowProgress = PlaySceeneProgress::end;
-		break;
-	}
-	//カメラの処理
-	camera->Update(playerPosAndDir);
-	//シャドウマップの更新
-	shadowMap->SetShadowMapErea(racerManager->GetPlayerCarPosDir());
+	(this->*UpdateFunc[nowProgress])();
 	// DXライブラリのカメラとEffekseerのカメラを同期する。
 	Effekseer_Sync3DSetting();
 	// Effekseerにより再生中のエフェクトを更新する。
@@ -154,23 +100,24 @@ void PlaySceeneFlow::Update()
 #endif
 }
 
-void PlaySceeneFlow::Draw()
+void PlaySceneFlow::Draw()
 {	
 	shadowMap->SetUP();
-	ManagerDraw();
+	DrawManagers();
 	shadowMap->DrawEnd();
-	ManagerDraw();
+	DrawManagers();
 	shadowMap->Use();
 	switch (nowProgress)
 	{
 	case PlaySceeneProgress::start:
 		racePrevProccess->Draw();
-	case PlaySceeneProgress::race:
+	case PlaySceeneProgress::game:
 		// Effekseerにより再生中のエフェクトを描画する。
 		DrawEffekseer3D();
-		screen->SetUp();
+		screen->ScreenUpdate();
 		playerUI->Draw();
-		countDown->DrawUI();
+
+		conflictManager->DrawCollisionSphere();
 		break;
 	case PlaySceeneProgress::playerGoal:
 	case PlaySceeneProgress::end:
@@ -178,12 +125,12 @@ void PlaySceeneFlow::Draw()
 		break;
 	}
 #ifdef DEBUG
-	conflictManager->DrawCollisionSphere();
+
 #endif // DEBUG
 
 }
 
-void PlaySceeneFlow::ManagerDraw()
+void PlaySceneFlow::DrawManagers()
 {
 	if (nowProgress != PlaySceeneProgress::playerGoal)
 	{
@@ -192,5 +139,64 @@ void PlaySceeneFlow::ManagerDraw()
 		flyShipManager->Draw();
 		stageManager->Draw();
 		coinManager->Draw();
+	}
+}
+
+void PlaySceneFlow::GameUpdate()
+{
+	//コインの更新
+	coinManager->Update();
+	//レーサーの処理
+	racerManager->RacerUpdate();
+	flyShipManager->Update();
+	//発射物の更新
+	firingManager->Update();
+	//当たり判定処理
+	conflictManager->Update();
+	//プレイヤーUI
+	playerUI->Update();
+	//カメラの処理
+	camera->Update();
+	//シャドウマップの更新
+	shadowMap->SetShadowMapErea();
+	//レース終了
+	if (gameLimitTimer->IsOverLimitTime() || coinManager->GetCoinNowNum() == 0)
+	{
+		nowProgress = PlaySceeneProgress::playerGoal;
+		score = new ResultScore(gameLimitTimer, racerManager);
+		//ゴール後の処理をお願い
+		postGoalStaging = new PostGoalStaging();
+	}
+}
+
+void PlaySceneFlow::EndUpdate()
+{
+	nextSceneType = SceneType::TITLE;
+	isEndProccess = true;
+}
+
+void PlaySceneFlow::PlayerGoalUpdate()
+{
+	if (postGoalStaging->Update())
+	{
+		nowProgress = PlaySceeneProgress::end;
+	}
+}
+
+void PlaySceneFlow::StartUpdate()
+{
+	racePrevProccess->Update();
+	racerManager->UpDown();
+	//コインの更新
+	coinManager->Update();
+	//カメラの処理
+	camera->Update();
+	//シャドウマップの更新
+	shadowMap->SetShadowMapErea();
+	if (racePrevProccess->IsProccesEnd())
+	{
+		nowProgress = PlaySceeneProgress::game;
+		SoundPlayer::Play2DSE(BGMPass);
+		gameLimitTimer->Init();
 	}
 }
